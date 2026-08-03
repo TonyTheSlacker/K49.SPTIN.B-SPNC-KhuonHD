@@ -221,18 +221,91 @@
 </head>
 <body>
   <div class="page-shell">
-    <nav class="site-nav" aria-label="Điều hướng chính">
-      <div class="site-nav__brand">
-        <strong>Học Tin Học Lớp 6</strong>
-        <span>Website học tập, từ điển và trò chơi tương tác</span>
-      </div>
-      <div class="site-nav__links">
-        <a class="site-nav__link" href="index.html">Trang chủ</a>
-        <a class="site-nav__link" href="dictionary.html">Từ điển</a>
-        <a class="site-nav__link site-nav__link--active" href="crossword.html">Ô chữ</a>
-        <a class="site-nav__link" href="algorithm.html">Thuật toán</a>
-      </div>
-    </nav>
+    <div class="placeholder-banner" aria-hidden="true"></div>
+
+    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-controls="leftSidebar" aria-expanded="false">
+      ☰ Menu chủ đề
+    </button>
+
+    <div class="home-layout">
+      <aside class="left-sidebar" id="leftSidebar" aria-label="Thanh điều hướng bên trái">
+        <div class="left-sidebar__header">
+          <strong>Menu học tập</strong>
+          <button class="left-sidebar__close" id="sidebarClose" type="button" aria-label="Đóng menu">×</button>
+        </div>
+
+        <div class="sidebar-banner">
+          <div class="sidebar-banner__badge">Gợi ý nhanh</div>
+          <h2>Khám phá bài học theo từng chủ đề</h2>
+          <p>Chọn một chủ đề ở bên dưới để mở bài học, ô chữ hoặc mô phỏng tương ứng.</p>
+          <a href="#sidebarAccordion">Xem danh mục</a>
+        </div>
+
+        <div class="sidebar-accordion" id="sidebarAccordion">
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-1" data-accordion-trigger>
+              Chủ đề 1: Máy tính và cộng đồng
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-1" hidden>
+              <a href="#">Tổng quan chủ đề</a>
+              <a href="#">Bài học gợi ý</a>
+              <a href="#">Ôn tập nhanh</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-2" data-accordion-trigger>
+              Chủ đề 2: Mạng máy tính và Internet
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-2" hidden>
+              <a href="dictionary.html">Từ điển thuật ngữ</a>
+              <a href="#">Luyện tìm hiểu mạng</a>
+              <a href="#">Câu hỏi kiểm tra</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-3" data-accordion-trigger>
+              Chủ đề 3: Tổ chức lưu trữ, tìm kiếm...
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-3" hidden>
+              <a href="dictionary.html">Từ điển thuật ngữ</a>
+              <a href="#">Thực hành tệp tin</a>
+              <a href="#">Bài luyện tập</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-4" data-accordion-trigger>
+              Chủ đề 4: Đạo đức, pháp luật...
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-4" hidden>
+              <a href="#">An toàn khi dùng mạng</a>
+              <a href="#">Ứng xử số</a>
+              <a href="#">Trắc nghiệm nhanh</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-5" data-accordion-trigger>
+              Chủ đề 5: Ứng dụng tin học
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-5" hidden>
+              <a href="crossword.html">Trò chơi ô chữ</a>
+              <a href="#">Ứng dụng thực hành</a>
+              <a href="#">Góc sáng tạo</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-6" data-accordion-trigger>
+              Chủ đề 6: Giải quyết vấn đề...
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-6" hidden>
+              <a href="algorithm.html">Mô phỏng thuật toán</a>
+              <a href="#">Luyện tư duy</a>
+              <a href="#">Bài tập nhanh</a>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <div class="home-content">
 
     <header class="hero crossword-hero">
       <div class="hero__badge">Gamification</div>
@@ -275,6 +348,10 @@
 
   <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
+      </div>
+    </div>
+
+  <script src="assets/js/main.js"></script>
   <script src="assets/js/crossword.js"></script>
 </body>
 </html>

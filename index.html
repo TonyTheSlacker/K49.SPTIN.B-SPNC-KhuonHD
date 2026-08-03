@@ -12,18 +12,7 @@
 </head>
 <body>
   <div class="page-shell">
-    <nav class="site-nav" aria-label="Điều hướng chính">
-      <div class="site-nav__brand">
-        <strong>Học Tin Học Lớp 6</strong>
-        <span>Website học tập, từ điển và trò chơi tương tác</span>
-      </div>
-      <div class="site-nav__links">
-        <a class="site-nav__link site-nav__link--active" href="index.html">Trang chủ</a>
-        <a class="site-nav__link" href="dictionary.html">Từ điển</a>
-        <a class="site-nav__link" href="crossword.html">Ô chữ</a>
-        <a class="site-nav__link" href="algorithm.html">Thuật toán</a>
-      </div>
-    </nav>
+    <div class="placeholder-banner" aria-hidden="true"></div>
 
     <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-controls="leftSidebar" aria-expanded="false">
       ☰ Menu chủ đề
@@ -36,19 +25,11 @@
           <button class="left-sidebar__close" id="sidebarClose" type="button" aria-label="Đóng menu">×</button>
         </div>
         
-        <div class="sidebar-quicklinks" aria-label="Truy cập nhanh">
-          <a class="sidebar-quicklinks__card sidebar-quicklinks__card--blue" href="dictionary.html">
-            <span>Từ điển thuật ngữ</span>
-            <small>Tra cứu nhanh khái niệm</small>
-          </a>
-          <a class="sidebar-quicklinks__card sidebar-quicklinks__card--green" href="crossword.html">
-            <span>Trò chơi ô chữ</span>
-            <small>Luyện nhớ từ khóa</small>
-          </a>
-          <a class="sidebar-quicklinks__card sidebar-quicklinks__card--orange" href="algorithm.html">
-            <span>Mô phỏng thuật toán</span>
-            <small>Hiểu sơ đồ khối</small>
-          </a>
+        <div class="sidebar-banner">
+          <div class="sidebar-banner__badge">Gợi ý nhanh</div>
+          <h2>Khám phá bài học theo từng chủ đề</h2>
+          <p>Chọn một chủ đề ở bên dưới để mở bài học, ô chữ hoặc mô phỏng tương ứng.</p>
+          <a href="#sidebarAccordion">Xem danh mục</a>
         </div>
 
         <div class="sidebar-accordion" id="sidebarAccordion">

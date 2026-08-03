@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mô phỏng thuật toán làm kem giúp học sinh lớp 6 hiểu sơ đồ khối và cấu trúc rẽ nhánh.">
+  <title>Mô phỏng Thuật toán làm kem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    :root {
+      --algo-bg: #fff7ea;
+      --algo-panel: rgba(255, 255, 255, 0.92);
+      --algo-border: rgba(255, 181, 71, 0.2);
+      --algo-ink: #1f2a44;
+      --algo-muted: #5d6b85;
+      --algo-highlight: #ffcc45;
+      --algo-alert: #ff595e;
+      --algo-success: #31a24c;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255, 208, 112, 0.35), transparent 28%),
+        radial-gradient(circle at top right, rgba(104, 214, 255, 0.22), transparent 24%),
+        linear-gradient(180deg, var(--algo-bg) 0%, #ffeecf 100%);
+      color: var(--algo-ink);
+    }
+
+    .algorithm-hero {
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+      gap: 20px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    .panel {
+      background: var(--algo-panel);
+      border: 1px solid var(--algo-border);
+      border-radius: 28px;
+      box-shadow: 0 16px 34px rgba(60, 49, 22, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .flow-panel {
+      position: relative;
+      padding: 22px;
+      overflow: hidden;
+    }
+
+    .flow-title,
+    .control-title {
+      margin: 0 0 12px;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.7rem;
+    }
+
+    .flow-wrap {
+      position: relative;
+      min-height: 780px;
+      border-radius: 24px;
+      background:
+        linear-gradient(rgba(255,255,255,0.42) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.42) 1px, transparent 1px),
+        linear-gradient(180deg, #fffdf7 0%, #fff7e4 100%);
+      background-size: 36px 36px, 36px 36px, auto;
+      border: 1px dashed rgba(31, 42, 68, 0.08);
+      padding: 18px;
+    }
+
+    .flow-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .flow-line {
+      stroke: rgba(31, 42, 68, 0.35);
+      stroke-width: 4;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .flow-line--active {
+      stroke: var(--algo-highlight);
+      filter: drop-shadow(0 0 4px rgba(255, 204, 69, 0.75));
+    }
+
+    .node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 16px;
+      font-weight: 800;
+      color: var(--algo-ink);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .node__label {
+      position: relative;
+      z-index: 1;
+      line-height: 1.45;
+    }
+
+    .node--oval {
+      width: 220px;
+      height: 90px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #eaf7ff 0%, #d2edff 100%);
+      border: 4px solid rgba(43, 141, 214, 0.25);
+    }
+
+    .node--rect {
+      width: 250px;
+      height: 88px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #fff4d7 0%, #ffe4a0 100%);
+      border: 4px solid rgba(237, 122, 31, 0.2);
+    }
+
+    .node--diamond {
+      width: 250px;
+      height: 150px;
+      background: linear-gradient(180deg, #fff0d9 0%, #ffd78e 100%);
+      border: 4px solid rgba(227, 154, 0, 0.24);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      padding: 0;
+    }
+
+    .node--diamond .node__label {
+      padding: 0 40px;
+    }
+
+    .node::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.36);
+    }
+
+    .node--active {
+      border-color: var(--algo-alert);
+      box-shadow: 0 0 0 6px rgba(255, 89, 94, 0.16), 0 16px 28px rgba(60, 49, 22, 0.16);
+      transform: translateY(-2px) scale(1.01);
+    }
+
+    .node--done {
+      border-color: var(--algo-success);
+      box-shadow: 0 0 0 6px rgba(49, 162, 76, 0.14), 0 14px 24px rgba(60, 49, 22, 0.12);
+    }
+
+    .node--wrong {
+      border-color: var(--algo-alert);
+      box-shadow: 0 0 0 6px rgba(255, 89, 94, 0.12);
+    }
+
+    .start { left: 50%; top: 20px; transform: translateX(-50%); }
+    .input { left: 50%; top: 136px; transform: translateX(-50%); }
+    .decision { left: 50%; top: 260px; transform: translateX(-50%); }
+    .mix { left: 50%; top: 480px; transform: translateX(-50%); }
+    .freeze { left: 50%; top: 600px; transform: translateX(-50%); }
+    .end { left: 50%; top: 720px; transform: translateX(-50%); }
+    .wrong-end { left: 78%; top: 394px; transform: translateX(-50%); width: 190px; height: 78px; }
+
+    .arrow-label {
+      position: absolute;
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: #8b6100;
+      background: rgba(255, 255, 255, 0.82);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 181, 71, 0.26);
+    }
+
+    .yes-label { left: 60%; top: 404px; }
+    .no-label { left: 60%; top: 322px; }
+
+    .controls-panel {
+      padding: 22px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .choice-group {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 18px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 181, 71, 0.18);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .choice input {
+      accent-color: #1f2a44;
+    }
+
+    .status-box {
+      min-height: 60px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #fff6da;
+      color: #664500;
+      line-height: 1.65;
+      font-weight: 700;
+    }
+
+    .button-row {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      color: #1f2a44;
+      background: linear-gradient(180deg, #ffe08a 0%, #ffc94d 100%);
+      box-shadow: 0 12px 22px rgba(255, 186, 53, 0.3);
+    }
+
+    .button.secondary {
+      background: rgba(31, 42, 68, 0.08);
+      box-shadow: none;
+    }
+
+    .legend {
+      margin-top: 16px;
+      display: grid;
+      gap: 8px;
+      color: var(--algo-muted);
+      font-weight: 700;
+    }
+
+    @media (max-width: 1060px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .controls-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .flow-wrap {
+        min-height: 720px;
+      }
+
+      .start,
+      .input,
+      .decision,
+      .mix,
+      .freeze,
+      .end {
+        left: 50%;
+        transform: translateX(-50%) scale(0.88);
+        transform-origin: top center;
+      }
+
+      .decision { top: 250px; }
+      .wrong-end { left: 50%; top: 410px; transform: translateX(-50%) scale(0.88); }
+      .yes-label { left: 66%; top: 400px; }
+      .no-label { left: 66%; top: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero algorithm-hero">
+      <div class="hero__badge">Sơ đồ khối + Rẽ nhánh</div>
+      <h1>Mô phỏng Thuật toán làm kem</h1>
+      <p>
+        Chọn nguyên liệu, bấm <strong>Chạy thuật toán</strong> và quan sát luồng sáng chạy qua từng khối.
+        Nếu chọn <strong>Không có gì</strong>, luồng sẽ đi sang nhánh <strong>Sai</strong> và kết thúc.
+      </p>
+    </header>
+
+    <section class="layout" aria-label="Mô phỏng thuật toán làm kem">
+      <div class="panel flow-panel">
+        <h2 class="flow-title">Sơ đồ khối</h2>
+        <div class="flow-wrap" id="flowWrap">
+          <svg class="flow-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M0,0 L12,6 L0,12 z" fill="rgba(31,42,68,0.35)"></path>
+              </marker>
+              <marker id="arrowHeadActive" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M0,0 L12,6 L0,12 z" fill="#ffcc45"></path>
+              </marker>
+            </defs>
+
+            <path id="line-start-input" class="flow-line" d="M500 110 L500 130" marker-end="url(#arrowHead)"></path>
+            <path id="line-input-decision" class="flow-line" d="M500 220 L500 250" marker-end="url(#arrowHead)"></path>
+            <path id="line-decision-yes" class="flow-line" d="M500 410 L500 470" marker-end="url(#arrowHead)"></path>
+            <path id="line-yes-mix" class="flow-line" d="M500 580 L500 590" marker-end="url(#arrowHead)"></path>
+            <path id="line-mix-freeze" class="flow-line" d="M500 690 L500 710" marker-end="url(#arrowHead)"></path>
+            <path id="line-freeze-end" class="flow-line" d="M500 686 L500 712" marker-end="url(#arrowHead)"></path>
+            <path id="line-decision-no" class="flow-line" d="M610 330 L760 330 L760 394" marker-end="url(#arrowHead)"></path>
+          </svg>
+
+          <div class="node node--oval start" id="node-start"><span class="node__label">Bắt đầu</span></div>
+          <div class="node node--rect input" id="node-input"><span class="node__label">Chọn nguyên liệu</span></div>
+          <div class="node node--diamond decision" id="node-decision"><span class="node__label">Có nguyên liệu không?</span></div>
+          <div class="node node--rect mix" id="node-mix"><span class="node__label">Trộn sữa + đường + nguyên liệu</span></div>
+          <div class="node node--rect freeze" id="node-freeze"><span class="node__label">Làm lạnh hỗn hợp</span></div>
+          <div class="node node--oval end" id="node-end"><span class="node__label">Hoàn thành kem</span></div>
+          <div class="node node--rect wrong-end" id="node-wrong-end"><span class="node__label">Sai → Kết thúc</span></div>
+
+          <div class="arrow-label yes-label">Đúng / Có</div>
+          <div class="arrow-label no-label">Sai / Không</div>
+        </div>
+      </div>
+
+      <aside class="panel controls-panel">
+        <h2 class="control-title">Điều khiển</h2>
+        <p style="margin: 0; color: var(--algo-muted); line-height: 1.7;">
+          Chọn một nguyên liệu để xem thuật toán chạy qua các khối.
+        </p>
+
+        <div class="choice-group" role="radiogroup" aria-label="Chọn nguyên liệu">
+          <label class="choice"><input type="radio" name="ingredient" value="vanilla" checked> Vani</label>
+          <label class="choice"><input type="radio" name="ingredient" value="strawberry"> Dâu</label>
+          <label class="choice"><input type="radio" name="ingredient" value="chocolate"> Sô cô la</label>
+          <label class="choice"><input type="radio" name="ingredient" value="none"> Không có gì</label>
+        </div>
+
+        <div class="status-box" id="statusBox" aria-live="polite">
+          Chọn nguyên liệu rồi bấm <strong>Chạy thuật toán</strong>.
+        </div>
+
+        <div class="button-row">
+          <button class="button" id="runButton" type="button">Chạy thuật toán</button>
+          <button class="button secondary" id="resetButton" type="button">Đặt lại</button>
+        </div>
+
+        <div class="legend">
+          <div>• Viền đỏ: khối đang chạy</div>
+          <div>• Viền xanh: khối đã đi qua</div>
+          <div>• Nhánh Sai: khi chọn “Không có gì”</div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <script src="assets/js/algorithm.js"></script>
+</body>
+</html>

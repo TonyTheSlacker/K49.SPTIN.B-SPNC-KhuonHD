@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trò chơi giải ô chữ Thư điện tử dành cho học sinh lớp 6.">
+  <title>Trò chơi Giải ô chữ Thư điện tử</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .crossword-hero {
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 20px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .board-card,
+    .info-card {
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 181, 71, 0.18);
+      box-shadow: 0 16px 34px rgba(60, 49, 22, 0.1);
+    }
+
+    .board-card {
+      padding: 20px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      gap: 6px;
+      max-width: 620px;
+      margin: 0 auto;
+      user-select: none;
+    }
+
+    .cell {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      background: #2f3b52;
+      overflow: hidden;
+    }
+
+    .cell--active {
+      background: linear-gradient(180deg, #fffdf1 0%, #ffe9ad 100%);
+      border: 2px solid rgba(217, 162, 13, 0.25);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    }
+
+    .cell--active::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.42);
+      pointer-events: none;
+    }
+
+    .cell__number {
+      position: absolute;
+      top: 5px;
+      left: 6px;
+      font-size: 0.68rem;
+      font-weight: 900;
+      color: #8a6100;
+      z-index: 1;
+    }
+
+    .cell input {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      text-align: center;
+      font: 800 1.1rem 'Nunito', sans-serif;
+      text-transform: uppercase;
+      color: #1f2a44;
+      cursor: pointer;
+    }
+
+    .cell input:focus {
+      box-shadow: inset 0 0 0 3px #1f2a44;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .cell--correct {
+      background: linear-gradient(180deg, #dff8da 0%, #c7efc0 100%);
+      border-color: rgba(51, 145, 54, 0.35);
+    }
+
+    .cell--wrong {
+      animation: shake 220ms ease-in-out 0s 2;
+      background: linear-gradient(180deg, #ffe0e0 0%, #ffc8c8 100%);
+      border-color: rgba(198, 56, 56, 0.4);
+    }
+
+    .info-card {
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .info-card h2 {
+      margin-top: 0;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.7rem;
+    }
+
+    .hint-box {
+      padding: 16px;
+      border-radius: 18px;
+      background: #fff6da;
+      color: #664500;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .status {
+      min-height: 26px;
+      margin: 14px 0 0;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .status--success {
+      color: #2c8a2f;
+    }
+
+    .status--error {
+      color: #c03a3a;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-button {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      color: #1f2a44;
+      background: linear-gradient(180deg, #ffe08a 0%, #ffc94d 100%);
+      box-shadow: 0 12px 22px rgba(255, 186, 53, 0.3);
+    }
+
+    .action-button.secondary {
+      background: rgba(31, 42, 68, 0.08);
+      box-shadow: none;
+    }
+
+    .score-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      font-weight: 800;
+    }
+
+    .confetti-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 999;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: -20px;
+      width: 12px;
+      height: 18px;
+      opacity: 0.95;
+      animation: confetti-fall 1200ms linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translate3d(var(--x, 0), 0, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(var(--x-end, 0), 110vh, 0) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+    }
+
+    @media (max-width: 960px) {
+      .game-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .info-card {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero crossword-hero">
+      <div class="hero__badge">Gamification</div>
+      <h1>Trò chơi Giải ô chữ Thư điện tử</h1>
+      <p>
+        Nhập từng chữ cái vào lưới ô chữ, bấm <strong>Kiểm tra</strong> để xem đúng hay sai,
+        và nhận 100 điểm khi hoàn thành chính xác.
+      </p>
+    </header>
+
+    <section class="game-layout" aria-label="Trò chơi ô chữ">
+      <div class="board-card">
+        <div class="board" id="crosswordBoard" aria-label="Bảng ô chữ"></div>
+      </div>
+
+      <aside class="info-card">
+        <h2>Gợi ý</h2>
+        <div class="hint-box">
+          Từ khóa chính theo hàng dọc là <strong>THUDIENTU</strong>.
+          Hãy click vào từng ô sáng màu để nhập chữ cái theo đúng thứ tự từ trên xuống dưới.
+        </div>
+
+        <div class="score-box">
+          Điểm lưu LocalStorage: <span id="savedScore">0</span>
+        </div>
+
+        <div id="statusMessage" class="status" aria-live="polite"></div>
+
+        <div class="action-row">
+          <button class="action-button" id="checkButton" type="button">Kiểm tra</button>
+          <button class="action-button secondary" id="resetButton" type="button">Làm lại</button>
+        </div>
+
+        <div class="score-box" style="margin-top: 18px;">
+          Mẹo: Dùng phím Backspace để sửa chữ vừa nhập.
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+  <script src="assets/js/crossword.js"></script>
+</body>
+</html>

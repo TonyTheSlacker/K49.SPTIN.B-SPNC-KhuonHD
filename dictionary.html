@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Từ điển thuật ngữ Tin học dành cho học sinh lớp 6 với tìm kiếm và phân loại dễ hiểu.">
+  <title>Từ điển thuật ngữ Tin học</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .dictionary-hero {
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .dictionary-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      margin-top: 22px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 181, 71, 0.22);
+      box-shadow: 0 12px 28px rgba(60, 49, 22, 0.08);
+    }
+
+    .search-box input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      font: inherit;
+      color: var(--ink);
+    }
+
+    .search-box span {
+      font-size: 1.1rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .filter-pill {
+      border: 0;
+      cursor: pointer;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--muted);
+      font: inherit;
+      font-weight: 800;
+      transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+    }
+
+    .filter-pill[aria-pressed="true"] {
+      background: #1f2a44;
+      color: #fff;
+    }
+
+    .filter-pill:hover {
+      transform: translateY(-1px);
+    }
+
+    .dictionary-meta {
+      margin-top: 18px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .dictionary-grid {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .term-card {
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 181, 71, 0.18);
+      box-shadow: 0 12px 28px rgba(60, 49, 22, 0.08);
+    }
+
+    .term-card h3 {
+      margin: 0 0 10px;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.45rem;
+    }
+
+    .term-card .tag {
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ffe9bf;
+      color: #845b00;
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .term-card p {
+      margin: 0;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .empty-state {
+      margin-top: 22px;
+      padding: 28px;
+      border-radius: 24px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--muted);
+      box-shadow: 0 12px 28px rgba(60, 49, 22, 0.08);
+    }
+
+    @media (max-width: 720px) {
+      .dictionary-toolbar,
+      .dictionary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero dictionary-hero">
+      <div class="hero__badge">Từ điển Tin học</div>
+      <h1>Tìm thuật ngữ Tin học thật nhanh, thật dễ hiểu</h1>
+      <p>
+        Dành cho học sinh lớp 6: nhập từ khóa, chọn chủ đề và đọc nghĩa ngắn gọn,
+        dễ nhớ để học tốt hơn mỗi ngày.
+      </p>
+
+      <div class="dictionary-toolbar">
+        <label class="search-box" for="searchInput">
+          <span aria-hidden="true">🔎</span>
+          <input id="searchInput" type="search" placeholder="Ví dụ: tệp tin, Internet, thuật toán..." autocomplete="off">
+        </label>
+        <a class="filter-pill" href="index.html" aria-label="Quay lại trang chủ">Trang chủ</a>
+      </div>
+
+      <div class="filter-pills" id="categoryFilters" aria-label="Bộ lọc chủ đề"></div>
+      <div class="dictionary-meta" id="resultCount" aria-live="polite"></div>
+    </header>
+
+    <main>
+      <section aria-labelledby="dictionary-title">
+        <h2 id="dictionary-title" class="section-heading" style="margin-top: 24px;">
+          Từ vựng theo chủ đề
+        </h2>
+        <div class="dictionary-grid" id="dictionaryGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          Không tìm thấy thuật ngữ phù hợp. Hãy thử từ khóa khác nhé.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/dictionary.js"></script>
+</body>
+</html>

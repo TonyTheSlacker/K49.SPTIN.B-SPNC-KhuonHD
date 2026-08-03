@@ -654,3 +654,60 @@ body.nav-open .lesson-drawer {
     border-radius: 22px;
   }
 }
+
+
+/* =========================================
+   DARK MODE OVERRIDES FOR HARDCODED COLORS
+   ========================================= */
+
+/* Fix the sidebar menu items */
+body.theme-dark .lesson-group {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+body.theme-dark .lesson-group__toggle[aria-expanded="true"] {
+  background: var(--surface-strong);
+}
+
+body.theme-dark .lesson-group__panel a {
+  background: var(--surface-dark-soft);
+  color: var(--muted);
+}
+
+body.theme-dark .lesson-group__panel a:hover {
+  background: var(--surface-strong);
+  color: var(--ink);
+}
+
+body.theme-dark .lesson-drawer__home {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  color: var(--ink);
+}
+
+/* Fix the main banner (hero) */
+body.theme-dark .hero {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+/* Fix the "Quick Access" cards and "Topic" cards with light gradients */
+body.theme-dark .quick-access__card,
+body.theme-dark .quick-access__card--blue,
+body.theme-dark .quick-access__card--green,
+body.theme-dark .quick-access__card--orange,
+body.theme-dark .topic-card--blue,
+body.theme-dark .topic-card--green,
+body.theme-dark .topic-card--yellow,
+body.theme-dark .topic-card--pink,
+body.theme-dark .topic-card--orange,
+body.theme-dark .topic-card--purple {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+/* Ensure text on topic cards remains readable */
+body.theme-dark .topic-card p {
+  color: var(--muted);
+}

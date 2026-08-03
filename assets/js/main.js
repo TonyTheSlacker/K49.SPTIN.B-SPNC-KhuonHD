@@ -62,8 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
   header.innerHTML = `
     <div class="site-header__inner">
       <a class="site-brand" href="index.html" aria-label="Trang chủ Tin học 6">
-        <span class="site-brand__logo" aria-hidden="true">6</span>
-        <span class="site-brand__text">Tin học 6</span>
+        <span class="site-brand__logo" aria-hidden="true">
+          <img class="site-brand__logo-img" src="assets/images/Logo%20HCMUE.svg" alt="" />
+        </span>
+        <span class="site-brand__text">Hỗ trợ Tin học Lớp 6</span>
       </a>
       <div class="site-header__actions">
         <div class="site-user">
@@ -113,6 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginButton = document.getElementById('loginButton');
   const themeToggle = document.getElementById('themeToggle');
   const lessonAccordion = document.getElementById('lessonAccordion');
+
+  if (userMenu) {
+    userMenu.hidden = true;
+  }
 
   const themeKey = 'tin-hoc-6-theme';
 

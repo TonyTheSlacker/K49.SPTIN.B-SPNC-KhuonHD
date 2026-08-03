@@ -4,6 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!pageShell) return;
 
+  const favicon = document.querySelector('link[rel="icon"]') || document.createElement('link');
+  favicon.rel = 'icon';
+  favicon.type = 'image/svg+xml';
+  favicon.href = 'images/Logo%20HCMUE.svg';
+  if (!favicon.parentElement) {
+    document.head.append(favicon);
+  }
+
   document.querySelectorAll('.placeholder-banner, .sidebar-toggle, .left-sidebar').forEach((node) => node.remove());
 
   const lessonGroups = [

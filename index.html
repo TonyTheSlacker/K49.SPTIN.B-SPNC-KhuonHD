@@ -25,82 +25,165 @@
       </div>
     </nav>
 
-    <header class="hero">
-      <div class="hero__badge">Dành cho học sinh lớp 6</div>
-      <h1>Thiết kế công cụ hỗ trợ học Tin học thật dễ hiểu, vui mắt và thân thiện</h1>
-      <p>
-        Khám phá 6 chủ đề học tập được sắp xếp rõ ràng để các em có thể tự học,
-        ôn tập và thực hành từng bước một.
-      </p>
-    </header>
+    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-controls="leftSidebar" aria-expanded="false">
+      ☰ Menu chủ đề
+    </button>
 
-    <section class="quick-access" aria-label="Truy cập nhanh">
-      <a class="quick-access__card quick-access__card--blue" href="dictionary.html">
-        <h2>Từ điển thuật ngữ</h2>
-        <p>Tra cứu nhanh các khái niệm Tin học bằng ngôn ngữ đơn giản, dễ nhớ.</p>
-      </a>
-      <a class="quick-access__card quick-access__card--green" href="crossword.html">
-        <h2>Trò chơi ô chữ</h2>
-        <p>Luyện nhớ từ khóa và kiểm tra kiến thức bằng cách giải ô chữ.</p>
-      </a>
-      <a class="quick-access__card quick-access__card--orange" href="algorithm.html">
-        <h2>Mô phỏng thuật toán</h2>
-        <p>Quan sát sơ đồ khối và hiểu rõ hơn cấu trúc rẽ nhánh.</p>
-      </a>
-    </section>
-
-    <main>
-      <section class="topics" aria-labelledby="topics-title">
-        <div class="section-heading">
-          <h2 id="topics-title">6 chủ đề chính</h2>
-          <p>Chạm vào từng thẻ để bắt đầu hành trình học tập.</p>
+    <div class="home-layout">
+      <aside class="left-sidebar" id="leftSidebar" aria-label="Thanh điều hướng bên trái">
+        <div class="left-sidebar__header">
+          <strong>Menu học tập</strong>
+          <button class="left-sidebar__close" id="sidebarClose" type="button" aria-label="Đóng menu">×</button>
+        </div>
+        
+        <div class="sidebar-quicklinks" aria-label="Truy cập nhanh">
+          <a class="sidebar-quicklinks__card sidebar-quicklinks__card--blue" href="dictionary.html">
+            <span>Từ điển thuật ngữ</span>
+            <small>Tra cứu nhanh khái niệm</small>
+          </a>
+          <a class="sidebar-quicklinks__card sidebar-quicklinks__card--green" href="crossword.html">
+            <span>Trò chơi ô chữ</span>
+            <small>Luyện nhớ từ khóa</small>
+          </a>
+          <a class="sidebar-quicklinks__card sidebar-quicklinks__card--orange" href="algorithm.html">
+            <span>Mô phỏng thuật toán</span>
+            <small>Hiểu sơ đồ khối</small>
+          </a>
         </div>
 
-        <div class="topic-grid">
-          <article class="topic-card topic-card--blue">
-            <span class="topic-card__icon">1</span>
-            <h3>Làm quen với máy tính</h3>
-            <p>Nhận biết các bộ phận cơ bản và cách sử dụng an toàn.</p>
-            <a href="dictionary.html">Mở từ điển</a>
-          </article>
+        <div class="sidebar-accordion" id="sidebarAccordion">
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-1" data-accordion-trigger>
+              Chủ đề 1: Máy tính và cộng đồng
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-1" hidden>
+              <a href="#">Tổng quan chủ đề</a>
+              <a href="#">Bài học gợi ý</a>
+              <a href="#">Ôn tập nhanh</a>
+            </div>
+          </section>
 
-          <article class="topic-card topic-card--green">
-            <span class="topic-card__icon">2</span>
-            <h3>Hệ điều hành và thư mục</h3>
-            <p>Biết cách mở, lưu và tìm tệp đúng chỗ.</p>
-            <a href="dictionary.html">Mở từ điển</a>
-          </article>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-2" data-accordion-trigger>
+              Chủ đề 2: Mạng máy tính và Internet
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-2" hidden>
+              <a href="dictionary.html">Từ điển thuật ngữ</a>
+              <a href="#">Luyện tìm hiểu mạng</a>
+              <a href="#">Câu hỏi kiểm tra</a>
+            </div>
+          </section>
 
-          <article class="topic-card topic-card--yellow">
-            <span class="topic-card__icon">3</span>
-            <h3>Soạn thảo văn bản</h3>
-            <p>Gõ chữ, chỉnh sửa và trình bày bài làm gọn gàng.</p>
-            <a href="dictionary.html">Mở từ điển</a>
-          </article>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-3" data-accordion-trigger>
+              Chủ đề 3: Tổ chức lưu trữ, tìm kiếm...
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-3" hidden>
+              <a href="dictionary.html">Từ điển thuật ngữ</a>
+              <a href="#">Thực hành tệp tin</a>
+              <a href="#">Bài luyện tập</a>
+            </div>
+          </section>
 
-          <article class="topic-card topic-card--pink">
-            <span class="topic-card__icon">4</span>
-            <h3>Internet an toàn</h3>
-            <p>Học cách truy cập thông tin đúng, an toàn và có trách nhiệm.</p>
-            <a href="dictionary.html">Mở từ điển</a>
-          </article>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-4" data-accordion-trigger>
+              Chủ đề 4: Đạo đức, pháp luật...
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-4" hidden>
+              <a href="#">An toàn khi dùng mạng</a>
+              <a href="#">Ứng xử số</a>
+              <a href="#">Trắc nghiệm nhanh</a>
+            </div>
+          </section>
 
-          <article class="topic-card topic-card--orange">
-            <span class="topic-card__icon">5</span>
-            <h3>Tư duy thuật toán</h3>
-            <p>Rèn luyện cách suy nghĩ theo từng bước để giải quyết vấn đề.</p>
-            <a href="algorithm.html">Mở mô phỏng</a>
-          </article>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-5" data-accordion-trigger>
+              Chủ đề 5: Ứng dụng tin học
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-5" hidden>
+              <a href="crossword.html">Trò chơi ô chữ</a>
+              <a href="#">Ứng dụng thực hành</a>
+              <a href="#">Góc sáng tạo</a>
+            </div>
+          </section>
 
-          <article class="topic-card topic-card--purple">
-            <span class="topic-card__icon">6</span>
-            <h3>Thực hành dự án nhỏ</h3>
-            <p>Làm quen với nhiệm vụ thú vị để áp dụng kiến thức đã học.</p>
-            <a href="crossword.html">Chơi ô chữ</a>
-          </article>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-6" data-accordion-trigger>
+              Chủ đề 6: Giải quyết vấn đề...
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-6" hidden>
+              <a href="algorithm.html">Mô phỏng thuật toán</a>
+              <a href="#">Luyện tư duy</a>
+              <a href="#">Bài tập nhanh</a>
+            </div>
+          </section>
         </div>
-      </section>
-    </main>
+      </aside>
+
+      <div class="home-content">
+        <header class="hero">
+          <div class="hero__badge">Dành cho học sinh lớp 6</div>
+          <h1>Thiết kế công cụ hỗ trợ học Tin học thật dễ hiểu, vui mắt và thân thiện</h1>
+          <p>
+            Khám phá 6 chủ đề học tập được sắp xếp rõ ràng để các em có thể tự học,
+            ôn tập và thực hành từng bước một.
+          </p>
+        </header>
+
+        <main>
+          <section class="topics" aria-labelledby="topics-title">
+            <div class="section-heading">
+              <h2 id="topics-title">6 chủ đề chính</h2>
+              <p>Chạm vào từng thẻ để bắt đầu hành trình học tập.</p>
+            </div>
+
+            <div class="topic-grid">
+              <article class="topic-card topic-card--blue">
+                <span class="topic-card__icon">1</span>
+                <h3>Làm quen với máy tính</h3>
+                <p>Nhận biết các bộ phận cơ bản và cách sử dụng an toàn.</p>
+                <a href="dictionary.html">Mở từ điển</a>
+              </article>
+
+              <article class="topic-card topic-card--green">
+                <span class="topic-card__icon">2</span>
+                <h3>Hệ điều hành và thư mục</h3>
+                <p>Biết cách mở, lưu và tìm tệp đúng chỗ.</p>
+                <a href="dictionary.html">Mở từ điển</a>
+              </article>
+
+              <article class="topic-card topic-card--yellow">
+                <span class="topic-card__icon">3</span>
+                <h3>Soạn thảo văn bản</h3>
+                <p>Gõ chữ, chỉnh sửa và trình bày bài làm gọn gàng.</p>
+                <a href="dictionary.html">Mở từ điển</a>
+              </article>
+
+              <article class="topic-card topic-card--pink">
+                <span class="topic-card__icon">4</span>
+                <h3>Internet an toàn</h3>
+                <p>Học cách truy cập thông tin đúng, an toàn và có trách nhiệm.</p>
+                <a href="dictionary.html">Mở từ điển</a>
+              </article>
+
+              <article class="topic-card topic-card--orange">
+                <span class="topic-card__icon">5</span>
+                <h3>Tư duy thuật toán</h3>
+                <p>Rèn luyện cách suy nghĩ theo từng bước để giải quyết vấn đề.</p>
+                <a href="algorithm.html">Mở mô phỏng</a>
+              </article>
+
+              <article class="topic-card topic-card--purple">
+                <span class="topic-card__icon">6</span>
+                <h3>Thực hành dự án nhỏ</h3>
+                <p>Làm quen với nhiệm vụ thú vị để áp dụng kiến thức đã học.</p>
+                <a href="crossword.html">Chơi ô chữ</a>
+              </article>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
   </div>
 
   <script src="assets/js/main.js"></script>

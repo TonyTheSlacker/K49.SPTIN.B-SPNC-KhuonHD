@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="site-header__inner">
       <a class="site-brand" href="index.html" aria-label="Trang chủ Tin học 6">
         <span class="site-brand__logo" aria-hidden="true">
-          <img class="site-brand__logo-img" src="assets/images/Logo%20HCMUE.svg" alt="" />
+          <img class="site-brand__logo-img" src="images/Logo%20HCMUE.svg" alt="" />
         </span>
         <span class="site-brand__text">Hỗ trợ Tin học Lớp 6</span>
       </a>

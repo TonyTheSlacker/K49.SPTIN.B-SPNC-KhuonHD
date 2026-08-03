@@ -18,18 +18,25 @@
 }
 
 body.theme-dark {
-  --bg: #111827;
-  --bg-2: #172033;
-  --ink: #eef2ff;
-  --muted: #b1bbd3;
-  --card: rgba(25, 33, 53, 0.92);
-  --border: rgba(255, 208, 112, 0.16);
-  --shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-  --header-bg: rgba(17, 24, 39, 0.86);
-  --surface: rgba(25, 33, 53, 0.9);
-  --surface-strong: rgba(25, 33, 53, 0.98);
-  --surface-dark: #eef2ff;
-  --surface-dark-soft: rgba(255, 255, 255, 0.08);
+  /* Deep black backgrounds for true dark mode (OLED friendly) */
+  --bg: #000000;
+  --bg-2: #0a0a0a;
+  
+  /* Text colors - slightly off-white to reduce eye strain */
+  --ink: #f5f5f5;
+  --muted: #a3a3a3;
+  
+  /* Deep gray surfaces for cards and containers */
+  --card: rgba(18, 18, 18, 0.92);
+  --border: rgba(255, 255, 255, 0.12); /* Neutral border instead of yellow/orange */
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.6); /* Darker shadow for depth */
+  
+  /* Headers and UI elements */
+  --header-bg: rgba(0, 0, 0, 0.86);
+  --surface: rgba(18, 18, 18, 0.9);
+  --surface-strong: rgba(24, 24, 24, 0.98);
+  --surface-dark: #ffffff;
+  --surface-dark-soft: rgba(255, 255, 255, 0.1);
 }
 
 * {

@@ -108,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <button class="lesson-drawer__close" type="button" id="lessonMenuClose" aria-label="Đóng menu">×</button>
     </div>
-    <a class="lesson-drawer__home" href="index.html">Trang chủ</a>
     <div class="lesson-accordion" id="lessonAccordion"></div>`;
 
   document.body.append(backdrop, drawer);

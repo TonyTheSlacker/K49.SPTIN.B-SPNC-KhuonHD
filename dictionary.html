@@ -129,6 +129,39 @@
       box-shadow: 0 12px 28px rgba(60, 49, 22, 0.08);
     }
 
+    body.theme-dark .search-box {
+      background: rgba(18, 18, 18, 0.94);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+    }
+
+    body.theme-dark .filter-pill {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+    }
+
+    body.theme-dark .filter-pill[aria-pressed="true"] {
+      background: linear-gradient(180deg, #ffe39d 0%, #ffc94d 100%);
+      color: #1f2a44;
+    }
+
+    body.theme-dark .term-card {
+      background: rgba(18, 18, 18, 0.94);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    }
+
+    body.theme-dark .term-card .tag {
+      background: rgba(255, 228, 158, 0.16);
+      color: #ffe39d;
+    }
+
+    body.theme-dark .empty-state {
+      background: rgba(18, 18, 18, 0.92);
+      color: var(--muted);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    }
+
     @media (max-width: 720px) {
       .dictionary-toolbar,
       .dictionary-grid {

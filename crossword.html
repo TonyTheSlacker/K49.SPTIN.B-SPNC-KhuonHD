@@ -174,6 +174,75 @@
       font-weight: 800;
     }
 
+    body.theme-dark .board-card,
+    body.theme-dark .info-card {
+      background: rgba(18, 18, 18, 0.94);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32);
+    }
+
+    body.theme-dark .board {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    body.theme-dark .cell {
+      background: #1e2533;
+    }
+
+    body.theme-dark .cell--active {
+      background: linear-gradient(180deg, #343d4f 0%, #232b3b 100%);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    body.theme-dark .cell--active::after {
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+    }
+
+    body.theme-dark .cell input {
+      color: var(--ink);
+    }
+
+    body.theme-dark .cell input:focus {
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 0 3px #ffe39d;
+    }
+
+    body.theme-dark .cell--correct {
+      background: linear-gradient(180deg, #203725 0%, #17281d 100%);
+      border-color: rgba(49, 162, 76, 0.36);
+    }
+
+    body.theme-dark .cell--wrong {
+      background: linear-gradient(180deg, #432126 0%, #2d171a 100%);
+      border-color: rgba(255, 89, 94, 0.36);
+    }
+
+    body.theme-dark .cell__number {
+      color: #ffe39d;
+    }
+
+    body.theme-dark .hint-box {
+      background: rgba(255, 228, 158, 0.12);
+      color: var(--ink);
+    }
+
+    body.theme-dark .score-box {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    body.theme-dark .action-button.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+    }
+
+    body.theme-dark .status--success {
+      color: #8be28f;
+    }
+
+    body.theme-dark .status--error {
+      color: #ff8b8f;
+    }
+
     .confetti-layer {
       position: fixed;
       inset: 0;

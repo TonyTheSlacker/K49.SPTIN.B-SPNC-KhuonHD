@@ -67,6 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
         </span>
         <span class="site-brand__text">Hỗ trợ Tin học Lớp 6</span>
       </a>
+      <nav class="site-nav" aria-label="Điều hướng nhanh">
+        <a class="site-nav__link" href="dictionary.html">Từ điển</a>
+        <a class="site-nav__link" href="crossword.html">Ô chữ</a>
+        <a class="site-nav__link" href="algorithm.html">Thuật toán</a>
+      </nav>
       <div class="site-header__actions">
         <div class="site-user">
           <button class="site-action site-action--ghost" id="userMenuToggle" type="button" aria-controls="userMenu" aria-expanded="false">

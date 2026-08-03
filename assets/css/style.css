@@ -133,6 +133,31 @@ body::before {
   white-space: nowrap;
 }
 
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 0 8px;
+}
+
+.site-nav__link {
+  flex: 0 0 auto;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 900;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--surface-dark-soft);
+  white-space: nowrap;
+}
+
+.site-nav__link:hover {
+  background: rgba(255, 228, 158, 0.7);
+}
+
 .site-header__actions {
   display: flex;
   align-items: center;
@@ -609,6 +634,22 @@ body.nav-open .lesson-drawer {
     display: none;
   }
 
+  .site-nav {
+    gap: 8px;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 0 4px;
+    scrollbar-width: none;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav__link {
+    padding: 9px 12px;
+  }
+
   .lesson-drawer {
     top: 10px;
     right: 10px;
@@ -642,6 +683,17 @@ body.nav-open .lesson-drawer {
   .site-brand__logo {
     width: 70px;
     height: 54px;
+  }
+
+  .site-nav {
+    width: 100%;
+    order: 3;
+    padding: 6px 0 0;
+  }
+
+  .site-header__inner {
+    flex-wrap: wrap;
+    align-items: center;
   }
 
   .page-shell {

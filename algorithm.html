@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260803">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260804">
   <style>
     :root {
       --algo-bg: #fff7ea;
@@ -66,6 +66,7 @@
       border-radius: 28px;
       box-shadow: 0 16px 34px rgba(60, 49, 22, 0.1);
       backdrop-filter: blur(10px);
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
     body.theme-dark .panel {
@@ -87,7 +88,7 @@
 
     .flow-wrap {
       position: relative;
-      min-height: 780px;
+      min-height: 800px;
       border-radius: 24px;
       background:
         linear-gradient(rgba(255,255,255,0.42) 1px, transparent 1px),
@@ -117,10 +118,11 @@
 
     .flow-line {
       stroke: rgba(31, 42, 68, 0.35);
-      stroke-width: 4;
+      stroke-width: 5;
       fill: none;
       stroke-linecap: round;
       stroke-linejoin: round;
+      transition: stroke 180ms ease, stroke-width 180ms ease, filter 180ms ease;
     }
 
     body.theme-dark .flow-line {
@@ -129,7 +131,20 @@
 
     .flow-line--active {
       stroke: var(--algo-highlight);
+      stroke-width: 6;
       filter: drop-shadow(0 0 4px rgba(255, 204, 69, 0.75));
+    }
+
+    .flow-arrow-head {
+      fill: rgba(31, 42, 68, 0.42);
+    }
+
+    .flow-arrow-head--active {
+      fill: #ffcc45;
+    }
+
+    body.theme-dark .flow-arrow-head {
+      fill: rgba(255, 255, 255, 0.42);
     }
 
     .node {
@@ -178,22 +193,53 @@
     .node--diamond {
       width: 250px;
       height: 150px;
-      background: linear-gradient(180deg, #fff0d9 0%, #ffd78e 100%);
-      border: 4px solid rgba(227, 154, 0, 0.24);
-      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      background: transparent;
+      border: 0;
+      clip-path: none;
       padding: 0;
+      isolation: isolate;
     }
 
     body.theme-dark .node--diamond {
+      background: transparent;
+    }
+
+    .node--diamond::before,
+    .node--diamond::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    .node--diamond::before {
+      z-index: 0;
+      background: rgba(227, 154, 0, 0.42);
+    }
+
+    .node--diamond::after {
+      inset: 4px;
+      z-index: 0;
+      border-radius: 0;
+      background: linear-gradient(180deg, #fff0d9 0%, #ffd78e 100%);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.36);
+    }
+
+    body.theme-dark .node--diamond::before {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    body.theme-dark .node--diamond::after {
       background: linear-gradient(180deg, #2e3138 0%, #1f232b 100%);
-      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
     }
 
     .node--diamond .node__label {
       padding: 0 40px;
     }
 
-    .node::after {
+    .node:not(.node--diamond)::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -205,7 +251,7 @@
     .node--active {
       border-color: var(--algo-alert);
       box-shadow: 0 0 0 6px rgba(255, 89, 94, 0.16), 0 16px 28px rgba(60, 49, 22, 0.16);
-      transform: translateY(-2px) scale(1.01);
+      transform: translateX(-50%) translateY(-2px) scale(1.01);
     }
 
     .node--done {
@@ -218,16 +264,48 @@
       box-shadow: 0 0 0 6px rgba(255, 89, 94, 0.12);
     }
 
+    .node--diamond.node--active,
+    .node--diamond.node--done,
+    .node--diamond.node--wrong {
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    .node--diamond.node--active {
+      filter: drop-shadow(0 0 6px rgba(255, 89, 94, 0.55)) drop-shadow(0 16px 28px rgba(60, 49, 22, 0.16));
+    }
+
+    .node--diamond.node--done {
+      filter: drop-shadow(0 0 6px rgba(49, 162, 76, 0.5)) drop-shadow(0 14px 24px rgba(60, 49, 22, 0.12));
+    }
+
+    .node--diamond.node--wrong {
+      filter: drop-shadow(0 0 6px rgba(255, 89, 94, 0.5));
+    }
+
+    .node--diamond.node--active::before {
+      background: var(--algo-alert);
+    }
+
+    .node--diamond.node--done::before {
+      background: var(--algo-success);
+    }
+
+    .node--diamond.node--wrong::before {
+      background: var(--algo-alert);
+    }
+
     .start { left: 50%; top: 20px; transform: translateX(-50%); }
-    .input { left: 50%; top: 136px; transform: translateX(-50%); }
-    .decision { left: 50%; top: 260px; transform: translateX(-50%); }
-    .mix { left: 50%; top: 480px; transform: translateX(-50%); }
-    .freeze { left: 50%; top: 600px; transform: translateX(-50%); }
-    .end { left: 50%; top: 720px; transform: translateX(-50%); }
-    .wrong-end { left: 78%; top: 394px; transform: translateX(-50%); width: 190px; height: 78px; }
+    .input { left: 50%; top: 126px; transform: translateX(-50%); }
+    .decision { left: 50%; top: 236px; transform: translateX(-50%); }
+    .mix { left: 50%; top: 430px; transform: translateX(-50%); }
+    .freeze { left: 50%; top: 548px; transform: translateX(-50%); }
+    .end { left: 50%; top: 666px; transform: translateX(-50%); }
+    .wrong-end { left: 78%; top: 336px; transform: translateX(-50%); width: 190px; height: 78px; }
 
     .arrow-label {
       position: absolute;
+      z-index: 4;
       font-size: 0.92rem;
       font-weight: 900;
       color: #8b6100;
@@ -235,6 +313,10 @@
       padding: 4px 10px;
       border-radius: 999px;
       border: 1px solid rgba(255, 181, 71, 0.26);
+      white-space: nowrap;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 6px 14px rgba(60, 49, 22, 0.08);
     }
 
     body.theme-dark .arrow-label {
@@ -243,8 +325,8 @@
       border-color: rgba(255, 255, 255, 0.12);
     }
 
-    .yes-label { left: 60%; top: 404px; }
-    .no-label { left: 60%; top: 322px; }
+    .yes-label { left: calc(50% + 54px); top: 330px; }
+    .no-label { left: 66%; top: 292px; }
 
     .controls-panel {
       padding: 22px;
@@ -268,6 +350,14 @@
       border: 1px solid rgba(255, 181, 71, 0.18);
       font-weight: 700;
       cursor: pointer;
+      transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .choice:hover,
+    .choice:focus-within {
+      background: rgba(255, 204, 69, 0.22);
+      transform: translateX(2px);
+      box-shadow: 0 8px 16px rgba(60, 49, 22, 0.08);
     }
 
     body.theme-dark .choice {
@@ -277,10 +367,21 @@
 
     .choice input {
       accent-color: #1f2a44;
+      width: 18px;
+      height: 18px;
+    }
+
+    .choice input:disabled {
+      cursor: wait;
+    }
+
+    .choice:has(input:checked) {
+      background: rgba(255, 204, 69, 0.28);
+      box-shadow: inset 3px 0 0 var(--algo-highlight);
     }
 
     .status-box {
-      min-height: 60px;
+      min-height: 76px;
       padding: 14px 16px;
       border-radius: 18px;
       background: #fff6da;
@@ -310,6 +411,20 @@
       color: #1f2a44;
       background: linear-gradient(180deg, #ffe08a 0%, #ffc94d 100%);
       box-shadow: 0 12px 22px rgba(255, 186, 53, 0.3);
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 26px rgba(255, 186, 53, 0.34);
+    }
+
+    .button:disabled {
+      cursor: wait;
+      opacity: 0.68;
+      transform: none;
+      box-shadow: none;
     }
 
     .button.secondary {
@@ -346,7 +461,7 @@
 
     @media (max-width: 760px) {
       .flow-wrap {
-        min-height: 720px;
+        min-height: 800px;
       }
 
       .start,
@@ -360,10 +475,11 @@
         transform-origin: top center;
       }
 
-      .decision { top: 250px; }
-      .wrong-end { left: 50%; top: 410px; transform: translateX(-50%) scale(0.88); }
-      .yes-label { left: 66%; top: 400px; }
-      .no-label { left: 66%; top: 320px; }
+      .node--active {
+        transform: translateX(-50%) translateY(-2px) scale(0.89);
+      }
+
+      .wrong-end { left: 78%; top: 336px; transform: translateX(-50%) scale(0.78); }
     }
   </style>
 </head>
@@ -471,21 +587,20 @@
         <div class="flow-wrap" id="flowWrap">
           <svg class="flow-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
             <defs>
-              <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-                <path d="M0,0 L12,6 L0,12 z" fill="rgba(31,42,68,0.35)"></path>
+              <marker id="arrowHead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+                <path class="flow-arrow-head" d="M1 1 L13 7 L1 13 Q4 7 1 1 Z"></path>
               </marker>
-              <marker id="arrowHeadActive" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-                <path d="M0,0 L12,6 L0,12 z" fill="#ffcc45"></path>
+              <marker id="arrowHeadActive" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+                <path class="flow-arrow-head flow-arrow-head--active" d="M1 1 L13 7 L1 13 Q4 7 1 1 Z"></path>
               </marker>
             </defs>
 
-            <path id="line-start-input" class="flow-line" d="M500 110 L500 130" marker-end="url(#arrowHead)"></path>
-            <path id="line-input-decision" class="flow-line" d="M500 220 L500 250" marker-end="url(#arrowHead)"></path>
-            <path id="line-decision-yes" class="flow-line" d="M500 410 L500 470" marker-end="url(#arrowHead)"></path>
-            <path id="line-yes-mix" class="flow-line" d="M500 580 L500 590" marker-end="url(#arrowHead)"></path>
-            <path id="line-mix-freeze" class="flow-line" d="M500 690 L500 710" marker-end="url(#arrowHead)"></path>
-            <path id="line-freeze-end" class="flow-line" d="M500 686 L500 712" marker-end="url(#arrowHead)"></path>
-            <path id="line-decision-no" class="flow-line" d="M610 330 L760 330 L760 394" marker-end="url(#arrowHead)"></path>
+            <path id="line-start-input" class="flow-line" d="M500 110 L500 126" marker-end="url(#arrowHead)"></path>
+            <path id="line-input-decision" class="flow-line" d="M500 214 L500 236" marker-end="url(#arrowHead)"></path>
+            <path id="line-decision-yes" class="flow-line" d="M500 386 L500 430" marker-end="url(#arrowHead)"></path>
+            <path id="line-mix-freeze" class="flow-line" d="M500 518 L500 548" marker-end="url(#arrowHead)"></path>
+            <path id="line-freeze-end" class="flow-line" d="M500 636 L500 666" marker-end="url(#arrowHead)"></path>
+            <path id="line-decision-no" class="flow-line" d="M625 311 L669 311 L669 375 L685 375" marker-end="url(#arrowHead)"></path>
           </svg>
 
           <div class="node node--oval start" id="node-start"><span class="node__label">Bắt đầu</span></div>
@@ -535,7 +650,7 @@
       </div>
     </div>
 
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/algorithm.js"></script>
+  <script src="assets/js/main.js?v=20260804"></script>
+  <script src="assets/js/algorithm.js?v=20260804"></script>
 </body>
 </html>

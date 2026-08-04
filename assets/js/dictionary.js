@@ -41,7 +41,7 @@ const glossary = [
   }
 ];
 
-const state = {
+let state = {
   query: '',
   category: 'Tất cả'
 };
@@ -54,35 +54,53 @@ const categoryFilters = document.getElementById('categoryFilters');
 
 const categories = ['Tất cả', ...new Set(glossary.map((item) => item.category))];
 
-function renderFilters() {
-  categoryFilters.innerHTML = categories
-    .map(
-      (category) => `
-        <button class="filter-pill" type="button" data-category="${category}" aria-pressed="${category === state.category}">
-          ${category}
-        </button>
-      `
-    )
-    .join('');
+function normalizeText(value) {
+  return value
+    .toLocaleLowerCase('vi-VN')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd');
+}
 
-  categoryFilters.querySelectorAll('.filter-pill').forEach((button) => {
+function renderFilters() {
+  if (!categoryFilters) return;
+
+  const fragment = document.createDocumentFragment();
+
+  categories.forEach((category) => {
+    const button = document.createElement('button');
+    button.className = 'filter-pill';
+    button.type = 'button';
+    button.dataset.category = category;
+    button.setAttribute('aria-controls', 'dictionaryGrid');
+    button.setAttribute('aria-pressed', String(category === state.category));
+    button.textContent = category;
     button.addEventListener('click', () => {
-      state.category = button.dataset.category;
-      renderFilters();
+      state = { ...state, category };
+      updateFilterButtons();
       renderGlossary();
     });
+    fragment.append(button);
+  });
+
+  categoryFilters.replaceChildren(fragment);
+}
+
+function updateFilterButtons() {
+  categoryFilters?.querySelectorAll('.filter-pill').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.category === state.category));
   });
 }
 
 function getFilteredGlossary() {
-  const query = state.query.trim().toLowerCase();
+  const query = normalizeText(state.query.trim());
 
   return glossary.filter((item) => {
-    const matchesQuery = !query
-      || item.term.toLowerCase().includes(query)
-      || item.definition.toLowerCase().includes(query)
-      || item.category.toLowerCase().includes(query);
+    const searchableText = [item.term, item.definition, item.category]
+      .map(normalizeText)
+      .join(' ');
 
+    const matchesQuery = !query || searchableText.includes(query);
     const matchesCategory = state.category === 'Tất cả' || item.category === state.category;
 
     return matchesQuery && matchesCategory;
@@ -90,28 +108,49 @@ function getFilteredGlossary() {
 }
 
 function renderGlossary() {
+  if (!dictionaryGrid) return;
+
   const filtered = getFilteredGlossary();
+  const fragment = document.createDocumentFragment();
+  dictionaryGrid.setAttribute('aria-busy', 'true');
 
-  dictionaryGrid.innerHTML = filtered
-    .map(
-      (item) => `
-        <article class="term-card">
-          <span class="tag">${item.category}</span>
-          <h3>${item.term}</h3>
-          <p>${item.definition}</p>
-        </article>
-      `
-    )
-    .join('');
+  filtered.forEach((item, index) => {
+    const card = document.createElement('article');
+    card.className = 'term-card';
 
-  emptyState.hidden = filtered.length > 0;
-  resultCount.textContent = `Đang hiển thị ${filtered.length} thuật ngữ`;
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.textContent = item.category;
+
+    const heading = document.createElement('h3');
+    heading.id = `term-${index + 1}`;
+    heading.textContent = item.term;
+
+    const definition = document.createElement('p');
+    definition.textContent = item.definition;
+
+    card.setAttribute('aria-labelledby', heading.id);
+    card.append(tag, heading, definition);
+    fragment.append(card);
+  });
+
+  dictionaryGrid.replaceChildren(fragment);
+  dictionaryGrid.setAttribute('aria-busy', 'false');
+
+  if (emptyState) emptyState.hidden = filtered.length > 0;
+  if (resultCount) {
+    resultCount.textContent = `Đang hiển thị ${filtered.length} thuật ngữ`;
+  }
 }
 
-searchInput.addEventListener('input', (event) => {
-  state.query = event.target.value;
+searchInput?.addEventListener('input', (event) => {
+  state = { ...state, query: event.target.value };
   renderGlossary();
 });
+
+searchInput?.setAttribute('aria-controls', 'dictionaryGrid');
+categoryFilters?.setAttribute('role', 'group');
+emptyState?.setAttribute('role', 'status');
 
 renderFilters();
 renderGlossary();

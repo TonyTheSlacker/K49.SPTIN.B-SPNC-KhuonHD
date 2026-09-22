@@ -1,58 +1,25 @@
-const glossary = [
-  {
-    term: 'Phần cứng',
-    category: 'Máy tính',
-    definition: 'Các bộ phận nhìn thấy và chạm vào được của máy tính như màn hình, bàn phím, chuột, loa.'
-  },
-  {
-    term: 'Phần mềm',
-    category: 'Máy tính',
-    definition: 'Các chương trình giúp máy tính làm việc, ví dụ như trò chơi, trình soạn thảo văn bản, trình duyệt web.'
-  },
-  {
-    term: 'Tệp tin',
-    category: 'Lưu trữ',
-    definition: 'Một đơn vị chứa thông tin như bài làm, hình ảnh, âm thanh hoặc video được lưu trên máy tính.'
-  },
-  {
-    term: 'Thư mục',
-    category: 'Lưu trữ',
-    definition: 'Nơi dùng để sắp xếp và cất giữ nhiều tệp tin theo từng nhóm cho dễ tìm.'
-  },
-  {
-    term: 'Trình duyệt web',
-    category: 'Internet',
-    definition: 'Phần mềm giúp em mở và xem các trang web trên Internet.'
-  },
-  {
-    term: 'Internet',
-    category: 'Internet',
-    definition: 'Mạng kết nối rất nhiều máy tính trên khắp thế giới để chia sẻ thông tin và liên lạc.'
-  },
-  {
-    term: 'Thuật toán',
-    category: 'Tư duy',
-    definition: 'Các bước làm việc được sắp xếp theo thứ tự để giải quyết một vấn đề.'
-  },
-  {
-    term: 'An toàn thông tin',
-    category: 'Tư duy',
-    definition: 'Biết cách bảo vệ dữ liệu cá nhân, mật khẩu và tránh các trang web không an toàn.'
-  }
-];
+const { lessons, glossary } = window.TinHoc6;
+
+const ALL_LESSONS = 'Tất cả';
 
 let state = {
   query: '',
-  category: 'Tất cả'
+  lesson: ALL_LESSONS
 };
 
 const dictionaryGrid = document.getElementById('dictionaryGrid');
 const emptyState = document.getElementById('emptyState');
 const resultCount = document.getElementById('resultCount');
 const searchInput = document.getElementById('searchInput');
-const categoryFilters = document.getElementById('categoryFilters');
+const lessonFilters = document.getElementById('lessonFilters');
 
-const categories = ['Tất cả', ...new Set(glossary.map((item) => item.category))];
+function getLesson(number) {
+  return lessons.find((lesson) => lesson.number === number);
+}
+
+function getLessonLabel(number) {
+  return `Bài ${number}`;
+}
 
 function normalizeText(value) {
   return value
@@ -63,32 +30,37 @@ function normalizeText(value) {
 }
 
 function renderFilters() {
-  if (!categoryFilters) return;
+  if (!lessonFilters) return;
 
   const fragment = document.createDocumentFragment();
+  const options = [ALL_LESSONS, ...lessons.map((lesson) => lesson.number)];
 
-  categories.forEach((category) => {
+  options.forEach((option) => {
+    const label = option === ALL_LESSONS ? ALL_LESSONS : getLessonLabel(option);
     const button = document.createElement('button');
     button.className = 'filter-pill';
     button.type = 'button';
-    button.dataset.category = category;
+    button.dataset.lesson = String(option);
     button.setAttribute('aria-controls', 'dictionaryGrid');
-    button.setAttribute('aria-pressed', String(category === state.category));
-    button.textContent = category;
+    button.setAttribute('aria-pressed', String(option === state.lesson));
+    button.textContent = label;
+    if (option !== ALL_LESSONS) {
+      button.title = `Bài ${option}. ${getLesson(option).title}`;
+    }
     button.addEventListener('click', () => {
-      state = { ...state, category };
+      state = { ...state, lesson: option };
       updateFilterButtons();
       renderGlossary();
     });
     fragment.append(button);
   });
 
-  categoryFilters.replaceChildren(fragment);
+  lessonFilters.replaceChildren(fragment);
 }
 
 function updateFilterButtons() {
-  categoryFilters?.querySelectorAll('.filter-pill').forEach((button) => {
-    button.setAttribute('aria-pressed', String(button.dataset.category === state.category));
+  lessonFilters?.querySelectorAll('.filter-pill').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.lesson === String(state.lesson)));
   });
 }
 
@@ -96,15 +68,69 @@ function getFilteredGlossary() {
   const query = normalizeText(state.query.trim());
 
   return glossary.filter((item) => {
-    const searchableText = [item.term, item.definition, item.category]
+    const lesson = getLesson(item.lesson);
+    const searchableText = [item.term, item.definition, lesson.title, getLessonLabel(item.lesson)]
       .map(normalizeText)
       .join(' ');
 
     const matchesQuery = !query || searchableText.includes(query);
-    const matchesCategory = state.category === 'Tất cả' || item.category === state.category;
+    const matchesLesson = state.lesson === ALL_LESSONS || item.lesson === state.lesson;
 
-    return matchesQuery && matchesCategory;
+    return matchesQuery && matchesLesson;
   });
+}
+
+function createTermCard(item, index) {
+  const card = document.createElement('article');
+  card.className = 'term-card';
+
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = getLessonLabel(item.lesson);
+
+  const heading = document.createElement('h3');
+  heading.id = `term-${item.lesson}-${index + 1}`;
+  heading.textContent = item.term;
+
+  const definition = document.createElement('p');
+  definition.textContent = item.definition;
+
+  card.setAttribute('aria-labelledby', heading.id);
+  card.append(tag, heading, definition);
+
+  return card;
+}
+
+function createLessonSection(lesson, items) {
+  const section = document.createElement('section');
+  section.className = 'lesson-terms';
+  section.setAttribute('aria-labelledby', `lesson-terms-${lesson.number}`);
+
+  const header = document.createElement('div');
+  header.className = 'lesson-terms__header';
+
+  const heading = document.createElement('h3');
+  heading.id = `lesson-terms-${lesson.number}`;
+  heading.textContent = `Bài ${lesson.number}. ${lesson.title}`;
+
+  const count = document.createElement('span');
+  count.className = 'lesson-terms__count';
+  count.textContent = `${items.length} thuật ngữ`;
+
+  const link = document.createElement('a');
+  link.className = 'lesson-terms__link';
+  link.href = lesson.href;
+  link.textContent = 'Mở bài học';
+
+  header.append(heading, count, link);
+
+  const grid = document.createElement('div');
+  grid.className = 'dictionary-grid';
+  items.forEach((item, index) => grid.append(createTermCard(item, index)));
+
+  section.append(header, grid);
+
+  return section;
 }
 
 function renderGlossary() {
@@ -114,24 +140,10 @@ function renderGlossary() {
   const fragment = document.createDocumentFragment();
   dictionaryGrid.setAttribute('aria-busy', 'true');
 
-  filtered.forEach((item, index) => {
-    const card = document.createElement('article');
-    card.className = 'term-card';
-
-    const tag = document.createElement('span');
-    tag.className = 'tag';
-    tag.textContent = item.category;
-
-    const heading = document.createElement('h3');
-    heading.id = `term-${index + 1}`;
-    heading.textContent = item.term;
-
-    const definition = document.createElement('p');
-    definition.textContent = item.definition;
-
-    card.setAttribute('aria-labelledby', heading.id);
-    card.append(tag, heading, definition);
-    fragment.append(card);
+  lessons.forEach((lesson) => {
+    const items = filtered.filter((item) => item.lesson === lesson.number);
+    if (items.length === 0) return;
+    fragment.append(createLessonSection(lesson, items));
   });
 
   dictionaryGrid.replaceChildren(fragment);
@@ -149,7 +161,7 @@ searchInput?.addEventListener('input', (event) => {
 });
 
 searchInput?.setAttribute('aria-controls', 'dictionaryGrid');
-categoryFilters?.setAttribute('role', 'group');
+lessonFilters?.setAttribute('role', 'group');
 emptyState?.setAttribute('role', 'status');
 
 renderFilters();

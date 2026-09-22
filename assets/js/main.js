@@ -129,11 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
   header.className = 'site-header';
   header.innerHTML = `
     <div class="site-header__inner">
-      <a class="site-brand" href="index.html" aria-label="Trang chủ Tin học 6">
+      <a class="site-brand" href="index.html" aria-label="Trang chủ Hỗ trợ tin học">
         <span class="site-brand__logo" aria-hidden="true">
           <img class="site-brand__logo-img" src="images/Logo%20HCMUE.svg" alt="" />
         </span>
-        <span class="site-brand__text">Hỗ trợ Tin học Lớp 6</span>
+        <span class="site-brand__text">Hỗ trợ tin học</span>
       </a>
       <nav class="site-nav" aria-label="Điều hướng nhanh">
         <a class="site-nav__link" href="dictionary.html" data-page="dictionary.html">Từ điển</a>

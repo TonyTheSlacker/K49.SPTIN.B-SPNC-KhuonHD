@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Từ điển thuật ngữ Tin học dành cho học sinh lớp 6 với tìm kiếm và phân loại dễ hiểu.">
-  <title>Từ điển thuật ngữ Tin học</title>
+  <meta name="description" content="Giải thích thuật ngữ Tin học lớp 6 theo từng bài học, có tìm kiếm và lọc theo bài.">
+  <title>Hỗ trợ tin học</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -123,6 +123,41 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
       align-items: stretch;
+    }
+
+    .dictionary-lessons {
+      margin-top: 22px;
+      display: grid;
+      gap: 26px;
+    }
+
+    .lesson-terms__header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .lesson-terms__header h3 {
+      margin: 0;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.5rem;
+      color: var(--ink);
+    }
+
+    .lesson-terms__count {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .lesson-terms__link {
+      margin-left: auto;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .lesson-terms .dictionary-grid {
+      margin-top: 14px;
     }
 
     .term-card {
@@ -317,31 +352,31 @@
       <div class="home-content">
 
     <header class="hero dictionary-hero">
-      <div class="hero__badge">Từ điển Tin học</div>
-      <h1>Tìm thuật ngữ Tin học thật nhanh, thật dễ hiểu</h1>
+      <div class="hero__badge">Hỗ trợ tin học</div>
+      <h1>Thuật ngữ khó theo từng bài học</h1>
       <p>
-        Dành cho học sinh lớp 6: nhập từ khóa, chọn chủ đề và đọc nghĩa ngắn gọn,
-        dễ nhớ để học tốt hơn mỗi ngày.
+        Dành cho học sinh lớp 6: chọn bài học hoặc nhập từ khóa để đọc nghĩa
+        ngắn gọn, dễ nhớ của những từ khó trong bài.
       </p>
 
       <div class="dictionary-toolbar">
         <label class="search-box" for="searchInput">
           <span aria-hidden="true">🔎</span>
-          <input id="searchInput" type="search" placeholder="Ví dụ: tệp tin, Internet, thuật toán..." autocomplete="off">
+          <input id="searchInput" type="search" placeholder="Ví dụ: vật mang tin, byte, sơ đồ khối..." autocomplete="off">
         </label>
         <a class="filter-pill" href="index.html" aria-label="Quay lại trang chủ">Trang chủ</a>
       </div>
 
-      <div class="filter-pills" id="categoryFilters" aria-label="Bộ lọc chủ đề"></div>
+      <div class="filter-pills" id="lessonFilters" aria-label="Bộ lọc theo bài học"></div>
       <div class="dictionary-meta" id="resultCount" aria-live="polite"></div>
     </header>
 
     <main>
       <section aria-labelledby="dictionary-title">
         <h2 id="dictionary-title" class="section-heading" style="margin-top: 24px;">
-          Từ vựng theo chủ đề
+          Từ vựng theo từng bài
         </h2>
-        <div class="dictionary-grid" id="dictionaryGrid"></div>
+        <div class="dictionary-lessons" id="dictionaryGrid"></div>
         <div class="empty-state" id="emptyState" hidden>
           Không tìm thấy thuật ngữ phù hợp. Hãy thử từ khóa khác nhé.
         </div>

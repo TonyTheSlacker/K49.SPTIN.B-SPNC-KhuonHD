@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Trò chơi giải ô chữ Thư điện tử dành cho học sinh lớp 6.">
-  <title>Trò chơi Giải ô chữ Thư điện tử</title>
+  <meta name="description" content="Trò chơi giải ô chữ Tin học lớp 6: chọn chủ đề và đoán thuật ngữ theo gợi ý.">
+  <title>Hỗ trợ tin học</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -37,22 +37,125 @@
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 249, 232, 0.92));
     }
 
+    .topic-picker {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .topic-pill {
+      display: grid;
+      gap: 4px;
+      text-align: left;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px 16px;
+      cursor: pointer;
+      font: inherit;
+      color: var(--ink);
+      background: var(--card);
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+    }
+
+    .topic-pill strong {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.15rem;
+    }
+
+    .topic-pill span {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .topic-pill:hover {
+      transform: translateY(-2px);
+    }
+
+    .topic-pill[aria-pressed="true"] {
+      background: #1f2a44;
+      color: #fff;
+      border-color: #1f2a44;
+    }
+
+    .topic-pill[aria-pressed="true"] span {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
     .board {
       display: grid;
-      grid-template-columns: repeat(9, minmax(0, 1fr));
-      gap: 6px;
-      max-width: 620px;
-      margin: 0 auto;
+      gap: 18px;
       user-select: none;
       touch-action: manipulation;
     }
 
+    .board-title {
+      margin: 0 0 16px;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.4rem;
+    }
+
+    .word-row {
+      display: grid;
+      gap: 10px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .word-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .word-row__clue {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 4px 10px;
+      align-items: start;
+    }
+
+    .word-row__number {
+      grid-row: span 2;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #ffe9bf;
+      color: #845b00;
+      font-weight: 900;
+    }
+
+    .word-row__clue p {
+      margin: 0;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .word-row__source {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .word-row__cells {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
     .cell {
       position: relative;
-      aspect-ratio: 1 / 1;
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
       background: #2f3b52;
       overflow: hidden;
+    }
+
+    .cell--gap {
+      width: 16px;
+      background: transparent;
     }
 
     .cell--active {
@@ -333,11 +436,13 @@
         padding: 12px;
       }
 
-      .board {
+      .word-row__cells {
         gap: 4px;
       }
 
       .cell {
+        width: 34px;
+        height: 34px;
         border-radius: 9px;
       }
 
@@ -441,28 +546,31 @@
       <div class="home-content">
 
     <header class="hero crossword-hero">
-      <div class="hero__badge">Gamification</div>
-      <h1>Trò chơi Giải ô chữ Thư điện tử</h1>
+      <div class="hero__badge">Trò chơi ô chữ</div>
+      <h1>Giải ô chữ theo chủ đề</h1>
       <p>
-        Nhập từng chữ cái vào lưới ô chữ, bấm <strong>Kiểm tra</strong> để xem đúng hay sai,
-        và nhận 100 điểm khi hoàn thành chính xác.
+        Chọn một chủ đề, đọc gợi ý và điền thuật ngữ tương ứng. Các từ được lấy
+        từ bảng thuật ngữ của chính các bài trong chủ đề đó.
       </p>
+
+      <div class="topic-picker" id="topicPicker" role="group" aria-label="Chọn chủ đề để chơi"></div>
     </header>
 
     <section class="game-layout" aria-label="Trò chơi ô chữ">
       <div class="board-card">
+        <h2 class="board-title" id="boardTitle"></h2>
         <div class="board" id="crosswordBoard" aria-label="Bảng ô chữ"></div>
       </div>
 
       <aside class="info-card">
-        <h2>Gợi ý</h2>
+        <h2>Cách chơi</h2>
         <div class="hint-box">
-          Từ khóa chính theo hàng dọc là <strong>THUDIENTU</strong>.
-          Hãy click vào từng ô sáng màu để nhập chữ cái theo đúng thứ tự từ trên xuống dưới.
+          Mỗi hàng là một thuật ngữ trong bài. Đọc gợi ý rồi điền từng chữ cái (không dấu)
+          vào các ô. Bấm <strong>Kiểm tra</strong> để chấm điểm.
         </div>
 
         <div class="score-box">
-          Điểm cao nhất: <span id="savedScore">0</span>
+          Điểm cao nhất của chủ đề này: <span id="savedScore">0</span>
         </div>
 
         <div id="statusMessage" class="status" aria-live="polite"></div>
@@ -470,6 +578,7 @@
         <div class="action-row">
           <button class="action-button" id="checkButton" type="button">Kiểm tra</button>
           <button class="action-button secondary" id="resetButton" type="button">Làm lại</button>
+          <button class="action-button secondary" id="shuffleButton" type="button">Đổi bộ từ khác</button>
         </div>
 
         <div class="score-box" style="margin-top: 18px;">
@@ -485,6 +594,7 @@
     </div>
 
   <script src="assets/js/main.js?v=20260804"></script>
+  <script src="assets/js/glossary-data.js?v=20260804"></script>
   <script src="assets/js/crossword.js?v=20260804"></script>
 </body>
 </html>

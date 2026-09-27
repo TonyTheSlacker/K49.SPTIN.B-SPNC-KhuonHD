@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giải cứu Sổ lưu niệm 6A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#fff8eb; --bg2:#fef3d9;
+  --ink:#1f2a44; --muted:#5d6b85; --line:#f1dfb0;
+  --card:#ffffff;
+  --primary:#d88900; --primary2:#f3a900;
+  --ok:#1fa97a; --bad:#e25555;
+  --tv:#3f86f0; --hd:#f28a35; --tt:#d9a514; --kn:#e8558c;
+  --shadow:0 14px 28px rgba(60,49,22,.12);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{font-size:clamp(15px, .9vw + 9px, 22px)}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,214,102,.35) 0, transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(124,228,200,.28) 0, transparent 35%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;
+  -webkit-user-select:none; user-select:none;
+  overflow-x:hidden;
+}
+button{font-family:inherit; cursor:pointer}
+.hidden{display:none !important}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:.8rem; flex-wrap:wrap;
+  padding:.6rem 1.2rem;
+  background:rgba(255,255,255,.82); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.05rem; margin-right:auto; white-space:nowrap}
+.pill{
+  display:flex; align-items:center; gap:.5rem;
+  background:#fff; border:2px solid var(--line); border-radius:999px;
+  padding:.35rem .9rem; font-weight:700; font-size:1rem;
+}
+.pill b{color:var(--primary); font-size:1.15rem; min-width:1.6em; text-align:center; display:inline-block}
+.pill b.bump{animation:bump .6s}
+.bar{width:90px; height:10px; background:#e8eaf6; border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,#34c29a,var(--primary)); border-radius:99px; transition:width .6s}
+.icon-btn{
+  width:2.6rem; height:2.6rem; border-radius:50%;
+  border:2px solid var(--line); background:#fff; font-size:1.25rem;
+  display:grid; place-items:center; transition:transform .15s;
+}
+.icon-btn:hover{transform:scale(1.08)}
+
+/* ---------- Layout ---------- */
+#app{max-width:1200px; margin:0 auto; padding:1.2rem 1.2rem 3rem; transition:opacity .25s, transform .25s}
+#app.leave{opacity:0; transform:translateY(12px)}
+#app.enter{animation:enter .4s ease}
+@keyframes enter{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+
+.btn{
+  border:none; border-radius:999px; color:#fff; font-weight:800;
+  font-size:1.15rem; letter-spacing:.02em;
+  padding:.85em 1.8em;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:0 6px 0 #a86400, 0 10px 20px rgba(216,137,0,.3);
+  transition:transform .12s, box-shadow .12s, filter .2s;
+}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(4px); box-shadow:0 2px 0 #a86400, 0 4px 10px rgba(216,137,0,.3)}
+.btn.big{font-size:1.4rem; padding:.9em 2.2em}
+.btn.ghost{background:#fff; color:var(--primary); box-shadow:0 5px 0 #f1dfb0, 0 8px 16px rgba(0,0,0,.06); border:2px solid #f1dfb0}
+.btn.green{background:linear-gradient(135deg,#1fa97a,#2cc79a); box-shadow:0 6px 0 #14805b, 0 10px 20px rgba(31,169,122,.3)}
+.btn:disabled{filter:grayscale(.8); opacity:.55; cursor:not-allowed}
+.pulse{animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)} 50%{transform:scale(1.05)}}
+
+/* ---------- Home ---------- */
+.home{display:grid; grid-template-columns:1.1fr 1fr; gap:2rem; align-items:center; min-height:calc(100vh - 140px)}
+.badge{display:inline-block; background:#fff; border:2px solid var(--line); color:var(--muted); font-weight:700; border-radius:999px; padding:.3rem .9rem; font-size:.9rem}
+.home h1{font-family:'Baloo 2',cursive; font-size:2.6rem; line-height:1.1; margin:.6rem 0 1rem; font-weight:800}
+.home h1 span{background:linear-gradient(90deg,var(--primary),var(--kn)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.bubble{
+  position:relative; background:#fff; border-radius:20px; padding:.8rem 1.1rem; margin:.7rem 0;
+  box-shadow:var(--shadow); font-size:1.1rem; max-width:34rem; animation:fadeUp .6s both;
+}
+.bubble.b1{border-left:6px solid var(--kn)}
+.bubble.b2{border-left:6px solid var(--primary); animation-delay:.25s}
+.home-btns{display:flex; gap:1rem; flex-wrap:wrap; margin:1.5rem 0 1.2rem}
+.quest{display:flex; gap:.6rem; flex-wrap:wrap}
+.quest span{background:rgba(255,255,255,.7); border-radius:12px; padding:.35rem .7rem; font-size:.88rem; font-weight:700; color:var(--muted); border:2px solid transparent}
+.quest span.done{border-color:var(--ok); color:var(--ok); background:#eafaf4}
+.home-art svg{width:100%; height:auto; max-height:70vh; filter:drop-shadow(0 20px 30px rgba(40,50,110,.18))}
+.floaty{animation:floaty 4s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
+@keyframes fadeUp{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+.twinkle{animation:twinkle 2s infinite}
+@keyframes twinkle{0%,100%{opacity:.3} 50%{opacity:1}}
+
+/* ---------- Challenge header ---------- */
+.ch-head{display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom:.6rem}
+.ch-tag{background:var(--ink); color:#fff; font-weight:800; border-radius:12px; padding:.35rem .8rem; font-size:.95rem}
+.ch-head h2{font-family:'Baloo 2',cursive; margin:0; font-size:1.8rem; font-weight:800}
+.steps{display:flex; gap:.4rem; margin-left:auto}
+.steps i{width:2.2rem; height:.55rem; border-radius:99px; background:#d8dcef}
+.steps i.done{background:var(--ok)}
+.steps i.now{background:var(--primary)}
+.task{
+  font-size:1.3rem; font-weight:800; background:#fff; border-radius:var(--radius);
+  padding:.8rem 1.2rem; box-shadow:var(--shadow); margin:0 0 1.2rem; border-left:8px solid var(--primary);
+}
+.task.success{border-left-color:var(--ok); background:#effbf6; animation:pop .5s}
+.task small{display:block; font-weight:600; font-size:1rem; color:var(--muted); margin-top:.25rem}
+.actions{display:flex; justify-content:center; gap:1rem; margin-top:1.5rem; flex-wrap:wrap}
+
+/* ---------- Cards & zones ---------- */
+.card{
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:var(--card); border-radius:14px; padding:.65rem 1rem;
+  font-weight:700; font-size:1.1rem; box-shadow:var(--shadow);
+  border:3px solid #e5e7f5; cursor:grab; touch-action:none;
+  transition:transform .15s, border-color .2s, opacity .2s;
+}
+.card:hover{transform:translateY(-3px); border-color:#c7cafa}
+.card .ic{font-size:1.35rem}
+.card.src{opacity:.25}
+.card.locked{cursor:default}
+.card.locked:hover{transform:none}
+.card.placed{border-color:var(--c, var(--ok)); animation:pop .45s}
+.ghost{position:fixed !important; z-index:1000; pointer-events:none; margin:0 !important; transform:rotate(3deg) scale(1.06); box-shadow:0 18px 30px rgba(40,50,110,.3) !important; opacity:.96}
+.ghost.back{transition:left .3s ease, top .3s ease; transform:none}
+
+.pool{
+  display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center;
+  min-height:4.2rem; padding:1rem; border-radius:var(--radius);
+  background:rgba(255,255,255,.55); border:3px dashed #cfd3ee; margin-bottom:1.2rem;
+}
+.pool.over{border-color:var(--primary); background:#f2f2ff}
+.pool:empty::after{content:"✨"; font-size:1.6rem; opacity:.5}
+.zones{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.zone{
+  background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+  border-top:8px solid var(--c); min-height:12rem; padding:.8rem;
+  display:flex; flex-direction:column; gap:.6rem; transition:transform .15s, box-shadow .15s, background .2s;
+}
+.zone-h{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.15rem; display:flex; align-items:center; gap:.5rem; color:var(--c)}
+.zone-h span{font-size:1.8rem}
+.zone-b{display:flex; flex-direction:column; gap:.5rem; align-items:stretch}
+.zone.over{transform:scale(1.03); background:#fbfbff; box-shadow:0 0 0 4px var(--c), var(--shadow)}
+.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)}}
+@keyframes pop{0%{transform:scale(.8)} 60%{transform:scale(1.08)} 100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)} 40%{transform:scale(1.6); color:var(--ok)} 100%{transform:scale(1)}}
+
+/* ---------- Mind map ---------- */
+.mm{position:relative; background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:1.4rem 1.2rem 1.8rem; overflow:hidden}
+.mm-links{position:absolute; inset:0; pointer-events:none; overflow:visible}
+.mm-links path{fill:none; stroke-width:4; stroke-linecap:round}
+.node.mm-root{
+  position:relative; border:none; margin:0 auto; width:max-content; max-width:100%;
+  background:linear-gradient(135deg,var(--primary),var(--kn)); color:#fff;
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:1.3rem; padding:.8rem 1.5rem; border-radius:20px;
+  box-shadow:0 8px 20px rgba(216,137,0,.3);
+}
+.mm-branches{position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1.4rem 1.2rem; margin-top:3.4rem}
+.mm-col{display:flex; flex-direction:column; align-items:stretch; gap:1rem}
+.mm-col.reveal{animation:pop .5s}
+.node{
+  position:relative; font-weight:700; border-radius:14px; padding:.55rem .8rem; font-size:1.05rem;
+  background:#fff; border:3px solid var(--c, #cfd3ee); transition:transform .15s, box-shadow .2s, background .2s;
+}
+.node.branch{background:var(--c); color:#fff; text-align:center; font-family:'Baloo 2',cursive; font-weight:800; font-size:1.1rem; border-color:var(--c)}
+.mm-kids{display:flex; flex-direction:column; gap:.6rem; align-items:flex-start; padding-left:2.2rem}
+.node.leaf{background:#fff}
+.clickable .node:not(.mm-root){cursor:pointer}
+.clickable .node:not(.mm-root):hover{transform:scale(1.05); box-shadow:0 0 0 4px rgba(91,91,214,.18)}
+.node.wrong{animation:shake .45s; background:#fff1f1; border-color:var(--bad)}
+.node.found{background:#fff7d6; border-color:#f0b400; box-shadow:0 0 0 6px rgba(240,180,0,.25); animation:pop .5s}
+.node.drag-me{cursor:grab; touch-action:none; animation:wiggle 1.2s infinite}
+@keyframes wiggle{0%,100%{transform:rotate(0)} 25%{transform:rotate(-3deg)} 75%{transform:rotate(3deg)}}
+.drop-slot{
+  border:3px dashed var(--c, #aab); background:repeating-linear-gradient(45deg,#fafaff,#fafaff 8px,#f1f2fb 8px,#f1f2fb 16px);
+  color:var(--muted); text-align:center; min-width:8rem; font-weight:800;
+}
+.drop-slot.branch{color:var(--muted); background:repeating-linear-gradient(45deg,#fafaff,#fafaff 8px,#f1f2fb 8px,#f1f2fb 16px); font-size:1.3rem}
+.drop-slot.over{transform:scale(1.08); border-color:var(--primary); background:#eeeeff}
+.slot-pulse{animation:pulse 1.4s infinite}
+
+.c4-grid .mm-branches{column-gap:.8rem}
+.c4-grid .mm-kids{padding-left:1.5rem}
+.c4-grid{display:grid; grid-template-columns:1fr 11.5rem; gap:1.2rem; align-items:start}
+.pieces{background:rgba(255,255,255,.6); border:3px dashed #cfd3ee; border-radius:var(--radius); padding:1rem; display:flex; flex-direction:column; gap:.8rem; align-items:stretch}
+.pieces h3{margin:0; font-size:1.05rem; color:var(--muted); text-align:center}
+.pieces .card{justify-content:center; font-size:1.2rem}
+
+/* ---------- Challenge 3 ---------- */
+.road{display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; position:relative}
+.slot{
+  position:relative; min-height:6.2rem; border-radius:var(--radius);
+  background:#fff; box-shadow:var(--shadow); border:3px dashed #cfd3ee;
+  display:flex; align-items:center; justify-content:center; padding:1.6rem .5rem .6rem;
+  transition:transform .15s, border-color .2s, background .2s;
+}
+.slot .num{
+  position:absolute; top:-.9rem; left:50%; transform:translateX(-50%);
+  width:2rem; height:2rem; border-radius:50%; background:var(--primary); color:#fff;
+  display:grid; place-items:center; font-weight:900; box-shadow:0 3px 8px rgba(91,91,214,.35);
+}
+.slot:not(:last-child)::after{content:"➜"; position:absolute; right:-1rem; top:50%; transform:translate(50%,-50%); color:#9aa1c8; font-size:1.3rem; z-index:2}
+.slot.over{border-color:var(--primary); background:#f2f2ff; transform:scale(1.04)}
+.slot.filled{border-style:solid; border-color:#e5e7f5}
+.slot.right{border-color:var(--ok); background:#effbf6}
+.slot.wrongslot{border-color:var(--bad); background:#fff3f3; animation:shake .45s}
+.slot .card{width:100%; justify-content:center; flex-direction:column; text-align:center; gap:.2rem; padding:.5rem}
+.slot .card .ic{font-size:1.8rem}
+
+/* ---------- Win ---------- */
+.win{text-align:center; max-width:52rem; margin:0 auto}
+.trophy{font-size:5.5rem; animation:floaty 3s ease-in-out infinite; display:inline-block}
+.win h1{font-family:'Baloo 2',cursive; font-size:2.8rem; margin:.2rem 0; font-weight:800; background:linear-gradient(90deg,#f0a500,var(--kn),var(--primary)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.win h2{font-family:'Baloo 2',cursive; font-size:1.5rem; margin:.3rem 0 1.2rem}
+.scorebox{display:inline-block; background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:1rem 2.4rem; margin:.4rem 0 1rem}
+.scorebox .lbl{font-weight:800; color:var(--muted)}
+.scorebox .val{font-family:'Baloo 2',cursive; font-size:3.4rem; font-weight:800; color:var(--primary); line-height:1.1}
+.msg{font-size:1.3rem; font-weight:800; background:#fff7e0; border-radius:16px; padding:.8rem 1.2rem; display:inline-block; margin-bottom:1.2rem}
+.learned{display:grid; grid-template-columns:1fr 1fr; gap:.7rem; text-align:left; margin:0 auto; max-width:46rem}
+.learned div{background:#fff; border-radius:14px; padding:.7rem 1rem; font-weight:700; box-shadow:var(--shadow); animation:fadeUp .5s both}
+
+/* ---------- Toast & effects ---------- */
+#toast{
+  position:fixed; left:50%; bottom:1.6rem; transform:translate(-50%,calc(100% + 3rem)); visibility:hidden;
+  z-index:900; background:#fff; border-radius:18px; box-shadow:0 14px 34px rgba(40,50,110,.25);
+  padding:.9rem 1.4rem; font-size:1.15rem; font-weight:700; max-width:min(92vw,40rem); text-align:center;
+  border:3px solid var(--primary); transition:transform .35s cubic-bezier(.2,1.4,.4,1), visibility .35s; pointer-events:none;
+}
+#toast.show{transform:translate(-50%,0); visibility:visible}
+#toast.ok{border-color:var(--ok)}
+#toast.bad{border-color:#f0b400; background:#fffbea}
+#toast .t{display:block; font-size:1.35rem; font-weight:900; margin-bottom:.15rem}
+.fly{position:fixed; z-index:950; pointer-events:none; font-weight:900; font-size:1.6rem; color:#f0a500; text-shadow:0 2px 0 #fff; animation:fly 1s ease-out forwards}
+@keyframes fly{from{opacity:1; transform:translate(-50%,0) scale(.8)} to{opacity:0; transform:translate(-50%,-70px) scale(1.3)}}
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:800; width:100%; height:100%}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px){
+  .home{grid-template-columns:1fr; text-align:center}
+  .bubble{margin-left:auto; margin-right:auto}
+  .home-btns, .quest{justify-content:center}
+  .home-art{order:-1; max-width:26rem; margin:0 auto}
+  .zones{grid-template-columns:1fr 1fr}
+  .mm-branches{grid-template-columns:1fr 1fr}
+  .c4-grid{grid-template-columns:1fr}
+  .pieces{flex-direction:row; flex-wrap:wrap; justify-content:center}
+  .pieces h3{width:100%}
+  .road{grid-template-columns:1fr; max-width:24rem; margin:0 auto}
+  .slot:not(:last-child)::after{content:"⬇"; right:50%; top:auto; bottom:-.9rem; transform:translate(50%,50%)}
+  .slot .card{flex-direction:row}
+  .learned{grid-template-columns:1fr}
+  .steps{margin-left:0}
+  .brand{font-size:.95rem}
+}
+@media (max-width: 520px){
+  .home h1{font-size:2rem}
+  .ch-head h2{font-size:1.4rem}
+  .bar{width:50px}
+  .brand{display:none}
+  .topbar{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">📖 Giải cứu Sổ lưu niệm 6A</div>
+  <div class="pill">⭐ Điểm: <b id="score">0</b></div>
+  <div class="pill">🏆 Tiến trình: <span id="prog">0/4</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="icon-btn" id="soundBtn" title="Bật/tắt âm thanh">🔊</button>
+  <button class="icon-btn" id="homeBtn" title="Về trang chủ">🏠</button>
+</header>
+
+<main id="app"></main>
+<div id="toast"></div>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =========================================================
+   GIẢI CỨU SỔ LƯU NIỆM 6A – Tin học 6, Bài 10: Sơ đồ tư duy
+   ========================================================= */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const app = $('#app');
+
+/* ---------- Trạng thái & lưu trữ ---------- */
+const KEY = 'giaicuu_soluuniem_6a';
+function freshState(sound = true) {
+  return { score: 0, progress: 0, pts: [0, 0, 0, 0], sound };
+}
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; }
+}
+function saveState() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+}
+let state = Object.assign(freshState(), loadState() || {});
+
+// Điểm mỗi thử thách: làm đúng ngay 15 – sai 1–2 lần 10 – sai nhiều hơn 5
+const pointsFor = mistakes => mistakes === 0 ? 15 : mistakes <= 2 ? 10 : 5;
+
+function updateHUD(bump) {
+  const s = $('#score');
+  s.textContent = state.score;
+  if (bump) { s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
+  $('#prog').textContent = state.progress + '/4';
+  $('#progBar').style.width = (state.progress / 4 * 100) + '%';
+  $('#soundBtn').textContent = state.sound ? '🔊' : '🔇';
+}
+
+function completeChallenge(i, mistakes) {
+  if (state.progress > i) return 0; // đã hoàn thành trước đó
+  const p = pointsFor(mistakes);
+  state.pts[i] = p;
+  state.score = state.pts.reduce((a, b) => a + b, 0);
+  state.progress = i + 1;
+  saveState();
+  flyText('+' + p + ' ⭐', $('#score'));
+  updateHUD(true);
+  return p;
+}
+
+/* ---------- Âm thanh (Web Audio – không cần file) ---------- */
+let actx = null;
+function tone(freq, dur, type = 'sine', when = 0, vol = .15) {
+  if (!state.sound) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = actx.currentTime + when;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(actx.destination);
+    o.start(t); o.stop(t + dur + .05);
+  } catch (e) {}
+}
+const sfx = {
+  pick()  { tone(440, .06, 'triangle', 0, .06); },
+  click() { tone(520, .07, 'triangle', 0, .08); },
+  ok()    { tone(660, .15, 'triangle'); tone(990, .25, 'triangle', .1); },
+  bad()   { tone(260, .2, 'sine', 0, .12); tone(200, .28, 'sine', .12, .1); },
+  win()   { [523, 659, 784, 1047].forEach((f, i) => tone(f, .3, 'triangle', i * .12, .16)); tone(1319, .7, 'triangle', .52, .14); }
+};
+
+/* ---------- Thông báo & hiệu ứng ---------- */
+let toastTimer;
+function toast(title, text = '', type = 'ok', ms = 2600) {
+  const t = $('#toast');
+  t.className = type;
+  t.innerHTML = (title ? `<span class="t">${title}</span>` : '') + text;
+  void t.offsetWidth;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function flyText(txt, nearEl) {
+  const r = nearEl.getBoundingClientRect();
+  const f = document.createElement('div');
+  f.className = 'fly'; f.textContent = txt;
+  f.style.left = (r.left + r.width / 2) + 'px';
+  f.style.top = (r.top + 10) + 'px';
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 1000);
+}
+function shake(el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+
+function confetti(duration = 3200) {
+  const c = $('#confetti'), ctx = c.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const colors = ['#5b5bd6', '#e8558c', '#f28a35', '#d9a514', '#3f86f0', '#1fa97a'];
+  const parts = Array.from({ length: 180 }, (_, i) => {
+    const fromLeft = i % 2 === 0;
+    return {
+      x: fromLeft ? -10 : innerWidth + 10, y: innerHeight * (.55 + Math.random() * .3),
+      vx: (fromLeft ? 1 : -1) * (4 + Math.random() * 7), vy: -(9 + Math.random() * 9),
+      w: 6 + Math.random() * 8, h: 8 + Math.random() * 10,
+      rot: Math.random() * 6, vr: (Math.random() - .5) * .3, color: colors[i % colors.length]
+    };
+  });
+  const start = performance.now();
+  (function frame(now) {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    parts.forEach(p => {
+      p.vy += .25; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (now - start < duration) requestAnimationFrame(frame);
+    else ctx.clearRect(0, 0, innerWidth, innerHeight);
+  })(start);
+}
+
+/* ---------- Kéo thả (chuột + cảm ứng) ---------- */
+function draggable(el, zoneSel, onDrop) {
+  el.style.touchAction = 'none';
+  el.addEventListener('pointerdown', e => {
+    if (e.button > 0 || el.classList.contains('locked') || el.dataset.nodrag) return;
+    e.preventDefault();
+    const r = el.getBoundingClientRect();
+    const g = el.cloneNode(true);
+    g.removeAttribute('id');
+    g.classList.add('ghost');
+    g.classList.remove('drag-me');
+    Object.assign(g.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+    document.body.appendChild(g);
+    el.classList.add('src');
+    sfx.pick();
+    const dx = e.clientX - r.left, dy = e.clientY - r.top;
+    let over = null;
+    const move = ev => {
+      g.style.left = (ev.clientX - dx) + 'px';
+      g.style.top = (ev.clientY - dy) + 'px';
+      const t = document.elementFromPoint(ev.clientX, ev.clientY);
+      const z = t && t.closest(zoneSel);
+      if (z !== over) {
+        over && over.classList.remove('over');
+        over = z;
+        over && over.classList.add('over');
+      }
+    };
+    const up = () => {
+      removeEventListener('pointermove', move);
+      removeEventListener('pointerup', up);
+      removeEventListener('pointercancel', up);
+      over && over.classList.remove('over');
+      const ok = over ? onDrop(over, el) : false;
+      if (ok) { g.remove(); el.classList.remove('src'); }
+      else {
+        g.classList.add('back');
+        g.style.left = r.left + 'px'; g.style.top = r.top + 'px';
+        setTimeout(() => { g.remove(); el.classList.remove('src'); }, 320);
+      }
+    };
+    addEventListener('pointermove', move);
+    addEventListener('pointerup', up);
+    addEventListener('pointercancel', up);
+  });
+}
+
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* ---------- Sơ đồ tư duy ---------- */
+const COLORS = { tv: 'var(--tv)', hd: 'var(--hd)', tt: 'var(--tt)', kn: 'var(--kn)' };
+const RAW = { tv: '#3f86f0', hd: '#f28a35', tt: '#d9a514', kn: '#e8558c' };
+
+function mindMapHTML(rootText, branches) {
+  return `<div class="mm" id="mm">
+    <svg class="mm-links"></svg>
+    <div class="mm-root node" id="mm-root">${rootText}</div>
+    <div class="mm-branches">
+      ${branches.map(b => `
+        <div class="mm-col ${b.hidden ? 'hidden' : ''}" id="col-${b.id}">
+          ${b.slot
+            ? `<div class="node branch drop-slot slot-pulse" id="b-${b.id}" data-parent="mm-root">❓</div>`
+            : `<div class="node branch" id="b-${b.id}" data-parent="mm-root" data-color="${b.id}" style="--c:${COLORS[b.id]}">${b.name}</div>`}
+          <div class="mm-kids">
+            ${(b.kids || []).map(k => `<div class="node leaf" id="${k.id}" data-parent="b-${b.id}" data-color="${b.id}" style="--c:${COLORS[b.id]}">${k.t}</div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function drawLinks() {
+  const mm = $('#mm');
+  if (!mm) return;
+  const svg = $('svg', mm);
+  const R = mm.getBoundingClientRect();
+  svg.setAttribute('width', R.width);
+  svg.setAttribute('height', R.height);
+  svg.setAttribute('viewBox', `0 0 ${R.width} ${R.height}`);
+  let html = '';
+  $$('[data-parent]', mm).forEach(ch => {
+    if (!ch.offsetParent || ch.classList.contains('src')) return;
+    const p = document.getElementById(ch.dataset.parent);
+    if (!p || !p.offsetParent) return;
+    const a = p.getBoundingClientRect(), b = ch.getBoundingClientRect();
+    const color = RAW[ch.dataset.color] || '#b7bddb';
+    let d;
+    if (ch.classList.contains('branch')) {
+      const x1 = a.left + a.width / 2 - R.left, y1 = a.bottom - R.top;
+      const x2 = b.left + b.width / 2 - R.left, y2 = b.top - R.top;
+      const my = (y1 + y2) / 2;
+      d = `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`;
+    } else {
+      const x1 = a.left + 14 - R.left, y1 = a.bottom - R.top;
+      const x2 = b.left - R.left, y2 = b.top + b.height / 2 - R.top;
+      d = `M${x1},${y1} L${x1},${y2 - 8} Q${x1},${y2} ${x1 + 8},${y2} L${x2},${y2}`;
+    }
+    const dash = ch.classList.contains('drop-slot') ? ' stroke-dasharray="8 8"' : '';
+    html += `<path d="${d}" stroke="${color}"${dash}/>`;
+  });
+  svg.innerHTML = html;
+}
+addEventListener('resize', () => requestAnimationFrame(drawLinks));
+
+function relink() { requestAnimationFrame(drawLinks); setTimeout(drawLinks, 560); }
+function chHead(n, title, task) {
+  return `<div class="ch-head">
+      <div class="ch-tag">Thử thách ${n}/4</div>
+      <h2>${title}</h2>
+      <div class="steps">${[1, 2, 3, 4].map(k => `<i class="${k < n ? 'done' : k === n ? 'now' : ''}"></i>`).join('')}</div>
+    </div>
+    <div class="task" id="task">${task}</div>`;
+}
+function setTask(html, success) {
+  const t = $('#task');
+  t.innerHTML = html;
+  t.classList.toggle('success', !!success);
+}
+function showNext(label = 'TIẾP TỤC ➜') {
+  const b = $('#nextBtn');
+  b.innerHTML = label;
+  b.classList.remove('hidden');
+  b.classList.add('pulse');
+}
+
+/* =========================================================
+   MÀN HÌNH
+   ========================================================= */
+const BOOK_SVG = `
+<svg viewBox="0 0 440 340" xmlns="http://www.w3.org/2000/svg" aria-label="Sổ lưu niệm và sơ đồ tư duy">
+  <ellipse cx="220" cy="318" rx="170" ry="14" fill="#5b5bd6" opacity=".12"/>
+  <g class="floaty">
+    <path d="M40 70 Q130 40 220 70 Q310 40 400 70 L400 290 Q310 262 220 290 Q130 262 40 290 Z" fill="#4a4ac4"/>
+    <path d="M52 64 Q135 38 216 64 L216 280 Q135 256 52 280 Z" fill="#fffdf7"/>
+    <path d="M224 64 Q305 38 388 64 L388 280 Q305 256 224 280 Z" fill="#fffdf7"/>
+    <path d="M216 64 L224 64 L224 280 L216 280Z" fill="#e3e1f5"/>
+    <!-- trang trái -->
+    <text x="134" y="92" text-anchor="middle" font-size="20" font-weight="900" fill="#5b5bd6" font-family="Segoe UI, Arial">LỚP 6A</text>
+    <rect x="78" y="108" width="54" height="44" rx="6" fill="#ffd9e6"/>
+    <circle cx="96" cy="126" r="7" fill="#e8558c"/><path d="M82 148 L100 132 L114 144 L124 136 L130 148Z" fill="#e8558c" opacity=".7"/>
+    <rect x="140" y="108" width="54" height="44" rx="6" fill="#dcebff"/>
+    <text x="167" y="138" text-anchor="middle" font-size="22">⚽</text>
+    <rect x="78" y="166" width="116" height="8" rx="4" fill="#e6e8f5"/>
+    <rect x="78" y="182" width="96" height="8" rx="4" fill="#e6e8f5"/>
+    <rect x="78" y="198" width="108" height="8" rx="4" fill="#e6e8f5"/>
+    <text x="134" y="248" text-anchor="middle" font-size="26">🎂 🎤</text>
+    <!-- trang phải: sơ đồ tư duy -->
+    <g stroke-width="4" stroke-linecap="round" fill="none">
+      <path d="M306 160 C280 150 272 110 258 104" stroke="#3f86f0"/>
+      <path d="M306 160 C332 150 342 110 356 104" stroke="#f28a35"/>
+      <path d="M306 160 C280 170 272 212 258 220" stroke="#d9a514"/>
+      <path d="M306 160 C332 170 342 212 356 220" stroke="#e8558c"/>
+    </g>
+    <circle cx="306" cy="160" r="26" fill="#5b5bd6"/>
+    <text x="306" y="166" text-anchor="middle" font-size="16" font-weight="900" fill="#fff" font-family="Segoe UI, Arial">6A</text>
+    <rect x="232" y="88" width="52" height="30" rx="10" fill="#3f86f0"/><text x="258" y="109" text-anchor="middle" font-size="16">👩‍🎓</text>
+    <rect x="330" y="88" width="52" height="30" rx="10" fill="#f28a35"/><text x="356" y="109" text-anchor="middle" font-size="16">🎉</text>
+    <rect x="232" y="206" width="52" height="30" rx="10" fill="#d9a514"/><text x="258" y="227" text-anchor="middle" font-size="16">🏆</text>
+    <rect x="330" y="206" width="52" height="30" rx="10" fill="#e8558c"/><text x="356" y="227" text-anchor="middle" font-size="16">💝</text>
+  </g>
+  <text x="30" y="46" font-size="26" class="twinkle">✨</text>
+  <text x="392" y="36" font-size="22" class="twinkle" style="animation-delay:.7s">⭐</text>
+  <text x="404" y="300" font-size="22" class="twinkle" style="animation-delay:1.2s">✨</text>
+  <text x="12" y="300" font-size="30" style="transform-origin:28px 290px" class="floaty">🧩</text>
+</svg>`;
+
+const QUESTS = ['🧩 Ai về nhà nấy?', '🔎 Tìm kẻ lạc đường', '🧠 Đường đi của ý tưởng', '🔐 Khôi phục sổ'];
+
+const SCREENS = {
+  /* ---------------- TRANG CHỦ ---------------- */
+  home: {
+    html() {
+      const cont = state.progress > 0 && state.progress < 4;
+      return `<section class="home">
+        <div class="home-text">
+          <span class="badge">💻 Tin học 6 · Bài 10: Sơ đồ tư duy</span>
+          <h1>📖 GIẢI CỨU<br><span>SỔ LƯU NIỆM 6A</span></h1>
+          <div class="bubble b1">😱 “Ôi không! Sổ lưu niệm của lớp 6A bị xáo trộn rồi!”</div>
+          <div class="bubble b2">🦸 “Hãy hoàn thành <b>4 thử thách</b> để khôi phục lại cuốn sổ bằng kiến thức về <b>sơ đồ tư duy</b> nhé!”</div>
+          <div class="home-btns">
+            ${cont
+              ? `<button class="btn big pulse" data-act="continue">▶️ CHƠI TIẾP (${state.progress}/4)</button>
+                 <button class="btn ghost" data-act="start">🚀 BẮT ĐẦU LẠI</button>`
+              : `<button class="btn big pulse" data-act="start">🚀 BẮT ĐẦU</button>`}
+          </div>
+          <div class="quest">${QUESTS.map((q, i) => `<span class="${i < state.progress ? 'done' : ''}">${i < state.progress ? '✅' : ''} ${q}</span>`).join('')}</div>
+        </div>
+        <div class="home-art">${BOOK_SVG}</div>
+      </section>`;
+    },
+    init() {
+      $$('[data-act]').forEach(b => b.onclick = () => {
+        sfx.click();
+        if (b.dataset.act === 'start') { state = freshState(state.sound); saveState(); updateHUD(); go('c1'); }
+        else go(['c1', 'c2', 'c3', 'c4'][state.progress]);
+      });
+    }
+  },
+
+  /* ---------------- THỬ THÁCH 1 ---------------- */
+  c1: {
+    html() {
+      const groups = [
+        { id: 'tv', icon: '👩‍🎓', name: 'THÀNH VIÊN' },
+        { id: 'hd', icon: '🎉', name: 'HOẠT ĐỘNG' },
+        { id: 'tt', icon: '🏆', name: 'THÀNH TÍCH' },
+        { id: 'kn', icon: '💝', name: 'KỈ NIỆM' }
+      ];
+      const cards = shuffle([
+        { t: 'Danh sách lớp', g: 'tv', i: '📋' },
+        { t: 'Các bạn trong lớp', g: 'tv', i: '👫' },
+        { t: 'Hội diễn văn nghệ', g: 'hd', i: '🎤' },
+        { t: 'Chuyến tham quan', g: 'hd', i: '🚌' },
+        { t: 'Giải bóng đá', g: 'tt', i: '⚽' },
+        { t: 'Sinh nhật đáng nhớ', g: 'kn', i: '🎂' }
+      ]);
+      return chHead(1, 'AI VỀ NHÀ NẤY?', '🧩 Hãy kéo mỗi thông tin vào đúng nhóm!') + `
+        <div class="pool" id="pool">
+          ${cards.map(c => `<div class="card" data-g="${c.g}" style="--c:${COLORS[c.g]}"><span class="ic">${c.i}</span>${c.t}</div>`).join('')}
+        </div>
+        <div class="zones">
+          ${groups.map(g => `<div class="zone" data-g="${g.id}" style="--c:${COLORS[g.id]}">
+              <div class="zone-h"><span>${g.icon}</span>${g.name}</div>
+              <div class="zone-b"></div>
+            </div>`).join('')}
+        </div>
+        <div class="actions"><button class="btn green hidden" id="nextBtn"></button></div>`;
+    },
+    init() {
+      let mistakes = 0, placed = 0;
+      const total = $$('#pool .card').length;
+      $$('#pool .card').forEach(card => draggable(card, '.zone', zone => {
+        if (zone.dataset.g === card.dataset.g) {
+          $('.zone-b', zone).appendChild(card);
+          card.classList.add('placed', 'locked');
+          placed++;
+          sfx.ok();
+          flyText('⭐', card);
+          if (placed === total) {
+            const p = completeChallenge(0, mistakes);
+            setTask('🎉 Tuyệt vời! Em đã sắp xếp tất cả thông tin vào đúng nhóm!', true);
+            toast('🎉 Hoàn thành!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok');
+            showNext();
+          } else {
+            toast('🎉 Chính xác!', 'Em đã phân loại thông tin đúng.', 'ok', 1800);
+          }
+          return true;
+        }
+        mistakes++;
+        sfx.bad();
+        shake(zone);
+        toast('', '💡 Hãy suy nghĩ xem thông tin này thuộc nhóm nào nhé!', 'bad');
+        return false;
+      }));
+      $('#nextBtn').onclick = () => { sfx.click(); go('c2'); };
+    }
+  },
+
+  /* ---------------- THỬ THÁCH 2 ---------------- */
+  c2: {
+    html() {
+      return chHead(2, 'TÌM KẺ LẠC ĐƯỜNG', '🔎 Hãy tìm thông tin đang ở nhầm vị trí!<small>👆 Nháy chuột vào một thành phần trong sơ đồ.</small>') +
+        `<div class="clickable" id="mapWrap">` +
+        mindMapHTML('📖 SỔ LƯU NIỆM 6A', [
+          { id: 'tv', name: '👩‍🎓 THÀNH VIÊN', kids: [{ id: 'k-ds', t: 'Danh sách lớp' }, { id: 'k-cb', t: 'Các bạn trong lớp' }] },
+          { id: 'hd', name: '🎉 HOẠT ĐỘNG', kids: [{ id: 'k-vn', t: 'Văn nghệ' }, { id: 'k-tq', t: 'Tham quan' }, { id: 'k-sn', t: 'Sinh nhật' }] },
+          { id: 'tt', name: '🏆 THÀNH TÍCH', kids: [{ id: 'k-bd', t: 'Giải bóng đá' }] },
+          { id: 'kn', name: '💝 KỈ NIỆM', hidden: true, kids: [] }
+        ]) +
+        `</div><div class="actions"><button class="btn green hidden" id="nextBtn"></button></div>`;
+    },
+    init() {
+      let mistakes = 0, found = false;
+      const wrongSeen = new Set();
+      const kn = $('#col-kn .mm-kids');
+      kn.innerHTML = `<div class="node leaf drop-slot slot-pulse" id="slot-kn" data-parent="b-kn" data-color="kn" style="--c:var(--kn)">⬇ Thả vào đây</div>`;
+
+      $$('#mm .node').forEach(n => {
+        if (n.id === 'mm-root') return;
+        n.addEventListener('click', () => {
+          if (found) return;
+          if (n.id === 'k-sn') {
+            found = true;
+            $('#mapWrap').classList.remove('clickable');
+            n.classList.add('found');
+            sfx.ok();
+            toast('🎯 CHÍNH XÁC!', 'Sinh nhật là một <b>kỉ niệm</b> đáng nhớ.', 'ok', 3200);
+            setTask('🎯 CHÍNH XÁC! Sinh nhật là một kỉ niệm đáng nhớ nên được đưa vào nhánh <b style="color:var(--kn)">Kỉ niệm</b>.<small>✋ Hãy kéo “Sinh nhật” sang nhánh Kỉ niệm!</small>', true);
+            setTimeout(() => {
+              const col = $('#col-kn');
+              col.classList.remove('hidden');
+              col.classList.add('reveal');
+              n.classList.remove('found');
+              n.classList.add('drag-me');
+              drawLinks();
+              setTimeout(drawLinks, 520);
+            }, 700);
+            draggable(n, '#slot-kn', slot => {
+              slot.replaceWith(n);
+              n.dataset.parent = 'b-kn';
+              n.dataset.color = 'kn';
+              n.style.setProperty('--c', 'var(--kn)');
+              n.classList.remove('drag-me');
+              n.classList.add('locked', 'found');
+              const p = completeChallenge(1, mistakes);
+              sfx.ok();
+              relink();
+              setTask('🎉 Tuyệt vời! “Sinh nhật” đã về đúng nhánh <b style="color:var(--kn)">Kỉ niệm</b>!', true);
+              toast('🎉 Hoàn thành!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok');
+              showNext();
+              return true;
+            });
+          } else {
+            if (!wrongSeen.has(n.id)) { wrongSeen.add(n.id); mistakes++; }
+            sfx.bad();
+            n.classList.remove('wrong'); void n.offsetWidth; n.classList.add('wrong');
+            setTimeout(() => n.classList.remove('wrong'), 600);
+            toast('', '💡 Thông tin này có vẻ đang ở đúng vị trí. Hãy quan sát tiếp nhé!', 'bad');
+          }
+        });
+      });
+      // Nếu thả sai chỗ thì nhắc nhẹ
+      document.addEventListener('pointerup', function hint() {
+        if (!$('#slot-kn')) return document.removeEventListener('pointerup', hint);
+        if (found && $('#k-sn') && $('#k-sn').classList.contains('src')) {
+          setTimeout(() => { if ($('#slot-kn')) toast('', '💡 Hãy kéo “Sinh nhật” vào ô trống của nhánh Kỉ niệm nhé!', 'bad'); }, 50);
+        }
+      });
+      relink();
+      $('#nextBtn').onclick = () => { sfx.click(); go('c3'); };
+    }
+  },
+
+  /* ---------------- THỬ THÁCH 3 ---------------- */
+  c3: {
+    html() {
+      return chHead(3, 'ĐƯỜNG ĐI CỦA Ý TƯỞNG', '🧠 Hãy sắp xếp các bước theo trình tự hợp lý!<small>✋ Kéo các thẻ vào ô ① → ⑤ khi tạo sơ đồ tư duy bằng phần mềm.</small>') + `
+        <div class="pool" id="pool"></div>
+        <div class="road" id="road"></div>
+        <div class="actions">
+          <button class="btn ghost" id="resetBtn">↺ Làm lại</button>
+          <button class="btn" id="checkBtn" disabled>✔ KIỂM TRA</button>
+          <button class="btn green hidden" id="nextBtn"></button>
+        </div>`;
+    },
+    init() {
+      const STEPS = {
+        s1: { i: '🖥️', t: 'Mở phần mềm' },
+        s2: { i: '🌳', t: 'Tạo sơ đồ' },
+        s3: { i: '✏️', t: 'Nhập chủ đề' },
+        s4: { i: '🌿', t: 'Thêm nhánh' },
+        s5: { i: '💾', t: 'Lưu sơ đồ' }
+      };
+      const ANSWER = ['s1', 's2', 's3', 's4', 's5'];
+      let pool, slots, mistakes = 0, done = false;
+      const reset = () => {
+        do { pool = shuffle(ANSWER); } while (pool.join() === ANSWER.join());
+        slots = [null, null, null, null, null];
+      };
+      const cardHTML = (id, from) => `<div class="card" data-id="${id}" data-from="${from}"><span class="ic">${STEPS[id].i}</span><span>${STEPS[id].t}</span></div>`;
+      const nums = ['①', '②', '③', '④', '⑤'];
+
+      function render() {
+        $('#pool').innerHTML = pool.map(id => cardHTML(id, 'pool')).join('');
+        $('#road').innerHTML = slots.map((id, k) =>
+          `<div class="slot ${id ? 'filled' : ''}" data-k="${k}"><span class="num">${k + 1}</span>${id ? cardHTML(id, k) : `<span style="color:#b3b8d6;font-size:1.6rem">${nums[k]}</span>`}</div>`).join('');
+        $('#checkBtn').disabled = slots.some(s => !s) || done;
+        if (done) { $$('#app .card').forEach(c => c.classList.add('locked')); return; }
+        $$('#app .card').forEach(c => draggable(c, '.slot, #pool', zone => {
+          const id = c.dataset.id, from = c.dataset.from;
+          // bỏ thẻ khỏi vị trí cũ
+          if (from === 'pool') pool = pool.filter(x => x !== id); else slots[+from] = null;
+          if (zone.id === 'pool') {
+            pool.push(id);
+          } else {
+            const k = +zone.dataset.k, occ = slots[k];
+            slots[k] = id;
+            if (occ) { if (from === 'pool') pool.push(occ); else slots[+from] = occ; }
+          }
+          sfx.click();
+          render();
+          return true;
+        }));
+      }
+      reset(); render();
+
+      $('#resetBtn').onclick = () => { if (done) return; sfx.click(); reset(); render(); };
+      $('#checkBtn').onclick = () => {
+        const slotEls = $$('#road .slot');
+        const allRight = slots.every((id, k) => id === ANSWER[k]);
+        if (allRight) {
+          done = true;
+          slotEls.forEach((s, k) => setTimeout(() => { s.classList.add('right'); tone(520 + k * 90, .12, 'triangle'); }, k * 120));
+          setTimeout(() => {
+            const p = completeChallenge(2, mistakes);
+            sfx.ok();
+            setTask('🎉 TUYỆT VỜI! Em đã tìm được đường đi của ý tưởng!', true);
+            toast('🎉 TUYỆT VỜI!', 'Em đã tìm được đường đi của ý tưởng!' + (p ? ` <b>+${p} điểm</b>` : ''), 'ok');
+            render();
+            $$('#road .slot').forEach(s => s.classList.add('right'));
+            $('#resetBtn').classList.add('hidden');
+            $('#checkBtn').classList.add('hidden');
+            showNext();
+          }, 650);
+        } else {
+          mistakes++;
+          sfx.bad();
+          slotEls.forEach((s, k) => { if (slots[k] !== ANSWER[k]) { s.classList.remove('wrongslot'); void s.offsetWidth; s.classList.add('wrongslot'); } });
+          setTimeout(() => slotEls.forEach(s => s.classList.remove('wrongslot')), 1200);
+          toast('', '💡 Hãy thử sắp xếp lại nhé!', 'bad');
+        }
+      };
+      $('#nextBtn').onclick = () => { sfx.click(); go('c4'); };
+    }
+  },
+
+  /* ---------------- THỬ THÁCH 4 ---------------- */
+  c4: {
+    html() {
+      const pieces = shuffle([{ t: 'Kỉ niệm', ok: 1 }, { t: 'Giáo viên' }, { t: 'Phòng học' }]);
+      return chHead(4, 'KHÔI PHỤC SỔ LƯU NIỆM', '🔐 Nhánh nào còn thiếu để hoàn thiện sơ đồ?<small>✋ Kéo mảnh ghép đúng vào ô ❓</small>') + `
+        <div class="c4-grid">
+          ${mindMapHTML('💝 SỔ LƯU NIỆM 6A', [
+            { id: 'tv', name: '👩‍🎓 Thành viên', kids: [{ id: 'q-ds', t: 'Danh sách lớp' }] },
+            { id: 'hd', name: '🎉 Hoạt động', kids: [{ id: 'q-vn', t: 'Văn nghệ' }, { id: 'q-tq', t: 'Tham quan' }] },
+            { id: 'tt', name: '🏆 Thành tích', kids: [{ id: 'q-bd', t: 'Giải bóng đá' }] },
+            { id: 'kn', slot: true }
+          ])}
+          <div class="pieces" id="pieces">
+            <h3>Mảnh ghép</h3>
+            ${pieces.map(p => `<div class="card" data-ok="${p.ok ? 1 : 0}"><span class="ic">🧩</span>${p.t}</div>`).join('')}
+          </div>
+        </div>
+        <div class="actions"><button class="btn green hidden" id="nextBtn"></button></div>`;
+    },
+    init() {
+      let mistakes = 0;
+      relink();
+      $$('#pieces .card').forEach(card => draggable(card, '#b-kn', slot => {
+        if (card.dataset.ok !== '1') {
+          mistakes++;
+          sfx.bad();
+          shake(slot);
+          toast('', '💡 Mảnh ghép này chưa phù hợp với sổ lưu niệm. Hãy thử mảnh khác nhé!', 'bad');
+          return false;
+        }
+        // ghép đúng
+        slot.className = 'node branch';
+        slot.dataset.color = 'kn';
+        slot.style.setProperty('--c', 'var(--kn)');
+        slot.textContent = '💝 Kỉ niệm';
+        slot.style.animation = 'pop .5s';
+        $('#col-kn .mm-kids').innerHTML = `<div class="node leaf" id="q-sn" data-parent="b-kn" data-color="kn" style="--c:var(--kn);animation:pop .5s">Sinh nhật đáng nhớ</div>`;
+        card.remove();
+        $$('#pieces .card').forEach(c => c.classList.add('locked'));
+        relink();
+        const p = completeChallenge(3, mistakes);
+        sfx.win();
+        confetti();
+        setTask('🎉 SỔ LƯU NIỆM ĐÃ ĐƯỢC KHÔI PHỤC!', true);
+        toast('🎉 SỔ LƯU NIỆM ĐÃ ĐƯỢC KHÔI PHỤC!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok', 3200);
+        showNext('XEM KẾT QUẢ 🏆');
+        return true;
+      }));
+      $('#nextBtn').onclick = () => { sfx.click(); go('win'); };
+    }
+  },
+
+  /* ---------------- CHIẾN THẮNG ---------------- */
+  win: {
+    html() {
+      const s = state.score;
+      const msg = s >= 50 ? '🏆 Xuất sắc! Em đã giải cứu thành công Sổ lưu niệm 6A!'
+                : s >= 30 ? '⭐ Rất tốt! Em đã nắm khá chắc kiến thức.'
+                : '🌱 Hãy thử lại một lần nữa để củng cố kiến thức nhé!';
+      const learned = ['Biết cách sắp xếp ý tưởng', 'Xác định chủ đề và các nhánh', 'Nhận biết thông tin chưa hợp lý', 'Biết trình tự cơ bản khi tạo sơ đồ tư duy'];
+      return `<section class="win">
+        <div class="trophy">🏆</div>
+        <h1>CHÚC MỪNG!</h1>
+        <h2>📖 SỔ LƯU NIỆM 6A ĐÃ ĐƯỢC KHÔI PHỤC!</h2>
+        <div class="scorebox"><div class="lbl">⭐ ĐIỂM CỦA EM</div><div class="val"><span id="finalScore">0</span><small style="font-size:1.4rem;color:var(--muted)"> / 60</small></div></div>
+        <div><div class="msg">${msg}</div></div>
+        <div class="learned">${learned.map((l, i) => `<div style="animation-delay:${.3 + i * .15}s">✅ ${l}</div>`).join('')}</div>
+        <div class="actions">
+          <button class="btn big" data-act="replay">🔄 CHƠI LẠI</button>
+          <button class="btn ghost big" data-act="home">🏠 VỀ TRANG CHỦ</button>
+        </div>
+      </section>`;
+    },
+    init() {
+      sfx.win();
+      confetti(4000);
+      // đếm điểm
+      const el = $('#finalScore'); let v = 0;
+      const iv = setInterval(() => { v = Math.min(state.score, v + 1); el.textContent = v; if (v >= state.score) clearInterval(iv); }, 30);
+      $$('[data-act]').forEach(b => b.onclick = () => {
+        sfx.click();
+        state = freshState(state.sound); saveState(); updateHUD();
+        go(b.dataset.act === 'replay' ? 'c1' : 'home');
+      });
+    }
+  }
+};
+
+/* ---------- Chuyển màn hình ---------- */
+let current = null;
+function go(name) {
+  const delay = current ? 220 : 0;
+  current = name;
+  app.classList.add('leave');
+  setTimeout(() => {
+    app.innerHTML = SCREENS[name].html();
+    app.classList.remove('leave', 'enter');
+    void app.offsetWidth;
+    app.classList.add('enter');
+    scrollTo({ top: 0 });
+    SCREENS[name].init();
+  }, delay);
+}
+
+$('#soundBtn').onclick = () => { state.sound = !state.sound; saveState(); updateHUD(); sfx.click(); };
+$('#homeBtn').onclick = () => { if (current !== 'home') { sfx.click(); go('home'); } };
+
+updateHUD();
+go('home');
+</script>
+</body>
+</html>

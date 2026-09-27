@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mô phỏng thuật toán làm kem giúp học sinh lớp 6 hiểu sơ đồ khối và cấu trúc rẽ nhánh.">
+  <title>Mô phỏng Thuật toán làm kem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260804">
+  <style>
+    :root {
+      --algo-bg: #fff7ea;
+      --algo-panel: rgba(255, 255, 255, 0.92);
+      --algo-border: rgba(255, 181, 71, 0.2);
+      --algo-ink: #1f2a44;
+      --algo-muted: #5d6b85;
+      --algo-highlight: #ffcc45;
+      --algo-alert: #ff595e;
+      --algo-success: #31a24c;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255, 208, 112, 0.35), transparent 28%),
+        radial-gradient(circle at top right, rgba(104, 214, 255, 0.22), transparent 24%),
+        linear-gradient(180deg, var(--algo-bg) 0%, #ffeecf 100%);
+      color: var(--algo-ink);
+    }
+
+    body.theme-dark {
+      --algo-bg: #000000;
+      --algo-panel: rgba(18, 18, 18, 0.94);
+      --algo-border: rgba(255, 255, 255, 0.12);
+      --algo-ink: #f5f5f5;
+      --algo-muted: #a3a3a3;
+      --algo-highlight: #ffe39d;
+      --algo-alert: #ff8b8f;
+      --algo-success: #8be28f;
+    }
+
+    body.theme-dark {
+      background:
+        radial-gradient(circle at top left, rgba(255, 208, 112, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(104, 214, 255, 0.08), transparent 24%),
+        linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+    }
+
+    .algorithm-hero {
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+      gap: 20px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    .panel {
+      background: var(--algo-panel);
+      border: 1px solid var(--algo-border);
+      border-radius: 28px;
+      box-shadow: 0 16px 34px rgba(60, 49, 22, 0.1);
+      backdrop-filter: blur(10px);
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    body.theme-dark .panel {
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
+    }
+
+    .flow-panel {
+      position: relative;
+      padding: 22px;
+      overflow: hidden;
+    }
+
+    .flow-title,
+    .control-title {
+      margin: 0 0 12px;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.7rem;
+    }
+
+    .flow-wrap {
+      position: relative;
+      min-height: 800px;
+      border-radius: 24px;
+      background:
+        linear-gradient(rgba(255,255,255,0.42) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.42) 1px, transparent 1px),
+        linear-gradient(180deg, #fffdf7 0%, #fff7e4 100%);
+      background-size: 36px 36px, 36px 36px, auto;
+      border: 1px dashed rgba(31, 42, 68, 0.08);
+      padding: 18px;
+    }
+
+    body.theme-dark .flow-wrap {
+      background:
+        linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(180deg, #121212 0%, #181818 100%);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .flow-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .flow-line {
+      stroke: rgba(31, 42, 68, 0.35);
+      stroke-width: 5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 180ms ease, stroke-width 180ms ease, filter 180ms ease;
+    }
+
+    body.theme-dark .flow-line {
+      stroke: rgba(255, 255, 255, 0.22);
+    }
+
+    .flow-line--active {
+      stroke: var(--algo-highlight);
+      stroke-width: 6;
+      filter: drop-shadow(0 0 4px rgba(255, 204, 69, 0.75));
+    }
+
+    .flow-arrow-head {
+      fill: rgba(31, 42, 68, 0.42);
+    }
+
+    .flow-arrow-head--active {
+      fill: #ffcc45;
+    }
+
+    body.theme-dark .flow-arrow-head {
+      fill: rgba(255, 255, 255, 0.42);
+    }
+
+    .node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 16px;
+      font-weight: 800;
+      color: var(--algo-ink);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .node__label {
+      position: relative;
+      z-index: 1;
+      line-height: 1.45;
+    }
+
+    .node--oval {
+      width: 220px;
+      height: 90px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #eaf7ff 0%, #d2edff 100%);
+      border: 4px solid rgba(43, 141, 214, 0.25);
+    }
+
+    body.theme-dark .node--oval {
+      background: linear-gradient(180deg, #2a3141 0%, #1c2230 100%);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .node--rect {
+      width: 250px;
+      height: 88px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #fff4d7 0%, #ffe4a0 100%);
+      border: 4px solid rgba(237, 122, 31, 0.2);
+    }
+
+    body.theme-dark .node--rect {
+      background: linear-gradient(180deg, #2a2f3a 0%, #1d2230 100%);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .node--diamond {
+      width: 250px;
+      height: 150px;
+      background: transparent;
+      border: 0;
+      clip-path: none;
+      padding: 0;
+      isolation: isolate;
+    }
+
+    body.theme-dark .node--diamond {
+      background: transparent;
+    }
+
+    .node--diamond::before,
+    .node--diamond::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    .node--diamond::before {
+      z-index: 0;
+      background: rgba(227, 154, 0, 0.42);
+    }
+
+    .node--diamond::after {
+      inset: 4px;
+      z-index: 0;
+      border-radius: 0;
+      background: linear-gradient(180deg, #fff0d9 0%, #ffd78e 100%);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.36);
+    }
+
+    body.theme-dark .node--diamond::before {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    body.theme-dark .node--diamond::after {
+      background: linear-gradient(180deg, #2e3138 0%, #1f232b 100%);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+    }
+
+    .node--diamond .node__label {
+      padding: 0 40px;
+    }
+
+    .node:not(.node--diamond)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.36);
+    }
+
+    .node--active {
+      border-color: var(--algo-alert);
+      box-shadow: 0 0 0 6px rgba(255, 89, 94, 0.16), 0 16px 28px rgba(60, 49, 22, 0.16);
+      transform: translateX(-50%) translateY(-2px) scale(1.01);
+    }
+
+    .node--done {
+      border-color: var(--algo-success);
+      box-shadow: 0 0 0 6px rgba(49, 162, 76, 0.14), 0 14px 24px rgba(60, 49, 22, 0.12);
+    }
+
+    .node--wrong {
+      border-color: var(--algo-alert);
+      box-shadow: 0 0 0 6px rgba(255, 89, 94, 0.12);
+    }
+
+    .node--diamond.node--active,
+    .node--diamond.node--done,
+    .node--diamond.node--wrong {
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    .node--diamond.node--active {
+      filter: drop-shadow(0 0 6px rgba(255, 89, 94, 0.55)) drop-shadow(0 16px 28px rgba(60, 49, 22, 0.16));
+    }
+
+    .node--diamond.node--done {
+      filter: drop-shadow(0 0 6px rgba(49, 162, 76, 0.5)) drop-shadow(0 14px 24px rgba(60, 49, 22, 0.12));
+    }
+
+    .node--diamond.node--wrong {
+      filter: drop-shadow(0 0 6px rgba(255, 89, 94, 0.5));
+    }
+
+    .node--diamond.node--active::before {
+      background: var(--algo-alert);
+    }
+
+    .node--diamond.node--done::before {
+      background: var(--algo-success);
+    }
+
+    .node--diamond.node--wrong::before {
+      background: var(--algo-alert);
+    }
+
+    .start { left: 50%; top: 20px; transform: translateX(-50%); }
+    .input { left: 50%; top: 126px; transform: translateX(-50%); }
+    .decision { left: 50%; top: 236px; transform: translateX(-50%); }
+    .mix { left: 50%; top: 430px; transform: translateX(-50%); }
+    .freeze { left: 50%; top: 548px; transform: translateX(-50%); }
+    .end { left: 50%; top: 666px; transform: translateX(-50%); }
+    .wrong-end { left: 78%; top: 336px; transform: translateX(-50%); width: 190px; height: 78px; }
+
+    .arrow-label {
+      position: absolute;
+      z-index: 4;
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: #8b6100;
+      background: rgba(255, 255, 255, 0.82);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 181, 71, 0.26);
+      white-space: nowrap;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 6px 14px rgba(60, 49, 22, 0.08);
+    }
+
+    body.theme-dark .arrow-label {
+      color: #ffe39d;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .yes-label { left: calc(50% + 54px); top: 330px; }
+    .no-label { left: 66%; top: 292px; }
+
+    .controls-panel {
+      padding: 22px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .choice-group {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 18px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 181, 71, 0.18);
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .choice:hover,
+    .choice:focus-within {
+      background: rgba(255, 204, 69, 0.22);
+      transform: translateX(2px);
+      box-shadow: 0 8px 16px rgba(60, 49, 22, 0.08);
+    }
+
+    body.theme-dark .choice {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .choice input {
+      accent-color: #1f2a44;
+      width: 18px;
+      height: 18px;
+    }
+
+    .choice input:disabled {
+      cursor: wait;
+    }
+
+    .choice:has(input:checked) {
+      background: rgba(255, 204, 69, 0.28);
+      box-shadow: inset 3px 0 0 var(--algo-highlight);
+    }
+
+    .status-box {
+      min-height: 76px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #fff6da;
+      color: #664500;
+      line-height: 1.65;
+      font-weight: 700;
+    }
+
+    body.theme-dark .status-box {
+      background: rgba(255, 228, 158, 0.12);
+      color: var(--algo-ink);
+    }
+
+    .button-row {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      color: #1f2a44;
+      background: linear-gradient(180deg, #ffe08a 0%, #ffc94d 100%);
+      box-shadow: 0 12px 22px rgba(255, 186, 53, 0.3);
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 26px rgba(255, 186, 53, 0.34);
+    }
+
+    .button:disabled {
+      cursor: wait;
+      opacity: 0.68;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .button.secondary {
+      background: rgba(31, 42, 68, 0.08);
+      box-shadow: none;
+    }
+
+    body.theme-dark .button.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--algo-ink);
+    }
+
+    .legend {
+      margin-top: 16px;
+      display: grid;
+      gap: 8px;
+      color: var(--algo-muted);
+      font-weight: 700;
+    }
+
+    body.theme-dark .legend {
+      color: var(--algo-muted);
+    }
+
+    @media (max-width: 1060px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .controls-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .flow-wrap {
+        min-height: 800px;
+      }
+
+      .start,
+      .input,
+      .decision,
+      .mix,
+      .freeze,
+      .end {
+        left: 50%;
+        transform: translateX(-50%) scale(0.88);
+        transform-origin: top center;
+      }
+
+      .node--active {
+        transform: translateX(-50%) translateY(-2px) scale(0.89);
+      }
+
+      .wrong-end { left: 78%; top: 336px; transform: translateX(-50%) scale(0.78); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <div class="placeholder-banner" aria-hidden="true"></div>
+
+    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-controls="leftSidebar" aria-expanded="false">
+      ☰ Menu chủ đề
+    </button>
+
+    <div class="home-layout">
+      <aside class="left-sidebar" id="leftSidebar" aria-label="Thanh điều hướng bên trái">
+        <div class="left-sidebar__header">
+          <strong>Menu học tập</strong>
+          <button class="left-sidebar__close" id="sidebarClose" type="button" aria-label="Đóng menu">×</button>
+        </div>
+
+        <div class="sidebar-banner">
+          <div class="sidebar-banner__badge">Danh mục bài học</div>
+          <h2>Chọn nhanh từng bài trong chương trình</h2>
+          <p>Danh mục dưới đây đang được tạo dần để mở rộng nội dung cho từng bài học.</p>
+          <a href="index.html">Trang chủ</a>
+          <a href="#sidebarAccordion">Xem toàn bộ</a>
+        </div>
+
+        <div class="sidebar-accordion" id="sidebarAccordion">
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-1" data-accordion-trigger>
+              Chủ đề 1. Máy tính và cộng đồng
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-1" hidden>
+              <a href="bai-1-thong-tin-va-du-lieu.html">Bài 1. Thông tin và dữ liệu</a>
+              <a href="bai-2-xu-li-thong-tin.html">Bài 2. Xử lí thông tin</a>
+              <a href="bai-3-thong-tin-trong-may-tinh.html">Bài 3. Thông tin trong máy tính</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-2" data-accordion-trigger>
+              Chủ đề 2. Mạng máy tính và Internet
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-2" hidden>
+              <a href="bai-4-mang-may-tinh.html">Bài 4. Mạng máy tính</a>
+              <a href="bai-5-internet.html">Bài 5. Internet</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-3" data-accordion-trigger>
+              Chủ đề 3. Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-3" hidden>
+              <a href="bai-6-mang-thong-tin-toan-cau.html">Bài 6. Mạng thông tin toàn cầu</a>
+              <a href="bai-7-tim-kiem-thong-tin-tren-internet.html">Bài 7. Tìm kiếm thông tin trên Internet</a>
+              <a href="bai-8-thu-dien-tu.html">Bài 8. Thư điện tử</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-4" data-accordion-trigger>
+              Chủ đề 4. Đạo đức, pháp luật và văn hoá trong môi trường số
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-4" hidden>
+              <a href="bai-9-an-toan-thong-tin-tren-internet.html">Bài 9. An toàn thông tin trên Internet</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-5" data-accordion-trigger>
+              Chủ đề 5. Ứng dụng tin học
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-5" hidden>
+              <a href="bai-10-so-do-tu-duy.html">Bài 10. Sơ đồ tư duy</a>
+              <a href="bai-11-dinh-dang-van-ban.html">Bài 11. Định dạng văn bản</a>
+              <a href="bai-12-trinh-bay-thong-tin-o-dang-bang.html">Bài 12. Trình bày thông tin ở dạng bảng</a>
+              <a href="bai-13-tim-kiem-va-thay-the.html">Bài 13. Tìm kiếm và thay thế</a>
+              <a href="bai-14-thuc-hanh-tong-hop-hoan-thien-so-luu-niem.html">Bài 14. Thực hành tổng hợp: Hoàn thiện sổ lưu niệm</a>
+            </div>
+          </section>
+          <section class="sidebar-group">
+            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-6" data-accordion-trigger>
+              Chủ đề 6. Giải quyết vấn đề với sự trợ giúp của máy tính
+            </button>
+            <div class="sidebar-group__panel" id="sidebar-topic-6" hidden>
+              <a href="bai-15-thuat-toan.html">Bài 15. Thuật toán</a>
+              <a href="bai-16-cac-cau-truc-dieu-khien.html">Bài 16. Các cấu trúc điều khiển</a>
+              <a href="bai-17-chuong-trinh-may-tinh.html">Bài 17. Chương trình máy tính</a>
+              <a href="dictionary.html">Bảng giải thích thuật ngữ</a>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <div class="home-content">
+
+    <header class="hero algorithm-hero">
+      <div class="hero__badge">Sơ đồ khối + Rẽ nhánh</div>
+      <h1>Mô phỏng Thuật toán làm kem</h1>
+      <p>
+        Chọn nguyên liệu, bấm <strong>Chạy thuật toán</strong> và quan sát luồng sáng chạy qua từng khối.
+        Nếu chọn <strong>Không có gì</strong>, luồng sẽ đi sang nhánh <strong>Sai</strong> và kết thúc.
+      </p>
+    </header>
+
+    <section class="layout" aria-label="Mô phỏng thuật toán làm kem">
+      <div class="panel flow-panel">
+        <h2 class="flow-title">Sơ đồ khối</h2>
+        <div class="flow-wrap" id="flowWrap">
+          <svg class="flow-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <marker id="arrowHead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+                <path class="flow-arrow-head" d="M1 1 L13 7 L1 13 Q4 7 1 1 Z"></path>
+              </marker>
+              <marker id="arrowHeadActive" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+                <path class="flow-arrow-head flow-arrow-head--active" d="M1 1 L13 7 L1 13 Q4 7 1 1 Z"></path>
+              </marker>
+            </defs>
+
+            <path id="line-start-input" class="flow-line" d="M500 110 L500 126" marker-end="url(#arrowHead)"></path>
+            <path id="line-input-decision" class="flow-line" d="M500 214 L500 236" marker-end="url(#arrowHead)"></path>
+            <path id="line-decision-yes" class="flow-line" d="M500 386 L500 430" marker-end="url(#arrowHead)"></path>
+            <path id="line-mix-freeze" class="flow-line" d="M500 518 L500 548" marker-end="url(#arrowHead)"></path>
+            <path id="line-freeze-end" class="flow-line" d="M500 636 L500 666" marker-end="url(#arrowHead)"></path>
+            <path id="line-decision-no" class="flow-line" d="M625 311 L669 311 L669 375 L685 375" marker-end="url(#arrowHead)"></path>
+          </svg>
+
+          <div class="node node--oval start" id="node-start"><span class="node__label">Bắt đầu</span></div>
+          <div class="node node--rect input" id="node-input"><span class="node__label">Chọn nguyên liệu</span></div>
+          <div class="node node--diamond decision" id="node-decision"><span class="node__label">Có nguyên liệu không?</span></div>
+          <div class="node node--rect mix" id="node-mix"><span class="node__label">Trộn sữa + đường + nguyên liệu</span></div>
+          <div class="node node--rect freeze" id="node-freeze"><span class="node__label">Làm lạnh hỗn hợp</span></div>
+          <div class="node node--oval end" id="node-end"><span class="node__label">Hoàn thành kem</span></div>
+          <div class="node node--rect wrong-end" id="node-wrong-end"><span class="node__label">Sai → Kết thúc</span></div>
+
+          <div class="arrow-label yes-label">Đúng / Có</div>
+          <div class="arrow-label no-label">Sai / Không</div>
+        </div>
+      </div>
+
+      <aside class="panel controls-panel">
+        <h2 class="control-title">Điều khiển</h2>
+        <p style="margin: 0; color: var(--algo-muted); line-height: 1.7;">
+          Chọn một nguyên liệu để xem thuật toán chạy qua các khối.
+        </p>
+
+        <div class="choice-group" role="radiogroup" aria-label="Chọn nguyên liệu">
+          <label class="choice"><input type="radio" name="ingredient" value="vanilla" checked> Vani</label>
+          <label class="choice"><input type="radio" name="ingredient" value="strawberry"> Dâu</label>
+          <label class="choice"><input type="radio" name="ingredient" value="chocolate"> Sô cô la</label>
+          <label class="choice"><input type="radio" name="ingredient" value="none"> Không có gì</label>
+        </div>
+
+        <div class="status-box" id="statusBox" aria-live="polite">
+          Chọn nguyên liệu rồi bấm <strong>Chạy thuật toán</strong>.
+        </div>
+
+        <div class="button-row">
+          <button class="button" id="runButton" type="button">Chạy thuật toán</button>
+          <button class="button secondary" id="resetButton" type="button">Đặt lại</button>
+        </div>
+
+        <div class="legend">
+          <div>• Viền đỏ: khối đang chạy</div>
+          <div>• Viền xanh: khối đã đi qua</div>
+          <div>• Nhánh Sai: khi chọn “Không có gì”</div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+      </div>
+    </div>
+
+  <script src="assets/js/main.js?v=20260804"></script>
+  <script src="assets/js/algorithm.js?v=20260804"></script>
+</body>
+</html>

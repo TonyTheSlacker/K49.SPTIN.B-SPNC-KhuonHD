@@ -1270,6 +1270,14 @@ body.theme-dark .site-toast {
   min-height: 620px;
 }
 
+.lesson-frame--match {
+  min-height: 480px;
+}
+
+.lesson-frame--match iframe {
+  min-height: 480px;
+}
+
 .lesson-knowledge {
   display: grid;
   grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.95fr);

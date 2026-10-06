@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hoạt động 3 Bài 6 Tin học 6: đọc hiểu và vận dụng về mạng thông tin toàn cầu.">
+  <title>Hoạt động 3 - Đọc hiểu và vận dụng Bài 6</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bai-6-hoc-lieu.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">📖 Bài 6 · Hoạt động 3</div>
+    <div class="top-pill">⭐ Điểm: <strong id="score">0/100</strong></div>
+    <div class="top-pill" id="progressText">Sẵn sàng</div>
+    <button class="icon-button" id="resetButton" type="button" title="Đọc lại từ đầu" aria-label="Đọc lại từ đầu">↻</button>
+  </header>
+
+  <main class="page" id="app"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const app = $('#app');
+      const sections = [
+        {
+          title: 'Chặng 1 · Mạng thông tin toàn cầu',
+          text: 'Mạng thông tin toàn cầu, thường được gọi là WWW (World Wide Web), liên kết rất nhiều website trên Internet. Nhờ mạng thông tin này, người dùng có thể truy cập các nội dung ở nhiều nơi khác nhau bằng máy tính hoặc thiết bị có kết nối mạng.',
+          q: 'WWW được hiểu là gì?',
+          a: ['Mạng thông tin toàn cầu liên kết nhiều website', 'Một loại bàn phím', 'Một tệp âm thanh riêng lẻ', 'Một chiếc máy in'],
+          right: 0
+        },
+        {
+          title: 'Chặng 2 · Website và các trang web',
+          text: 'Website là một tập hợp các trang web có liên quan với nhau. Mỗi website thường có chủ đề hoặc mục đích riêng, chẳng hạn website của trường học, thư viện hay cơ quan. Các trang trong cùng website có thể dẫn tới nhau bằng những liên kết.',
+          q: 'Website thường gồm thành phần nào?',
+          a: ['Các trang web có liên quan', 'Chỉ một bức ảnh', 'Chỉ một đoạn nhạc', 'Một phím trên bàn phím'],
+          right: 0
+        },
+        {
+          title: 'Chặng 3 · Trang siêu văn bản',
+          text: 'Một trang web có thể trình bày văn bản, hình ảnh, âm thanh và video cùng lúc. Trang còn có thể chứa các liên kết để người đọc chuyển tới một trang khác hoặc một vị trí khác. Cách trình bày nhiều dạng thông tin như vậy được gọi là siêu văn bản.',
+          q: 'Trang siêu văn bản có thể chứa những gì?',
+          a: ['Văn bản, hình ảnh, âm thanh, video và liên kết', 'Chỉ các con số', 'Chỉ văn bản không có hình ảnh', 'Chỉ một địa chỉ trên giấy'],
+          right: 0
+        },
+        {
+          title: 'Chặng 4 · Liên kết trên trang web',
+          text: 'Liên kết là phần nội dung có thể được nháy chọn để mở một trang web, một vị trí khác hoặc một tài liệu liên quan. Nhờ các liên kết, việc đọc thông tin trên WWW không bị giới hạn theo một thứ tự cố định như khi đọc từng trang sách.',
+          q: 'Liên kết giúp người dùng làm gì?',
+          a: ['Chuyển tới thông tin hoặc trang liên quan', 'Tăng âm lượng máy tính', 'Xóa mọi website', 'Tắt nguồn Internet'],
+          right: 0
+        },
+        {
+          title: 'Chặng 5 · Tổ chức thông tin phi tuyến tính',
+          text: 'Trong một cuốn sách thông thường, các trang thường được đọc theo thứ tự từ đầu đến cuối. Trên WWW, người đọc có thể chọn liên kết phù hợp để đi tới nội dung mình quan tâm trước, sau đó quay lại hoặc mở tiếp một liên kết khác. Đây là cách tổ chức thông tin phi tuyến tính.',
+          q: 'Điểm nổi bật của cách tổ chức thông tin trên WWW là gì?',
+          a: ['Có thể truy cập theo nhiều hướng nhờ các liên kết', 'Chỉ được đọc theo một thứ tự cố định', 'Không thể quay lại nội dung đã xem', 'Chỉ hiển thị một trang duy nhất'],
+          right: 0
+        },
+        {
+          title: 'Chặng 6 · Địa chỉ trang web',
+          text: 'Mỗi website hoặc trang web có một địa chỉ để người dùng truy cập đúng nơi cần tìm. Địa chỉ này thường được nhập vào thanh địa chỉ của trình duyệt. Khi địa chỉ chính xác và thiết bị có kết nối mạng, trình duyệt sẽ mở nội dung tương ứng.',
+          q: 'Địa chỉ trang web được nhập vào đâu?',
+          a: ['Thanh địa chỉ của trình duyệt', 'Ô tìm kiếm trong một quyển vở', 'Màn hình máy in', 'Loa của máy tính'],
+          right: 0
+        },
+        {
+          title: 'Chặng 7 · Trình duyệt web',
+          text: 'Trình duyệt web là phần mềm giúp người dùng truy cập và xem các trang web. Google Chrome, Firefox, Microsoft Edge, Safari và Cốc Cốc đều là những trình duyệt quen thuộc. Sau khi mở trình duyệt, em có thể nhập địa chỉ website hoặc tìm nội dung cần đọc.',
+          q: 'Phần mềm nào giúp xem các trang web?',
+          a: ['Trình duyệt web', 'Máy tính bỏ túi', 'Trình phát nhạc', 'Bộ điều khiển máy in'],
+          right: 0
+        },
+        {
+          title: 'Chặng 8 · Khai thác thông tin bằng liên kết',
+          text: 'Khi đọc một trang web, em có thể gặp liên kết dẫn tới bài viết, hình ảnh hoặc tài liệu liên quan. Em nên chọn những liên kết phù hợp với mục đích học tập, đọc tiêu đề trước và quay lại trang trước nếu nội dung mới không cần thiết.',
+          q: 'Khi đọc trang web, em nên chọn liên kết như thế nào?',
+          a: ['Chọn liên kết phù hợp với mục đích tìm hiểu', 'Nháy vào mọi liên kết thật nhanh', 'Chỉ chọn liên kết không có tiêu đề', 'Bỏ qua hoàn toàn nội dung liên quan'],
+          right: 0
+        },
+        {
+          title: 'Chặng 9 · Ghi lại nguồn thông tin',
+          text: 'Khi sử dụng một đoạn văn, hình ảnh hoặc video trên Internet cho sản phẩm học tập, em cần ghi lại tên website và địa chỉ trang đã tham khảo. Việc ghi nguồn giúp người đọc biết thông tin đến từ đâu và giúp em kiểm tra lại nội dung khi cần.',
+          q: 'Khi dùng thông tin trên Internet, em nên ghi lại điều gì?',
+          a: ['Tên website và địa chỉ trang đã tham khảo', 'Mật khẩu của người khác', 'Tất cả nội dung không liên quan', 'Tên của mọi người đang trực tuyến'],
+          right: 0
+        },
+        {
+          title: 'Chặng 10 · Sử dụng thông tin có trách nhiệm',
+          text: 'Internet cung cấp nhiều thông tin nhưng không phải nội dung nào cũng phù hợp hoặc chính xác. Khi khai thác trang web, em cần chọn nguồn đáng tin cậy, kiểm tra thông tin, tôn trọng bản quyền và không nhận sản phẩm sao chép là của mình. Đó là cách sử dụng mạng thông tin toàn cầu có trách nhiệm.',
+          q: 'Hành động nào thể hiện sử dụng thông tin có trách nhiệm?',
+          a: ['Kiểm tra nguồn và tôn trọng bản quyền', 'Sao chép nguyên bài rồi xóa tên tác giả', 'Chia sẻ mọi thông tin chưa kiểm tra', 'Dùng hình ảnh bất kỳ mà không ghi nguồn'],
+          right: 0
+        }
+      ];
+      function shuffle(values) {
+        for (let index = values.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [values[index], values[randomIndex]] = [values[randomIndex], values[index]];
+        }
+        return values;
+      }
+      const answerPositions = shuffle([0, 1, 2, 3, 0, 1, 2, 3, 1, 2]);
+      function randomizedOptions(item, questionIndex) {
+        const distractors = shuffle(item.a.filter((_, optionIndex) => optionIndex !== item.right).map((answer) => ({ answer, correct: false })));
+        const correct = { answer: item.a[item.right], correct: true };
+        const position = answerPositions[questionIndex];
+        const options = [];
+        for (let slot = 0; slot < item.a.length; slot += 1) options.push(slot === position ? correct : distractors.shift());
+        return options;
+      }
+      let index = 0;
+      let score = 0;
+      let finished = false;
+
+      function updateHud() {
+        $('#score').textContent = `${score}/${sections.length * 10}`;
+        $('#progressText').textContent = finished ? `Hoàn thành ${sections.length}/${sections.length}` : index === 0 && score === 0 ? 'Sẵn sàng' : `Chặng ${index + 1}/${sections.length}`;
+      }
+      function layout(content) {
+        app.innerHTML = content;
+        updateHud();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function startScreen() {
+        layout(`<div class="hero"><div><span class="tag">📘 Tin học 6 · Hoạt động 3</span><h1>Đọc - hiểu mạng thông tin toàn cầu</h1><p>Đọc 10 đoạn nội dung ngắn về WWW, website, siêu văn bản và liên kết. Sau mỗi đoạn, em trả lời một câu hỏi rồi mới mở đoạn tiếp theo.</p></div><div class="hero-icon" aria-hidden="true">🌐📖</div></div><div class="panel"><div class="instruction">📚 Cách học<small>Đọc kỹ chặng hiện tại, chọn đáp án đúng và bấm “Tiếp tục đọc” để chuyển sang chặng kế tiếp.</small></div><div class="button-row"><button class="button" id="startButton">Bắt đầu đọc 📖</button></div></div>`);
+        $('#startButton').addEventListener('click', () => { index = 0; score = 0; finished = false; renderSection(); });
+      }
+      function renderSection() {
+        const item = sections[index];
+        const options = randomizedOptions(item, index);
+        const highlighted = item.text.replace(/(WWW|website|trang web|siêu văn bản|liên kết|thanh địa chỉ|trình duyệt web|bản quyền|nguồn)/gi, '<strong>$1</strong>');
+        layout(`<div class="panel"><div class="progress"><span style="width:${(index / sections.length) * 100}%"></span></div><div class="progress-label">Đang đọc chặng ${index + 1} / ${sections.length}</div><article class="reading-card active" style="margin-top:1rem"><div class="reading-title"><span class="reading-number">${index + 1}</span><div><h2>${item.title}</h2><p style="margin:.1rem 0 0">Đọc đoạn văn sau rồi trả lời câu hỏi.</p></div></div><div class="reading-text">${highlighted}</div><div class="question-box"><h3>❓ ${item.q}</h3><div class="choice-grid" id="choices">${options.map((option) => `<button class="choice" data-correct="${option.correct}">${option.answer}</button>`).join('')}</div><div class="feedback" id="feedback"></div><div class="button-row" id="nextArea"></div></div></article></div>`);
+        $('#choices').querySelectorAll('.choice').forEach((choice) => choice.addEventListener('click', () => {
+          const feedback = $('#feedback');
+          if (choice.dataset.correct === 'true') {
+            score += 10;
+            choice.classList.add('correct');
+            $('#choices').querySelectorAll('.choice').forEach((button) => { button.disabled = true; });
+            feedback.className = 'feedback ok';
+            feedback.textContent = '✅ Đúng! Em đã đọc và hiểu chặng này.';
+            const isLast = index === sections.length - 1;
+            $('#nextArea').innerHTML = `<button class="button success" id="nextButton">${isLast ? 'Xem kết quả 🏆' : `Tiếp tục đọc chặng ${index + 2} →`}</button>`;
+            $('#nextButton').addEventListener('click', () => { index += 1; if (isLast) finish(); else renderSection(); });
+            updateHud();
+          } else {
+            choice.classList.remove('wrong');
+            void choice.offsetWidth;
+            choice.classList.add('wrong');
+            feedback.className = 'feedback bad';
+            feedback.textContent = '💡 Chưa đúng. Hãy quay lại đoạn đọc, tìm từ khóa liên quan rồi thử lại.';
+          }
+        }));
+      }
+      function finish() {
+        finished = true;
+        layout(`<div class="panel result"><span class="result-icon">🎓</span><h1>Hoàn thành phần vận dụng!</h1><p>Em đã đọc và trả lời đủ 10 chặng về WWW, website, siêu văn bản và liên kết.</p><div class="score">Điểm đọc hiểu<strong>${score}<small style="font-size:1.2rem;color:var(--muted)"> / ${sections.length * 10}</small></strong></div><div class="summary-list"><div>✅ Nhận biết mạng thông tin toàn cầu và website</div><div>✅ Hiểu trang siêu văn bản và các dạng dữ liệu</div><div>✅ Khai thác liên kết theo mục đích</div><div>✅ Ghi nguồn và tôn trọng bản quyền</div></div><div class="button-row"><button class="button" id="againButton">Đọc lại từ đầu</button></div></div>`);
+        $('#againButton').addEventListener('click', () => { index = 0; score = 0; finished = false; renderSection(); });
+      }
+      $('#resetButton').addEventListener('click', () => { index = 0; score = 0; finished = false; startScreen(); });
+      startScreen();
+    })();
+  </script>
+</body>
+</html>

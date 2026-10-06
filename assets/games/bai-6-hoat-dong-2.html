@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hoạt động 2 Bài 6 Tin học 6: phiếu điền từ khóa và nội dung chính.">
+  <title>Hoạt động 2 - Điền từ khóa Bài 6</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bai-6-hoc-lieu.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🧩 Bài 6 · Hoạt động 2</div>
+    <div class="top-pill">📌 Đúng: <strong id="score">0/8</strong></div>
+    <button class="icon-button" id="resetButton" type="button" title="Xóa câu trả lời" aria-label="Xóa câu trả lời">↻</button>
+  </header>
+
+  <main class="page" id="app"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const app = $('#app');
+      const words = ['trình duyệt web', 'Google Chrome', 'Firefox', 'Microsoft Edge', 'Safari', 'Cốc Cốc', 'thanh địa chỉ', 'Enter'];
+      const items = [
+        { before: 'Phần mềm giúp người dùng truy cập các trang web là', after: '.', answer: 'trình duyệt web' },
+        { before: 'Một trình duyệt phổ biến do Google phát triển là', after: '.', answer: 'Google Chrome' },
+        { before: 'Một trình duyệt mã nguồn mở phổ biến là', after: '.', answer: 'Firefox' },
+        { before: 'Microsoft phát triển trình duyệt có tên là', after: '.', answer: 'Microsoft Edge' },
+        { before: 'Một trình duyệt do Apple phát triển là', after: '.', answer: 'Safari' },
+        { before: 'Cốc Cốc cũng là một', after: 'được nhiều người dùng tại Việt Nam biết đến.', answer: 'trình duyệt web' },
+        { before: 'Địa chỉ website được nhập vào', after: 'của trình duyệt.', answer: 'thanh địa chỉ' },
+        { before: 'Sau khi nhập địa chỉ website, em nhấn phím', after: 'để truy cập trang.', answer: 'Enter' }
+      ];
+      let checked = false;
+
+      function updateScore(correct = 0) { $('#score').textContent = `${correct}/${items.length}`; }
+      function selectHTML(index) {
+        return `<select id="answer-${index}" aria-label="Từ khóa cho câu ${index + 1}"><option value="">-- chọn từ --</option>${words.map((word) => `<option value="${word}">${word}</option>`).join('')}</select>`;
+      }
+      function render() {
+        app.innerHTML = `<div class="hero"><div><span class="tag">📘 Tin học 6 · Hoạt động 2</span><h1>Cánh cửa Trình duyệt</h1><p>Điền các từ khóa về trình duyệt và quy trình truy cập website. Nội dung chỉ tập trung vào phần “Trình duyệt” của Bài 6.</p></div><div class="hero-icon" aria-hidden="true">🧭⌨️</div></div><div class="panel"><div class="instruction">✍️ Nhiệm vụ<small>Chọn từ phù hợp trong mỗi câu. Có thể kiểm tra nhiều lần và sửa các dòng chưa đúng.</small></div><div class="word-bank" aria-label="Ngân hàng từ khóa">${words.map((word) => `<span>${word}</span>`).join('')}</div><div class="fill-list">${items.map((item, index) => `<div class="fill-row" data-row="${index}"><span class="fill-number">${index + 1}</span><div>${item.before} ${selectHTML(index)} ${item.after}<div class="feedback" style="margin:.25rem 0 0;font-size:.88rem" id="row-feedback-${index}"></div></div></div>`).join('')}</div><div class="feedback" id="mainFeedback"></div><div class="button-row"><button class="button" id="checkButton">Kiểm tra bài làm ✓</button><button class="button secondary" id="clearButton">Xóa lựa chọn</button></div></div>`;
+        $('#checkButton').addEventListener('click', check);
+        $('#clearButton').addEventListener('click', clear);
+        updateScore(0);
+      }
+      function check() {
+        checked = true;
+        let correct = 0;
+        items.forEach((item, index) => {
+          const row = $(`[data-row="${index}"]`);
+          const answer = $(`#answer-${index}`).value;
+          const feedback = $(`#row-feedback-${index}`);
+          row.classList.remove('correct', 'wrong');
+          if (answer === item.answer) {
+            correct += 1;
+            row.classList.add('correct');
+            feedback.className = 'feedback ok';
+            feedback.textContent = 'Đúng';
+          } else {
+            row.classList.add('wrong');
+            feedback.className = 'feedback bad';
+            feedback.textContent = answer ? 'Chưa đúng, hãy đổi từ.' : 'Chưa chọn từ.';
+          }
+        });
+        updateScore(correct);
+        const feedback = $('#mainFeedback');
+        if (correct === items.length) {
+          feedback.className = 'feedback ok';
+          feedback.innerHTML = '🎉 Hoàn thành! Em đã nắm được các từ khóa và nội dung chính của Bài 6.';
+          $('#checkButton').textContent = 'Đã hoàn thành ✓';
+          $('#checkButton').disabled = true;
+        } else {
+          feedback.className = 'feedback bad';
+          feedback.textContent = `Em đúng ${correct}/${items.length}. Hãy sửa các dòng màu đỏ rồi kiểm tra lại.`;
+        }
+      }
+      function clear() {
+        checked = false;
+        items.forEach((_, index) => {
+          $(`#answer-${index}`).value = '';
+          const row = $(`[data-row="${index}"]`);
+          row.classList.remove('correct', 'wrong');
+          $(`#row-feedback-${index}`).textContent = '';
+          $(`#row-feedback-${index}`).className = 'feedback';
+        });
+        $('#mainFeedback').textContent = '';
+        $('#mainFeedback').className = 'feedback';
+        $('#checkButton').textContent = 'Kiểm tra bài làm ✓';
+        $('#checkButton').disabled = false;
+        updateScore(0);
+      }
+      $('#resetButton').addEventListener('click', () => { if (checked) clear(); else render(); });
+      render();
+    })();
+  </script>
+</body>
+</html>

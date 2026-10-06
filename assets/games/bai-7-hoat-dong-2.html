@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hoạt động 2 Bài 7 Tin học 6: điền từ về tìm kiếm và khai thác thông tin.">
+  <title>Hoạt động 2 - Thực hành tìm kiếm thông tin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bai-6-hoc-lieu.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">⌨️ Bài 7 · Hoạt động 2</div>
+    <div class="top-pill">📌 Đúng: <strong id="score">0/10</strong></div>
+    <button class="icon-button" id="resetButton" type="button" title="Xóa câu trả lời" aria-label="Xóa câu trả lời">↻</button>
+  </header>
+
+  <main class="page" id="app"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const app = $('#app');
+      const words = ['trình duyệt', 'google.com', 'vai trò tầng ozon', 'từ khóa', 'dấu ngoặc kép', 'liên kết', 'Hình ảnh', 'Tin tức', 'Video', 'tệp văn bản'];
+      const items = [
+        { before: 'Để bắt đầu tìm kiếm, em mở một', after: '.', answer: 'trình duyệt' },
+        { before: 'Trong bài thực hành, em gõ địa chỉ', after: 'vào thanh địa chỉ.', answer: 'google.com' },
+        { before: 'Chủ đề tìm kiếm mẫu là', after: '.', answer: 'vai trò tầng ozon' },
+        { before: 'Một từ hoặc cụm từ liên quan đến nội dung cần tìm gọi là', after: '.', answer: 'từ khóa' },
+        { before: 'Muốn tìm đúng một cụm từ, em đặt cụm từ đó trong', after: '.', answer: 'dấu ngoặc kép' },
+        { before: 'Mỗi kết quả tìm kiếm thường là một', after: 'trỏ đến trang có thông tin liên quan.', answer: 'liên kết' },
+        { before: 'Muốn tìm hình minh họa cho chủ đề, em chọn mục', after: 'trên trang kết quả.', answer: 'Hình ảnh' },
+        { before: 'Muốn xem các bài viết mới, em có thể chọn mục', after: '.', answer: 'Tin tức' },
+        { before: 'Muốn xem nội dung dạng phim hoặc clip, em chọn mục', after: '.', answer: 'Video' },
+        { before: 'Thông tin và hình ảnh đã chọn có thể được lưu vào một', after: 'kèm địa chỉ nguồn.', answer: 'tệp văn bản' }
+      ];
+      let checked = false;
+
+      function updateScore(correct = 0) { $('#score').textContent = `${correct}/${items.length}`; }
+      function selectHTML(index) {
+        return `<select id="answer-${index}" aria-label="Từ khóa cho câu ${index + 1}"><option value="">-- chọn từ --</option>${words.map((word) => `<option value="${word}">${word}</option>`).join('')}</select>`;
+      }
+      function render() {
+        app.innerHTML = `<div class="hero"><div><span class="tag">📘 Tin học 6 · Hoạt động 2</span><h1>Lắp ráp quy trình tìm kiếm</h1><p>Điền từ khóa vào các bước thực hành: mở máy tìm kiếm, đặt truy vấn, lọc kết quả và lưu sản phẩm.</p></div><div class="hero-icon" aria-hidden="true">🧩🔎</div></div><div class="panel"><div class="instruction">✍️ Nhiệm vụ<small>Chọn từ phù hợp trong mỗi câu. Nội dung tập trung vào thực hành tìm thông tin về vai trò của tầng ozon.</small></div><div class="word-bank" aria-label="Ngân hàng từ khóa">${words.map((word) => `<span>${word}</span>`).join('')}</div><div class="fill-list">${items.map((item, index) => `<div class="fill-row" data-row="${index}"><span class="fill-number">${index + 1}</span><div>${item.before} ${selectHTML(index)} ${item.after}<div class="feedback" style="margin:.25rem 0 0;font-size:.88rem" id="row-feedback-${index}"></div></div></div>`).join('')}</div><div class="feedback" id="mainFeedback"></div><div class="button-row"><button class="button" id="checkButton">Kiểm tra bài làm ✓</button><button class="button secondary" id="clearButton">Xóa lựa chọn</button></div></div>`;
+        $('#checkButton').addEventListener('click', check);
+        $('#clearButton').addEventListener('click', clear);
+        updateScore(0);
+      }
+      function check() {
+        checked = true;
+        let correct = 0;
+        items.forEach((item, index) => {
+          const row = $(`[data-row="${index}"]`);
+          const answer = $(`#answer-${index}`).value;
+          const feedback = $(`#row-feedback-${index}`);
+          row.classList.remove('correct', 'wrong');
+          if (answer === item.answer) {
+            correct += 1;
+            row.classList.add('correct');
+            feedback.className = 'feedback ok';
+            feedback.textContent = 'Đúng';
+          } else {
+            row.classList.add('wrong');
+            feedback.className = 'feedback bad';
+            feedback.textContent = answer ? 'Chưa đúng, hãy đổi từ.' : 'Chưa chọn từ.';
+          }
+        });
+        updateScore(correct);
+        const feedback = $('#mainFeedback');
+        if (correct === items.length) {
+          feedback.className = 'feedback ok';
+          feedback.textContent = '🎉 Hoàn thành quy trình thực hành tìm kiếm và khai thác thông tin!';
+          $('#checkButton').textContent = 'Đã hoàn thành ✓';
+          $('#checkButton').disabled = true;
+        } else {
+          feedback.className = 'feedback bad';
+          feedback.textContent = `Em đúng ${correct}/${items.length}. Hãy sửa các dòng màu đỏ rồi kiểm tra lại.`;
+        }
+      }
+      function clear() {
+        checked = false;
+        items.forEach((_, index) => {
+          $(`#answer-${index}`).value = '';
+          const row = $(`[data-row="${index}"]`);
+          row.classList.remove('correct', 'wrong');
+          $(`#row-feedback-${index}`).textContent = '';
+          $(`#row-feedback-${index}`).className = 'feedback';
+        });
+        $('#mainFeedback').textContent = '';
+        $('#mainFeedback').className = 'feedback';
+        $('#checkButton').textContent = 'Kiểm tra bài làm ✓';
+        $('#checkButton').disabled = false;
+        updateScore(0);
+      }
+      $('#resetButton').addEventListener('click', () => { if (checked) clear(); else render(); });
+      render();
+    })();
+  </script>
+</body>
+</html>

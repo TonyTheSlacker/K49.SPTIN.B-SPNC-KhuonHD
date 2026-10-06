@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hoạt động 1 Bài 6 Tin học 6: trò chơi Mở khóa Mạng Nhện Tri Thức.">
+  <title>Hoạt động 1 - Mở khóa Mạng Nhện</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bai-6-hoc-lieu.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🕸️ Bài 6 · Hoạt động 1</div>
+    <div class="top-pill">⭐ Điểm: <strong id="score">0</strong></div>
+    <div class="top-pill" id="progressText">Câu 0/6</div>
+    <button class="icon-button" id="resetButton" type="button" title="Chơi lại từ đầu" aria-label="Chơi lại từ đầu">↻</button>
+  </header>
+
+  <main class="page" id="app"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const app = $('#app');
+      const KEY = 'bai6-hoat-dong-1-v2';
+      const questions = [
+        {
+          q: 'Trong một cuốn sách, thông tin thường được sắp xếp như thế nào?',
+          a: ['Theo trình tự chương, bài, mục và trang', 'Không theo thứ tự nào', 'Chỉ bằng hình ảnh', 'Theo các liên kết mở rộng'],
+          right: 0,
+          explain: 'Sách thường tổ chức thông tin theo trình tự tuyến tính từ đầu đến cuối.'
+        },
+        {
+          q: 'WWW (World Wide Web) là gì?',
+          a: ['Một trình duyệt web', 'Một địa chỉ website', 'Mạng thông tin toàn cầu liên kết các website', 'Một loại tệp hình ảnh'],
+          right: 2,
+          explain: 'WWW là mạng thông tin toàn cầu, liên kết nhiều website trên Internet.'
+        },
+        {
+          q: 'Website được hiểu là gì?',
+          a: ['Tập hợp các trang web có liên quan', 'Một phím trên bàn phím', 'Một thiết bị kết nối mạng', 'Một tệp âm thanh'],
+          right: 0,
+          explain: 'Website gồm các trang web liên quan và được truy cập thông qua Internet.'
+        },
+        {
+          q: 'Trang siêu văn bản có thể chứa những gì?',
+          a: ['Chỉ văn bản', 'Văn bản, hình ảnh, âm thanh, video và liên kết', 'Chỉ một địa chỉ website', 'Chỉ các con số'],
+          right: 1,
+          explain: 'Siêu văn bản tích hợp nhiều dạng dữ liệu và các liên kết đến vị trí hoặc trang khác.'
+        },
+        {
+          q: 'Liên kết trên trang web có tác dụng gì?',
+          a: ['Tăng âm lượng máy tính', 'Chuyển đến trang hoặc vị trí thông tin khác', 'Xóa website', 'Đóng tất cả trang web'],
+          right: 1,
+          explain: 'Liên kết giúp người dùng chuyển nhanh giữa những thông tin có liên quan.'
+        },
+        {
+          q: 'Điểm nổi bật của cách tổ chức thông tin trên WWW là gì?',
+          a: ['Chỉ đọc được theo một thứ tự cố định', 'Các trang được liên kết, cho phép truy cập phi tuyến tính', 'Không có hình ảnh hoặc âm thanh', 'Chỉ có một trang duy nhất'],
+          right: 1,
+          explain: 'Trên WWW, người dùng có thể chọn liên kết để đi đến thông tin liên quan theo nhu cầu.'
+        },
+        {
+          q: 'Mỗi trang web thường có đặc điểm nào để người dùng truy cập?',
+          a: ['Một địa chỉ riêng', 'Một mật khẩu chung', 'Một chiếc máy in', 'Một thư mục giấy'],
+          right: 0,
+          explain: 'Mỗi trang web có địa chỉ truy cập riêng để người dùng mở đúng nội dung.'
+        },
+        {
+          q: 'Thông tin trên Internet có thể gồm những dạng nào?',
+          a: ['Văn bản, hình ảnh, âm thanh, phần mềm và liên kết', 'Chỉ các con số', 'Chỉ chữ viết tay', 'Chỉ những trang in trên giấy'],
+          right: 0,
+          explain: 'Internet có nhiều dạng thông tin và các liên kết kết nối những nội dung liên quan.'
+        },
+        {
+          q: 'Một website thường bao gồm thành phần nào?',
+          a: ['Nhiều trang web có liên quan', 'Chỉ một bức ảnh', 'Chỉ một đoạn âm thanh', 'Một phím trên bàn phím'],
+          right: 0,
+          explain: 'Website là tập hợp các trang web có liên quan được truy cập thông qua Internet.'
+        },
+        {
+          q: 'Khi nháy vào một liên kết phù hợp, em có thể làm gì?',
+          a: ['Đi đến một vị trí hoặc trang web liên quan', 'Làm mất toàn bộ Internet', 'Biến văn bản thành giấy', 'Tắt màn hình'],
+          right: 0,
+          explain: 'Liên kết giúp người dùng di chuyển giữa những nội dung liên quan trong mạng thông tin.'
+        }
+      ];
+      function shuffle(values) {
+        for (let index = values.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [values[index], values[randomIndex]] = [values[randomIndex], values[index]];
+        }
+        return values;
+      }
+      const answerPositions = shuffle([0, 1, 2, 3, 0, 1, 2, 3, 1, 2]);
+      function randomizedOptions(item, questionIndex) {
+        const distractors = shuffle(item.a.filter((_, index) => index !== item.right).map((answer) => ({ answer, correct: false })));
+        const correct = { answer: item.a[item.right], correct: true };
+        const position = answerPositions[questionIndex];
+        const options = [];
+        for (let slot = 0; slot < item.a.length; slot += 1) options.push(slot === position ? correct : distractors.shift());
+        return options;
+      }
+
+      const freshState = () => ({ question: 0, score: 0, mistakes: 0, done: false });
+      const loadState = () => {
+        try { return { ...freshState(), ...(JSON.parse(localStorage.getItem(KEY)) || {}) }; } catch { return freshState(); }
+      };
+      let state = loadState();
+
+      function saveState() {
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* Trò chơi vẫn chạy khi không lưu được. */ }
+      }
+      function updateHud() {
+        $('#score').textContent = state.score;
+        $('#progressText').textContent = state.done ? `Hoàn thành ${questions.length}/${questions.length}` : `Câu ${Math.min(state.question + 1, questions.length)}/${questions.length}`;
+      }
+      function toast(message, type = '') {
+        const node = $('#toast');
+        node.innerHTML = message;
+        node.className = `${type} show`;
+        window.setTimeout(() => { node.className = ''; }, 2800);
+      }
+      function layout(content) {
+        app.innerHTML = content;
+        updateHud();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function startScreen() {
+        layout(`<div class="hero"><div><span class="tag">📘 Tin học 6 · Hoạt động 1</span><h1>Mở khóa Thành phố Website</h1><p>Trả lời 10 câu hỏi để khám phá cách tổ chức thông tin trên Internet: sách tuyến tính, WWW, website, siêu văn bản và liên kết.</p></div><div class="hero-icon" aria-hidden="true">🌐🔗</div></div><div class="panel"><div class="instruction">🎮 Cách chơi<small>Chọn đáp án đúng. Nếu chọn sai, em đọc gợi ý rồi thử lại; mỗi câu vẫn có thể hoàn thành.</small></div><div class="button-row"><button class="button" id="startButton">Bắt đầu trò chơi 🚀</button></div></div>`);
+        $('#progressText').textContent = 'Sẵn sàng';
+        $('#startButton').addEventListener('click', () => { state.question = 0; state.score = 0; state.mistakes = 0; state.done = false; saveState(); renderQuestion(); });
+      }
+      function renderQuestion() {
+        const item = questions[state.question];
+        const options = randomizedOptions(item, state.question);
+        layout(`<div class="panel"><div class="progress"><span style="width:${(state.question / questions.length) * 100}%"></span></div><div class="progress-label">Mảnh ghép ${state.question + 1} / ${questions.length}</div><div class="instruction" style="margin-top:1rem">🔐 ${item.q}<small>${state.mistakes ? 'Hãy đọc gợi ý và chọn lại thật cẩn thận.' : 'Chọn một phương án phù hợp nhất.'}</small></div><div class="choice-grid" id="choices">${options.map((option, index) => `<button class="choice" data-index="${index}" data-correct="${option.correct}">${option.answer}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`);
+        $('#choices').querySelectorAll('.choice').forEach((choice) => choice.addEventListener('click', () => {
+          const feedback = $('#feedback');
+          if (choice.dataset.correct === 'true') {
+            choice.classList.add('correct');
+            $('#choices').querySelectorAll('.choice').forEach((button) => { button.disabled = true; });
+            state.score += state.mistakes === 0 ? 10 : 5;
+            feedback.className = 'feedback ok';
+            feedback.innerHTML = `✅ Chính xác! ${item.explain}`;
+            saveState();
+            updateHud();
+            window.setTimeout(() => {
+              state.question += 1;
+              state.mistakes = 0;
+              if (state.question >= questions.length) finish(); else renderQuestion();
+            }, 2200);
+          } else {
+            state.mistakes += 1;
+            choice.classList.remove('wrong');
+            void choice.offsetWidth;
+            choice.classList.add('wrong');
+            feedback.className = 'feedback bad';
+            feedback.textContent = '💡 Chưa đúng. Hãy thử lại; từ khóa trong câu hỏi sẽ giúp em tìm đáp án.';
+          }
+        }));
+      }
+      function finish() {
+        state.done = true;
+        saveState();
+        layout(`<div class="panel result"><span class="result-icon">🏆</span><h1>Đã mở khóa Thành phố Website!</h1><p>Em đã hoàn thành nội dung về cách tổ chức thông tin trên Internet.</p><div class="score">Điểm của em<strong>${state.score}<small style="font-size:1.2rem;color:var(--muted)"> / ${questions.length * 10}</small></strong></div><div class="summary-list"><div>✅ Tổ chức thông tin trong sách</div><div>✅ WWW và website</div><div>✅ Siêu văn bản và các dạng dữ liệu</div><div>✅ Liên kết và tổ chức phi tuyến tính</div></div><div class="button-row"><button class="button" id="againButton">Chơi lại</button></div></div>`);
+        $('#againButton').addEventListener('click', () => { state = freshState(); saveState(); renderQuestion(); });
+      }
+      $('#resetButton').addEventListener('click', () => { state = freshState(); saveState(); startScreen(); });
+      updateHud();
+      startScreen();
+    })();
+  </script>
+</body>
+</html>

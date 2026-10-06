@@ -1255,7 +1255,7 @@ body.theme-dark .site-toast {
 
 .lesson-frame--game {
   aspect-ratio: auto;
-  height: clamp(560px, 85vh, 780px);
+  min-height: 620px;
 }
 
 .lesson-frame iframe {
@@ -1264,6 +1264,10 @@ body.theme-dark .site-toast {
   border: 0;
   display: block;
   background: #ffffff;
+}
+
+.lesson-frame--game iframe {
+  min-height: 620px;
 }
 
 .lesson-knowledge {

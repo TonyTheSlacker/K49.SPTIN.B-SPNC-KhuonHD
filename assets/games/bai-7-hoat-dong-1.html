@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hoạt động 1 Bài 7 Tin học 6: trò chơi máy tìm kiếm và từ khóa.">
+  <title>Hoạt động 1 - Truy tìm kho báu từ khóa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bai-6-hoc-lieu.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🔎 Bài 7 · Hoạt động 1</div>
+    <div class="top-pill">⭐ Điểm: <strong id="score">0</strong></div>
+    <div class="top-pill" id="progressText">Sẵn sàng</div>
+    <button class="icon-button" id="resetButton" type="button" title="Chơi lại từ đầu" aria-label="Chơi lại từ đầu">↻</button>
+  </header>
+
+  <main class="page" id="app"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const app = $('#app');
+      const questions = [
+        {
+          q: 'Máy tìm kiếm là gì?',
+          a: ['Một website đặc biệt hỗ trợ tìm kiếm thông tin', 'Một thư mục lưu ảnh', 'Một loại bàn phím', 'Một phần mềm vẽ tranh'],
+          right: 0,
+          explain: 'Máy tìm kiếm là website đặc biệt giúp tìm thông tin trên Internet thông qua từ khóa.'
+        },
+        {
+          q: 'Đâu là những máy tìm kiếm phổ biến?',
+          a: ['Google, Bing, Yahoo, Cốc Cốc', 'Word, Paint, Excel', 'Chrome, Edge, Firefox', 'YouTube, máy in, loa'],
+          right: 0,
+          explain: 'Google, Bing, Yahoo và Cốc Cốc đều có thể hỗ trợ tìm kiếm thông tin.'
+        },
+        {
+          q: 'Từ khóa là gì?',
+          a: ['Một từ hoặc cụm từ liên quan đến nội dung cần tìm', 'Mật khẩu đăng nhập', 'Tên của máy tính', 'Một nút tắt trình duyệt'],
+          right: 0,
+          explain: 'Từ khóa do người dùng cung cấp để máy tìm kiếm tìm ra thông tin liên quan.'
+        },
+        {
+          q: 'Muốn tìm thông tin về vai trò của tầng ozon, từ khóa nào sát mục đích nhất?',
+          a: ['vai trò của tầng ozon', 'ozon', 'trời', 'thông tin'],
+          right: 0,
+          explain: 'Từ khóa càng sát yêu cầu thì kết quả tìm kiếm càng phù hợp.'
+        },
+        {
+          q: 'Kết quả tìm kiếm thường được trình bày dưới dạng nào?',
+          a: ['Danh sách các liên kết', 'Một trang giấy duy nhất', 'Một thư mục không có tên', 'Chỉ một đoạn âm thanh'],
+          right: 0,
+          explain: 'Mỗi kết quả thường là một liên kết trỏ đến trang web có chứa nội dung liên quan.'
+        },
+        {
+          q: 'Danh sách kết quả tìm kiếm có thể chứa những dạng nào?',
+          a: ['Văn bản, hình ảnh hoặc video', 'Chỉ văn bản', 'Chỉ hình ảnh in trên giấy', 'Chỉ biểu tượng phần mềm'],
+          right: 0,
+          explain: 'Người dùng có thể xem kết quả dạng văn bản, hình ảnh, video và các dạng khác.'
+        },
+        {
+          q: 'Dấu ngoặc kép được dùng khi nào?',
+          a: ['Khi muốn tìm đúng một cụm từ', 'Khi muốn tắt máy tính', 'Khi muốn xóa từ khóa', 'Khi không có nội dung cần tìm'],
+          right: 0,
+          explain: 'Đặt cụm từ trong dấu ngoặc kép giúp thu hẹp phạm vi tìm kiếm.'
+        },
+        {
+          q: 'Vì sao không nên dùng từ khóa quá chung chung?',
+          a: ['Vì kết quả có thể quá nhiều và khó chọn lọc', 'Vì máy tìm kiếm sẽ tắt', 'Vì không thể dùng Internet', 'Vì từ khóa chung luôn sai chính tả'],
+          right: 0,
+          explain: 'Từ khóa chưa rõ trọng tâm thường tạo ra quá nhiều kết quả không phù hợp.'
+        },
+        {
+          q: 'Ưu điểm của máy tìm kiếm là gì?',
+          a: ['Tìm nhanh và cung cấp nhiều thông tin', 'Đảm bảo mọi kết quả đều đúng tuyệt đối', 'Không cần chọn từ khóa', 'Chỉ cho phép xem một website'],
+          right: 0,
+          explain: 'Máy tìm kiếm nhanh và tiện lợi, nhưng người dùng vẫn phải kiểm tra, so sánh kết quả.'
+        },
+        {
+          q: 'Khi sử dụng thông tin tìm được, em cần chú ý điều gì?',
+          a: ['Kiểm tra độ tin cậy và tôn trọng bản quyền', 'Sao chép mọi thứ không cần đọc', 'Tin ngay kết quả đầu tiên', 'Xóa địa chỉ nguồn'],
+          right: 0,
+          explain: 'Thông tin trên Internet có thể thiếu chính xác; cần kiểm tra nguồn và tôn trọng bản quyền.'
+        }
+      ];
+      function shuffle(values) {
+        for (let index = values.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [values[index], values[randomIndex]] = [values[randomIndex], values[index]];
+        }
+        return values;
+      }
+      const answerPositions = shuffle([0, 1, 2, 3, 0, 1, 2, 3, 1, 2]);
+      function randomizedOptions(item, questionIndex) {
+        const distractors = shuffle(item.a.filter((_, index) => index !== item.right).map((answer) => ({ answer, correct: false })));
+        const correct = { answer: item.a[item.right], correct: true };
+        const position = answerPositions[questionIndex];
+        const options = [];
+        for (let slot = 0; slot < item.a.length; slot += 1) options.push(slot === position ? correct : distractors.shift());
+        return options;
+      }
+      const freshState = () => ({ question: 0, score: 0, mistakes: 0, done: false });
+      let state = freshState();
+
+      function updateHud() {
+        $('#score').textContent = state.score;
+        $('#progressText').textContent = state.done ? `Hoàn thành ${questions.length}/${questions.length}` : state.question === 0 && state.score === 0 ? 'Sẵn sàng' : `Câu ${state.question + 1}/${questions.length}`;
+      }
+      function layout(content) {
+        app.innerHTML = content;
+        updateHud();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function startScreen() {
+        layout(`<div class="hero"><div><span class="tag">📘 Tin học 6 · Bài 7</span><h1>Truy tìm Kho báu Từ khóa</h1><p>Vượt qua 10 câu hỏi để khám phá máy tìm kiếm, cách chọn từ khóa và những điều cần lưu ý khi sử dụng kết quả trên Internet.</p></div><div class="hero-icon" aria-hidden="true">🗺️🔎</div></div><div class="panel"><div class="instruction">🎮 Cách chơi<small>Chọn đáp án đúng. Sau mỗi câu, hãy đọc phần giải thích trước khi tiếp tục.</small></div><div class="button-row"><button class="button" id="startButton">Bắt đầu trò chơi 🚀</button></div></div>`);
+        $('#startButton').addEventListener('click', () => { state = freshState(); renderQuestion(); });
+      }
+      function renderQuestion() {
+        const item = questions[state.question];
+        const options = randomizedOptions(item, state.question);
+        layout(`<div class="panel"><div class="progress"><span style="width:${(state.question / questions.length) * 100}%"></span></div><div class="progress-label">Câu hỏi ${state.question + 1} / ${questions.length}</div><div class="instruction" style="margin-top:1rem">🔐 ${item.q}<small>${state.mistakes ? 'Hãy đọc gợi ý và thử lại.' : 'Chọn một phương án phù hợp nhất.'}</small></div><div class="choice-grid" id="choices">${options.map((option, index) => `<button class="choice" data-index="${index}" data-correct="${option.correct}">${option.answer}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`);
+        $('#choices').querySelectorAll('.choice').forEach((choice) => choice.addEventListener('click', () => {
+          const feedback = $('#feedback');
+          if (choice.dataset.correct === 'true') {
+            $('#choices').querySelectorAll('.choice').forEach((button) => { button.disabled = true; });
+            choice.classList.add('correct');
+            state.score += state.mistakes === 0 ? 10 : 5;
+            feedback.className = 'feedback ok';
+            feedback.innerHTML = `✅ Chính xác! ${item.explain}`;
+            window.setTimeout(() => {
+              state.question += 1;
+              state.mistakes = 0;
+              if (state.question >= questions.length) finish(); else renderQuestion();
+            }, 2200);
+          } else {
+            state.mistakes += 1;
+            choice.classList.remove('wrong');
+            void choice.offsetWidth;
+            choice.classList.add('wrong');
+            feedback.className = 'feedback bad';
+            feedback.textContent = '💡 Chưa đúng. Hãy chú ý từ khóa chính trong câu hỏi và thử lại.';
+          }
+        }));
+      }
+      function finish() {
+        state.done = true;
+        layout(`<div class="panel result"><span class="result-icon">🏆</span><h1>Đã tìm thấy Kho báu Từ khóa!</h1><p>Em đã hoàn thành phần kiến thức về máy tìm kiếm và từ khóa.</p><div class="score">Điểm của em<strong>${state.score}<small style="font-size:1.2rem;color:var(--muted)"> / ${questions.length * 10}</small></strong></div><div class="summary-list"><div>✅ Công dụng của máy tìm kiếm</div><div>✅ Từ khóa và dấu ngoặc kép</div><div>✅ Các dạng kết quả tìm kiếm</div><div>✅ Kiểm tra nguồn và bản quyền</div></div><div class="button-row"><button class="button" id="againButton">Chơi lại</button></div></div>`);
+        $('#againButton').addEventListener('click', () => { state = freshState(); renderQuestion(); });
+      }
+      $('#resetButton').addEventListener('click', () => { state = freshState(); startScreen(); });
+      startScreen();
+    })();
+  </script>
+</body>
+</html>

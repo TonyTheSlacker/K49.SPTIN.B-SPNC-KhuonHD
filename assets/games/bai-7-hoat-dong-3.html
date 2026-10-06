@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hoạt động 3 Bài 7 Tin học 6: đọc hiểu và đánh giá kết quả tìm kiếm.">
+  <title>Hoạt động 3 - Đọc hiểu và vận dụng Bài 7</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bai-6-hoc-lieu.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">📖 Bài 7 · Hoạt động 3</div>
+    <div class="top-pill">⭐ Điểm: <strong id="score">0/100</strong></div>
+    <div class="top-pill" id="progressText">Sẵn sàng</div>
+    <button class="icon-button" id="resetButton" type="button" title="Đọc lại từ đầu" aria-label="Đọc lại từ đầu">↻</button>
+  </header>
+
+  <main class="page" id="app"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const app = $('#app');
+      const sections = [
+        {
+          title: 'Chặng 1 · Xác định nhiệm vụ',
+          text: 'Trước khi mở máy tìm kiếm, người học cần đọc kỹ yêu cầu. Ví dụ, nhiệm vụ là tìm thông tin và hình minh họa về vai trò của tầng ozon. Nếu hiểu rõ mình cần tìm gì, em sẽ chọn được từ khóa phù hợp và không bị lạc trong quá nhiều kết quả.',
+          q: 'Việc đầu tiên trước khi chọn từ khóa là gì?',
+          a: ['Xác định rõ thông tin cần tìm', 'Mở mọi kết quả cùng lúc', 'Sao chép một bài bất kỳ', 'Chọn ảnh đầu tiên'],
+          right: 0
+        },
+        {
+          title: 'Chặng 2 · Mở máy tìm kiếm',
+          text: 'Học sinh mở trình duyệt, truy cập một máy tìm kiếm như Google tại địa chỉ google.com rồi nhập nội dung cần tìm vào ô tìm kiếm. Máy tìm kiếm là một website đặc biệt, hỗ trợ tìm thông tin nhanh chóng thông qua từ khóa.',
+          q: 'Google trong đoạn đọc được dùng để làm gì?',
+          a: ['Làm máy tìm kiếm thông tin', 'Soạn thảo văn bản', 'Vẽ hình minh họa', 'Lưu điện cho máy tính'],
+          right: 0
+        },
+        {
+          title: 'Chặng 3 · Chọn từ khóa sát vấn đề',
+          text: 'Từ khóa là một từ hoặc cụm từ liên quan đến nội dung cần tìm. Với nhiệm vụ về tầng ozon, cụm từ “vai trò tầng ozon” sát hơn từ “ozon” hoặc “thông tin”. Từ khóa rõ và đúng trọng tâm thường giúp kết quả phù hợp hơn.',
+          q: 'Từ khóa nào phù hợp nhất với nhiệm vụ trong đoạn đọc?',
+          a: ['vai trò tầng ozon', 'thông tin', 'môi trường nói chung', 'tìm kiếm'],
+          right: 0
+        },
+        {
+          title: 'Chặng 4 · Thu hẹp bằng dấu ngoặc kép',
+          text: 'Khi muốn tìm chính xác một cụm từ, em có thể đặt cụm từ đó trong dấu ngoặc kép. Ví dụ, tìm “vai trò tầng ozon” thường giúp máy tìm kiếm ưu tiên những kết quả có đúng cụm từ này, nhờ đó phạm vi tìm kiếm được thu hẹp.',
+          q: 'Dấu ngoặc kép giúp ích điều gì?',
+          a: ['Thu hẹp phạm vi và tìm đúng cụm từ', 'Tăng âm lượng máy tính', 'Xóa tất cả kết quả', 'Mở một trò chơi'],
+          right: 0
+        },
+        {
+          title: 'Chặng 5 · Đọc danh sách kết quả',
+          text: 'Sau khi nhấn Enter, máy tìm kiếm trả về một danh sách kết quả. Mỗi kết quả thường gồm tiêu đề, đoạn mô tả ngắn và một liên kết. Em nên đọc tiêu đề và mô tả để dự đoán kết quả nào có thể chứa thông tin cần tìm trước khi mở.',
+          q: 'Trước khi mở một kết quả, em nên làm gì?',
+          a: ['Đọc tiêu đề và đoạn mô tả', 'Chọn ngẫu nhiên không cần xem', 'Xóa từ khóa', 'Tắt trình duyệt'],
+          right: 0
+        },
+        {
+          title: 'Chặng 6 · Lọc loại kết quả',
+          text: 'Kết quả tìm kiếm có thể được phân loại thành văn bản, hình ảnh, tin tức hoặc video. Nếu cần hình minh họa cho bài thực hành, em chọn mục Hình ảnh; nếu cần xem các bài viết mới, em chọn Tin tức; nếu cần xem clip, em chọn Video.',
+          q: 'Muốn tìm hình minh họa, em nên chọn mục nào?',
+          a: ['Hình ảnh', 'Tin tức', 'Video', 'Cài đặt'],
+          right: 0
+        },
+        {
+          title: 'Chặng 7 · So sánh các nguồn',
+          text: 'Không phải kết quả nào cũng phù hợp hoặc chính xác như nhau. Sau khi mở một vài liên kết, em cần so sánh nội dung, xem tên trang, tác giả hoặc cơ quan cung cấp thông tin và kiểm tra thời điểm đăng. Nếu các nguồn đáng tin cậy có thông tin thống nhất, kết luận sẽ có cơ sở hơn.',
+          q: 'Vì sao nên so sánh nhiều nguồn?',
+          a: ['Để kiểm tra độ tin cậy và đầy đủ của thông tin', 'Để làm danh sách kết quả dài hơn', 'Để không phải đọc nội dung', 'Để xóa nguồn tham khảo'],
+          right: 0
+        },
+        {
+          title: 'Chặng 8 · Chọn và sao chép thông tin',
+          text: 'Khi đã tìm được nội dung phù hợp, em chỉ chọn phần cần thiết cho nhiệm vụ. Có thể sao chép đoạn thông tin hoặc hình minh họa vào sản phẩm học tập, nhưng cần đọc để hiểu chứ không sao chép máy móc toàn bộ trang web.',
+          q: 'Khi sao chép thông tin, em cần làm gì?',
+          a: ['Chọn phần cần thiết và đọc để hiểu', 'Sao chép toàn bộ mọi trang', 'Bỏ qua nội dung', 'Xóa tên nguồn'],
+          right: 0
+        },
+        {
+          title: 'Chặng 9 · Lưu sản phẩm và địa chỉ nguồn',
+          text: 'Thông tin, hình ảnh đã chọn có thể được lưu vào một tệp văn bản. Trong tệp, em nên ghi lại địa chỉ các trang đã tham khảo. Việc lưu nguồn giúp giáo viên và người đọc biết thông tin đến từ đâu, đồng thời giúp em quay lại kiểm tra khi cần.',
+          q: 'Trong tệp sản phẩm nên ghi thêm điều gì?',
+          a: ['Địa chỉ các nguồn đã tham khảo', 'Mật khẩu cá nhân', 'Các kết quả không liên quan', 'Tên của mọi người trên mạng'],
+          right: 0
+        },
+        {
+          title: 'Chặng 10 · Sử dụng có trách nhiệm',
+          text: 'Thông tin trên Internet có thể chưa chính xác và nhiều hình ảnh, bài viết hoặc bài hát có bản quyền. Khi hoàn thành nhiệm vụ như tìm hiểu Văn Miếu – Quốc Tử Giám hoặc thời tiết Hạ Long, em cần chọn nguồn phù hợp, ghi nguồn tham khảo và sử dụng thông tin đúng mục đích.',
+          q: 'Hành động nào thể hiện sử dụng thông tin có trách nhiệm?',
+          a: ['Kiểm tra nguồn và tôn trọng bản quyền', 'Sao chép và nhận là sản phẩm của mình', 'Chia sẻ thông tin chưa kiểm tra', 'Bỏ qua địa chỉ nguồn'],
+          right: 0
+        }
+      ];
+      function shuffle(values) {
+        for (let index = values.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [values[index], values[randomIndex]] = [values[randomIndex], values[index]];
+        }
+        return values;
+      }
+      const answerPositions = shuffle([0, 1, 2, 3, 0, 1, 2, 3, 1, 2]);
+      function randomizedOptions(item, questionIndex) {
+        const distractors = shuffle(item.a.filter((_, optionIndex) => optionIndex !== item.right).map((answer) => ({ answer, correct: false })));
+        const correct = { answer: item.a[item.right], correct: true };
+        const position = answerPositions[questionIndex];
+        const options = [];
+        for (let slot = 0; slot < item.a.length; slot += 1) options.push(slot === position ? correct : distractors.shift());
+        return options;
+      }
+      let index = 0;
+      let score = 0;
+      let finished = false;
+
+      function updateHud() {
+        $('#score').textContent = `${score}/${sections.length * 10}`;
+        $('#progressText').textContent = finished ? `Hoàn thành ${sections.length}/${sections.length}` : index === 0 && score === 0 ? 'Sẵn sàng' : `Chặng ${index + 1}/${sections.length}`;
+      }
+      function layout(content) {
+        app.innerHTML = content;
+        updateHud();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function startScreen() {
+        layout(`<div class="hero"><div><span class="tag">📘 Tin học 6 · Hoạt động 3</span><h1>Đọc - hiểu quy trình tìm kiếm</h1><p>Đọc 10 đoạn nội dung ngắn về tìm kiếm và khai thác thông tin. Sau mỗi đoạn, em trả lời một câu hỏi rồi mới mở đoạn tiếp theo.</p></div><div class="hero-icon" aria-hidden="true">📖🔎</div></div><div class="panel"><div class="instruction">📚 Cách học<small>Đọc kỹ từ khóa, trả lời câu hỏi của chặng hiện tại và bấm “Tiếp tục đọc” để chuyển sang chặng kế tiếp.</small></div><div class="button-row"><button class="button" id="startButton">Bắt đầu đọc 📖</button></div></div>`);
+        $('#startButton').addEventListener('click', () => { index = 0; score = 0; finished = false; renderSection(); });
+      }
+      function renderSection() {
+        const item = sections[index];
+        const options = randomizedOptions(item, index);
+        const highlighted = item.text.replace(/(máy tìm kiếm|từ khóa|dấu ngoặc kép|liên kết|Hình ảnh|Tin tức|Video|nguồn|bản quyền|tệp văn bản)/gi, '<strong>$1</strong>');
+        layout(`<div class="panel"><div class="progress"><span style="width:${(index / sections.length) * 100}%"></span></div><div class="progress-label">Đang đọc chặng ${index + 1} / ${sections.length}</div><article class="reading-card active" style="margin-top:1rem"><div class="reading-title"><span class="reading-number">${index + 1}</span><div><h2>${item.title}</h2><p style="margin:.1rem 0 0">Đọc đoạn văn sau rồi trả lời câu hỏi.</p></div></div><div class="reading-text">${highlighted}</div><div class="question-box"><h3>❓ ${item.q}</h3><div class="choice-grid" id="choices">${options.map((option) => `<button class="choice" data-correct="${option.correct}">${option.answer}</button>`).join('')}</div><div class="feedback" id="feedback"></div><div class="button-row" id="nextArea"></div></div></article></div>`);
+        $('#choices').querySelectorAll('.choice').forEach((choice) => choice.addEventListener('click', () => {
+          const feedback = $('#feedback');
+          if (choice.dataset.correct === 'true') {
+            score += 10;
+            choice.classList.add('correct');
+            $('#choices').querySelectorAll('.choice').forEach((button) => { button.disabled = true; });
+            feedback.className = 'feedback ok';
+            feedback.textContent = '✅ Đúng! Em đã đọc và hiểu chặng này.';
+            const isLast = index === sections.length - 1;
+            $('#nextArea').innerHTML = `<button class="button success" id="nextButton">${isLast ? 'Xem kết quả 🏆' : `Tiếp tục đọc chặng ${index + 2} →`}</button>`;
+            $('#nextButton').addEventListener('click', () => { index += 1; if (isLast) finish(); else renderSection(); });
+          } else {
+            choice.classList.remove('wrong');
+            void choice.offsetWidth;
+            choice.classList.add('wrong');
+            feedback.className = 'feedback bad';
+            feedback.textContent = '💡 Chưa đúng. Hãy quay lại đoạn đọc, tìm từ khóa liên quan rồi thử lại.';
+          }
+        }));
+      }
+      function finish() {
+        finished = true;
+        layout(`<div class="panel result"><span class="result-icon">🎓</span><h1>Hoàn thành phần vận dụng!</h1><p>Em đã đọc và trả lời đủ 10 chặng về tìm kiếm, chọn lọc và sử dụng thông tin.</p><div class="score">Điểm đọc hiểu<strong>${score}<small style="font-size:1.2rem;color:var(--muted)"> / ${sections.length * 10}</small></strong></div><div class="summary-list"><div>✅ Xác định đúng yêu cầu tìm kiếm</div><div>✅ Chọn từ khóa và dùng ngoặc kép</div><div>✅ Đọc, lọc và so sánh kết quả</div><div>✅ Lưu nguồn và tôn trọng bản quyền</div></div><div class="button-row"><button class="button" id="againButton">Đọc lại từ đầu</button></div></div>`);
+        $('#againButton').addEventListener('click', () => { index = 0; score = 0; finished = false; renderSection(); });
+      }
+      $('#resetButton').addEventListener('click', () => { index = 0; score = 0; finished = false; startScreen(); });
+      startScreen();
+    })();
+  </script>
+</body>
+</html>

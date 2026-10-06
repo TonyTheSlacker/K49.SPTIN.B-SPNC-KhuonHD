@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bảng hay không bảng?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#fff8eb; --bg2:#fef3d9;
+  --ink:#1f2a44; --muted:#5d6b85; --line:#f1dfb0;
+  --primary:#d88900; --primary2:#f3a900;
+  --ok:#1fa97a; --bad:#e25555;
+  --tbl:#2b6cd4; --txt:#c2185b;
+  --shadow:0 14px 28px rgba(60,49,22,.12);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{font-size:clamp(13px, .55vw + 9px, 19px)}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,214,102,.35) 0, transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(124,228,200,.28) 0, transparent 35%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+button{font-family:inherit; cursor:pointer}
+[hidden]{display:none !important}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:.7rem; flex-wrap:wrap;
+  padding:.5rem 1rem;
+  background:rgba(255,255,255,.85); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.05rem; margin-right:auto; white-space:nowrap}
+.pill{
+  display:flex; align-items:center; gap:.45rem;
+  background:#fff; border:2px solid var(--line); border-radius:999px;
+  padding:.3rem .85rem; font-weight:700; font-size:.95rem; white-space:nowrap;
+}
+.pill b{color:var(--primary); font-size:1.1rem; display:inline-block}
+.pill b.bump{animation:bump .6s}
+.pill.late{border-color:#f0b400; background:#fffbea}
+.pill.late b{color:var(--bad)}
+.icon-btn{
+  width:2.4rem; height:2.4rem; border-radius:50%;
+  border:2px solid var(--line); background:#fff; font-size:1.15rem;
+  display:grid; place-items:center; transition:transform .15s;
+}
+.icon-btn:hover{transform:scale(1.08)}
+
+#app{max-width:1100px; margin:0 auto; padding:1rem 1rem 2.5rem}
+#app.enter{animation:enter .4s ease}
+@keyframes enter{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+
+.btn{
+  border:none; border-radius:999px; color:#fff; font-weight:800;
+  font-size:1rem; letter-spacing:.02em; padding:.75em 1.6em;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:0 5px 0 #a86400, 0 10px 20px rgba(216,137,0,.3);
+  transition:transform .12s, box-shadow .12s, filter .2s;
+}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(4px); box-shadow:0 1px 0 #a86400, 0 4px 10px rgba(216,137,0,.3)}
+.btn.big{font-size:1.25rem; padding:.85em 2em}
+.btn.ghost{background:#fff; color:var(--primary); box-shadow:0 5px 0 #f1dfb0, 0 8px 16px rgba(0,0,0,.06); border:2px solid #f1dfb0}
+.btn.green{background:linear-gradient(135deg,#1fa97a,#2cc79a); box-shadow:0 5px 0 #14805b, 0 10px 20px rgba(31,169,122,.3)}
+.btn:disabled{filter:grayscale(.8); opacity:.5; cursor:not-allowed}
+.pulse{animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)} 50%{transform:scale(1.05)}}
+.actions{display:flex; justify-content:center; gap:.8rem; margin-top:1.1rem; flex-wrap:wrap}
+
+/* ---------- Màn hình đầu ---------- */
+.home{display:grid; grid-template-columns:1.15fr 1fr; gap:1.5rem; align-items:center; min-height:calc(100vh - 7rem)}
+.badge{display:inline-block; background:#fff; border:2px solid var(--line); color:var(--muted); font-weight:700; border-radius:999px; padding:.3rem .9rem; font-size:.88rem}
+.home h1{font-family:'Baloo 2',cursive; font-size:2.5rem; line-height:1.1; margin:.6rem 0 .8rem; font-weight:800}
+.home h1 span{background:linear-gradient(90deg,var(--tbl),var(--txt)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.bubble{background:#fff; border-radius:20px; padding:.75rem 1.05rem; margin:.6rem 0; box-shadow:var(--shadow); font-size:1.02rem; line-height:1.5; max-width:34rem; animation:fadeUp .6s both}
+.bubble.b1{border-left:6px solid var(--tbl)}
+.bubble.b2{border-left:6px solid var(--txt); animation-delay:.25s}
+.home-btns{display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin:1.3rem 0 .4rem}
+.home-art{position:relative; height:16rem}
+.art{position:absolute; background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:.9rem}
+.art-tbl{left:4%; top:8%; width:11rem; rotate:-7deg; border-top:6px solid var(--tbl)}
+.art-tbl .g{display:grid; grid-template-columns:repeat(3,1fr); gap:3px}
+.art-tbl .g i{height:1.2rem; border-radius:4px; background:#e3ecfb}
+.art-tbl .g i.h{background:var(--tbl)}
+.art-txt{right:4%; bottom:6%; width:11rem; rotate:6deg; border-top:6px solid var(--txt); display:flex; flex-direction:column; gap:.45rem}
+.art-txt i{display:block; height:.4rem; border-radius:99px; background:#f6d5e0}
+.art-q{position:absolute; left:50%; top:50%; translate:-50% -50%; width:4.2rem; height:4.2rem; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--primary2)); color:#fff; font-family:'Baloo 2',cursive; font-weight:800; font-size:2.4rem; display:grid; place-items:center; box-shadow:0 10px 24px rgba(216,137,0,.35); z-index:2}
+.floaty{animation:floaty 4s ease-in-out infinite}
+.floaty.late{animation-delay:-2s}
+@keyframes floaty{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
+@keyframes fadeUp{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+
+/* ---------- Thẻ tình huống ---------- */
+.ch-head{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin-bottom:.9rem}
+.ch-tag{background:var(--ink); color:#fff; font-weight:800; border-radius:12px; padding:.3rem .75rem; font-size:.88rem}
+.ch-head h2{font-family:'Baloo 2',cursive; margin:0; font-size:1.5rem; font-weight:800}
+.dots{display:flex; gap:.35rem; margin-left:auto}
+.dots i{width:1.9rem; height:.55rem; border-radius:99px; background:#d8dcef}
+.dots i.ok{background:var(--ok)}
+.dots i.no{background:var(--bad)}
+.dots i.now{background:var(--primary)}
+
+.stage{max-width:38rem; margin:0 auto}
+.flip{perspective:1400px}
+.flip-inner{display:grid; transition:transform .7s cubic-bezier(.3,1.3,.5,1); transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.face{
+  grid-area:1/1; -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:1.2rem 1.3rem;
+}
+.front{display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:.5rem; border:3px solid #f1e3bf}
+.front .ic{font-size:3.6rem; line-height:1; animation:pop .5s}
+.front .num{font-weight:800; color:var(--muted); font-size:.85rem; letter-spacing:.06em; text-transform:uppercase}
+.front h3{font-family:'Baloo 2',cursive; font-size:1.65rem; line-height:1.15; margin:0}
+.front p{margin:0; color:var(--muted); font-size:1.02rem; line-height:1.5; max-width:26rem}
+.front .ask{margin-top:.4rem; font-weight:800; color:var(--ink)}
+.back{transform:rotateY(180deg); display:flex; flex-direction:column; gap:.7rem; border:3px solid var(--c, #e5e7f5)}
+.back.is-tbl{--c:#bcd3f7}
+.back.is-txt{--c:#f6c4d5}
+.verdict{display:flex; align-items:center; gap:.6rem; border-radius:14px; padding:.55rem .8rem; font-weight:800; line-height:1.35}
+.verdict.ok{background:#eafaf4; color:#15805b}
+.verdict.no{background:#fff1f1; color:#b42323}
+.verdict .v-ic{font-size:1.5rem}
+.verdict small{display:block; font-weight:700; color:var(--ink)}
+.kind{align-self:flex-start; font-weight:800; font-size:.8rem; border-radius:999px; padding:.2rem .7rem; color:#fff; background:var(--k)}
+.kind.k-tbl{--k:var(--tbl)}
+.kind.k-txt{--k:var(--txt)}
+.why{margin:0; font-size:.95rem; line-height:1.5; background:#fff8e6; border-radius:12px; padding:.55rem .75rem}
+
+/* Bảng minh họa */
+.tbl-cap{font-weight:800; color:var(--tbl); margin-bottom:-.3rem}
+.tbl-wrap{border:2px solid #bcd3f7; border-radius:12px; overflow:hidden}
+.mini-table{width:100%; border-collapse:separate; border-spacing:0; font-size:.9rem}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.mini-table th,.mini-table td{padding:.38rem .55rem; text-align:center; border-right:1px solid #dbe6fa; border-bottom:1px solid #dbe6fa}
+.mini-table th:last-child,.mini-table td:last-child{border-right:0}
+.mini-table tbody tr:last-child td{border-bottom:0}
+.mini-table thead th{background:var(--tbl); color:#fff; font-weight:800}
+.mini-table tbody th{background:#eef4ff; color:var(--tbl); font-weight:800}
+.mini-table tbody tr:nth-child(even) td{background:#f8fbff}
+.reveal-rows tbody tr{animation:rowIn .4s both}
+.reveal-rows tbody tr:nth-child(2){animation-delay:.08s}
+.reveal-rows tbody tr:nth-child(3){animation-delay:.16s}
+.reveal-rows tbody tr:nth-child(4){animation-delay:.24s}
+.reveal-rows tbody tr:nth-child(5){animation-delay:.32s}
+@keyframes rowIn{from{opacity:0; transform:translateX(-10px)} to{opacity:1; transform:none}}
+
+/* Văn bản thường */
+.txt{border-radius:14px; padding:.9rem 1.1rem; line-height:1.65; font-size:1rem}
+.txt p{margin:0 0 .5rem}
+.txt p:last-child{margin-bottom:0}
+.greet{background:linear-gradient(160deg,#fffdf7,#fff0f5); border:2px dashed #f6b6ca; text-align:center}
+.greet .h{font-family:'Baloo 2',cursive; font-size:1.25rem; font-weight:800; color:var(--txt)}
+.greet .sig{text-align:right; font-weight:700; font-style:italic}
+.poem{background:#fffaf0; border-left:5px solid #e0b25c; text-align:center; font-style:italic; font-size:1.05rem}
+.poem .t{font-style:normal; font-weight:800; color:#a8741a; font-size:.85rem; letter-spacing:.08em; text-transform:uppercase}
+.diary{background:repeating-linear-gradient(#fff, #fff 1.6rem, #e4ebf7 1.6rem, #e4ebf7 calc(1.6rem + 1px)); border:2px solid #e4ebf7; border-left:5px solid #f28a8a; line-height:1.6rem; padding-top:.3rem}
+.diary .d{font-weight:800; color:var(--txt)}
+
+.choices{display:grid; grid-template-columns:1fr 1fr; gap:.9rem; margin-top:1.1rem}
+.choice{
+  border:3px solid var(--c); background:#fff; color:var(--ink); border-radius:18px;
+  padding:.85rem .8rem; font-weight:800; font-size:1.08rem;
+  display:flex; align-items:center; justify-content:center; gap:.55rem;
+  box-shadow:0 5px 0 var(--c); transition:transform .12s, box-shadow .12s, background .2s;
+}
+.choice .e{font-size:1.6rem}
+.choice:hover{background:var(--bgc); transform:translateY(-2px)}
+.choice:active{transform:translateY(4px); box-shadow:0 1px 0 var(--c)}
+.choice.c-tbl{--c:#8db3ef; --bgc:#eef4ff}
+.choice.c-txt{--c:#f2a3bd; --bgc:#fff0f5}
+.choice kbd{font-family:inherit; font-size:.72rem; color:var(--muted); border:1px solid #d5dbea; border-radius:6px; padding:0 .3rem; margin-left:.2rem}
+.next-row{display:flex; justify-content:center; margin-top:1.1rem}
+
+/* ---------- Câu nhớ lại ---------- */
+.recall{max-width:42rem; margin:0 auto; text-align:center}
+.recall .card{background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:1.4rem 1.3rem}
+.recall h3{font-family:'Baloo 2',cursive; font-size:1.45rem; margin:0 0 .3rem}
+.recall .lead{color:var(--muted); margin:0 0 1.2rem}
+.sentence{font-size:1.3rem; font-weight:800; line-height:2.4; margin:0 0 1.2rem}
+.blank{
+  display:inline-flex; align-items:center; justify-content:center; min-width:7.5rem; height:2.3rem; vertical-align:middle;
+  margin:0 .25rem; padding:0 .8rem; border-radius:12px; border:3px dashed #cfd3ee; background:#f8f9ff;
+  color:var(--muted); font-weight:800; font-size:1.05rem; transition:background .2s, border-color .2s;
+}
+.blank.now{border-color:var(--primary2); background:#fff8e6}
+.blank.filled{border-style:solid; border-color:var(--tbl); background:#eef4ff; color:var(--tbl)}
+.blank.right{border-color:var(--ok); background:#eafaf4; color:var(--ok)}
+.blank.wrong{border-color:var(--bad); background:#fff1f1; color:var(--bad)}
+.bank{display:flex; flex-wrap:wrap; justify-content:center; gap:.6rem; padding:1rem; border-radius:18px; background:#fffaf0; border:2px dashed var(--line)}
+.word{border:3px solid #e5e7f5; background:#fff; border-radius:14px; padding:.5rem 1rem; font-weight:800; font-size:1.05rem; color:var(--ink); box-shadow:0 4px 0 #e5e7f5; transition:transform .12s, opacity .2s}
+.word:hover{transform:translateY(-2px); border-color:var(--primary2)}
+.word:disabled{opacity:.3; cursor:default; transform:none}
+.recall-msg{margin:1rem 0 0; font-weight:700; line-height:1.5; border-radius:14px; padding:.7rem 1rem; display:none}
+.recall-msg.show{display:block}
+.recall-msg.ok{background:#eafaf4; color:#15805b}
+.recall-msg.no{background:#fffbea; color:#8a5a00}
+
+/* ---------- Tổng kết ---------- */
+.win{text-align:center; max-width:52rem; margin:0 auto}
+.trophy{font-size:4.6rem; animation:floaty 3s ease-in-out infinite; display:inline-block}
+.win h1{font-family:'Baloo 2',cursive; font-size:2.2rem; margin:.2rem 0; font-weight:800; background:linear-gradient(90deg,var(--tbl),var(--txt)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.scorebox{display:inline-block; background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:.8rem 2.2rem; margin:.4rem 0 1rem}
+.scorebox .lbl{font-weight:800; color:var(--muted)}
+.scorebox .val{font-family:'Baloo 2',cursive; font-size:2.8rem; font-weight:800; color:var(--primary); line-height:1.1}
+.sort{display:grid; grid-template-columns:1fr 1fr; gap:1rem; text-align:left; margin-bottom:1rem}
+.sort > div{background:#fff; border-radius:18px; box-shadow:var(--shadow); padding:.8rem 1rem; border-top:6px solid var(--c)}
+.sort .s-tbl{--c:var(--tbl)}
+.sort .s-txt{--c:var(--txt)}
+.sort h3{margin:0 0 .5rem; font-size:1.05rem; color:var(--c)}
+.sort ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.35rem}
+.sort li{display:flex; gap:.5rem; align-items:center; font-weight:700}
+.sort li .r{margin-left:auto; font-size:.85rem}
+.rule{background:#fff7e0; border-radius:18px; padding:.9rem 1.1rem; font-weight:700; line-height:1.55; text-align:left; margin:0 auto; max-width:46rem}
+.rule b{color:var(--tbl)}
+
+/* ---------- Toast & hiệu ứng ---------- */
+#toast{
+  position:fixed; left:50%; bottom:1.4rem; transform:translate(-50%,calc(100% + 3rem)); visibility:hidden;
+  z-index:900; background:#fff; border-radius:18px; box-shadow:0 14px 34px rgba(40,50,110,.25);
+  padding:.8rem 1.3rem; font-size:1rem; font-weight:700; max-width:min(92vw,34rem); text-align:center; line-height:1.45;
+  border:3px solid var(--primary); transition:transform .35s cubic-bezier(.2,1.4,.4,1), visibility .35s; pointer-events:none;
+}
+#toast.show{transform:translate(-50%,0); visibility:visible}
+#toast.bad{border-color:#f0b400; background:#fffbea}
+#toast .t{display:block; font-size:1.15rem; font-weight:900; margin-bottom:.15rem}
+.fly{position:fixed; z-index:950; pointer-events:none; font-weight:900; font-size:1.5rem; color:#f0a500; text-shadow:0 2px 0 #fff; animation:fly 1s ease-out forwards}
+@keyframes fly{from{opacity:1; transform:translate(-50%,0) scale(.8)} to{opacity:0; transform:translate(-50%,-70px) scale(1.3)}}
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:800; width:100%; height:100%}
+.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)}}
+@keyframes pop{0%{transform:scale(.8)} 60%{transform:scale(1.08)} 100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)} 40%{transform:scale(1.6); color:var(--ok)} 100%{transform:scale(1)}}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px){
+  .home{grid-template-columns:1fr; text-align:center; min-height:0}
+  .bubble{margin-left:auto; margin-right:auto}
+  .home-btns{justify-content:center}
+  .home-art{order:-1; height:11rem; width:100%; max-width:22rem; margin:0 auto}
+  .art-tbl, .art-txt{width:8.5rem; padding:.7rem}
+  .art-q{width:3.4rem; height:3.4rem; font-size:2rem}
+  .sort{grid-template-columns:1fr}
+  .dots{margin-left:0}
+}
+@media (max-width: 520px){
+  .home h1{font-size:2rem}
+  .ch-head h2{font-size:1.25rem}
+  .brand{display:none}
+  .topbar{justify-content:center}
+  .choices{grid-template-columns:1fr}
+  .choice kbd{display:none}
+  .sentence{font-size:1.1rem}
+  .blank{min-width:6rem}
+  .mini-table{font-size:.8rem}
+  .mini-table th,.mini-table td{padding:.32rem .3rem}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">📊 Bảng hay không bảng?</div>
+  <div class="pill" id="timerPill" title="Thời gian gợi ý cho hoạt động khởi động">⏱ <b id="timer">3:00</b></div>
+  <div class="pill">⭐ Đúng: <b id="score">0</b>/6</div>
+  <button class="icon-btn" id="soundBtn" type="button" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh">🔊</button>
+  <button class="icon-btn" id="homeBtn" type="button" title="Về màn hình đầu" aria-label="Về màn hình đầu">🏠</button>
+</header>
+
+<main id="app"></main>
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =========================================================
+   BẢNG HAY KHÔNG BẢNG? – Tin học 6, Bài 12: Khởi động
+   6 thẻ tình huống → chọn "Nên dùng bảng" / "Không cần bảng"
+   → thẻ lật ra dạng trình bày phù hợp → câu nhớ lại cuối bài
+   ========================================================= */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const app = $('#app');
+
+function table(caption, head, rows) {
+  return `<div class="tbl-cap" aria-hidden="true">${caption}</div><div class="tbl-wrap"><table class="mini-table reveal-rows"><caption class="sr-only">${caption}</caption>
+    <thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(([first, ...rest]) => `<tr><th scope="row">${first}</th>${rest.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
+const CARDS = [
+  { icon: '🗓️', title: 'Thời khóa biểu cả tuần', table: true,
+    desc: 'Các môn học của lớp em theo từng thứ và từng tiết trong tuần.',
+    back: table('Thời khóa biểu lớp 6A (3 tiết đầu)', ['Thứ', 'Tiết 1', 'Tiết 2', 'Tiết 3'], [
+      ['Hai', 'Toán', 'Ngữ văn', 'Tiếng Anh'],
+      ['Ba', 'Tin học', 'Toán', 'KHTN'],
+      ['Tư', 'Ngữ văn', 'Sử – Địa', 'Thể dục'],
+      ['Năm', 'KHTN', 'Tiếng Anh', 'Mĩ thuật'],
+      ['Sáu', 'Toán', 'Công nghệ', 'Âm nhạc']]),
+    why: 'Mỗi ngày có nhiều tiết, mỗi tiết một môn. Xếp theo hàng (thứ) và cột (tiết) giúp em nhìn là biết ngay hôm nay học môn gì.' },
+  { icon: '🎂', title: 'Lời chúc mừng sinh nhật bạn', table: false,
+    desc: 'Mấy câu chúc em viết tặng bạn thân nhân ngày sinh nhật của bạn.',
+    back: `<div class="txt greet"><p class="h">🎉 Chúc mừng sinh nhật Lan!</p>
+      <p>Chúc bạn tuổi mới luôn vui vẻ, khỏe mạnh và học thật giỏi. Cảm ơn bạn đã luôn ở bên mình. Mãi là bạn thân nhé!</p>
+      <p class="sig">Bạn của Lan – Minh Anh</p></div>`,
+    why: 'Lời chúc là những câu nói thể hiện tình cảm, không có các mục cần so sánh hay tra cứu. Viết thành đoạn văn là đẹp nhất.' },
+  { icon: '📝', title: 'Điểm kiểm tra các môn của em', table: true,
+    desc: 'Điểm bài kiểm tra giữa kì của em ở từng môn học.',
+    back: table('Điểm kiểm tra giữa kì của em', ['Môn học', 'Điểm'], [
+      ['Toán', '9'], ['Ngữ văn', '8'], ['Tiếng Anh', '8,5'], ['Tin học', '10'], ['KHTN', '7,5']]),
+    why: 'Mỗi môn có một điểm. Bảng giúp em dễ tìm điểm của từng môn và so sánh xem môn nào cao, môn nào thấp.' },
+  { icon: '📖', title: 'Một bài thơ', table: false,
+    desc: 'Một bài thơ (bài ca dao) em được học và đọc thuộc lòng.',
+    back: `<div class="txt poem"><p class="t">Ca dao</p>
+      <p>Công cha như núi Thái Sơn,<br>Nghĩa mẹ như nước trong nguồn chảy ra.<br>Một lòng thờ mẹ kính cha,<br>Cho tròn chữ hiếu mới là đạo con.</p></div>`,
+    why: 'Bài thơ được viết thành từng dòng, có vần, có nhịp. Xếp vào bảng sẽ làm mất cái hay của bài thơ.' },
+  { icon: '🧹', title: 'Lịch trực nhật của các tổ', table: true,
+    desc: 'Ngày nào trong tuần thì đến lượt tổ nào của lớp trực nhật.',
+    back: table('Lịch trực nhật lớp 6A', ['Thứ', 'Tổ trực'], [
+      ['Hai', 'Tổ 1'], ['Ba', 'Tổ 2'], ['Tư', 'Tổ 3'], ['Năm', 'Tổ 4'], ['Sáu', 'Tổ 1']]),
+    why: 'Mỗi ngày ứng với một tổ. Bảng Thứ – Tổ trực giúp các bạn tìm ngay hôm nay đến lượt tổ nào.' },
+  { icon: '📔', title: 'Đoạn nhật ký về ngày chủ nhật', table: false,
+    desc: 'Đoạn nhật ký em kể lại ngày chủ nhật vừa qua của mình.',
+    back: `<div class="txt diary"><p class="d">Chủ nhật</p>
+      <p>Sáng nay cả nhà em về quê thăm ông bà. Em được theo ông ra vườn hái ổi, còn bà nấu món canh chua mà em thích nhất. Buổi chiều, em cùng các anh chị họ thả diều trên đê. Hôm nay thật là vui!</p></div>`,
+    why: 'Nhật ký kể lại sự việc theo thứ tự thời gian, kèm cảm xúc của em. Viết thành đoạn văn sẽ tự nhiên hơn.' }
+];
+const WORDS = ['so sánh', 'trang trí', 'tìm kiếm', 'tô màu', 'gõ phím'];
+const ANSWER = ['tìm kiếm', 'so sánh'];
+
+/* ---------- Trạng thái ---------- */
+const state = { idx: 0, answers: [], sound: true, recallTries: 0 };
+let keyHandler = null;
+const correctCount = () => state.answers.filter(a => a.correct).length;
+
+function updateHUD(bump) {
+  const s = $('#score');
+  s.textContent = correctCount();
+  if (bump) { s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
+  $('#soundBtn').textContent = state.sound ? '🔊' : '🔇';
+}
+
+/* ---------- Đồng hồ gợi ý 3 phút (không khóa bài) ---------- */
+const LIMIT = 180;
+let timerId = null, endAt = 0;
+function renderTimer(left) {
+  const s = Math.max(0, left);
+  $('#timer').textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  $('#timerPill').classList.toggle('late', s <= 0);
+}
+function startTimer() {
+  stopTimer();
+  endAt = Date.now() + LIMIT * 1000;
+  renderTimer(LIMIT);
+  timerId = setInterval(() => {
+    const left = Math.ceil((endAt - Date.now()) / 1000);
+    renderTimer(left);
+    if (left <= 0) {
+      stopTimer();
+      toast('Hết 3 phút rồi! ⏰', 'Em làm nốt các phần còn lại thật nhanh nhé.', 'bad', 3200);
+    }
+  }, 500);
+}
+function stopTimer() { clearInterval(timerId); timerId = null; }
+
+/* ---------- Âm thanh (Web Audio – không cần file) ---------- */
+let actx = null;
+function tone(freq, dur, type = 'sine', when = 0, vol = .15) {
+  if (!state.sound) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = actx.currentTime + when;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(actx.destination);
+    o.start(t); o.stop(t + dur + .05);
+  } catch (e) {}
+}
+const sfx = {
+  click() { tone(520, .07, 'triangle', 0, .08); },
+  flip()  { tone(380, .08, 'triangle', 0, .07); tone(560, .1, 'triangle', .08, .07); },
+  ok()    { tone(660, .15, 'triangle'); tone(990, .25, 'triangle', .1); },
+  bad()   { tone(260, .2, 'sine', 0, .12); tone(200, .28, 'sine', .12, .1); },
+  win()   { [523, 659, 784, 1047].forEach((f, i) => tone(f, .3, 'triangle', i * .12, .16)); tone(1319, .7, 'triangle', .52, .14); }
+};
+
+/* ---------- Thông báo & hiệu ứng ---------- */
+let toastTimer;
+function toast(title, text = '', type = 'ok', ms = 2800) {
+  const t = $('#toast');
+  t.className = type;
+  t.innerHTML = (title ? `<span class="t">${title}</span>` : '') + text;
+  void t.offsetWidth;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function flyText(txt, nearEl) {
+  const r = nearEl.getBoundingClientRect();
+  const f = document.createElement('div');
+  f.className = 'fly'; f.textContent = txt;
+  f.style.left = (r.left + r.width / 2) + 'px';
+  f.style.top = (r.top + 10) + 'px';
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 1000);
+}
+function shake(el) { if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+function confetti(duration = 3200) {
+  const c = $('#confetti'), ctx = c.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const colors = ['#2b6cd4', '#c2185b', '#f28a35', '#d9a514', '#3f86f0', '#1fa97a'];
+  const parts = Array.from({ length: 160 }, (_, i) => {
+    const fromLeft = i % 2 === 0;
+    return {
+      x: fromLeft ? -10 : innerWidth + 10, y: innerHeight * (.55 + Math.random() * .3),
+      vx: (fromLeft ? 1 : -1) * (4 + Math.random() * 7), vy: -(9 + Math.random() * 9),
+      w: 6 + Math.random() * 8, h: 8 + Math.random() * 10,
+      rot: Math.random() * 6, vr: (Math.random() - .5) * .3, color: colors[i % colors.length]
+    };
+  });
+  const start = performance.now();
+  (function frame(now) {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    parts.forEach(p => {
+      p.vy += .25; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (now - start < duration) requestAnimationFrame(frame);
+    else ctx.clearRect(0, 0, innerWidth, innerHeight);
+  })(start);
+}
+
+function show(html) {
+  app.innerHTML = html;
+  app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter');
+  window.scrollTo(0, 0);
+}
+document.addEventListener('keydown', e => { if (keyHandler && !e.ctrlKey && !e.metaKey && !e.altKey) keyHandler(e); });
+
+/* =========================================================
+   MÀN HÌNH ĐẦU
+   ========================================================= */
+function renderHome() {
+  stopTimer(); renderTimer(LIMIT);
+  keyHandler = null;
+  state.idx = 0; state.answers = []; state.recallTries = 0;
+  updateHUD();
+  show(`<div class="home">
+    <div>
+      <span class="badge">📊 Bài 12 · Khởi động</span>
+      <h1>Bảng hay <span>không bảng?</span></h1>
+      <div class="bubble b1">🤔 Có những thông tin xếp thành <b>bảng</b> thì rất dễ xem, nhưng cũng có những thông tin cứ <b>viết bình thường</b> mới hay.</div>
+      <div class="bubble b2">🃏 Em có khoảng <b>3 phút</b> để xem 6 thẻ tình huống. Với mỗi thẻ, em chọn <b>Nên dùng bảng</b> hoặc <b>Không cần bảng</b> nhé!</div>
+      <div class="home-btns"><button class="btn big pulse" id="startBtn" type="button">Bắt đầu ▶</button></div>
+    </div>
+    <div class="home-art" aria-hidden="true">
+      <div class="art art-tbl floaty"><div class="g"><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="art art-txt floaty late"><i></i><i></i><i style="width:80%"></i><i></i><i style="width:60%"></i></div>
+      <div class="art-q">?</div>
+    </div>
+  </div>`);
+  $('#startBtn').addEventListener('click', () => { sfx.click(); startTimer(); renderCard(); });
+}
+
+/* =========================================================
+   6 THẺ TÌNH HUỐNG
+   ========================================================= */
+function dotsHTML() {
+  return CARDS.map((_, i) => {
+    const a = state.answers[i];
+    return `<i class="${a ? (a.correct ? 'ok' : 'no') : i === state.idx ? 'now' : ''}"></i>`;
+  }).join('');
+}
+function renderCard() {
+  const i = state.idx, c = CARDS[i];
+  show(`<div class="ch-head"><span class="ch-tag">Thẻ ${i + 1}/${CARDS.length}</span><h2>Bảng hay không bảng?</h2><div class="dots" aria-hidden="true">${dotsHTML()}</div></div>
+    <div class="stage">
+      <div class="flip" id="flip">
+        <div class="flip-inner">
+          <div class="face front" id="front">
+            <div class="ic" aria-hidden="true">${c.icon}</div>
+            <div class="num">Tình huống ${i + 1}</div>
+            <h3>${c.title}</h3>
+            <p>${c.desc}</p>
+            <p class="ask">Thông tin này có nên trình bày bằng bảng không?</p>
+          </div>
+          <div class="face back ${c.table ? 'is-tbl' : 'is-txt'}" id="back" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="choices" id="choices">
+        <button type="button" class="choice c-tbl" data-pick="1"><span class="e">📊</span>Nên dùng bảng <kbd>B</kbd></button>
+        <button type="button" class="choice c-txt" data-pick="0"><span class="e">📝</span>Không cần bảng <kbd>K</kbd></button>
+      </div>
+      <div class="next-row" id="nextRow" hidden></div>
+    </div>`);
+  $$('[data-pick]').forEach(b => b.addEventListener('click', () => choose(b.dataset.pick === '1', b)));
+  keyHandler = e => {
+    const k = e.key.toLowerCase();
+    if (k === 'b') choose(true, $('[data-pick="1"]'));
+    else if (k === 'k') choose(false, $('[data-pick="0"]'));
+  };
+}
+function choose(useTable, btn) {
+  const i = state.idx, c = CARDS[i];
+  if (state.answers[i]) return;
+  const correct = useTable === c.table;
+  state.answers[i] = { pick: useTable, correct };
+  keyHandler = null;
+
+  const back = $('#back');
+  back.innerHTML = `
+    <div class="verdict ${correct ? 'ok' : 'no'}"><span class="v-ic">${correct ? '✅' : '🤔'}</span>
+      <div>${correct ? 'Chính xác!' : 'Chưa đúng rồi!'}<small>${c.title}: ${c.table ? 'nên trình bày bằng bảng.' : 'không cần dùng bảng.'}</small></div></div>
+    <span class="kind ${c.table ? 'k-tbl' : 'k-txt'}">${c.table ? '📊 Dạng bảng' : '📝 Viết thành đoạn, thành dòng'}</span>
+    ${c.back}
+    <p class="why">💡 ${c.why}</p>`;
+  back.removeAttribute('aria-hidden');
+  $('#front').setAttribute('aria-hidden', 'true');
+  $('#choices').hidden = true;
+  $('#flip').classList.add('flipped');
+  $('.dots').innerHTML = dotsHTML();
+  sfx.flip();
+  setTimeout(() => {
+    if (correct) { sfx.ok(); flyText('+1 ⭐', $('#score')); updateHUD(true); }
+    else sfx.bad();
+  }, 350);
+
+  const last = i === CARDS.length - 1;
+  const row = $('#nextRow');
+  row.innerHTML = `<button type="button" class="btn ${last ? 'green' : ''}" id="nextBtn">${last ? 'Sang câu nhớ lại ➜' : 'Thẻ tiếp theo ➜'}</button>`;
+  row.hidden = false;
+  const go = () => { sfx.click(); if (last) renderRecall(); else { state.idx++; renderCard(); } };
+  $('#nextBtn').addEventListener('click', go);
+  setTimeout(() => { keyHandler = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }; }, 400);
+}
+
+/* =========================================================
+   CÂU NHỚ LẠI CUỐI BÀI
+   ========================================================= */
+let blanks = [null, null];
+function renderRecall() {
+  keyHandler = null;
+  blanks = [null, null];
+  show(`<div class="ch-head"><span class="ch-tag">Câu nhớ lại</span><h2>Bảng giúp em điều gì?</h2></div>
+    <div class="recall"><div class="card">
+      <h3>📌 Hoàn thành câu</h3>
+      <p class="lead">Bấm vào từ có sẵn để điền vào chỗ trống. Bấm vào ô đã điền nếu muốn đổi từ khác.</p>
+      <p class="sentence">Trình bày thông tin ở dạng bảng giúp em dễ
+        <button type="button" class="blank" data-blank="0" aria-label="Chỗ trống thứ nhất">…</button> và dễ
+        <button type="button" class="blank" data-blank="1" aria-label="Chỗ trống thứ hai">…</button>.</p>
+      <div class="bank" id="bank">${WORDS.map(w => `<button type="button" class="word" data-word="${w}">${w}</button>`).join('')}</div>
+      <div class="actions"><button type="button" class="btn" id="checkBtn" disabled>Kiểm tra ✔</button></div>
+      <p class="recall-msg" id="recallMsg"></p>
+    </div></div>`);
+  $$('.word').forEach(w => w.addEventListener('click', () => fillBlank(w.dataset.word)));
+  $$('.blank').forEach(b => b.addEventListener('click', () => clearBlank(+b.dataset.blank)));
+  $('#checkBtn').addEventListener('click', checkRecall);
+  paintBlanks();
+}
+function paintBlanks() {
+  const firstEmpty = blanks.indexOf(null);
+  $$('.blank').forEach((b, i) => {
+    b.textContent = blanks[i] || '…';
+    b.className = 'blank' + (blanks[i] ? ' filled' : i === firstEmpty ? ' now' : '');
+  });
+  $$('.word').forEach(w => { w.disabled = blanks.includes(w.dataset.word); });
+  $('#checkBtn').disabled = blanks.includes(null);
+}
+function fillBlank(word) {
+  const i = blanks.indexOf(null);
+  if (i < 0 || blanks.includes(word)) return;
+  blanks[i] = word;
+  sfx.click();
+  $('#recallMsg').className = 'recall-msg';
+  paintBlanks();
+}
+function clearBlank(i) {
+  if (!blanks[i] || $('#checkBtn').dataset.done) return;
+  blanks[i] = null;
+  sfx.click();
+  paintBlanks();
+}
+function checkRecall() {
+  const msg = $('#recallMsg');
+  const wrong = blanks.map((w, i) => ANSWER.includes(w) && blanks.indexOf(w) === i ? -1 : i).filter(i => i >= 0);
+  state.recallTries++;
+  if (!wrong.length) {
+    $$('.blank').forEach(b => b.className = 'blank right');
+    $$('.word').forEach(w => w.disabled = true);
+    const btn = $('#checkBtn');
+    btn.dataset.done = '1';
+    btn.textContent = 'Xem tổng kết 🏆';
+    btn.classList.add('green');
+    btn.replaceWith(btn.cloneNode(true));
+    $('#checkBtn').addEventListener('click', () => { sfx.click(); renderFinish(); });
+    msg.className = 'recall-msg show ok';
+    msg.innerHTML = '🎉 Đúng rồi! Như <b>lịch trực nhật</b>, em <b>tìm</b> ngay hôm nay tổ nào trực; như <b>bảng điểm</b>, em <b>so sánh</b> được môn nào cao, môn nào thấp.';
+    sfx.ok();
+    return;
+  }
+  sfx.bad();
+  wrong.forEach(i => { const b = $(`[data-blank="${i}"]`); b.className = 'blank wrong'; shake(b); });
+  msg.className = 'recall-msg show no';
+  msg.innerHTML = state.recallTries >= 2
+    ? '💡 Gợi ý: nhìn <b>lịch trực nhật</b>, em <b>t…</b> ngay tổ trực hôm nay; nhìn <b>bảng điểm</b>, em <b>s…</b> môn nào cao hơn.'
+    : '🤔 Có từ chưa đúng. Em nhớ lại các bảng vừa xem: bảng giúp em làm gì với thông tin?';
+  setTimeout(() => { wrong.forEach(i => { blanks[i] = null; }); paintBlanks(); }, 1100);
+}
+
+/* =========================================================
+   TỔNG KẾT
+   ========================================================= */
+function renderFinish() {
+  stopTimer();
+  keyHandler = null;
+  const n = correctCount();
+  const msg = n === 6 ? '🌟 Tuyệt vời! Em phân biệt rất chuẩn.' : n >= 4 ? '👏 Giỏi lắm! Em đã biết khi nào nên dùng bảng.' : '💪 Em xem lại các thẻ có dấu ✗ nhé!';
+  const li = c => {
+    const i = CARDS.indexOf(c), a = state.answers[i];
+    return `<li><span>${c.icon}</span>${c.title}<span class="r">${a && a.correct ? '✅' : '❌'}</span></li>`;
+  };
+  show(`<div class="win">
+    <div class="trophy">🏆</div>
+    <h1>Hoàn thành phần Khởi động!</h1>
+    <div class="scorebox"><div class="lbl">Số thẻ em chọn đúng</div><div class="val">${n}/6</div></div>
+    <p style="font-weight:800; margin:0 0 1rem">${msg}</p>
+    <div class="sort">
+      <div class="s-tbl"><h3>📊 Nên dùng bảng</h3><ul>${CARDS.filter(c => c.table).map(li).join('')}</ul></div>
+      <div class="s-txt"><h3>📝 Không cần bảng</h3><ul>${CARDS.filter(c => !c.table).map(li).join('')}</ul></div>
+    </div>
+    <p class="rule">📌 Trình bày thông tin ở dạng bảng giúp em dễ <b>tìm kiếm</b> và dễ <b>so sánh</b>. Em nên dùng bảng khi có nhiều đối tượng cùng các mục thông tin (ngày – môn học, môn – điểm, thứ – tổ trực). Lời chúc, bài thơ, nhật ký thì cứ viết thành câu, thành dòng.</p>
+    <div class="actions"><button type="button" class="btn ghost" id="againBtn">🔁 Chơi lại</button></div>
+  </div>`);
+  $('#againBtn').addEventListener('click', () => { sfx.click(); renderHome(); });
+  sfx.win(); confetti();
+}
+
+/* ---------- Khởi động ---------- */
+$('#soundBtn').addEventListener('click', () => { state.sound = !state.sound; updateHUD(); sfx.click(); });
+$('#homeBtn').addEventListener('click', () => { sfx.click(); renderHome(); });
+renderHome();
+</script>
+</body>
+</html>

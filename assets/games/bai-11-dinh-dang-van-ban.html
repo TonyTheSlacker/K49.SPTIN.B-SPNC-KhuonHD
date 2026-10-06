@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thông báo &amp; Thiệp 20/11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#fff8eb; --bg2:#fef3d9;
+  --ink:#1f2a44; --muted:#5d6b85; --line:#f1dfb0;
+  --card:#ffffff;
+  --primary:#d88900; --primary2:#f3a900;
+  --ok:#1fa97a; --bad:#e25555;
+  --word:#2b579a; --rose:#c2185b;
+  --shadow:0 14px 28px rgba(60,49,22,.12);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{font-size:clamp(13px, .55vw + 9px, 19px)}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,214,102,.35) 0, transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(124,228,200,.28) 0, transparent 35%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+button{font-family:inherit; cursor:pointer}
+.muted{color:var(--muted)}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:.7rem; flex-wrap:wrap;
+  padding:.5rem 1rem;
+  background:rgba(255,255,255,.85); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.05rem; margin-right:auto; white-space:nowrap}
+.pill{
+  display:flex; align-items:center; gap:.5rem;
+  background:#fff; border:2px solid var(--line); border-radius:999px;
+  padding:.3rem .85rem; font-weight:700; font-size:.95rem;
+}
+.pill b{color:var(--primary); font-size:1.1rem; min-width:1.6em; text-align:center; display:inline-block}
+.pill b.bump{animation:bump .6s}
+.bar{width:80px; height:10px; background:#e8eaf6; border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,#34c29a,var(--primary)); border-radius:99px; transition:width .6s}
+.icon-btn{
+  width:2.4rem; height:2.4rem; border-radius:50%;
+  border:2px solid var(--line); background:#fff; font-size:1.15rem;
+  display:grid; place-items:center; transition:transform .15s;
+}
+.icon-btn:hover{transform:scale(1.08)}
+
+/* ---------- Layout ---------- */
+#app{max-width:1200px; margin:0 auto; padding:1rem 1rem 2.5rem}
+#app.enter{animation:enter .4s ease}
+@keyframes enter{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+
+.btn{
+  border:none; border-radius:999px; color:#fff; font-weight:800;
+  font-size:1rem; letter-spacing:.02em;
+  padding:.75em 1.6em;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:0 5px 0 #a86400, 0 10px 20px rgba(216,137,0,.3);
+  transition:transform .12s, box-shadow .12s, filter .2s;
+}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(4px); box-shadow:0 1px 0 #a86400, 0 4px 10px rgba(216,137,0,.3)}
+.btn.big{font-size:1.25rem; padding:.85em 2em}
+.btn.ghost{background:#fff; color:var(--primary); box-shadow:0 5px 0 #f1dfb0, 0 8px 16px rgba(0,0,0,.06); border:2px solid #f1dfb0}
+.btn.green{background:linear-gradient(135deg,#1fa97a,#2cc79a); box-shadow:0 5px 0 #14805b, 0 10px 20px rgba(31,169,122,.3)}
+.pulse{animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)} 50%{transform:scale(1.05)}}
+.actions{display:flex; justify-content:center; gap:.8rem; margin-top:1.1rem; flex-wrap:wrap}
+
+/* ---------- Home ---------- */
+.home{display:grid; grid-template-columns:1.15fr 1fr; gap:1.5rem; align-items:center; min-height:calc(100vh - 7rem)}
+.badge{display:inline-block; background:#fff; border:2px solid var(--line); color:var(--muted); font-weight:700; border-radius:999px; padding:.3rem .9rem; font-size:.88rem}
+.home h1{font-family:'Baloo 2',cursive; font-size:2.4rem; line-height:1.1; margin:.6rem 0 .8rem; font-weight:800}
+.home h1 span{background:linear-gradient(90deg,var(--primary),var(--rose)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.bubble{
+  background:#fff; border-radius:20px; padding:.75rem 1.05rem; margin:.6rem 0;
+  box-shadow:var(--shadow); font-size:1.02rem; line-height:1.5; max-width:34rem; animation:fadeUp .6s both;
+}
+.bubble.b1{border-left:6px solid var(--word)}
+.bubble.b2{border-left:6px solid var(--rose); animation-delay:.25s}
+.home-btns{display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin:1.3rem 0 1rem}
+.quest{display:flex; gap:.6rem; flex-wrap:wrap}
+.quest span{background:rgba(255,255,255,.7); border-radius:12px; padding:.35rem .7rem; font-size:.88rem; font-weight:700; color:var(--muted); border:2px solid transparent}
+.quest span.done{border-color:var(--ok); color:var(--ok); background:#eafaf4}
+.home-art{position:relative; height:17rem}
+.art-notice{
+  position:absolute; left:6%; top:2%; width:10rem; aspect-ratio:210/297; rotate:-6deg;
+  background:#fff; border-radius:6px; box-shadow:var(--shadow);
+  padding:1rem .9rem; display:flex; flex-direction:column; gap:.45rem;
+}
+.art-notice b{text-align:center; font-family:'Times New Roman',serif; font-size:.85rem; letter-spacing:.06em; margin-bottom:.25rem}
+.art-notice i{display:block; height:.35rem; border-radius:99px; background:#d9deea}
+.art-notice i.r{width:45%; margin-left:auto; margin-top:auto}
+.art-card{
+  position:absolute; right:3%; bottom:4%; width:12.5rem; aspect-ratio:297/210; rotate:7deg;
+  border-radius:10px; background:linear-gradient(160deg,#fffdf7,#ffe6ee);
+  box-shadow:inset 0 0 0 .35rem #ffd0dc, var(--shadow);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:2.6rem; line-height:1.1;
+}
+.art-card span{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.2rem; color:var(--rose)}
+.floaty{animation:floaty 4s ease-in-out infinite}
+.floaty.late{animation-delay:-2s}
+@keyframes floaty{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
+@keyframes fadeUp{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+
+/* ---------- Work screens ---------- */
+.ch-head{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin-bottom:.8rem}
+.ch-tag{background:var(--ink); color:#fff; font-weight:800; border-radius:12px; padding:.3rem .75rem; font-size:.88rem}
+.ch-head h2{font-family:'Baloo 2',cursive; margin:0; font-size:1.55rem; font-weight:800}
+.work{display:grid; grid-template-columns:minmax(14rem,17rem) minmax(0,1fr); gap:1rem; align-items:start}
+.guide{background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:.9rem; display:flex; flex-direction:column; gap:.75rem}
+.story{margin:0; background:#fff7e0; border-radius:14px; padding:.65rem .8rem; font-size:.93rem; line-height:1.5}
+.steps-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.4rem}
+.steps-list li{display:flex; gap:.55rem; align-items:flex-start; padding:.45rem .55rem; border-radius:14px; color:var(--muted); font-size:.9rem; line-height:1.4}
+.steps-list .n{flex:none; width:1.65rem; height:1.65rem; border-radius:50%; display:grid; place-items:center; background:#eef0f6; font-weight:800; font-size:.82rem}
+.steps-list li.now{background:#fff3d6; color:var(--ink); box-shadow:inset 0 0 0 2px var(--primary2)}
+.steps-list li.now .n{background:var(--primary); color:#fff}
+.steps-list li.done{color:var(--ok)}
+.steps-list li.done .n{background:var(--ok); color:#fff}
+.steps-list p{margin:.3rem 0 0; font-size:.86rem}
+.done-box{background:#effbf6; border:2px solid #b7ebd6; border-radius:16px; padding:.8rem; text-align:center; animation:pop .5s}
+.done-box b{font-size:1.08rem; color:var(--ok)}
+.done-box p{margin:.4rem 0 .9rem; font-size:.9rem; line-height:1.45}
+
+/* ---------- Mô phỏng phần mềm soạn thảo ---------- */
+.ed-col{display:flex; flex-direction:column; gap:.8rem; min-width:0}
+.editor{background:#fff; border-radius:18px; box-shadow:var(--shadow); overflow:hidden; border:1px solid #e3e6f0}
+.ed-bar{display:flex; align-items:center; gap:.6rem; background:var(--word); color:#fff; font-weight:700; font-size:.82rem; padding:.4rem .8rem}
+.dots{display:flex; gap:.3rem}
+.dots i{width:.6rem; height:.6rem; border-radius:50%; background:rgba(255,255,255,.55)}
+.ribbon{display:flex; flex-wrap:wrap; gap:.4rem 0; padding:.45rem .3rem; background:#f5f6fa; border-bottom:1px solid #e3e6f0}
+.grp{display:flex; flex-direction:column; align-items:center; gap:.15rem; padding:0 .45rem; border-right:1px solid #dfe3ec}
+.grp:last-child{border-right:0}
+.grp-btns{display:flex; gap:.2rem}
+.grp-lbl{font-size:.66rem; color:var(--muted); font-weight:700; white-space:nowrap}
+.tb{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.1rem;
+  min-width:3rem; padding:.28rem .3rem; border-radius:10px; border:2px solid transparent;
+  background:transparent; color:var(--ink); font-size:.68rem; font-weight:700;
+  transition:background .15s, border-color .15s, transform .1s;
+}
+.tb:hover{background:#e8eefb}
+.tb:active{transform:scale(.94)}
+.tb.on{background:#dbe6fa; border-color:var(--word)}
+.tb svg{width:1.35rem; height:1.35rem; color:#2f3b57}
+.tb .emo{font-style:normal; font-size:1.15rem; line-height:1.35rem}
+.tb.hint{animation:hintGlow 1.1s infinite}
+@keyframes hintGlow{0%,100%{box-shadow:0 0 0 0 rgba(243,169,0,0)} 50%{box-shadow:0 0 0 4px rgba(243,169,0,.6)}}
+.canvas{background:#e7e9f0; padding:1rem; display:flex; justify-content:center; align-items:flex-start; min-height:18rem}
+
+.page{
+  background:#fff; box-shadow:0 8px 20px rgba(31,42,68,.18);
+  font-family:'Times New Roman',Times,serif; color:#111; font-size:.8rem; line-height:1.5;
+  padding:1.6em 1.8em; display:flex; flex-direction:column; gap:.9em;
+  transition:width .45s ease;
+}
+.page.portrait{width:min(100%,16rem); aspect-ratio:210/297}
+.page.landscape{width:min(100%,24rem); aspect-ratio:297/210}
+.blk{border-radius:4px; outline:2px dashed transparent; outline-offset:3px; cursor:pointer; transition:outline-color .2s, background .2s; overflow-wrap:anywhere}
+.blk:hover{outline-color:#b8c6e8}
+.blk.sel{outline:2px solid var(--word); background:rgba(43,87,154,.06)}
+.blk.guide{outline:2px dashed var(--primary2); animation:guideGlow 1.2s infinite}
+@keyframes guideGlow{0%,100%{outline-color:rgba(243,169,0,.25)} 50%{outline-color:rgba(243,169,0,1)}}
+.blk.title{font-weight:700; font-size:1.35em; letter-spacing:.05em}
+.blk[contenteditable]{cursor:text}
+.blk[contenteditable]:focus{outline:2px solid var(--word)}
+[data-ph]:empty::before{content:attr(data-ph); color:#9aa3b5; font-style:italic}
+
+/* Thiệp */
+.page.card{
+  font-family:'Nunito',sans-serif; font-size:.85rem; gap:.6em; padding:1.5em 1.7em;
+  background:linear-gradient(160deg,#fffdf7,#fff3f6);
+  box-shadow:inset 0 0 0 .45em #ffe1e8, inset 0 0 0 .6em #f7a8bd, 0 8px 20px rgba(31,42,68,.18);
+}
+.card .head{font-family:'Baloo 2',cursive; font-weight:800; color:var(--rose); font-size:1.12em; line-height:1.3}
+.card .wish{min-height:3em; color:var(--ink); line-height:1.55}
+.card .sender{min-height:1.6em; color:var(--ink); font-weight:700; margin-top:auto}
+.pic{position:relative; text-align:center; line-height:1}
+.pic-img{font-size:3.2em; display:inline-block; animation:pop .45s}
+.pic-x{
+  position:absolute; top:0; right:0; width:1.6rem; height:1.6rem; border-radius:50%;
+  border:2px solid #f3c0cd; background:#fff; color:var(--rose); font-size:.75rem; font-weight:800;
+}
+
+/* Bản thu nhỏ (bảng tin, máy in, so sánh) */
+.page.mini{font-size:.5rem; pointer-events:none}
+.page.mini.portrait{width:9rem}
+.page.mini.landscape{width:13rem}
+.page.mini.card{font-size:.52rem}
+
+/* Bảng tin */
+.board{
+  width:min(100%,24rem); border:.6rem solid #8a5a2b; border-radius:14px; padding:1rem;
+  background:radial-gradient(circle at 30% 20%,#dcae72,#b98146);
+  display:flex; flex-direction:column; align-items:center; gap:.9rem;
+  box-shadow:inset 0 0 20px rgba(0,0,0,.25), var(--shadow); animation:pop .5s;
+}
+.board-h{background:#fff; border-radius:999px; padding:.2rem .9rem; font-weight:800; font-size:.85rem; color:#8a5a2b}
+.pin-wrap{position:relative; rotate:-2deg}
+.pin{position:absolute; top:-.9rem; left:50%; transform:translateX(-50%); font-size:1.4rem; z-index:2}
+
+/* Bảng kiểm & gợi ý */
+.checklist{background:#f8faff; border:2px dashed #cfd8ee; border-radius:16px; padding:.65rem .75rem; display:flex; flex-direction:column; gap:.25rem}
+.checklist h3{margin:0 0 .2rem; font-size:1rem}
+.chk{display:flex; gap:.55rem; align-items:flex-start; padding:.35rem .4rem; border-radius:10px; cursor:pointer; font-size:.9rem; line-height:1.35}
+.chk:hover{background:#eef3ff}
+.chk input{width:1.15rem; height:1.15rem; margin:.1rem 0 0; accent-color:var(--ok); flex:none; cursor:pointer}
+.chk input:checked + span{color:var(--ok)}
+.suggest{background:#fff; border-radius:18px; box-shadow:var(--shadow); padding:.7rem .9rem; font-size:.92rem}
+.chips{display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.5rem}
+.chip{border:2px solid #f1dfb0; background:#fffaf0; border-radius:12px; padding:.4rem .7rem; font-size:.84rem; font-weight:700; color:var(--ink); text-align:left; transition:transform .12s, border-color .2s}
+.chip:hover{border-color:var(--primary2); transform:translateY(-2px)}
+.chip.used{opacity:.55}
+
+/* ---------- Hộp thoại ---------- */
+.modal-bg{position:fixed; inset:0; z-index:700; background:rgba(31,42,68,.5); display:grid; place-items:center; padding:1rem; animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}}
+.modal{background:#fff; border-radius:22px; box-shadow:0 20px 50px rgba(0,0,0,.3); width:min(100%,32rem); max-height:calc(100vh - 2rem); overflow:auto; padding:1.1rem 1.25rem; animation:pop .3s}
+.modal.wide{width:min(100%,52rem)}
+.modal.bare{background:transparent; box-shadow:none; width:auto; padding:0; overflow:visible}
+.modal h3{font-family:'Baloo 2',cursive; font-size:1.35rem; margin:0 0 .7rem}
+.modal p{line-height:1.5}
+.pic-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem}
+.pic-opt{border:3px solid #e5e7f5; background:#fff; border-radius:16px; padding:.55rem; display:flex; flex-direction:column; align-items:center; gap:.2rem; font-weight:700; font-size:.82rem; color:var(--ink); transition:transform .12s, border-color .2s}
+.pic-opt span{font-size:2.3rem; line-height:1.2}
+.pic-opt:hover{border-color:var(--primary2); transform:translateY(-2px)}
+.lbl{font-weight:800}
+.fname{display:flex; align-items:center; border:2px solid #d5dbea; border-radius:12px; overflow:hidden; margin-top:.4rem}
+.fname:focus-within{border-color:var(--word)}
+.fname input{flex:1; border:0; padding:.6rem .8rem; font:inherit; font-weight:700; min-width:0; outline:none; color:var(--ink)}
+.fname em{font-style:normal; background:#f1f3f8; padding:.6rem .8rem; color:var(--muted); font-weight:700}
+.cmp{display:grid; grid-template-columns:1fr 1fr; gap:.9rem; margin-bottom:.9rem}
+.cmp figure{margin:0; background:#f5f6fa; border-radius:16px; padding:.7rem; display:flex; flex-direction:column; align-items:center; gap:.55rem}
+.cmp figcaption{font-weight:800}
+.cmp .page.mini{font-size:.6rem}
+.cmp .page.mini.landscape{width:min(100%,19rem)}
+.cmp .page.mini.portrait{width:min(100%,11rem)}
+.cmp-table{width:100%; border-collapse:collapse; font-size:.88rem}
+.cmp-table th,.cmp-table td{padding:.5rem .55rem; border-bottom:1px solid #eceef4; text-align:left; vertical-align:top; line-height:1.4}
+.cmp-table th{background:#f5f6fa; font-size:.78rem; color:var(--muted)}
+.cmp-table td.c{text-align:center}
+.cmp-table tr.ok td:last-child{color:var(--ok); font-weight:700}
+.cmp-table tr.bad td:last-child{color:var(--bad); font-weight:700}
+.cmp-table tr.warn td:last-child{color:#b7791f; font-weight:700}
+.cmp-table tr.todo td:last-child{color:var(--muted)}
+.cmp-msg{font-weight:800; background:#fff7e0; border-radius:14px; padding:.7rem 1rem; margin:1rem 0 0}
+
+/* Máy in */
+.printer{display:flex; flex-direction:column; align-items:center}
+.printer-body{
+  position:relative; z-index:2; width:15rem; height:4.4rem; border-radius:18px 18px 10px 10px;
+  background:linear-gradient(#5b6684,#323b56); box-shadow:0 10px 24px rgba(0,0,0,.3);
+  display:flex; align-items:center; justify-content:flex-end; padding-right:1rem;
+}
+.printer-body::after{content:""; position:absolute; left:1.5rem; right:1.5rem; bottom:.6rem; height:.35rem; border-radius:99px; background:#1b2133}
+.led{width:.6rem; height:.6rem; border-radius:50%; background:#34d399; animation:twinkle .5s infinite}
+@keyframes twinkle{0%,100%{opacity:.3} 50%{opacity:1}}
+.paper-slot{width:14rem; height:13.5rem; overflow:hidden; margin-top:-.9rem; display:flex; justify-content:center}
+.paper-out{transform:translateY(-100%); animation:paperOut 1.5s ease-out .15s forwards}
+@keyframes paperOut{to{transform:translateY(0)}}
+.printer-msg{color:#fff; font-weight:800; font-size:1.1rem; margin:.5rem 0 0; text-shadow:0 2px 6px rgba(0,0,0,.4)}
+
+/* ---------- Win ---------- */
+.win{text-align:center; max-width:52rem; margin:0 auto}
+.trophy{font-size:5rem; animation:floaty 3s ease-in-out infinite; display:inline-block}
+.win h1{font-family:'Baloo 2',cursive; font-size:2.3rem; margin:.2rem 0; font-weight:800; background:linear-gradient(90deg,#f0a500,var(--rose),var(--word)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.win h2{font-family:'Baloo 2',cursive; font-size:1.35rem; margin:.3rem 0 .9rem}
+.scorebox{display:inline-block; background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:.9rem 2.2rem; margin:.4rem 0 1rem}
+.scorebox .lbl{color:var(--muted)}
+.scorebox .val{font-family:'Baloo 2',cursive; font-size:3rem; font-weight:800; color:var(--primary); line-height:1.1}
+.msg{font-size:1.15rem; font-weight:800; background:#fff7e0; border-radius:16px; padding:.75rem 1.1rem; display:inline-block; margin-bottom:1rem}
+.learned{display:grid; grid-template-columns:1fr 1fr; gap:.7rem; text-align:left; margin:0 auto; max-width:46rem}
+.learned div{background:#fff; border-radius:14px; padding:.65rem .95rem; font-weight:700; box-shadow:var(--shadow); animation:fadeUp .5s both}
+
+/* ---------- Toast & hiệu ứng ---------- */
+#toast{
+  position:fixed; left:50%; bottom:1.4rem; transform:translate(-50%,calc(100% + 3rem)); visibility:hidden;
+  z-index:900; background:#fff; border-radius:18px; box-shadow:0 14px 34px rgba(40,50,110,.25);
+  padding:.8rem 1.3rem; font-size:1rem; font-weight:700; max-width:min(92vw,36rem); text-align:center; line-height:1.45;
+  border:3px solid var(--primary); transition:transform .35s cubic-bezier(.2,1.4,.4,1), visibility .35s; pointer-events:none;
+}
+#toast.show{transform:translate(-50%,0); visibility:visible}
+#toast.ok{border-color:var(--ok)}
+#toast.bad{border-color:#f0b400; background:#fffbea}
+#toast .t{display:block; font-size:1.2rem; font-weight:900; margin-bottom:.15rem}
+.fly{position:fixed; z-index:950; pointer-events:none; font-weight:900; font-size:1.5rem; color:#f0a500; text-shadow:0 2px 0 #fff; animation:fly 1s ease-out forwards}
+@keyframes fly{from{opacity:1; transform:translate(-50%,0) scale(.8)} to{opacity:0; transform:translate(-50%,-70px) scale(1.3)}}
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:800; width:100%; height:100%}
+.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)}}
+@keyframes pop{0%{transform:scale(.85)} 60%{transform:scale(1.05)} 100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)} 40%{transform:scale(1.6); color:var(--ok)} 100%{transform:scale(1)}}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px){
+  .home{grid-template-columns:1fr; text-align:center; min-height:0}
+  .bubble{margin-left:auto; margin-right:auto}
+  .home-btns, .quest{justify-content:center}
+  .home-art{order:-1; height:12rem; width:100%; max-width:22rem; margin:0 auto}
+  .art-notice{width:7.5rem; padding:.7rem .6rem}
+  .art-card{width:9.5rem; font-size:2rem}
+  .work{grid-template-columns:1fr}
+  .steps-list li:not(.now){display:none}
+  .cmp{grid-template-columns:1fr}
+  .learned{grid-template-columns:1fr}
+}
+@media (max-width: 520px){
+  .home h1{font-size:1.9rem}
+  .ch-head h2{font-size:1.25rem}
+  .bar{width:50px}
+  .brand{display:none}
+  .topbar{justify-content:center}
+  .canvas{padding:.7rem}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">📢 Thông báo &amp; Thiệp 20/11</div>
+  <div class="pill">⭐ Điểm: <b id="score">0</b></div>
+  <div class="pill">🏆 Phần: <span id="prog">0/2</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="icon-btn" id="soundBtn" type="button" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh">🔊</button>
+  <button class="icon-btn" id="homeBtn" type="button" title="Về màn hình đầu" aria-label="Về màn hình đầu">🏠</button>
+</header>
+
+<main id="app"></main>
+<div id="modalRoot"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =========================================================
+   THÔNG BÁO & THIỆP 20/11 – Tin học 6, Bài 11: Định dạng văn bản
+   Phần 1 (Luyện tập): trình bày thông báo theo chỉ dẫn
+   Phần 2 (Vận dụng): tự làm thiệp chúc mừng thầy cô
+   ========================================================= */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+/* ---------- Trạng thái ---------- */
+// Phần 1: 5 bước, mỗi bước 10 điểm (5 điểm nếu làm sai trước khi đúng). Phần 2: 50 điểm.
+const state = { p1: [0, 0, 0, 0, 0], p2: 0, part1Done: false, part2Done: false, sound: true };
+const totalScore = () => state.p1.reduce((a, b) => a + b, 0) + state.p2;
+let keyHandler = null;
+
+function updateHUD(bump) {
+  const s = $('#score');
+  s.textContent = totalScore();
+  if (bump) { s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
+  const done = (state.part1Done ? 1 : 0) + (state.part2Done ? 1 : 0);
+  $('#prog').textContent = done + '/2';
+  $('#progBar').style.width = (done / 2 * 100) + '%';
+  $('#soundBtn').textContent = state.sound ? '🔊' : '🔇';
+}
+
+/* ---------- Âm thanh (Web Audio – không cần file) ---------- */
+let actx = null;
+function tone(freq, dur, type = 'sine', when = 0, vol = .15) {
+  if (!state.sound) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = actx.currentTime + when;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(actx.destination);
+    o.start(t); o.stop(t + dur + .05);
+  } catch (e) {}
+}
+const sfx = {
+  click() { tone(520, .07, 'triangle', 0, .08); },
+  ok()    { tone(660, .15, 'triangle'); tone(990, .25, 'triangle', .1); },
+  bad()   { tone(260, .2, 'sine', 0, .12); tone(200, .28, 'sine', .12, .1); },
+  print() { [0, .18, .36, .54, .72, .9].forEach(w => tone(180, .1, 'square', w, .03)); },
+  win()   { [523, 659, 784, 1047].forEach((f, i) => tone(f, .3, 'triangle', i * .12, .16)); tone(1319, .7, 'triangle', .52, .14); }
+};
+
+/* ---------- Thông báo & hiệu ứng ---------- */
+let toastTimer;
+function toast(title, text = '', type = 'ok', ms = 2800) {
+  const t = $('#toast');
+  t.className = type;
+  t.innerHTML = (title ? `<span class="t">${title}</span>` : '') + text;
+  void t.offsetWidth;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function flyText(txt, nearEl) {
+  const r = nearEl.getBoundingClientRect();
+  const f = document.createElement('div');
+  f.className = 'fly'; f.textContent = txt;
+  f.style.left = (r.left + r.width / 2) + 'px';
+  f.style.top = (r.top + 10) + 'px';
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 1000);
+}
+function shake(el) { if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+
+function confetti(duration = 3200) {
+  const c = $('#confetti'), ctx = c.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const colors = ['#2b579a', '#c2185b', '#f28a35', '#d9a514', '#3f86f0', '#1fa97a'];
+  const parts = Array.from({ length: 160 }, (_, i) => {
+    const fromLeft = i % 2 === 0;
+    return {
+      x: fromLeft ? -10 : innerWidth + 10, y: innerHeight * (.55 + Math.random() * .3),
+      vx: (fromLeft ? 1 : -1) * (4 + Math.random() * 7), vy: -(9 + Math.random() * 9),
+      w: 6 + Math.random() * 8, h: 8 + Math.random() * 10,
+      rot: Math.random() * 6, vr: (Math.random() - .5) * .3, color: colors[i % colors.length]
+    };
+  });
+  const start = performance.now();
+  (function frame(now) {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    parts.forEach(p => {
+      p.vy += .25; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (now - start < duration) requestAnimationFrame(frame);
+    else ctx.clearRect(0, 0, innerWidth, innerHeight);
+  })(start);
+}
+
+function show(html) {
+  closeModal();
+  app.innerHTML = html;
+  app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter');
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Hộp thoại ---------- */
+function openModal(html, { bare = false, wide = false } = {}) {
+  const root = $('#modalRoot');
+  root.innerHTML = `<div class="modal-bg"><div class="modal${bare ? ' bare' : ''}${wide ? ' wide' : ''}" role="dialog" aria-modal="true">${html}</div></div>`;
+  const m = $('.modal', root);
+  $$('[data-x]', m).forEach(b => b.addEventListener('click', closeModal));
+  if (!bare) $('.modal-bg', root).addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+  return m;
+}
+function closeModal() { $('#modalRoot').innerHTML = ''; }
+
+document.addEventListener('keydown', e => {
+  const m = $('#modalRoot .modal');
+  if (m) { if (e.key === 'Escape' && !m.classList.contains('bare')) closeModal(); return; }
+  if (keyHandler) keyHandler(e);
+});
+// Phím tắt giống phần mềm soạn thảo: Ctrl+L/E/R/J căn lề, Ctrl+S lưu, Ctrl+P in
+function shortcut(e, h) {
+  if (!(e.ctrlKey || e.metaKey) || e.altKey || e.shiftKey) return;
+  const k = e.key.toLowerCase();
+  const map = { l: 'left', e: 'center', r: 'right', j: 'justify' };
+  if (map[k]) { e.preventDefault(); h.align(map[k]); }
+  else if (k === 's') { e.preventDefault(); h.save(); }
+  else if (k === 'p') { e.preventDefault(); h.print(); }
+}
+
+/* ---------- Thanh công cụ ---------- */
+const ALIGN = {
+  left:    { name: 'Căn trái',        short: 'Trái', key: 'L' },
+  center:  { name: 'Căn giữa',        short: 'Giữa', key: 'E' },
+  right:   { name: 'Căn phải',        short: 'Phải', key: 'R' },
+  justify: { name: 'Căn đều hai bên', short: 'Đều',  key: 'J' }
+};
+function alignIcon(a) {
+  const rows = {
+    left:    [[3, 18], [3, 12], [3, 18], [3, 10]],
+    center:  [[3, 18], [6, 12], [3, 18], [7, 10]],
+    right:   [[3, 18], [9, 12], [3, 18], [11, 10]],
+    justify: [[3, 18], [3, 18], [3, 18], [3, 18]]
+  }[a];
+  return `<svg viewBox="0 0 24 24" aria-hidden="true">${rows.map(([x, w], i) =>
+    `<rect x="${x}" y="${4 + i * 4.6}" width="${w}" height="2.3" rx="1.1" fill="currentColor"/>`).join('')}</svg>`;
+}
+function orientIcon(o) {
+  const [w, h] = o === 'portrait' ? [13, 18] : [19, 13];
+  const x = (24 - w) / 2, y = (24 - h) / 2;
+  return `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="1.5" fill="#fff" stroke="currentColor" stroke-width="1.8"/>` +
+    [0, 1, 2].map(i => `<rect x="${x + 2.5}" y="${y + 3 + i * 3}" width="${w - 5}" height="1.4" rx=".7" fill="currentColor"/>`).join('') + '</svg>';
+}
+function ribbon({ insert = false, open = false } = {}) {
+  const tb = (attr, title, icon, label) => `<button type="button" class="tb" ${attr} title="${title}">${icon}<span>${label}</span></button>`;
+  return `<div class="ribbon" role="toolbar" aria-label="Thanh công cụ">
+    <div class="grp"><div class="grp-btns">${Object.keys(ALIGN).map(a =>
+      tb(`data-align="${a}"`, `${ALIGN[a].name} (Ctrl+${ALIGN[a].key})`, alignIcon(a), ALIGN[a].short)).join('')}</div>
+      <div class="grp-lbl">Căn lề đoạn văn</div></div>
+    <div class="grp"><div class="grp-btns">
+      ${tb('data-orient="portrait"', 'Hướng trang đứng', orientIcon('portrait'), 'Đứng')}
+      ${tb('data-orient="landscape"', 'Hướng trang ngang', orientIcon('landscape'), 'Ngang')}
+      </div><div class="grp-lbl">Hướng trang</div></div>
+    ${insert ? `<div class="grp"><div class="grp-btns">${tb('data-cmd="picture"', 'Chèn hình minh họa', '<i class="emo">🖼️</i>', 'Hình ảnh')}</div><div class="grp-lbl">Chèn</div></div>` : ''}
+    <div class="grp"><div class="grp-btns">
+      ${open ? tb('data-cmd="open"', 'Mở tệp', '<i class="emo">📂</i>', 'Mở') : ''}
+      ${tb('data-cmd="save"', 'Lưu tệp (Ctrl+S)', '<i class="emo">💾</i>', 'Lưu')}
+      ${tb('data-cmd="print"', 'In (Ctrl+P)', '<i class="emo">🖨️</i>', 'In')}
+      </div><div class="grp-lbl">Tệp</div></div>
+  </div>`;
+}
+function syncRibbon(sel, orient) {
+  const a = sel ? (sel.style.textAlign || 'left') : null;
+  $$('.ribbon [data-align]').forEach(b => { const on = b.dataset.align === a; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  $$('.ribbon [data-orient]').forEach(b => { const on = b.dataset.orient === orient; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+}
+function applyOrient(pageEl, o) {
+  pageEl.classList.toggle('portrait', o === 'portrait');
+  pageEl.classList.toggle('landscape', o === 'landscape');
+}
+// Bản sao thu nhỏ của trang để đưa vào máy in, bảng tin, khung so sánh
+function miniCopy(el) {
+  const c = el.cloneNode(true);
+  c.removeAttribute('id');
+  c.classList.add('mini');
+  $$('[id]', c).forEach(x => x.removeAttribute('id'));
+  $$('[contenteditable]', c).forEach(x => x.removeAttribute('contenteditable'));
+  $$('[data-ph]', c).forEach(x => x.removeAttribute('data-ph'));
+  $$('[tabindex]', c).forEach(x => x.removeAttribute('tabindex'));
+  $$('.sel, .guide', c).forEach(x => x.classList.remove('sel', 'guide'));
+  $$('.pic-x', c).forEach(x => x.remove());
+  c.setAttribute('aria-hidden', 'true');
+  return c;
+}
+function printAnim(pageEl, done) {
+  const m = openModal(`<div class="printer"><div class="printer-body"><span class="led"></span></div>
+    <div class="paper-slot"><div class="paper-out"></div></div><p class="printer-msg">🖨️ Đang in…</p></div>`, { bare: true });
+  $('.paper-out', m).appendChild(miniCopy(pageEl));
+  sfx.print();
+  setTimeout(() => { closeModal(); done && done(); }, 2000);
+}
+
+/* =========================================================
+   MÀN HÌNH ĐẦU
+   ========================================================= */
+function renderHome() {
+  keyHandler = null;
+  show(`<div class="home">
+    <div>
+      <span class="badge">🧪 Bài 11 · Luyện tập &amp; Vận dụng</span>
+      <h1>Thông báo &amp; <span>Thiệp 20/11</span></h1>
+      <div class="bubble b1">📨 Lớp trưởng soạn thông báo họp lớp chuẩn bị chào mừng <b>Ngày Nhà giáo Việt Nam 20/11</b> nhưng chưa trình bày. Em sửa giúp bạn nhé!</div>
+      <div class="bubble b2">💌 Sau đó, em tự làm một tấm thiệp tặng thầy cô đúng như thông báo yêu cầu.</div>
+      <div class="home-btns">
+        <button class="btn big pulse" id="startBtn" type="button">Bắt đầu ▶</button>
+        <button class="btn ghost" id="jumpBtn" type="button">Làm Phần 2</button>
+      </div>
+      <div class="quest">
+        <span class="${state.part1Done ? 'done' : ''}">${state.part1Done ? '✔' : '①'} Luyện tập: Trình bày thông báo</span>
+        <span class="${state.part2Done ? 'done' : ''}">${state.part2Done ? '✔' : '②'} Vận dụng: Làm thiệp 20/11</span>
+      </div>
+    </div>
+    <div class="home-art" aria-hidden="true">
+      <div class="art-notice floaty"><b>THÔNG BÁO</b><i></i><i></i><i></i><i style="width:70%"></i><i class="r"></i><i class="r" style="margin-top:0"></i></div>
+      <div class="art-card floaty late">💐<span>20/11</span></div>
+    </div>
+  </div>`);
+  $('#startBtn').addEventListener('click', () => { sfx.click(); renderPart1(); });
+  $('#jumpBtn').addEventListener('click', () => { sfx.click(); renderPart2(); });
+}
+
+/* =========================================================
+   PHẦN 1 – LUYỆN TẬP: TRÌNH BÀY THÔNG BÁO (làm theo chỉ dẫn)
+   ========================================================= */
+const P1_STEPS = [
+  { kind: 'align', target: 'title', want: 'center', label: 'Căn giữa tiêu đề “THÔNG BÁO”',
+    how: 'Nháy chuột vào dòng tiêu đề <b>THÔNG BÁO</b>, rồi chọn nút <b>Căn giữa</b> trên thanh công cụ.',
+    ok: 'Tiêu đề nằm giữa trang nên ai nhìn vào cũng nhận ra ngay đây là thông báo.' },
+  { kind: 'align', target: 'body', want: 'justify', label: 'Căn đều hai bên đoạn nội dung',
+    how: 'Nháy chuột vào đoạn nội dung, rồi chọn nút <b>Căn đều hai bên</b>.',
+    ok: 'Mép trái và mép phải của đoạn văn đã thẳng hàng, trông gọn gàng hơn hẳn.' },
+  { kind: 'align', target: 'sign', want: 'right', label: 'Căn phải ngày tháng và tên lớp trưởng',
+    how: 'Nháy chuột vào phần ngày tháng và tên lớp trưởng, rồi chọn nút <b>Căn phải</b>.',
+    ok: 'Ngày tháng và tên người viết thường đặt ở bên phải, cuối văn bản.' },
+  { kind: 'orient', want: 'portrait', label: 'Chọn hướng trang cho thông báo',
+    how: 'Lớp trưởng đang để trang nằm ngang. Thông báo có nhiều dòng chữ đọc từ trên xuống, em hãy chọn <b>trang đứng</b> trong nhóm <b>Hướng trang</b>.',
+    ok: 'Trang đứng hợp với thông báo, đơn từ, bài văn có nhiều dòng chữ.' },
+  { kind: 'cmd', want: 'print', label: 'Muốn dán thông báo lên bảng tin thì dùng lệnh nào?',
+    how: 'Thông báo mới chỉ có trong máy tính. Để có tờ giấy dán lên bảng tin, em chọn lệnh nào trong nhóm <b>Tệp</b>?',
+    ok: 'Đúng rồi! Lệnh <b>In</b> đưa văn bản ra giấy để dán lên bảng tin.' }
+];
+const TARGET_NAME = { title: 'dòng tiêu đề “THÔNG BÁO”', body: 'đoạn nội dung', sign: 'phần ngày tháng và tên lớp trưởng' };
+let p1 = null;
+
+function renderPart1() {
+  p1 = { step: 0, mistakes: 0, sel: null, orient: 'landscape', busy: false };
+  state.p1 = [0, 0, 0, 0, 0];
+  state.part1Done = false;
+  updateHUD();
+  show(`<div class="ch-head"><span class="ch-tag">Phần 1 · Luyện tập</span><h2>Trình bày thông báo của lớp</h2></div>
+    <div class="work">
+      <aside class="guide" id="guide">
+        <p class="story">📨 Lớp trưởng soạn xong thông báo nhưng <b>chưa trình bày</b>. Em sửa giúp bạn theo từng bước nhé!</p>
+        <ol class="steps-list" id="stepsList"></ol>
+      </aside>
+      <section class="editor" aria-label="Phần mềm soạn thảo văn bản">
+        <div class="ed-bar"><span class="dots"><i></i><i></i><i></i></span><span>ThongBao-20-11.docx</span></div>
+        ${ribbon({ open: true })}
+        <div class="canvas" id="canvas">
+          <div class="page landscape" id="page">
+            <div class="blk title" data-blk="title" tabindex="0" role="button">THÔNG BÁO</div>
+            <div class="blk" data-blk="body" tabindex="0" role="button">Để chuẩn bị chào mừng Ngày Nhà giáo Việt Nam 20/11, lớp 6A sẽ họp vào 16 giờ 30 phút chiều thứ Sáu tuần này tại phòng học của lớp. Mỗi bạn hãy làm một tấm thiệp để tặng thầy cô. Các bạn nhớ đến đầy đủ và đúng giờ nhé!</div>
+            <div class="blk" data-blk="sign" tabindex="0" role="button">Ngày 10 tháng 11<br>Lớp trưởng<br><b>Nguyễn Minh An</b></div>
+          </div>
+        </div>
+      </section>
+    </div>`);
+
+  $$('#page .blk').forEach(b => {
+    b.addEventListener('click', () => p1Select(b));
+    b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); p1Select(b); } });
+  });
+  $$('.ribbon [data-align]').forEach(btn => btn.addEventListener('click', () => p1Align(btn.dataset.align)));
+  $$('.ribbon [data-orient]').forEach(btn => btn.addEventListener('click', () => p1Orient(btn.dataset.orient)));
+  $$('.ribbon [data-cmd]').forEach(btn => btn.addEventListener('click', () => p1Cmd(btn.dataset.cmd)));
+  keyHandler = e => shortcut(e, { align: p1Align, save: () => p1Cmd('save'), print: () => p1Cmd('print') });
+  syncRibbon(null, p1.orient);
+  renderSteps();
+}
+
+function renderSteps() {
+  $('#stepsList').innerHTML = P1_STEPS.map((s, i) => {
+    const cls = i < p1.step ? 'done' : i === p1.step ? 'now' : '';
+    return `<li class="${cls}"><span class="n">${i < p1.step ? '✔' : i + 1}</span><div><b>${s.label}</b>${i === p1.step ? `<p>${s.how}</p>` : ''}</div></li>`;
+  }).join('');
+  $$('.ribbon .tb').forEach(b => b.classList.remove('hint'));
+  refreshGuide();
+}
+function refreshGuide() {
+  const st = P1_STEPS[p1.step];
+  $$('#page .blk').forEach(b => b.classList.toggle('guide',
+    !!st && st.kind === 'align' && b.dataset.blk === st.target && p1.sel !== b));
+}
+function p1SetSel(b) {
+  p1.sel = b;
+  $$('#page .blk').forEach(x => x.classList.toggle('sel', x === b));
+  refreshGuide();
+  syncRibbon(b, p1.orient);
+}
+function hintButton() {
+  const st = P1_STEPS[p1.step];
+  const attr = st.kind === 'align' ? 'data-align' : st.kind === 'orient' ? 'data-orient' : 'data-cmd';
+  const btn = $(`.ribbon [${attr}="${st.want}"]`);
+  if (btn) btn.classList.add('hint');
+}
+function p1Miss(btnSel, msg) {
+  p1.mistakes++;
+  sfx.bad();
+  shake($(`.ribbon ${btnSel}`));
+  toast('Chưa đúng rồi 🤔', msg + (p1.mistakes >= 2 ? '<br>💡 Nút cần chọn đang nhấp nháy trên thanh công cụ.' : ''), 'bad', 3400);
+  if (p1.mistakes >= 2) hintButton();
+}
+
+function p1Select(b) {
+  if (p1.busy) return;
+  const st = P1_STEPS[p1.step];
+  if (st.kind === 'align' && b.dataset.blk !== st.target) {
+    sfx.bad(); shake(b);
+    toast('Chưa phải phần này', `Ở bước này em cần chọn ${TARGET_NAME[st.target]}.`, 'bad');
+    return;
+  }
+  sfx.click();
+  p1SetSel(b);
+}
+function p1Align(a) {
+  if (p1.busy) return;
+  const st = P1_STEPS[p1.step];
+  if (st.kind !== 'align') {
+    toast('Bước này không cần căn lề', 'Em đọc lại chỉ dẫn ở bước đang sáng bên trái nhé.', 'bad');
+    return;
+  }
+  if (!p1.sel) {
+    sfx.bad(); shake($(`#page [data-blk="${st.target}"]`));
+    toast('Chọn phần cần căn trước', `Em nháy chuột vào ${TARGET_NAME[st.target]} trước, rồi mới chọn nút căn lề.`, 'bad', 3200);
+    return;
+  }
+  p1.sel.style.textAlign = a;
+  syncRibbon(p1.sel, p1.orient);
+  if (a === st.want) p1StepDone();
+  else p1Miss(`[data-align="${a}"]`, `Em vừa chọn <b>${ALIGN[a].name}</b>. Bước này cần <b>${ALIGN[st.want].name}</b>, em thử lại nhé!`);
+}
+function p1Orient(o) {
+  if (p1.busy) return;
+  const st = P1_STEPS[p1.step];
+  if (st.kind !== 'orient') {
+    toast('Chưa đến bước này', 'Em làm lần lượt theo bước đang sáng bên trái nhé.', 'bad');
+    return;
+  }
+  p1.orient = o;
+  applyOrient($('#page'), o);
+  syncRibbon(p1.sel, o);
+  if (o === st.want) p1StepDone();
+  else p1Miss(`[data-orient="${o}"]`, 'Trang ngang hợp với thiệp hay bảng rộng. Thông báo nhiều dòng chữ nên dùng <b>trang đứng</b>.');
+}
+function p1Cmd(c) {
+  if (p1.busy) return;
+  const st = P1_STEPS[p1.step];
+  if (st.kind !== 'cmd') {
+    if (c === 'save') { sfx.click(); toast('Đã lưu 💾', 'Lưu thường xuyên để không bị mất bài. Giờ em làm tiếp bước đang sáng nhé.'); }
+    else if (c === 'print') toast('Khoan in đã! ✋', 'Trình bày xong rồi hãy in để không tốn giấy nhé.', 'bad');
+    else toast('Chưa cần mở tệp', 'Thông báo của lớp trưởng đang mở sẵn rồi.', 'bad');
+    return;
+  }
+  if (c === st.want) p1StepDone();
+  else p1Miss(`[data-cmd="${c}"]`, c === 'save'
+    ? 'Lệnh <b>Lưu</b> chỉ cất tệp vào máy tính, chưa có tờ giấy để dán lên bảng tin.'
+    : 'Lệnh <b>Mở</b> dùng để mở một tệp đã có sẵn trong máy tính.');
+}
+function p1StepDone() {
+  const i = p1.step, st = P1_STEPS[i];
+  const pts = p1.mistakes === 0 ? 10 : 5;
+  state.p1[i] = pts;
+  sfx.ok();
+  flyText('+' + pts + ' ⭐', $('#score'));
+  updateHUD(true);
+  p1.busy = true;
+  toast('Chính xác! 🎉', st.ok, 'ok', 2600);
+  if (st.kind === 'cmd') {
+    setTimeout(() => printAnim($('#page'), p1Finish), 700);
+    return;
+  }
+  setTimeout(() => {
+    p1.step++; p1.mistakes = 0; p1.busy = false;
+    p1SetSel(null);
+    renderSteps();
+  }, 900);
+}
+function p1Finish() {
+  p1.step = P1_STEPS.length;
+  renderSteps();
+  state.part1Done = true;
+  updateHUD();
+  const notice = miniCopy($('#page'));
+  $('#canvas').innerHTML = `<div class="board"><div class="board-h">📌 BẢNG TIN LỚP 6A</div><div class="pin-wrap"><span class="pin">📌</span></div></div>`;
+  $('#canvas .pin-wrap').appendChild(notice);
+  $$('.ribbon .tb').forEach(b => { b.disabled = true; b.style.opacity = '.5'; });
+  const box = document.createElement('div');
+  box.className = 'done-box';
+  box.innerHTML = `<b>🎉 Hoàn thành Phần 1!</b><p>Thông báo đã được in và dán lên bảng tin. Giờ em làm tấm thiệp như thông báo yêu cầu nhé!</p>
+    <button class="btn green" id="toP2" type="button">Sang Phần 2 ➜</button>`;
+  $('#guide').appendChild(box);
+  $('#toP2').addEventListener('click', () => { sfx.click(); renderPart2(); });
+  sfx.win(); confetti(1800);
+}
+
+/* =========================================================
+   PHẦN 2 – VẬN DỤNG: LÀM THIỆP TẶNG THẦY CÔ (tự làm)
+   ========================================================= */
+const PICS = [['💐', 'Bó hoa'], ['🌷', 'Hoa tulip'], ['🌻', 'Hoa hướng dương'], ['📚', 'Sách vở'], ['🍎', 'Quả táo'], ['🎓', 'Mũ tốt nghiệp']];
+const WISHES = [
+  'Nhân Ngày Nhà giáo Việt Nam 20/11, em kính chúc thầy cô luôn mạnh khỏe và hạnh phúc.',
+  'Em cảm ơn thầy cô đã tận tình dạy dỗ chúng em.',
+  'Chúc thầy cô có thật nhiều niềm vui bên học trò.',
+  'Em hứa sẽ chăm ngoan, học giỏi để thầy cô vui lòng.'
+];
+const CHECKS = [
+  { id: 'orient', label: 'Chọn hướng trang <b>ngang</b> cho thiệp' },
+  { id: 'wish',   label: 'Gõ lời chúc và <b>căn giữa</b>' },
+  { id: 'sender', label: 'Ghi tên người gửi, <b>căn phải</b>' },
+  { id: 'pic',    label: '<b>Chèn</b> một hình minh họa' },
+  { id: 'save',   label: '<b>Lưu</b> tệp (in nếu có điều kiện)' }
+];
+let p2 = null;
+
+function renderPart2() {
+  p2 = { orient: 'portrait', sel: null, pic: null, saved: false, fileName: '', ticks: {} };
+  updateHUD();
+  show(`<div class="ch-head"><span class="ch-tag">Phần 2 · Vận dụng</span><h2>Làm tấm thiệp tặng thầy cô</h2></div>
+    <div class="work">
+      <aside class="guide">
+        <p class="story">💌 Thông báo nhắc <b>mỗi bạn làm một tấm thiệp</b> tặng thầy cô. Lần này em <b>tự làm</b> nhé! Xong việc nào, em tự đánh dấu vào bảng kiểm.</p>
+        <div class="checklist"><h3>📋 Bảng kiểm của em</h3>
+          ${CHECKS.map(c => `<label class="chk"><input type="checkbox" data-chk="${c.id}"><span>${c.label}</span></label>`).join('')}
+        </div>
+        <button class="btn green" id="compareBtn" type="button">🔍 So sánh với thiệp mẫu</button>
+      </aside>
+      <div class="ed-col">
+        <section class="editor" aria-label="Phần mềm soạn thảo văn bản">
+          <div class="ed-bar"><span class="dots"><i></i><i></i><i></i></span><span id="docName">Tài liệu mới (chưa lưu)</span></div>
+          ${ribbon({ insert: true })}
+          <div class="canvas">
+            <div class="page card portrait" id="card">
+              <div class="blk head" data-blk="head" tabindex="0" role="button" style="text-align:center">🌸 Mừng Ngày Nhà giáo Việt Nam 20/11 🌸</div>
+              <div class="pic" id="pic" hidden></div>
+              <div class="blk wish" id="wish" contenteditable="true" spellcheck="false" aria-label="Lời chúc" data-ph="Gõ lời chúc của em vào đây…"></div>
+              <div class="blk sender" id="sender" contenteditable="true" spellcheck="false" aria-label="Tên người gửi" data-ph="Gõ tên người gửi, ví dụ: Học sinh lớp 6A – Lê Văn Bình"></div>
+            </div>
+          </div>
+        </section>
+        <div class="suggest"><b>💡 Gợi ý lời chúc</b> <small class="muted">(bấm vào câu để thêm vào thiệp)</small>
+          <div class="chips">${WISHES.map((w, i) => `<button type="button" class="chip" data-wish="${i}">${w}</button>`).join('')}</div>
+        </div>
+      </div>
+    </div>`);
+
+  const head = $('#card .head'), wish = $('#wish'), sender = $('#sender');
+  head.addEventListener('click', () => p2SetSel(head));
+  head.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); p2SetSel(head); } });
+  [wish, sender].forEach(el => {
+    el.addEventListener('focus', () => p2SetSel(el));
+    el.addEventListener('click', () => p2SetSel(el));
+    el.addEventListener('input', () => { if (!el.textContent.trim()) el.innerHTML = ''; });
+    el.addEventListener('paste', e => {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text');
+      document.execCommand('insertText', false, text);
+    });
+  });
+  $$('.ribbon [data-align]').forEach(btn => btn.addEventListener('click', () => p2Align(btn.dataset.align)));
+  $$('.ribbon [data-orient]').forEach(btn => btn.addEventListener('click', () => p2Orient(btn.dataset.orient)));
+  $('.ribbon [data-cmd="picture"]').addEventListener('click', openPicPicker);
+  $('.ribbon [data-cmd="save"]').addEventListener('click', openSave);
+  $('.ribbon [data-cmd="print"]').addEventListener('click', p2Print);
+  $$('.chip').forEach(chip => chip.addEventListener('click', () => {
+    wish.textContent = (wish.textContent.trim() + ' ' + WISHES[+chip.dataset.wish]).trim();
+    chip.classList.add('used');
+    p2SetSel(wish);
+    sfx.click();
+  }));
+  $$('[data-chk]').forEach(cb => cb.addEventListener('change', () => { p2.ticks[cb.dataset.chk] = cb.checked; sfx.click(); }));
+  $('#compareBtn').addEventListener('click', openCompare);
+  keyHandler = e => shortcut(e, { align: p2Align, save: openSave, print: p2Print });
+  syncRibbon(null, p2.orient);
+}
+
+function p2SetSel(b) {
+  p2.sel = b;
+  $$('#card .blk').forEach(x => x.classList.toggle('sel', x === b));
+  syncRibbon(b, p2.orient);
+}
+function p2Align(a) {
+  if (!p2.sel) {
+    sfx.bad();
+    toast('Chọn phần cần căn lề', 'Em nháy chuột vào lời chúc hoặc tên người gửi trước, rồi mới chọn nút căn lề.', 'bad', 3200);
+    return;
+  }
+  p2.sel.style.textAlign = a;
+  syncRibbon(p2.sel, p2.orient);
+  sfx.click();
+}
+function p2Orient(o) {
+  p2.orient = o;
+  applyOrient($('#card'), o);
+  syncRibbon(p2.sel, o);
+  sfx.click();
+}
+function setPic(emoji) {
+  p2.pic = emoji;
+  const pic = $('#pic');
+  if (!emoji) { pic.hidden = true; pic.innerHTML = ''; return; }
+  pic.hidden = false;
+  pic.innerHTML = `<span class="pic-img">${emoji}</span><button type="button" class="pic-x" title="Xóa hình" aria-label="Xóa hình">✕</button>`;
+  $('.pic-x', pic).addEventListener('click', () => { setPic(null); sfx.click(); });
+}
+function openPicPicker() {
+  const m = openModal(`<h3>🖼️ Chèn hình minh họa</h3><p class="muted">Chọn một hình để chèn vào thiệp:</p>
+    <div class="pic-grid">${PICS.map(([e, n], i) => `<button type="button" class="pic-opt" data-pic="${i}"><span>${e}</span>${n}</button>`).join('')}</div>
+    <div class="actions"><button type="button" class="btn ghost" data-x>Hủy</button></div>`);
+  $$('[data-pic]', m).forEach(b => b.addEventListener('click', () => {
+    setPic(PICS[+b.dataset.pic][0]);
+    closeModal(); sfx.ok();
+  }));
+}
+function openSave() {
+  const m = openModal(`<h3>💾 Lưu tệp</h3>
+    <label class="lbl" for="fname">Tên tệp</label>
+    <div class="fname"><input id="fname" value="${esc(p2.fileName || 'Thiep-20-11')}" maxlength="40" autocomplete="off"><em>.docx</em></div>
+    <p class="muted">Tệp sẽ được lưu vào thư mục <b>Tài liệu</b> trên máy tính.</p>
+    <div class="actions"><button type="button" class="btn ghost" data-x>Hủy</button><button type="button" class="btn" id="doSave">💾 Lưu</button></div>`);
+  const inp = $('#fname', m);
+  inp.focus(); inp.select();
+  const go = () => {
+    const name = inp.value.trim().replace(/[\\/:*?"<>|]/g, '') || 'Thiep-20-11';
+    p2.fileName = name; p2.saved = true;
+    $('#docName').textContent = name + '.docx';
+    closeModal(); sfx.ok();
+    toast('Đã lưu tệp 💾', `Thiệp được lưu với tên <b>${esc(name)}.docx</b>.`);
+  };
+  $('#doSave', m).addEventListener('click', go);
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+}
+function p2Print() {
+  printAnim($('#card'), () => toast('In xong rồi 🖨️', 'Em có thể tặng tấm thiệp này cho thầy cô!'));
+}
+
+// Kiểm tra thiệp: null = đã làm đúng, chuỗi = lí do chưa đạt
+function p2Status() {
+  const wish = $('#wish'), sender = $('#sender');
+  const align = el => el.style.textAlign || 'left';
+  return {
+    orient: p2.orient === 'landscape' ? null : 'Thiệp vẫn đang là trang đứng.',
+    wish: !wish.textContent.trim() ? 'Thiệp chưa có lời chúc.' : align(wish) !== 'center' ? 'Lời chúc chưa được căn giữa.' : null,
+    sender: !sender.textContent.trim() ? 'Thiệp chưa ghi tên người gửi.' : align(sender) !== 'right' ? 'Tên người gửi chưa được căn phải.' : null,
+    pic: p2.pic ? null : 'Thiệp chưa có hình minh họa.',
+    save: p2.saved ? null : 'Tệp chưa được lưu.'
+  };
+}
+const SAMPLE_CARD = `<div class="page card landscape mini" aria-hidden="true">
+  <div class="blk head" style="text-align:center">🌸 Mừng Ngày Nhà giáo Việt Nam 20/11 🌸</div>
+  <div class="pic"><span class="pic-img">💐</span></div>
+  <div class="blk wish" style="text-align:center">Nhân Ngày Nhà giáo Việt Nam 20/11, em kính chúc thầy cô luôn mạnh khỏe và hạnh phúc. Em cảm ơn thầy cô đã tận tình dạy dỗ chúng em.</div>
+  <div class="blk sender" style="text-align:right">Học trò của thầy cô<br>Trần Thu Hà – Lớp 6A</div>
+</div>`;
+
+function openCompare() {
+  const st = p2Status();
+  const doneCount = CHECKS.filter(c => !st[c.id]).length;
+  const allDone = doneCount === CHECKS.length;
+  const allTicked = CHECKS.every(c => p2.ticks[c.id]);
+  const rows = CHECKS.map(c => {
+    const done = !st[c.id], ticked = !!p2.ticks[c.id];
+    let cls, res;
+    if (done && ticked)       { cls = 'ok';   res = '✅ Đúng như em đánh dấu'; }
+    else if (done)            { cls = 'warn'; res = '👍 Em làm rồi, nhớ đánh dấu vào bảng kiểm nhé'; }
+    else if (ticked)          { cls = 'bad';  res = '⚠️ ' + st[c.id] + ' Em kiểm tra lại nhé.'; }
+    else                      { cls = 'todo'; res = '⬜ ' + st[c.id]; }
+    return `<tr class="${cls}"><td>${c.label}</td><td class="c">${ticked ? '☑️' : '⬜'}</td><td>${res}</td></tr>`;
+  }).join('');
+  const msg = allDone && allTicked ? '🌟 Tuyệt vời! Thiệp của em đã đủ cả 5 việc giống thiệp mẫu.'
+    : allDone ? '👍 Thiệp đã đủ 5 việc rồi! Em đánh dấu nốt vào bảng kiểm nhé.'
+    : `✏️ Em đã làm được ${doneCount}/5 việc. Sửa thêm những dòng chưa đạt rồi so sánh lại nhé.`;
+
+  const m = openModal(`<h3>🔍 So sánh với thiệp mẫu</h3>
+    <div class="cmp">
+      <figure><figcaption>⭐ Thiệp mẫu</figcaption>${SAMPLE_CARD}</figure>
+      <figure><figcaption>✏️ Thiệp của em</figcaption><div id="cmpMine"></div></figure>
+    </div>
+    <table class="cmp-table"><thead><tr><th>Việc cần làm</th><th>Em đánh dấu</th><th>Kết quả trên thiệp</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="cmp-msg">${msg}</p>
+    <div class="actions">${allDone && allTicked
+      ? '<button type="button" class="btn green" id="finishBtn">Hoàn thành 🏆</button>'
+      : '<button type="button" class="btn" data-x>✏️ Sửa tiếp thiệp</button>'}</div>`, { wide: true });
+  $('#cmpMine', m).replaceWith(miniCopy($('#card')));
+  if (allDone && allTicked) {
+    sfx.ok();
+    $('#finishBtn', m).addEventListener('click', () => {
+      state.part2Done = true;
+      if (!state.p2) { state.p2 = 50; flyText('+50 ⭐', $('#score')); }
+      updateHUD(true);
+      renderWin();
+    });
+  }
+}
+
+/* =========================================================
+   KẾT THÚC
+   ========================================================= */
+function renderWin() {
+  keyHandler = null;
+  const score = totalScore();
+  const msg = !state.part1Done ? '💌 Thiệp đẹp lắm! Em làm thêm Phần 1 để luyện trình bày thông báo nhé.'
+    : score >= 90 ? '🌟 Xuất sắc! Em trình bày văn bản rất chuẩn.'
+    : score >= 70 ? '👏 Giỏi lắm! Em đã nắm được cách định dạng văn bản.'
+    : '💪 Em đã hoàn thành! Làm lại để đạt điểm cao hơn nhé.';
+  const learned = [
+    '🎯 Tiêu đề: căn giữa', '📏 Đoạn nội dung: căn đều hai bên', '✍️ Ngày tháng, tên người viết: căn phải',
+    '📄 Thông báo: trang đứng – 💌 Thiệp: trang ngang', '🖼️ Chèn hình minh họa cho sinh động', '💾 Lưu tệp, 🖨️ In để có bản giấy'
+  ];
+  show(`<div class="win">
+    <div class="trophy">🏆</div>
+    <h1>Hoàn thành Luyện tập &amp; Vận dụng!</h1>
+    <div class="scorebox"><div class="lbl">Điểm của em</div><div class="val">${score}/100</div></div>
+    <div><span class="msg">${msg}</span></div>
+    <h2>Em đã biết:</h2>
+    <div class="learned">${learned.map((t, i) => `<div style="animation-delay:${i * .08}s">${t}</div>`).join('')}</div>
+    <div class="actions">
+      ${state.part1Done ? '' : '<button type="button" class="btn" id="doP1">📢 Làm Phần 1</button>'}
+      <button type="button" class="btn ghost" id="againBtn">🔁 Làm lại từ đầu</button>
+    </div>
+  </div>`);
+  const p1Btn = $('#doP1');
+  if (p1Btn) p1Btn.addEventListener('click', () => { sfx.click(); renderPart1(); });
+  $('#againBtn').addEventListener('click', () => {
+    state.p1 = [0, 0, 0, 0, 0]; state.p2 = 0; state.part1Done = false; state.part2Done = false;
+    updateHUD(); sfx.click(); renderHome();
+  });
+  sfx.win(); confetti();
+}
+
+/* ---------- Khởi động ---------- */
+$('#soundBtn').addEventListener('click', () => { state.sound = !state.sound; updateHUD(); sfx.click(); });
+$('#homeBtn').addEventListener('click', () => { sfx.click(); renderHome(); });
+updateHUD();
+renderHome();
+</script>
+</body>
+</html>

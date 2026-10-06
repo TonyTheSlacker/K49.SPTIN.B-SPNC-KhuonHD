@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Liệu Số: Khám Phá Thuật Toán - Tin Học 6</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        body { font-family: 'Nunito', sans-serif; background-color: #f0f4f8; }
+        
+        /* Shape Styles for Flowchart Nodes */
+        .shape-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            min-height: 44px;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+        }
+
+        /* Oval / Capsule */
+        .shape-oval {
+            border-radius: 9999px;
+        }
+
+        /* Parallelogram */
+        .shape-parallelogram {
+            transform: skewX(-15deg);
+        }
+        .shape-parallelogram-content {
+            transform: skewX(15deg);
+        }
+
+        /* Rhombus / Diamond */
+        .rhombus-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .shape-rhombus {
+            width: 110px;
+            height: 50px;
+            background-color: #d1fae5;
+            border: 2px solid #10b981;
+            color: #065f46;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 800;
+            font-size: 0.75rem;
+        }
+
+        /* Arrow Line */
+        .flow-arrow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6366f1;
+            font-size: 1.2rem;
+            margin: 2px 0;
+        }
+
+        .btn-bounce:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                    <i class="fa-solid fa-brain text-2xl text-yellow-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wide">THUẬT TOÁN - TIN HỌC 6</h1>
+                    <p class="text-xs text-indigo-100 font-medium">Học Liệu Số Tương Tác • Chủ Đề F (Bài 15)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/20 text-sm font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-yellow-300"></i>
+                    <span>Điểm: <span id="total-score" class="text-yellow-300 text-base">0</span>/100</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- Progress Stepper -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-6">
+            <div class="flex justify-between items-center relative">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-100 z-0"></div>
+                <div id="progress-line" class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-indigo-600 z-0 transition-all duration-300" style="width: 0%;"></div>
+
+                <!-- Station 1 -->
+                <button onclick="switchStation(1)" id="nav-st-1" class="relative z-10 flex flex-col items-center group focus:outline-none">
+                    <div class="st-icon w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center shadow-md transition-all">1</div>
+                    <span class="text-xs font-bold mt-1 text-indigo-600">Gấp Giấy</span>
+                </button>
+
+                <!-- Station 2 -->
+                <button onclick="switchStation(2)" id="nav-st-2" class="relative z-10 flex flex-col items-center group focus:outline-none">
+                    <div class="st-icon w-10 h-10 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center transition-all">2</div>
+                    <span class="text-xs font-bold mt-1 text-slate-400">Ký Hiệu Sơ Đồ</span>
+                </button>
+
+                <!-- Station 3 -->
+                <button onclick="switchStation(3)" id="nav-st-3" class="relative z-10 flex flex-col items-center group focus:outline-none">
+                    <div class="st-icon w-10 h-10 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center transition-all">3</div>
+                    <span class="text-xs font-bold mt-1 text-slate-400">Lắp Ráp Sơ Đồ</span>
+                </button>
+
+                <!-- Station 4 -->
+                <button onclick="switchStation(4)" id="nav-st-4" class="relative z-10 flex flex-col items-center group focus:outline-none">
+                    <div class="st-icon w-10 h-10 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center transition-all">4</div>
+                    <span class="text-xs font-bold mt-1 text-slate-400">Đấu Trí</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= STATION 1 ================= -->
+        <section id="station-1" class="station-content bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between border-b pb-4 mb-4">
+                <div>
+                    <span class="bg-indigo-100 text-indigo-700 text-xs font-extrabold px-2.5 py-1 rounded-full uppercase">Trạm 1</span>
+                    <h2 class="text-xl font-bold text-slate-800 mt-1">Gấp Giấy Đông-Tây-Nam-Bắc</h2>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-500">Mục tiêu: Đạt 25 điểm</span>
+                </div>
+            </div>
+
+            <!-- Input / Output Selector -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-sky-50 p-4 rounded-xl border border-sky-100">
+                <div>
+                    <label class="block text-xs font-bold text-sky-900 mb-1">
+                        <i class="fa-solid fa-right-to-bracket text-sky-600 mr-1"></i>Đầu vào (Input) ban đầu:
+                    </label>
+                    <select id="st1-input" class="w-full bg-white border border-sky-200 rounded-lg p-2 text-sm font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="">-- Chọn Input --</option>
+                        <option value="paper">Tờ giấy thủ công hình vuông</option>
+                        <option value="box">Chiếc hộp nhựa</option>
+                        <option value="pen">Cây bút màu</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-sky-900 mb-1">
+                        <i class="fa-solid fa-right-from-bracket text-sky-600 mr-1"></i>Đầu ra (Output) kết quả:
+                    </label>
+                    <select id="st1-output" class="w-full bg-white border border-sky-200 rounded-lg p-2 text-sm font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="">-- Chọn Output --</option>
+                        <option value="plane">Máy bay giấy</option>
+                        <option value="game">Sản phẩm trò chơi Đông-Tây-Nam-Bắc</option>
+                        <option value="boat">Thuyền giấy</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sequence Drag/Click Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Available Steps -->
+                <div class="lg:col-span-6">
+                    <h3 class="text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-indigo-500"></i> Các bước thao tác (Bấm để chọn):
+                    </h3>
+                    <div id="st1-available-steps" class="space-y-2">
+                        <!-- JS generated -->
+                    </div>
+                </div>
+
+                <!-- User Selected Sequence -->
+                <div class="lg:col-span-6 bg-slate-50 p-4 rounded-xl border-2 border-dashed border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-down-1-9 text-indigo-500"></i> Thuật toán 6 bước của em:
+                            </h3>
+                            <button onclick="resetSt1Steps()" class="text-xs text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-right"></i> Chọn lại
+                            </button>
+                        </div>
+                        <div id="st1-user-steps" class="space-y-2 min-h-[220px]">
+                            <!-- Steps will be added here -->
+                        </div>
+                    </div>
+
+                    <button onclick="checkStation1()" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-md btn-bounce flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i> Kiểm Tra Thao Tác
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= STATION 2 ================= -->
+        <section id="station-2" class="station-content bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hidden">
+            <div class="flex items-center justify-between border-b pb-4 mb-4">
+                <div>
+                    <span class="bg-teal-100 text-teal-700 text-xs font-extrabold px-2.5 py-1 rounded-full uppercase">Trạm 2</span>
+                    <h2 class="text-xl font-bold text-slate-800 mt-1">Bậc Thầy Ký Hiệu Sơ Đồ Khối</h2>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-500">Mục tiêu: Đạt 25 điểm</span>
+                </div>
+            </div>
+
+            <p class="text-sm text-slate-600 mb-6">Hãy ghép nối từng khối hình học đúng kiểu dáng bên trái với ý nghĩa tương ứng bên phải:</p>
+
+            <div id="st2-match-container" class="space-y-4 max-w-2xl mx-auto">
+                <!-- Items inserted via JS -->
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button onclick="checkStation2()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl shadow-md btn-bounce flex items-center gap-2">
+                    <i class="fa-solid fa-shield-check"></i> Xác Nhận Ghép Nối
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= STATION 3 ================= -->
+        <section id="station-3" class="station-content bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hidden">
+            <div class="flex items-center justify-between border-b pb-4 mb-4">
+                <div>
+                    <span class="bg-purple-100 text-purple-700 text-xs font-extrabold px-2.5 py-1 rounded-full uppercase">Trạm 3</span>
+                    <h2 class="text-xl font-bold text-slate-800 mt-1">Lắp Ráp Sơ Đồ Thuật Toán</h2>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-500">Mục tiêu: Đạt 25 điểm</span>
+                </div>
+            </div>
+
+            <!-- Tab Switcher for Station 3 -->
+            <div class="flex space-x-2 border-b mb-6">
+                <button onclick="switchSt3Tab('tb')" id="st3-tab-tb" class="py-2 px-4 font-bold text-sm border-b-2 border-purple-600 text-purple-600">
+                    Thuật Toán 1: Tính Trung Bình Cộng
+                </button>
+                <button onclick="switchSt3Tab('kem')" id="st3-tab-kem" class="py-2 px-4 font-bold text-sm text-slate-400 hover:text-slate-600">
+                    Thuật Toán 2: Làm Kem Sữa Chua Xoài
+                </button>
+            </div>
+
+            <!-- Flowchart Builder Tab 1: TB Cộng -->
+            <div id="st3-content-tb" class="space-y-4">
+                <p class="text-sm text-slate-600 mb-2">Sắp xếp các khối theo thứ tự đúng từ trên xuống dưới để hoàn thành sơ đồ khối tính Trung bình cộng 2 số a và b:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div id="st3-tb-pool" class="space-y-2 bg-slate-50 p-4 rounded-xl border">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase">Kho các khối:</h4>
+                        <!-- JS generated -->
+                    </div>
+                    <div class="bg-purple-50/50 p-4 rounded-xl border border-purple-100 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-xs font-bold text-purple-700 uppercase mb-3 text-center">Sơ đồ khối của em:</h4>
+                            <div id="st3-tb-target" class="space-y-1 min-h-[280px] flex flex-col items-center justify-start">
+                                <!-- Target -->
+                            </div>
+                        </div>
+                        <button onclick="checkSt3TB()" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl shadow btn-bounce w-full">
+                            Kiểm Tra Sơ Đồ TB Cộng
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flowchart Builder Tab 2: Kem Xoài -->
+            <div id="st3-content-kem" class="space-y-4 hidden">
+                <p class="text-sm text-slate-600 mb-2">Sắp xếp đúng quy trình 7 bước trong thuật toán làm Kem Sữa Chua Xoài:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div id="st3-kem-pool" class="space-y-2 bg-slate-50 p-4 rounded-xl border">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase">Các bước chế biến:</h4>
+                        <!-- JS generated -->
+                    </div>
+                    <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-xs font-bold text-amber-700 uppercase mb-3 text-center">Quy trình thực hiện:</h4>
+                            <div id="st3-kem-target" class="space-y-1 min-h-[280px] flex flex-col items-center">
+                                <!-- Target -->
+                            </div>
+                        </div>
+                        <button onclick="checkSt3Kem()" class="mt-4 bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 px-4 rounded-xl shadow btn-bounce w-full">
+                            Kiểm Tra Thuật Toán Kem Xoài
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= STATION 4 ================= -->
+        <section id="station-4" class="station-content bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hidden">
+            <div class="flex items-center justify-between border-b pb-4 mb-4">
+                <div>
+                    <span class="bg-rose-100 text-rose-700 text-xs font-extrabold px-2.5 py-1 rounded-full uppercase">Trạm 4</span>
+                    <h2 class="text-xl font-bold text-slate-800 mt-1">Đấu Trí Trắc Nghiệm Thuật Toán</h2>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-500">Mục tiêu: Đạt 25 điểm</span>
+                </div>
+            </div>
+
+            <div id="st4-quiz-card" class="max-w-2xl mx-auto bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="st4-quiz-num" class="text-xs font-bold text-rose-600 bg-rose-100 px-3 py-1 rounded-full">Câu 1/5</span>
+                </div>
+                <h3 id="st4-quiz-question" class="text-base font-bold text-slate-800 mb-6">Đang tải câu hỏi...</h3>
+
+                <div id="st4-quiz-options" class="space-y-3">
+                    <!-- Options JS -->
+                </div>
+
+                <div class="mt-6 flex justify-between items-center">
+                    <span id="st4-quiz-feedback" class="text-sm font-bold"></span>
+                    <button id="st4-next-btn" onclick="nextQuizQuestion()" class="hidden bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-5 rounded-xl shadow btn-bounce">
+                        Câu Tiếp <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= RESULT / CERTIFICATE ================= -->
+        <section id="station-result" class="station-content bg-white rounded-2xl p-8 shadow-md border border-slate-200/80 text-center hidden">
+            <div class="max-w-xl mx-auto">
+                <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-500 text-4xl shadow-inner">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h2 class="text-2xl font-black text-slate-800 uppercase tracking-wide">CHÚC MỪNG EM HOÀN THÀNH!</h2>
+                <p class="text-slate-600 mt-1 mb-6 text-sm">Em đã xuất sắc chinh phục bài học Thuật Toán (Tin học 6)</p>
+
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-2xl border border-indigo-100 mb-6 text-left relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 opacity-10 text-9xl text-indigo-900 font-black">6</div>
+                    <p class="text-xs font-bold text-indigo-500 uppercase">Thành tích học tập</p>
+                    <div class="flex justify-between items-end mt-2">
+                        <div>
+                            <p class="text-sm text-slate-600">Tổng điểm tích lũy:</p>
+                            <p id="final-score" class="text-4xl font-black text-indigo-600">100/100</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full mb-1">Đạt Yêu Cầu</span>
+                            <p class="text-xs text-slate-500">Chủ đề F - Tin học 6</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <button onclick="location.reload()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl btn-bounce">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Chơi Lại
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Global State
+        let totalScore = 0;
+        let stationScores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+
+        // Sound Player (Tone.js)
+        function playSound(type) {
+            try {
+                const synth = new Tone.Synth().toDestination();
+                if (type === 'correct') {
+                    synth.triggerAttackRelease("C5", "8n");
+                    setTimeout(() => synth.triggerAttackRelease("E5", "8n"), 100);
+                } else if (type === 'wrong') {
+                    synth.triggerAttackRelease("A3", "8n");
+                } else if (type === 'win') {
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                }
+            } catch (e) {}
+        }
+
+        // Navigation
+        function switchStation(stNum) {
+            document.querySelectorAll('.station-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`station-${stNum}`).classList.remove('hidden');
+
+            document.getElementById('progress-line').style.width = `${(stNum - 1) * 33.33}%`;
+            
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`nav-st-${i}`);
+                const icon = btn.querySelector('.st-icon');
+                const text = btn.querySelector('span');
+
+                if (i === stNum) {
+                    icon.className = "st-icon w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center shadow-md";
+                    text.className = "text-xs font-bold mt-1 text-indigo-600";
+                } else if (stationScores[i] > 0) {
+                    icon.className = "st-icon w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center";
+                    text.className = "text-xs font-bold mt-1 text-emerald-600";
+                } else {
+                    icon.className = "st-icon w-10 h-10 rounded-full bg-slate-200 text-slate-500 font-bold flex items-center justify-center";
+                    text.className = "text-xs font-bold mt-1 text-slate-400";
+                }
+            }
+        }
+
+        function updateScore(stNum, score) {
+            stationScores[stNum] = score;
+            totalScore = Object.values(stationScores).reduce((a, b) => a + b, 0);
+            document.getElementById('total-score').innerText = totalScore;
+        }
+
+        /* ================= STATION 1 ================= */
+        const st1RawSteps = [
+            { id: 1, text: "Gấp hai đường chéo của tờ giấy hình vuông để tạo nếp gấp, mở tờ giấy ra." },
+            { id: 2, text: "Gấp bốn góc của tờ giấy vào tâm." },
+            { id: 3, text: "Lật mặt bên kia." },
+            { id: 4, text: "Tiếp tục gấp bốn góc vào tâm." },
+            { id: 5, text: "Đặt tờ giấy đã gấp nằm ngang, luồn ngón cái và ngón trỏ của hai tay vào bốn góc ở mặt dưới." },
+            { id: 6, text: "Chỉnh sửa các nếp gấp hoàn chỉnh." }
+        ];
+
+        let st1Available = [];
+        let st1UserSteps = [];
+
+        function initStation1() {
+            st1Available = [...st1RawSteps].sort(() => Math.random() - 0.5);
+            st1UserSteps = [];
+            renderSt1();
+        }
+
+        function renderSt1() {
+            const availContainer = document.getElementById('st1-available-steps');
+            const userContainer = document.getElementById('st1-user-steps');
+
+            availContainer.innerHTML = '';
+            st1Available.forEach(step => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-white border border-slate-200 hover:border-indigo-400 p-3 rounded-xl text-xs font-bold text-slate-700 shadow-sm transition-all flex items-center justify-between group";
+                btn.innerHTML = `<span>${step.text}</span> <i class="fa-solid fa-plus text-slate-300 group-hover:text-indigo-500"></i>`;
+                btn.onclick = () => addSt1Step(step.id);
+                availContainer.appendChild(btn);
+            });
+
+            userContainer.innerHTML = '';
+            if (st1UserSteps.length === 0) {
+                userContainer.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs italic">Bấm chọn các bước ở bên trái để xếp vào đây theo thứ tự đúng</div>`;
+            } else {
+                st1UserSteps.forEach((step, idx) => {
+                    const item = document.createElement('div');
+                    item.className = "bg-white border border-indigo-200 p-2.5 rounded-xl text-xs font-bold text-slate-700 shadow-sm flex items-center justify-between";
+                    item.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <span class="w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-[10px] font-black">${idx + 1}</span>
+                            <span>${step.text}</span>
+                        </div>
+                        <button onclick="removeSt1Step(${step.id})" class="text-slate-300 hover:text-rose-500 p-1"><i class="fa-solid fa-xmark"></i></button>
+                    `;
+                    userContainer.appendChild(item);
+                });
+            }
+        }
+
+        function addSt1Step(id) {
+            const stepObj = st1Available.find(s => s.id === id);
+            if (stepObj) {
+                st1UserSteps.push(stepObj);
+                st1Available = st1Available.filter(s => s.id !== id);
+                renderSt1();
+            }
+        }
+
+        function removeSt1Step(id) {
+            const stepObj = st1UserSteps.find(s => s.id === id);
+            if (stepObj) {
+                st1Available.push(stepObj);
+                st1UserSteps = st1UserSteps.filter(s => s.id !== id);
+                renderSt1();
+            }
+        }
+
+        function resetSt1Steps() {
+            initStation1();
+        }
+
+        function checkStation1() {
+            const inp = document.getElementById('st1-input').value;
+            const out = document.getElementById('st1-output').value;
+
+            if (inp !== 'paper' || out !== 'game') {
+                alert('Vui lòng chọn đúng Đầu vào (Input) và Đầu ra (Output) trước!');
+                playSound('wrong');
+                return;
+            }
+
+            if (st1UserSteps.length < 6) {
+                alert('Em chưa chọn đủ 6 bước của thuật toán!');
+                playSound('wrong');
+                return;
+            }
+
+            let isCorrect = true;
+            for (let i = 0; i < 6; i++) {
+                if (st1UserSteps[i].id !== i + 1) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+
+            if (isCorrect) {
+                playSound('correct');
+                updateScore(1, 25);
+                alert('Chính xác! Em đã nhận được 25 điểm ở Trạm 1.');
+                switchStation(2);
+            } else {
+                playSound('wrong');
+                alert('Thứ tự các bước chưa đúng rồi, hãy kiểm tra kỹ lại nhé!');
+            }
+        }
+
+        /* ================= STATION 2 (SHAPES RESTORED) ================= */
+        const st2Data = [
+            { id: 1, name: "Hình Oval", shapeClass: "shape-oval bg-pink-100 text-pink-800 border-2 border-pink-400", correct: "start_end" },
+            { id: 2, name: "Hình Bình Hành", shapeClass: "shape-parallelogram bg-teal-100 text-teal-800 border-2 border-teal-400", innerClass: "shape-parallelogram-content", correct: "io" },
+            { id: 3, name: "Hình Chữ Nhật", shapeClass: "bg-amber-100 text-amber-800 border-2 border-amber-400 rounded-md", correct: "process" },
+            { id: 4, name: "Hình Thoi", isRhombus: true, correct: "condition" },
+            { id: 5, name: "Mũi Tên Hướng", isArrow: true, correct: "flow" }
+        ];
+
+        const st2MeaningOptions = [
+            { val: "start_end", label: "Bắt đầu hoặc Kết thúc" },
+            { val: "io", label: "Đầu vào (Input) hoặc Đầu ra (Output)" },
+            { val: "process", label: "Bước xử lý, tính toán" },
+            { val: "condition", label: "Kiểm tra điều kiện (Rẽ nhánh)" },
+            { val: "flow", label: "Hướng thực hiện tiếp theo" }
+        ];
+
+        function initStation2() {
+            const container = document.getElementById('st2-match-container');
+            container.innerHTML = '';
+
+            st2Data.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex flex-col sm:flex-row items-center justify-between p-3 bg-slate-50 border rounded-xl gap-3 shadow-sm";
+                
+                let shapeHtml = '';
+                if (item.isRhombus) {
+                    shapeHtml = `<div class="w-full sm:w-1/2 flex justify-center"><div class="shape-rhombus">Hình Thoi</div></div>`;
+                } else if (item.isArrow) {
+                    shapeHtml = `<div class="w-full sm:w-1/2 flex justify-center items-center gap-2 font-bold text-indigo-600"><i class="fa-solid fa-arrow-down text-2xl"></i> Mũi Tên</div>`;
+                } else {
+                    const inner = item.innerClass ? `<span class="${item.innerClass}">${item.name}</span>` : item.name;
+                    shapeHtml = `<div class="w-full sm:w-1/2 flex justify-center"><div class="shape-box ${item.shapeClass} w-48">${inner}</div></div>`;
+                }
+
+                row.innerHTML = `
+                    ${shapeHtml}
+                    <i class="fa-solid fa-arrow-right text-slate-400 hidden sm:block"></i>
+                    <select id="st2-select-${item.id}" class="w-full sm:w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                        <option value="">-- Chọn ý nghĩa tương ứng --</option>
+                        ${st2MeaningOptions.map(o => `<option value="${o.val}">${o.label}</option>`).join('')}
+                    </select>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function checkStation2() {
+            let correctCount = 0;
+            st2Data.forEach(item => {
+                const val = document.getElementById(`st2-select-${item.id}`).value;
+                if (val === item.correct) correctCount++;
+            });
+
+            if (correctCount === 5) {
+                playSound('correct');
+                updateScore(2, 25);
+                alert('Tuyệt vời! Em đã ghép nối đúng tất cả ký hiệu sơ đồ khối (+25 điểm).');
+                switchStation(3);
+            } else {
+                playSound('wrong');
+                alert(`Em ghép đúng ${correctCount}/5 ký hiệu. Hãy kiểm tra kỹ kiểu dáng hình học nhé!`);
+            }
+        }
+
+        /* ================= STATION 3 (FLOWCHART SHAPES RESTORED) ================= */
+        function switchSt3Tab(tab) {
+            if (tab === 'tb') {
+                document.getElementById('st3-content-tb').classList.remove('hidden');
+                document.getElementById('st3-content-kem').classList.add('hidden');
+                document.getElementById('st3-tab-tb').className = "py-2 px-4 font-bold text-sm border-b-2 border-purple-600 text-purple-600";
+                document.getElementById('st3-tab-kem').className = "py-2 px-4 font-bold text-sm text-slate-400 hover:text-slate-600";
+            } else {
+                document.getElementById('st3-content-tb').classList.add('hidden');
+                document.getElementById('st3-content-kem').classList.remove('hidden');
+                document.getElementById('st3-tab-kem').className = "py-2 px-4 font-bold text-sm border-b-2 border-amber-600 text-amber-600";
+                document.getElementById('st3-tab-tb').className = "py-2 px-4 font-bold text-sm text-slate-400 hover:text-slate-600";
+            }
+        }
+
+        const st3TBPoolRaw = [
+            { id: 1, text: "Bắt đầu", type: "oval" },
+            { id: 2, text: "Nhập hai số a và b", type: "io" },
+            { id: 3, text: "Tính TB = (a + b) / 2", type: "process" },
+            { id: 4, text: "Xuất kết quả TB", type: "io" },
+            { id: 5, text: "Kết thúc", type: "oval" }
+        ];
+
+        let st3TBPool = [];
+        let st3TBTarget = [];
+
+        function initStation3TB() {
+            st3TBPool = [...st3TBPoolRaw].sort(() => Math.random() - 0.5);
+            st3TBTarget = [];
+            renderSt3TB();
+        }
+
+        function renderNodeShape(item) {
+            if (item.type === 'oval') {
+                return `<div class="shape-box shape-oval bg-pink-100 border-2 border-pink-400 text-pink-900 w-44">${item.text}</div>`;
+            } else if (item.type === 'io') {
+                return `<div class="shape-box shape-parallelogram bg-teal-100 border-2 border-teal-400 text-teal-900 w-48"><span class="shape-parallelogram-content">${item.text}</span></div>`;
+            } else {
+                return `<div class="shape-box bg-amber-100 border-2 border-amber-400 text-amber-900 rounded-md w-52">${item.text}</div>`;
+            }
+        }
+
+        function renderSt3TB() {
+            const poolEl = document.getElementById('st3-tb-pool');
+            const targetEl = document.getElementById('st3-tb-target');
+
+            poolEl.innerHTML = '<h4 class="text-xs font-bold text-slate-500 uppercase mb-2">Kho các khối:</h4>';
+            st3TBPool.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-2 bg-white border border-slate-200 hover:border-purple-400 rounded-lg text-xs font-bold text-slate-700 shadow-sm flex items-center justify-between";
+                btn.innerHTML = `<span>${item.text}</span> <i class="fa-solid fa-plus text-purple-500"></i>`;
+                btn.onclick = () => {
+                    st3TBTarget.push(item);
+                    st3TBPool = st3TBPool.filter(i => i.id !== item.id);
+                    renderSt3TB();
+                };
+                poolEl.appendChild(btn);
+            });
+
+            targetEl.innerHTML = '';
+            if (st3TBTarget.length === 0) {
+                targetEl.innerHTML = '<div class="text-center py-12 text-slate-400 text-xs italic">Bấm chọn các khối bên trái để xếp sơ đồ</div>';
+            } else {
+                st3TBTarget.forEach((item, idx) => {
+                    const block = document.createElement('div');
+                    block.className = "flex flex-col items-center w-full relative group";
+                    
+                    const nodeMarkup = renderNodeShape(item);
+                    
+                    block.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            ${nodeMarkup}
+                            <button onclick="removeSt3TB(${item.id})" class="text-slate-300 hover:text-rose-500 text-sm p-1"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        ${idx < st3TBTarget.length - 1 ? '<div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>' : ''}
+                    `;
+                    targetEl.appendChild(block);
+                });
+            }
+        }
+
+        function removeSt3TB(id) {
+            const item = st3TBTarget.find(i => i.id === id);
+            if (item) {
+                st3TBPool.push(item);
+                st3TBTarget = st3TBTarget.filter(i => i.id !== id);
+                renderSt3TB();
+            }
+        }
+
+        function checkSt3TB() {
+            if (st3TBTarget.length < 5) {
+                alert('Em chưa xếp đủ 5 khối!');
+                playSound('wrong');
+                return;
+            }
+            let correct = true;
+            for (let i = 0; i < 5; i++) {
+                if (st3TBTarget[i].id !== i + 1) { correct = false; break; }
+            }
+
+            if (correct) {
+                playSound('correct');
+                updateScore(3, 25);
+                alert('Chính xác! Sơ đồ khối tính TB Cộng hoàn tất (+25 điểm).');
+                switchStation(4);
+            } else {
+                playSound('wrong');
+                alert('Thứ tự các khối trong sơ đồ chưa đúng!');
+            }
+        }
+
+        // Kem Xoài
+        const st3KemRaw = [
+            { id: 1, text: "Lấy 250g xoài, 100g sữa chua, 1 thìa mật ong", type: "io" },
+            { id: 2, text: "Cho xoài vào tô & nghiền nát", type: "process" },
+            { id: 3, text: "Cho sữa chua & mật ong vào tô", type: "process" },
+            { id: 4, text: "Trộn đều hỗn hợp", type: "process" },
+            { id: 5, text: "Cho hỗn hợp vào khuôn làm kem", type: "process" },
+            { id: 6, text: "Đặt khuôn kem vào ngăn đá 4 tiếng", type: "process" },
+            { id: 7, text: "Thành phẩm: Kem sữa chua xoài", type: "io" }
+        ];
+
+        let st3KemPool = [];
+        let st3KemTarget = [];
+
+        function initStation3Kem() {
+            st3KemPool = [...st3KemRaw].sort(() => Math.random() - 0.5);
+            st3KemTarget = [];
+            renderSt3Kem();
+        }
+
+        function renderSt3Kem() {
+            const poolEl = document.getElementById('st3-kem-pool');
+            const targetEl = document.getElementById('st3-kem-target');
+
+            poolEl.innerHTML = '<h4 class="text-xs font-bold text-slate-500 uppercase mb-2">Các bước chế biến:</h4>';
+            st3KemPool.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-2 bg-white border border-slate-200 hover:border-amber-400 rounded-lg text-xs font-bold text-slate-700 shadow-sm flex items-center justify-between";
+                btn.innerHTML = `<span>${item.text}</span> <i class="fa-solid fa-plus text-amber-500"></i>`;
+                btn.onclick = () => {
+                    st3KemTarget.push(item);
+                    st3KemPool = st3KemPool.filter(i => i.id !== item.id);
+                    renderSt3Kem();
+                };
+                poolEl.appendChild(btn);
+            });
+
+            targetEl.innerHTML = '';
+            if (st3KemTarget.length === 0) {
+                targetEl.innerHTML = '<div class="text-center py-12 text-slate-400 text-xs italic">Bấm chọn các bước ở bên trái</div>';
+            } else {
+                st3KemTarget.forEach((item, idx) => {
+                    const block = document.createElement('div');
+                    block.className = "flex flex-col items-center w-full";
+                    
+                    const nodeMarkup = renderNodeShape(item);
+
+                    block.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            ${nodeMarkup}
+                            <button onclick="removeSt3Kem(${item.id})" class="text-slate-300 hover:text-rose-500 text-sm p-1"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        ${idx < st3KemTarget.length - 1 ? '<div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>' : ''}
+                    `;
+                    targetEl.appendChild(block);
+                });
+            }
+        }
+
+        function removeSt3Kem(id) {
+            const item = st3KemTarget.find(i => i.id === id);
+            if (item) {
+                st3KemPool.push(item);
+                st3KemTarget = st3KemTarget.filter(i => i.id !== id);
+                renderSt3Kem();
+            }
+        }
+
+        function checkSt3Kem() {
+            if (st3KemTarget.length < 7) {
+                alert('Em chưa chọn đủ 7 bước!');
+                playSound('wrong');
+                return;
+            }
+            let correct = true;
+            for (let i = 0; i < 7; i++) {
+                if (st3KemTarget[i].id !== i + 1) { correct = false; break; }
+            }
+
+            if (correct) {
+                playSound('correct');
+                updateScore(3, 25);
+                alert('Xuất sắc! Thuật toán làm kem xoài chính xác (+25 điểm).');
+                switchStation(4);
+            } else {
+                playSound('wrong');
+                alert('Thứ tự các bước làm kem chưa đúng!');
+            }
+        }
+
+        /* ================= STATION 4 ================= */
+        const quizData = [
+            {
+                q: "Thuật toán là gì?",
+                options: [
+                    "A. Dãy các chỉ dẫn rõ ràng, có trình tự để giải quyết một vấn đề",
+                    "B. Một phần mềm vẽ sơ đồ trên máy tính",
+                    "C. Một bài toán khó chỉ dành cho máy tính",
+                    "D. Tập hợp các con số ngẫu nhiên"
+                ],
+                ans: 0
+            },
+            {
+                q: "Đầu vào (Input) của một thuật toán là gì?",
+                options: [
+                    "A. Kết quả thu được sau khi thực hiện thuật toán",
+                    "B. Dữ liệu ban đầu được cung cấp trước khi thực hiện",
+                    "C. Tên của người thực hiện thuật toán",
+                    "D. Sơ đồ khối vẽ trên giấy"
+                ],
+                ans: 1
+            },
+            {
+                q: "Hình khối nào biểu diễn bước Kiểm tra điều kiện (rẽ nhánh)?",
+                options: [
+                    "A. Hình Oval",
+                    "B. Hình Chữ Nhật",
+                    "C. Hình Thoi",
+                    "D. Hình Mũi Tên"
+                ],
+                ans: 2
+            },
+            {
+                q: "Có mấy phương pháp phổ biến để mô tả thuật toán?",
+                options: [
+                    "A. 1 phương pháp",
+                    "B. 2 phương pháp (Liệt kê & Sơ đồ khối)",
+                    "C. 3 phương pháp",
+                    "D. 4 phương pháp"
+                ],
+                ans: 1
+            },
+            {
+                q: "Điều gì sẽ xảy ra nếu ta thay đổi thứ tự các bước trong thuật toán?",
+                options: [
+                    "A. Kết quả vẫn không bao giờ thay đổi",
+                    "B. Thuật toán có thể bị sai hoặc không cho ra kết quả mong muốn",
+                    "C. Máy tính sẽ tự động sửa lại đúng",
+                    "D. Thuật toán sẽ chạy nhanh hơn"
+                ],
+                ans: 1
+            }
+        ];
+
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+
+        function initStation4() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const qObj = quizData[currentQuizIdx];
+            document.getElementById('st4-quiz-num').innerText = `Câu ${currentQuizIdx + 1}/${quizData.length}`;
+            document.getElementById('st4-quiz-question').innerText = qObj.q;
+            document.getElementById('st4-quiz-feedback').innerText = '';
+            document.getElementById('st4-next-btn').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('st4-quiz-options');
+            optionsContainer.innerHTML = '';
+
+            qObj.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 bg-white border border-slate-200 hover:border-rose-400 rounded-xl text-xs font-bold text-slate-700 shadow-sm transition-all focus:outline-none";
+                btn.innerText = opt;
+                btn.onclick = () => selectQuizAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIdx) {
+            const qObj = quizData[currentQuizIdx];
+            const optionsBtns = document.getElementById('st4-quiz-options').children;
+            const feedbackEl = document.getElementById('st4-quiz-feedback');
+
+            for (let btn of optionsBtns) {
+                btn.disabled = true;
+            }
+
+            if (selectedIdx === qObj.ans) {
+                playSound('correct');
+                optionsBtns[selectedIdx].className = "w-full text-left p-3.5 bg-emerald-100 border-2 border-emerald-500 rounded-xl text-xs font-bold text-emerald-800 shadow-sm";
+                feedbackEl.innerText = "Chính xác! 🎉";
+                feedbackEl.className = "text-sm font-bold text-emerald-600";
+                quizScore += 5;
+            } else {
+                playSound('wrong');
+                optionsBtns[selectedIdx].className = "w-full text-left p-3.5 bg-rose-100 border-2 border-rose-500 rounded-xl text-xs font-bold text-rose-800 shadow-sm";
+                optionsBtns[qObj.ans].className = "w-full text-left p-3.5 bg-emerald-100 border-2 border-emerald-500 rounded-xl text-xs font-bold text-emerald-800 shadow-sm";
+                feedbackEl.innerText = "Rất tiếc, chưa đúng!";
+                feedbackEl.className = "text-sm font-bold text-rose-600";
+            }
+
+            if (currentQuizIdx < quizData.length - 1) {
+                document.getElementById('st4-next-btn').classList.remove('hidden');
+            } else {
+                updateScore(4, quizScore);
+                setTimeout(() => {
+                    showFinalResult();
+                }, 1500);
+            }
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIdx++;
+            renderQuizQuestion();
+        }
+
+        function showFinalResult() {
+            document.querySelectorAll('.station-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('station-result').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${totalScore}/100`;
+            playSound('win');
+        }
+
+        // Initialize
+        window.onload = () => {
+            initStation1();
+            initStation2();
+            initStation3TB();
+            initStation3Kem();
+            initStation4();
+        };
+    </script>
+</body>
+</html>

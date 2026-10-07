@@ -1,87 +1,385 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bài 16 Tin học lớp 6: Các cấu trúc điều khiển - trang bài học chuẩn với khởi động, kiến thức, luyện tập và điều hướng.">
-    <title>Bài 16. Các cấu trúc điều khiển</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css?v=20260804">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bài 16 Tin học lớp 6: Các cấu trúc điều khiển - trang bài học chuẩn với khởi động, kiến thức, luyện tập và điều hướng.">
+  <title>Bài 16. Các cấu trúc điều khiển</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260804">
 </head>
 <body>
-    <div class="page-shell">
-        <main class="lesson-page">
-            
-            <section class="lesson-page__intro" aria-labelledby="lesson-16-title">
-                <div class="lesson-page__eyebrow">📘 Bài 16 - Tin học 6</div>
-                <h1 id="lesson-16-title">Các cấu trúc điều khiển</h1>
-                <p>Bài học giúp học sinh làm quen với cấu trúc rẽ nhánh, lặp và điều khiển luồng thực hiện của thuật toán.</p>
-            </section>
+  <div class="page-shell">
+    <main class="lesson-page">
+      <section class="lesson-page__intro" aria-labelledby="lesson-16-title">
+        <div class="lesson-page__eyebrow">📘 Bài 16 - Tin học 6</div>
+        <h1 id="lesson-16-title">Các cấu trúc điều khiển</h1>
+        <p>Bài học giúp học sinh làm quen với cấu trúc rẽ nhánh, lặp và điều khiển luồng thực hiện của thuật toán.</p>
+      </section>
 
-            <section class="lesson-section" aria-labelledby="warmup-title">
-                <div class="lesson-section__header">
-                    <span class="lesson-section__icon" aria-hidden="true">🔀</span>
-                    <div>
-                        <h2 id="warmup-title">1. Khởi động</h2>
-                        <p class="lesson-section__lead">Tham gia trò chơi để trải nghiệm một tình huống có nhiều lựa chọn và điều kiện.</p>
-                    </div>
-                </div>
-                <div class="lesson-frame lesson-frame--wide">
-                    <!-- Gọi trực tiếp file khoi-dong-bai-16.html vào iframe -->
-                    <iframe title="Khởi động - Cấu trúc điều khiển" src="khoi-dong-bai-16.html" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
-                </div>
-            </section>
-
-            <section class="lesson-section" aria-labelledby="knowledge-title">
-                <div class="lesson-section__header">
-                    <span class="lesson-section__icon" aria-hidden="true">🧱</span>
-                    <div>
-                        <h2 id="knowledge-title">2. Khám phá kiến thức</h2>
-                        <p class="lesson-section__lead">Tóm tắt các cấu trúc điều khiển thường gặp trong chương trình.</p>
-                    </div>
-                </div>
-                <div class="lesson-knowledge">
-                    <div class="lesson-frame lesson-frame--wide">
-                        <iframe title="Video bài giảng - Cấu trúc điều khiển" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>📺 Video bài giảng Bài 16</strong><div>Nhúng video ngắn giới thiệu rẽ nhánh và lặp trong thuật toán.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
-                    </div>
-                    <aside class="lesson-summary" aria-label="Tóm tắt kiến thức bài 16">
-                        <h3>Tóm tắt bài học</h3>
-                        <p>Cấu trúc điều khiển giúp chương trình biết khi nào cần rẽ nhánh, lặp lại hoặc đi theo một hướng thực hiện cụ thể.</p>
-                        <ul>
-                            <li>Rẽ nhánh dùng khi có điều kiện.</li>
-                            <li>Lặp dùng khi cần làm lại một việc nhiều lần.</li>
-                            <li>Điều khiển làm chương trình linh hoạt hơn.</li>
-                            <li>Hiểu cấu trúc điều khiển là nền tảng lập trình.</li>
-                        </ul>
-                        <a class="lesson-download" href="#" role="button" aria-label="Tải phiếu học tập Bài 16">📥 Tải Phiếu học tập</a>
-                    </aside>
-                </div>
-            </section>
-
-            <section class="lesson-section" aria-labelledby="practice-title">
-                <div class="lesson-section__header">
-                    <span class="lesson-section__icon" aria-hidden="true">🧪</span>
-                    <div>
-                        <h2 id="practice-title">3. Luyện tập &amp; Vận dụng</h2>
-                        <p class="lesson-section__lead">Thực hành chọn đúng cấu trúc điều khiển cho từng tình huống.</p>
-                    </div>
-                </div>
-                <div class="lesson-frame lesson-frame--wide">
-                    <iframe title="Luyện tập - Cấu trúc điều khiển" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>🧪 Luyện tập Bài 16</strong><div>Nhúng bài tập tương tác về rẽ nhánh và lặp.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
-                </div>
-            </section>
-
-            <nav class="lesson-footer-nav" aria-label="Điều hướng bài học">
-                <a class="lesson-footer-nav__link lesson-footer-nav__link--prev" href="bai-15-thuat-toan.html" aria-label="Bài trước">⬅️ Bài trước</a>
-                <a class="lesson-footer-nav__link lesson-footer-nav__link--next" href="bai-17-chuong-trinh-may-tinh.html" aria-label="Bài tiếp theo">Bài tiếp theo ➡️</a>
-            </nav>
-            
-        </main>
-    </div>
+      <!-- 1. KHỞI ĐỘNG -->
+      <section class="lesson-section" aria-labelledby="warmup-title">
+        <div class="lesson-section__header">
+          <span class="lesson-section__icon" aria-hidden="true">🔀</span>
+          <div>
+            <h2 id="warmup-title">1. Khởi động</h2>
+            <p class="lesson-section__lead">Trò chơi "Đúng hay Sai": Trải nghiệm việc đưa ra quyết định hành động (Gật đầu / Lắc đầu) theo điều kiện.</p>
+          </div>
+        </div>
+        <div class="lesson-frame lesson-frame--wide">
+          <!-- Nhúng trực tiếp toàn bộ mã trò chơi qua srcdoc để không bị lỗi 404 -->
+          <iframe 
+            title="Khởi động - Trò chơi Đúng hay Sai" 
+            style="width: 100%; height: 580px; border: none; border-radius: 16px; background: #0f172a;"
+            loading="lazy" 
+            allow="autoplay"
+            allowfullscreen
+            srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Trò chơi Khởi động&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+    body { background: linear-gradient(135deg, #0f172a, #1e293b); color: #f8fafc; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .card { background: #1e293b; border: 2px solid #334155; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); width: 100%; max-width: 620px; padding: 24px; text-align: center; position: relative; overflow: hidden; }
+    .badge { display: inline-block; background: #f59e0b; color: #1e293b; font-weight: 800; font-size: 0.85rem; padding: 4px 14px; border-radius: 999px; text-transform: uppercase; margin-bottom: 12px; }
+    h1 { font-size: 1.6rem; font-weight: 900; color: #38bdf8; margin-bottom: 10px; }
+    p.desc { font-size: 0.95rem; color: #94a3b8; line-height: 1.5; margin-bottom: 20px; }
     
-    <script src="assets/js/main.js?v=20260804"></script>
+    /* Avatar animation */
+    .avatar-box { width: 110px; height: 110px; margin: 0 auto 16px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 4px solid #38bdf8; transition: transform 0.3s; }
+    .avatar-svg { width: 75px; height: 75px; }
+    .nod-anim { animation: nodEffect 0.5s ease-in-out; }
+    .shake-anim { animation: shakeEffect 0.5s ease-in-out; }
+
+    @keyframes nodEffect {
+      0%, 100% { transform: translateY(0); }
+      30% { transform: translateY(14px) scale(0.95, 1.05); }
+      60% { transform: translateY(-8px); }
+    }
+    @keyframes shakeEffect {
+      0%, 100% { transform: rotate(0deg); }
+      20%, 60% { transform: rotate(-14deg); }
+      40%, 80% { transform: rotate(14deg); }
+    }
+
+    /* Buttons */
+    .btn { cursor: pointer; border: none; border-radius: 14px; font-weight: 800; font-size: 1.05rem; padding: 12px 24px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; width: 100%; box-shadow: 0 4px 15px rgba(37,99,235,0.4); }
+    
+    /* Topic Selector */
+    .topics { display: flex; gap: 12px; margin-bottom: 20px; }
+    .topic-btn { flex: 1; padding: 12px; border-radius: 12px; background: #334155; color: #cbd5e1; border: 2px solid transparent; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+    .topic-btn.active { border-color: #38bdf8; background: rgba(56,189,248,0.15); color: #38bdf8; }
+
+    /* In-game layout */
+    .stats-bar { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 10px 16px; border-radius: 12px; margin-bottom: 16px; font-weight: 700; }
+    .timer { color: #f43f5e; font-size: 1.15rem; }
+    .score { color: #10b981; font-size: 1.15rem; }
+    .question-box { background: #0f172a; border: 2px dashed #475569; border-radius: 16px; padding: 22px 16px; margin-bottom: 20px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+    .question-text { font-size: 1.15rem; font-weight: 800; color: #f1f5f9; line-height: 1.5; }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-yes { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 4px 14px rgba(16,185,129,0.3); }
+    .btn-no { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; box-shadow: 0 4px 14px rgba(244,63,94,0.3); }
+
+    /* Branch Diagram for End Game */
+    .diagram { background: #0f172a; border-radius: 14px; padding: 16px; margin: 16px 0; text-align: left; font-size: 0.9rem; border: 1px solid #334155; }
+    .diagram-title { font-weight: 800; color: #f59e0b; margin-bottom: 8px; text-align: center; }
+    .flow-line { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px 0; font-weight: 700; }
+    .rhombus { background: #38bdf8; color: #0f172a; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 800; }
+    .action-box { padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; }
+    .act-yes { background: #065f46; color: #a7f3d0; }
+    .act-no { background: #881337; color: #fecdd3; }
+
+    .hidden { display: none !important; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;!-- Màn hình giới thiệu --&gt;
+    &lt;div id=&quot;intro-screen&quot;&gt;
+      &lt;span class=&quot;badge&quot;&gt;Trò chơi khởi động&lt;/span&gt;
+      &lt;h1&gt;ĐÚNG HAY SAI?&lt;/h1&gt;
+      &lt;div class=&quot;avatar-box&quot; id=&quot;intro-avatar&quot;&gt;
+        &lt;svg class=&quot;avatar-svg&quot; viewBox=&quot;0 0 100 100&quot;&gt;
+          &lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;45&quot; fill=&quot;#38bdf8&quot;/&gt;
+          &lt;circle cx=&quot;35&quot; cy=&quot;42&quot; r=&quot;6&quot; fill=&quot;#0f172a&quot;/&gt;
+          &lt;circle cx=&quot;65&quot; cy=&quot;42&quot; r=&quot;6&quot; fill=&quot;#0f172a&quot;/&gt;
+          &lt;path d=&quot;M 32 62 Q 50 78 68 62&quot; stroke=&quot;#0f172a&quot; stroke-width=&quot;5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;p class=&quot;desc&quot;&gt;Bạn thứ nhất đọc câu khẳng định. Bạn thứ hai quan sát và phản xạ:&lt;br&gt;&lt;strong style=&quot;color:#34d399&quot;&gt;GẬT ĐẦU (Đúng)&lt;/strong&gt; hoặc &lt;strong style=&quot;color:#fb7185&quot;&gt;LẮC ĐẦU (Sai)&lt;/strong&gt; trong 60 giây!&lt;/p&gt;
+      
+      &lt;div class=&quot;topics&quot;&gt;
+        &lt;button class=&quot;topic-btn active&quot; onclick=&quot;setTopic('bio', this)&quot;&gt;🌿 Chủ đề Sinh học&lt;/button&gt;
+        &lt;button class=&quot;topic-btn&quot; onclick=&quot;setTopic('math', this)&quot;&gt;📐 Chủ đề Toán học&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;startGame()&quot;&gt;🚀 BẮT ĐẦU CHƠI&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Màn hình đang chơi --&gt;
+    &lt;div id=&quot;game-screen&quot; class=&quot;hidden&quot;&gt;
+      &lt;div class=&quot;stats-bar&quot;&gt;
+        &lt;span class=&quot;timer&quot;&gt;⏳ &lt;span id=&quot;timer-val&quot;&gt;60&lt;/span&gt;s&lt;/span&gt;
+        &lt;span id=&quot;topic-name&quot; style=&quot;color: #94a3b8; font-size: 0.85rem;&quot;&gt;Sinh học&lt;/span&gt;
+        &lt;span class=&quot;score&quot;&gt;⭐ &lt;span id=&quot;score-val&quot;&gt;0&lt;/span&gt; điểm&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;avatar-box&quot; id=&quot;avatar-robot&quot;&gt;
+        &lt;svg class=&quot;avatar-svg&quot; viewBox=&quot;0 0 100 100&quot;&gt;
+          &lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;45&quot; fill=&quot;#38bdf8&quot;/&gt;
+          &lt;circle cx=&quot;35&quot; cy=&quot;42&quot; r=&quot;6&quot; fill=&quot;#0f172a&quot;/&gt;
+          &lt;circle cx=&quot;65&quot; cy=&quot;42&quot; r=&quot;6&quot; fill=&quot;#0f172a&quot;/&gt;
+          &lt;path id=&quot;mouth&quot; d=&quot;M 32 62 Q 50 78 68 62&quot; stroke=&quot;#0f172a&quot; stroke-width=&quot;5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;question-box&quot;&gt;
+        &lt;div class=&quot;question-text&quot; id=&quot;question-display&quot;&gt;Đang nạp câu hỏi...&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;choices&quot;&gt;
+        &lt;button class=&quot;btn btn-yes&quot; onclick=&quot;handleAnswer(true)&quot;&gt;
+          👍 GẬT ĐẦU (ĐÚNG)
+        &lt;/button&gt;
+        &lt;button class=&quot;btn btn-no&quot; onclick=&quot;handleAnswer(false)&quot;&gt;
+          👎 LẮC ĐẦU (SAI)
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Màn hình kết thúc --&gt;
+    &lt;div id=&quot;end-screen&quot; class=&quot;hidden&quot;&gt;
+      &lt;span class=&quot;badge&quot; style=&quot;background:#10b981; color:#fff;&quot;&gt;Hết giờ!&lt;/span&gt;
+      &lt;h1&gt;XUẤT SẮC!&lt;/h1&gt;
+      &lt;p class=&quot;desc&quot;&gt;Đội bạn đã trả lời đúng &lt;strong style=&quot;color:#38bdf8; font-size:1.5rem;&quot; id=&quot;final-score&quot;&gt;0&lt;/strong&gt; câu!&lt;/p&gt;
+
+      &lt;div class=&quot;diagram&quot;&gt;
+        &lt;div class=&quot;diagram-title&quot;&gt;💡 Kết nối bài học: Cấu trúc Rẽ nhánh dạng đủ (Hình 6.8)&lt;/div&gt;
+        &lt;div class=&quot;flow-line&quot;&gt;
+          &lt;span class=&quot;rhombus&quot;&gt;Câu khẳng định đúng hay sai?&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flow-line&quot; style=&quot;justify-content: space-around; margin-top: 10px;&quot;&gt;
+          &lt;span style=&quot;color: #34d399;&quot;&gt;↙ Nếu Đúng&lt;/span&gt;
+          &lt;span style=&quot;color: #fb7185;&quot;&gt;↘ Nếu Sai&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flow-line&quot; style=&quot;justify-content: space-around;&quot;&gt;
+          &lt;span class=&quot;action-box act-yes&quot;&gt;Hành động: Gật đầu&lt;/span&gt;
+          &lt;span class=&quot;action-box act-no&quot;&gt;Hành động: Lắc đầu&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;resetGame()&quot;&gt;🔄 Chơi lại lượt mới&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    const questionsDB = {
+      bio: [
+        { q: &quot;Cá voi thở bằng phổi.&quot;, a: true },
+        { q: &quot;Cây xanh quang hợp giải phóng khí CO₂ vào ban ngày.&quot;, a: false },
+        { q: &quot;Chim cánh cụt không biết bay.&quot;, a: true },
+        { q: &quot;Máu người có màu đỏ do chứa chất diệp lục.&quot;, a: false },
+        { q: &quot;Loài dơi là một loài động vật có vú biết bay.&quot;, a: true },
+        { q: &quot;Nấm thuộc giới thực vật và tự quang hợp được.&quot;, a: false },
+        { q: &quot;Xương người trưởng thành có khoảng 206 cái.&quot;, a: true }
+      ],
+      math: [
+        { q: &quot;Số 2 là số nguyên tố chẵn duy nhất.&quot;, a: true },
+        { q: &quot;Tổng ba góc của một tam giác bằng 360 độ.&quot;, a: false },
+        { q: &quot;Một hình vuông thì chắc chắn là hình chữ nhật.&quot;, a: true },
+        { q: &quot;Số 0 là số nguyên tố nhỏ nhất.&quot;, a: false },
+        { q: &quot;Số 17 là một số nguyên tố.&quot;, a: true },
+        { q: &quot;Phép chia bất kỳ số nào cho 0 cũng bằng 0.&quot;, a: false },
+        { q: &quot;25 chia hết cho 5.&quot;, a: true }
+      ]
+    };
+
+    let curTopic = 'bio';
+    let qList = [];
+    let qIdx = 0;
+    let score = 0;
+    let timeLeft = 60;
+    let timerId = null;
+
+    // Web Audio synthesizer (không cần tải thêm file mp3)
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let ctx = null;
+
+    function playBeep(freq, type, duration) {
+      try {
+        if (!ctx) ctx = new AudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function soundCorrect() {
+      playBeep(587, 'sine', 0.1);
+      setTimeout(() =&gt; playBeep(880, 'sine', 0.25), 100);
+    }
+
+    function soundWrong() {
+      playBeep(180, 'sawtooth', 0.3);
+    }
+
+    function soundTimeout() {
+      playBeep(300, 'square', 0.2);
+      setTimeout(() =&gt; playBeep(200, 'square', 0.4), 250);
+    }
+
+    function setTopic(tp, btn) {
+      curTopic = tp;
+      document.querySelectorAll('.topic-btn').forEach(b =&gt; b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function startGame() {
+      if (!ctx) ctx = new AudioCtx();
+      document.getElementById('intro-screen').classList.add('hidden');
+      document.getElementById('end-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('hidden');
+
+      document.getElementById('topic-name').textContent = curTopic === 'bio' ? '🌿 Sinh học' : '📐 Toán học';
+      score = 0;
+      timeLeft = 60;
+      document.getElementById('score-val').textContent = score;
+      document.getElementById('timer-val').textContent = timeLeft;
+
+      qList = [...questionsDB[curTopic]].sort(() =&gt; Math.random() - 0.5);
+      qIdx = 0;
+      showQuestion();
+
+      timerId = setInterval(() =&gt; {
+        timeLeft--;
+        document.getElementById('timer-val').textContent = timeLeft;
+        if (timeLeft &lt;= 0) {
+          clearInterval(timerId);
+          soundTimeout();
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function showQuestion() {
+      if (qIdx &gt;= qList.length) {
+        qList = [...questionsDB[curTopic]].sort(() =&gt; Math.random() - 0.5);
+        qIdx = 0;
+      }
+      document.getElementById('question-display').textContent = qList[qIdx].q;
+    }
+
+    function handleAnswer(userChoice) {
+      const avatar = document.getElementById('avatar-robot');
+      const mouth = document.getElementById('mouth');
+
+      // Mô phỏng Gật / Lắc theo lựa chọn
+      avatar.classList.remove('nod-anim', 'shake-anim');
+      void avatar.offsetWidth; // trigger reflow
+
+      if (userChoice === true) {
+        avatar.classList.add('nod-anim');
+        mouth.setAttribute('d', 'M 32 62 Q 50 78 68 62'); // cười tươi
+      } else {
+        avatar.classList.add('shake-anim');
+        mouth.setAttribute('d', 'M 32 68 Q 50 56 68 68'); // lắc đầu bĩu môi
+      }
+
+      // Kiểm tra đáp án
+      const isCorrect = userChoice === qList[qIdx].a;
+      if (isCorrect) {
+        score++;
+        document.getElementById('score-val').textContent = score;
+        soundCorrect();
+      } else {
+        soundWrong();
+      }
+
+      qIdx++;
+      setTimeout(showQuestion, 350);
+    }
+
+    function endGame() {
+      document.getElementById('game-screen').classList.add('hidden');
+      document.getElementById('end-screen').classList.remove('hidden');
+      document.getElementById('final-score').textContent = score;
+    }
+
+    function resetGame() {
+      document.getElementById('end-screen').classList.add('hidden');
+      document.getElementById('intro-screen').classList.remove('hidden');
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"
+          ></iframe>
+        </div>
+      </section>
+
+      <!-- 2. KHÁM PHÁ KIẾN THỨC -->
+      <section class="lesson-section" aria-labelledby="knowledge-title">
+        <div class="lesson-section__header">
+          <span class="lesson-section__icon" aria-hidden="true">🧱</span>
+          <div>
+            <h2 id="knowledge-title">2. Khám phá kiến thức</h2>
+            <p class="lesson-section__lead">Tóm tắt các cấu trúc điều khiển thường gặp trong chương trình.</p>
+          </div>
+        </div>
+        <div class="lesson-knowledge">
+          <div class="lesson-frame lesson-frame--wide">
+            <iframe title="Video bài giảng - Cấu trúc điều khiển" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>📺 Video bài giảng Bài 16</strong><div>Nhúng video ngắn giới thiệu rẽ nhánh và lặp trong thuật toán.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
+          </div>
+          <aside class="lesson-summary" aria-label="Tóm tắt kiến thức bài 16">
+            <h3>Tóm tắt bài học</h3>
+            <p>Cấu trúc điều khiển giúp chương trình biết khi nào cần rẽ nhánh, lặp lại hoặc đi theo một hướng thực hiện cụ thể.</p>
+            <ul>
+              <li>Rẽ nhánh dùng khi có điều kiện.</li>
+              <li>Lặp dùng khi cần làm lại một việc nhiều lần.</li>
+              <li>Điều khiển làm chương trình linh hoạt hơn.</li>
+              <li>Hiểu cấu trúc điều khiển là nền tảng lập trình.</li>
+            </ul>
+            <a class="lesson-download" href="#" role="button" aria-label="Tải phiếu học tập Bài 16">📥 Tải Phiếu học tập</a>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 3. LUYỆN TẬP & VẬN DỤNG -->
+      <section class="lesson-section" aria-labelledby="practice-title">
+        <div class="lesson-section__header">
+          <span class="lesson-section__icon" aria-hidden="true">🧪</span>
+          <div>
+            <h2 id="practice-title">3. Luyện tập &amp; Vận dụng</h2>
+            <p class="lesson-section__lead">Thực hành chọn đúng cấu trúc điều khiển cho từng tình huống.</p>
+          </div>
+        </div>
+        <div class="lesson-frame lesson-frame--wide">
+          <iframe title="Luyện tập - Cấu trúc điều khiển" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>🧪 Luyện tập Bài 16</strong><div>Nhúng bài tập tương tác về rẽ nhánh và lặp.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
+        </div>
+      </section>
+
+      <!-- ĐIỀU HƯỚNG BÀI HỌC -->
+      <nav class="lesson-footer-nav" aria-label="Điều hướng bài học">
+        <a class="lesson-footer-nav__link lesson-footer-nav__link--prev" href="bai-15-thuat-toan.html" aria-label="Bài trước">⬅️ Bài trước</a>
+        <a class="lesson-footer-nav__link lesson-footer-nav__link--next" href="bai-17-chuong-trinh-may-tinh.html" aria-label="Bài tiếp theo">Bài tiếp theo ➡️</a>
+      </nav>
+    </main>
+  </div>
+  <script src="assets/js/main.js?v=20260804"></script>
 </body>
 </html>

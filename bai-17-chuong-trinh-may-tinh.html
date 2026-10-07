@@ -24,13 +24,14 @@
           <span class="lesson-section__icon" aria-hidden="true">💻</span>
           <div>
             <h2 id="warmup-title">1. Khởi động</h2>
-            <p class="lesson-section__lead">Khám phá một chương trình máy tính quen thuộc đang thực hiện nhiệm vụ gì.</p>
+            <p class="lesson-section__lead">Trò chơi "Làm theo chỉ dẫn": Trải nghiệm việc ra lệnh cho Robot để hiểu cách máy tính nhận chỉ thị.</p>
           </div>
         </div>
         <div class="lesson-frame lesson-frame--wide">
+          <!-- Game Khởi Động: Họa sĩ Robot -->
           <iframe 
-            title="Khởi động - Chương trình máy tính" 
-            style="width: 100%; height: 500px; border: none; border-radius: 16px; background: #0f172a;"
+            title="Khởi động - Họa sĩ Robot" 
+            style="width: 100%; height: 600px; border: none; border-radius: 16px; background: #0f172a;"
             loading="lazy" 
             allow="autoplay"
             allowfullscreen
@@ -38,115 +39,172 @@
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Khởi động: Họa sĩ Robot&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
   &lt;style&gt;
-    body { font-family: 'Nunito', sans-serif; }
-    .grid-cell { width: 50px; height: 50px; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 24px; border-radius: 6px;}
-    .wall { background: #475569; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-    .path { background: #1e293b; }
-    .goal { background: #10b981; box-shadow: 0 0 15px rgba(16,185,129,0.5); }
-    .robot { transition: transform 0.3s ease; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; }
+    body { background: linear-gradient(135deg, #1e293b, #0f172a); color: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; overflow: hidden;}
+    .game-container { background: #1e293b; border: 2px solid #334155; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); width: 100%; max-width: 700px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+    
+    .header-box { text-align: center; }
+    h1 { color: #38bdf8; font-weight: 900; font-size: 1.8rem; margin-bottom: 8px;}
+    p.desc { color: #94a3b8; font-size: 1rem; line-height: 1.4; }
+
+    .main-area { display: flex; gap: 20px; height: 250px; }
+    
+    /* Khu vực vẽ của Robot */
+    .canvas-area { flex: 1; background: #cbd5e1; border-radius: 16px; position: relative; border: 4px solid #475569; overflow: hidden; display: flex; align-items: center; justify-content: center;}
+    .target-hint { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 8px; font-size: 0.8rem; color: #fff; font-weight: bold;}
+    
+    /* Khu vực lập trình */
+    .code-area { flex: 1; background: #0f172a; border-radius: 16px; border: 2px dashed #38bdf8; padding: 16px; display: flex; flex-direction: column;}
+    .code-title { color: #38bdf8; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
+    .code-list { flex: 1; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+    .code-item { background: #0284c7; color: white; padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; animation: popIn 0.3s ease;}
+    .code-num { background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
+    
+    /* Các nút lệnh */
+    .commands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .cmd-btn { background: #334155; border: 2px solid #475569; color: white; padding: 12px 8px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.9rem;}
+    .cmd-btn:hover { background: #475569; border-color: #38bdf8; transform: translateY(-2px);}
+    .cmd-btn:active { transform: translateY(1px); }
+
+    .action-btns { display: flex; gap: 12px; justify-content: center; margin-top: 10px;}
+    .run-btn { background: #10b981; color: white; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 0 #059669;}
+    .run-btn:hover { background: #34d399; transform: translateY(-2px); box-shadow: 0 6px 0 #059669;}
+    .run-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #059669;}
+    .clear-btn { background: #f43f5e; color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+    
+    /* Hình vẽ SVG */
+    svg.drawing { width: 100%; height: 100%; }
+    .draw-path { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    
+    /* Overlay kết thúc */
+    .overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s;}
+    .overlay.active { opacity: 1; pointer-events: all; }
+    .overlay h2 { color: #f59e0b; font-size: 2rem; font-weight: 900; margin-bottom: 10px;}
+    .overlay p { color: white; margin-bottom: 20px; text-align: center; font-size: 1.1rem; max-width: 80%;}
   &lt;/style&gt;
 &lt;/head&gt;
-&lt;body class=&quot;bg-slate-900 text-white p-4 select-none flex flex-col h-full overflow-hidden&quot;&gt;
-  &lt;div class=&quot;flex gap-6 w-full h-full max-w-4xl mx-auto&quot;&gt;
-    &lt;div class=&quot;flex-1 flex flex-col items-center justify-center&quot;&gt;
-      &lt;h2 class=&quot;text-2xl font-black text-sky-400 mb-2 tracking-wide&quot;&gt;🤖 LẬP TRÌNH ROBOT&lt;/h2&gt;
-      &lt;p class=&quot;text-sm text-slate-400 mb-6 text-center&quot;&gt;Mỗi bước di chuyển của máy tính đều cần có &lt;b class=&quot;text-sky-300&quot;&gt;chỉ dẫn&lt;/b&gt;.&lt;br&gt;Hãy đưa Robot đến cờ 🏁.&lt;/p&gt;
-      &lt;div id=&quot;board&quot; class=&quot;inline-grid grid-cols-5 gap-1.5 p-3 bg-slate-800 rounded-xl shadow-2xl border-2 border-slate-700&quot;&gt;&lt;/div&gt;
-      &lt;div class=&quot;mt-8 flex gap-4&quot;&gt;
-        &lt;button onclick=&quot;run()&quot; class=&quot;bg-green-500 px-8 py-3 rounded-xl font-black text-lg hover:bg-green-400 shadow-[0_5px_0_#166534] active:shadow-none active:translate-y-1 transition-all&quot;&gt;▶️ CHẠY CODE&lt;/button&gt;
-        &lt;button onclick=&quot;reset()&quot; class=&quot;bg-red-500 px-8 py-3 rounded-xl font-black text-lg hover:bg-red-400 shadow-[0_5px_0_#7f1d1d] active:shadow-none active:translate-y-1 transition-all&quot;&gt;🔄 LÀM LẠI&lt;/button&gt;
-      &lt;/div&gt;
-      &lt;div id=&quot;msg&quot; class=&quot;mt-6 font-bold text-lg h-6 text-yellow-400 drop-shadow-md&quot;&gt;&lt;/div&gt;
+&lt;body&gt;
+  &lt;div class=&quot;game-container&quot;&gt;
+    &lt;div class=&quot;header-box&quot;&gt;
+      &lt;h1&gt;🤖 HỌA SĨ ROBOT&lt;/h1&gt;
+      &lt;p class=&quot;desc&quot;&gt;Hãy gửi các lệnh chỉ dẫn cho Robot theo đúng trình tự để vẽ một &lt;strong style=&quot;color:#f59e0b&quot;&gt;Ngôi Nhà&lt;/strong&gt;.&lt;br&gt;(Gợi ý: Khung nhà ➡️ Mái nhà ➡️ Cửa chính).&lt;/p&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;w-64 flex flex-col gap-2 bg-slate-800 p-4 rounded-2xl shadow-xl border-2 border-slate-700&quot;&gt;
-      &lt;div class=&quot;font-black text-amber-400 text-sm uppercase tracking-widest mb-1&quot;&gt;Kho lệnh&lt;/div&gt;
-      &lt;button onclick=&quot;add('fw', '⬆️ Đi thẳng')&quot; class=&quot;bg-blue-600 p-3 rounded-lg font-bold text-sm text-left hover:bg-blue-500 transition shadow-md active:translate-y-0.5&quot;&gt;⬆️ Đi thẳng&lt;/button&gt;
-      &lt;button onclick=&quot;add('tl', '↰ Xoay trái')&quot; class=&quot;bg-purple-600 p-3 rounded-lg font-bold text-sm text-left hover:bg-purple-500 transition shadow-md active:translate-y-0.5&quot;&gt;↰ Xoay trái 90°&lt;/button&gt;
-      &lt;button onclick=&quot;add('tr', '↱ Xoay phải')&quot; class=&quot;bg-pink-600 p-3 rounded-lg font-bold text-sm text-left hover:bg-pink-500 transition shadow-md active:translate-y-0.5&quot;&gt;↱ Xoay phải 90°&lt;/button&gt;
+
+    &lt;div class=&quot;main-area&quot;&gt;
+      &lt;div class=&quot;canvas-area&quot;&gt;
+        &lt;span class=&quot;target-hint&quot;&gt;Màn hình kết quả&lt;/span&gt;
+        &lt;svg class=&quot;drawing&quot; viewBox=&quot;0 0 100 100&quot; id=&quot;canvas&quot;&gt;
+          &lt;!-- Nơi chứa các hình vẽ --&gt;
+        &lt;/svg&gt;
+        &lt;div class=&quot;overlay&quot; id=&quot;success-overlay&quot;&gt;
+          &lt;h2&gt;CHÍNH XÁC! 🎉&lt;/h2&gt;
+          &lt;p&gt;Khi em đưa ra các lệnh đúng trình tự, máy tính (Robot) sẽ hiểu và làm theo. Đó chính là một &lt;strong style=&quot;color:#38bdf8&quot;&gt;Chương trình máy tính&lt;/strong&gt;!&lt;/p&gt;
+          &lt;button class=&quot;run-btn&quot; onclick=&quot;location.reload()&quot;&gt;Chơi lại&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
       
-      &lt;div class=&quot;font-black text-amber-400 text-sm uppercase tracking-widest mt-4 mb-1&quot;&gt;Chương trình&lt;/div&gt;
-      &lt;div id=&quot;q&quot; class=&quot;flex-1 bg-slate-900 rounded-lg p-2 flex flex-col gap-1 overflow-y-auto border-2 border-slate-700 shadow-inner&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;code-area&quot;&gt;
+        &lt;div class=&quot;code-title&quot;&gt;📜 Chương trình của bạn&lt;/div&gt;
+        &lt;div class=&quot;code-list&quot; id=&quot;code-list&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;commands&quot;&gt;
+      &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('Cua', '🚪 Vẽ cửa chính')&quot;&gt;🚪 Vẽ cửa chính&lt;/button&gt;
+      &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('Mai', '🔺 Vẽ mái nhà')&quot;&gt;🔺 Vẽ mái nhà&lt;/button&gt;
+      &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('Khung', '🔲 Vẽ khung nhà')&quot;&gt;🔲 Vẽ khung nhà&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;action-btns&quot;&gt;
+      &lt;button class=&quot;clear-btn&quot; onclick=&quot;clearCode()&quot;&gt;Xóa hết&lt;/button&gt;
+      &lt;button class=&quot;run-btn&quot; onclick=&quot;runProgram()&quot;&gt;▶️ Chạy chương trình&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
+
   &lt;script&gt;
-    const map = [
-      0,0,0,0,0,
-      0,1,1,1,0,
-      0,0,0,1,0,
-      1,1,0,1,0,
-      0,0,0,0,2
-    ];
-    let rX=0, rY=0, rD=1; // rD: 0=N, 1=E, 2=S, 3=W
-    let cmds = [];
-    const Snd = {
-      play: (f,t,d) =&gt; {
-         try{ const C = window.AudioContext||window.webkitAudioContext;
-         if(!window.actx) window.actx = new C();
-         const o=actx.createOscillator(), g=actx.createGain(); o.type=t; o.frequency.value=f;
-         g.gain.setValueAtTime(0.1, actx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+d);
-         o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+d); }catch(e){}
-      },
-      click: ()=&gt;Snd.play(600,'sine',0.05), step: ()=&gt;Snd.play(400,'triangle',0.1), err: ()=&gt;Snd.play(200,'sawtooth',0.3),
-      win: ()=&gt;{ Snd.play(523,'sine',0.1); setTimeout(()=&gt;Snd.play(659,'sine',0.1),100); setTimeout(()=&gt;Snd.play(783,'sine',0.2),200); }
-    };
-    
-    function draw() {
-      const b = document.getElementById('board');
-      b.innerHTML = '';
-      for(let y=0; y&lt;5; y++){
-        for(let x=0; x&lt;5; x++){
-          let idx = y*5+x;
-          let c = document.createElement('div');
-          c.className = 'grid-cell ' + (map[idx]==1?'wall':(map[idx]==2?'goal':'path'));
-          if(map[idx]==2) c.innerHTML = '🏁';
-          if(x==rX &amp;&amp; y==rY) {
-            let rot = rD*90;
-            c.innerHTML = '&lt;div class=&quot;robot drop-shadow-lg&quot; style=&quot;transform:rotate('+rot+'deg)&quot;&gt;🤖&lt;/div&gt;';
-          }
-          b.appendChild(c);
-        }
-      }
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let ctx = null;
+
+    function playSnd(freq, type, dur) {
+      try {
+        if(!ctx) ctx = new AudioCtx();
+        if(ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.type = type; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + dur);
+      } catch(e){}
     }
-    function add(cmd, txt) { Snd.click(); cmds.push({cmd, txt}); renderQ(); }
-    function renderQ() {
-      const q = document.getElementById('q');
-      q.innerHTML = cmds.map((c,i) =&gt; '&lt;div class=&quot;bg-slate-700 text-sm font-bold p-2 rounded cursor-pointer hover:bg-slate-600 transition shadow-sm border border-slate-600&quot; onclick=&quot;rem('+i+')&quot;&gt;'+(i+1)+'. '+c.txt+' &lt;span class=&quot;float-right text-red-400 font-black&quot;&gt;✕&lt;/span&gt;&lt;/div&gt;').join('');
-      q.scrollTop = q.scrollHeight;
+    function sndClick() { playSnd(800, 'sine', 0.1); }
+    function sndErr() { playSnd(200, 'sawtooth', 0.3); }
+    function sndSuccess() { playSnd(500, 'sine', 0.1); setTimeout(()=&gt;playSnd(600, 'sine', 0.1), 150); setTimeout(()=&gt;playSnd(800, 'sine', 0.3), 300); }
+
+    let program = [];
+    const maxCmds = 3;
+
+    function addCmd(id, text) {
+      if(program.length &gt;= maxCmds) return;
+      program.push(id);
+      sndClick();
+      renderCode();
     }
-    function rem(i) { Snd.click(); cmds.splice(i,1); renderQ(); }
-    function reset() { Snd.click(); rX=0; rY=0; rD=1; cmds=[]; renderQ(); draw(); document.getElementById('msg').innerText='';}
-    
-    async function run() {
-      if(cmds.length===0) return;
-      document.getElementById('msg').innerHTML = '&lt;span class=&quot;text-sky-300 animate-pulse&quot;&gt;Chương trình đang chạy...&lt;/span&gt;';
-      let rX_temp = 0, rY_temp = 0, rD_temp = 1;
-      rX=0; rY=0; rD=1; draw();
+
+    function clearCode() {
+      program = [];
+      document.getElementById('canvas').innerHTML = '';
+      sndClick();
+      renderCode();
+    }
+
+    function renderCode() {
+      const list = document.getElementById('code-list');
+      list.innerHTML = '';
+      program.forEach((cmd, idx) =&gt; {
+        let text = cmd === 'Khung' ? '🔲 Vẽ khung nhà' : (cmd === 'Mai' ? '🔺 Vẽ mái nhà' : '🚪 Vẽ cửa chính');
+        list.innerHTML += `&lt;div class=&quot;code-item&quot;&gt;&lt;span class=&quot;code-num&quot;&gt;Lệnh ${idx+1}&lt;/span&gt; ${text}&lt;/div&gt;`;
+      });
+    }
+
+    function drawSVG(cmd) {
+      const cvs = document.getElementById('canvas');
+      let shape = '';
+      // Tọa độ vẽ tĩnh, màu giả lập nét vẽ sáp
+      if (cmd === 'Khung') shape = `&lt;rect x=&quot;30&quot; y=&quot;50&quot; width=&quot;40&quot; height=&quot;40&quot; class=&quot;draw-path&quot; stroke=&quot;#334155&quot; fill=&quot;#e2e8f0&quot; /&gt;`;
+      if (cmd === 'Mai') shape = `&lt;polygon points=&quot;25,50 50,20 75,50&quot; class=&quot;draw-path&quot; stroke=&quot;#b91c1c&quot; fill=&quot;#fca5a5&quot; /&gt;`;
+      if (cmd === 'Cua') shape = `&lt;rect x=&quot;42&quot; y=&quot;70&quot; width=&quot;16&quot; height=&quot;20&quot; class=&quot;draw-path&quot; stroke=&quot;#92400e&quot; fill=&quot;#fcd34d&quot; /&gt;`;
+      cvs.innerHTML += shape;
+    }
+
+    async function runProgram() {
+      if (program.length === 0) return;
+      document.getElementById('canvas').innerHTML = '';
       
-      for(let c of cmds) {
-        await new Promise(r =&gt; setTimeout(r, 400));
-        Snd.step();
-        if(c.cmd=='fw') {
-          let nx=rX_temp, ny=rY_temp;
-          if(rD_temp==0) ny--; if(rD_temp==1) nx++; if(rD_temp==2) ny++; if(rD_temp==3) nx--;
-          if(nx&gt;=0 &amp;&amp; nx&lt;5 &amp;&amp; ny&gt;=0 &amp;&amp; ny&lt;5 &amp;&amp; map[ny*5+nx]!=1) { rX_temp=nx; rY_temp=ny; }
-          else { Snd.err(); break; } // Hit wall
-        }
-        if(c.cmd=='tl') rD_temp = (rD_temp+3)%4;
-        if(c.cmd=='tr') rD_temp = (rD_temp+1)%4;
-        
-        rX = rX_temp; rY = rY_temp; rD = rD_temp;
-        draw();
+      // Vẽ tuần tự có delay (mô phỏng máy tính đọc lệnh)
+      for(let i=0; i&lt;program.length; i++) {
+        sndClick();
+        drawSVG(program[i]);
+        await new Promise(r =&gt; setTimeout(r, 600));
       }
-      setTimeout(() =&gt; {
-        if(rX==4 &amp;&amp; rY==4) { Snd.win(); document.getElementById('msg').innerHTML = '&lt;span class=&quot;text-green-400 drop-shadow-md&quot;&gt;🎉 CHÍNH XÁC! Robot đã đến đích!&lt;/span&gt;'; }
-        else { Snd.err(); document.getElementById('msg').innerHTML = '&lt;span class=&quot;text-red-400 drop-shadow-md&quot;&gt;❌ Lỗi thuật toán: Robot chưa đến đích hoặc đâm vào tường!&lt;/span&gt;'; }
-      }, 200);
+
+      // Kiểm tra tính đúng đắn của Thuật toán (Khung -&gt; Mái -&gt; Cửa)
+      const isCorrect = program.length === 3 &amp;&amp; program[0]==='Khung' &amp;&amp; program[1]==='Mai' &amp;&amp; program[2]==='Cua';
+      
+      if (isCorrect) {
+        sndSuccess();
+        document.getElementById('success-overlay').classList.add('active');
+      } else {
+        sndErr();
+        alert(&quot;Lỗi: Trình tự các lệnh chưa hợp lý hoặc chưa đủ. Hãy thử: Vẽ khung trước, sau đó lợp mái, cuối cùng lắp cửa nhé!&quot;);
+      }
     }
-    draw();
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;"></iframe>
@@ -184,13 +242,14 @@
           <span class="lesson-section__icon" aria-hidden="true">🧪</span>
           <div>
             <h2 id="practice-title">3. Luyện tập &amp; Vận dụng</h2>
-            <p class="lesson-section__lead">Thực hành mô phỏng giao diện Scratch: Viết chương trình Tính Lãi/Lỗ và chạy thử trực tiếp với nhân vật.</p>
+            <p class="lesson-section__lead">Thực hành mô phỏng giao diện Scratch: Dựa vào thuật toán để lắp ráp chương trình "Tìm số lớn hơn trong 2 số a và b".</p>
           </div>
         </div>
         <div class="lesson-frame lesson-frame--wide">
+          <!-- Game Vận dụng: Xếp gạch Lập trình (Scratch Simulator) -->
           <iframe 
-            title="Luyện tập - Chương trình máy tính" 
-            style="width: 100%; height: 680px; border: none; border-radius: 16px; background: #f8fafc;"
+            title="Luyện tập - Lắp ráp Chương trình" 
+            style="width: 100%; height: 680px; border: none; border-radius: 16px; background: #0f172a;"
             loading="lazy" 
             allow="autoplay"
             allowfullscreen
@@ -198,192 +257,206 @@
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Vận dụng: Xếp gạch Lập trình&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
   &lt;style&gt;
-    body { font-family: 'Nunito', sans-serif; }
-    .b-event { background: #ffbf00; } .b-sense { background: #5cb1d6; color: #0f172a; } .b-ctrl { background: #ffab19; } .b-look { background: #9966ff; }
-    .block { padding: 12px 16px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; font-size: 15px; user-select: none; box-shadow: inset 0 -4px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 6px; transition: transform 0.1s; }
-    .block:active { transform: translateY(2px); box-shadow: inset 0 -2px rgba(0,0,0,0.2); }
-    .block:hover { filter: brightness(1.05); }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    @keyframes bounceIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    .animate-bounce-in { animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; }
+    body { background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; overflow: hidden;}
+    .game-card { background: #1e293b; border: 2px solid #334155; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 800px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+    
+    .title-area { text-align: center; border-bottom: 2px dashed #334155; padding-bottom: 16px;}
+    h2 { color: #f59e0b; font-weight: 900; font-size: 1.6rem; margin-bottom: 8px;}
+    .problem-desc { color: #e2e8f0; font-size: 1.05rem; background: #334155; padding: 10px; border-radius: 10px; display: inline-block;}
+
+    .workspace { display: flex; gap: 20px; height: 380px; }
+    
+    /* Khu vực Thư viện Lệnh (Bên trái) */
+    .block-library { flex: 1; background: #0f172a; border-radius: 16px; padding: 16px; border: 1px solid #475569; display: flex; flex-direction: column; overflow-y: auto;}
+    .lib-title { font-size: 0.9rem; color: #94a3b8; font-weight: 800; margin-bottom: 12px; text-transform: uppercase;}
+    .block-pool { display: flex; flex-direction: column; gap: 10px; }
+    
+    /* Khu vực Soạn thảo (Bên phải) */
+    .script-area { flex: 1; background: #fff; border-radius: 16px; padding: 16px; border: 4px solid #cbd5e1; display: flex; flex-direction: column;}
+    .script-title { font-size: 0.9rem; color: #64748b; font-weight: 800; margin-bottom: 12px; text-transform: uppercase;}
+    .script-list { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+    /* CSS giả lập khối lệnh Scratch */
+    .scratch-block { cursor: pointer; padding: 12px 16px; border-radius: 6px; font-weight: bold; font-size: 0.95rem; color: white; user-select: none; transition: 0.2s; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1); display: inline-block;}
+    .scratch-block:hover { filter: brightness(1.1); transform: translateY(-1px);}
+    .scratch-block:active { transform: translateY(1px); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2);}
+    
+    /* Màu sắc khối lệnh */
+    .b-event { background: #f59e0b; border-radius: 12px 12px 6px 6px;} /* Bắt đầu - cam */
+    .b-sense { background: #0ea5e9; } /* Nhập dữ liệu - xanh dương nhạt */
+    .b-ctrl { background: #f97316; } /* Điều khiển (Nếu) - cam đậm */
+    .b-look { background: #8b5cf6; } /* Hiển thị (Nói) - tím */
+
+    .action-row { display: flex; justify-content: space-between; align-items: center;}
+    .btn-clear { background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;}
+    .btn-run { background: #10b981; color: white; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 0 #059669;}
+    .btn-run:hover { background: #34d399; }
+    
+    #feedback { font-weight: 800; font-size: 1.1rem; text-align: center; margin-top: 10px; min-height: 24px;}
+    .success-text { color: #10b981; }
+    .error-text { color: #f43f5e; }
   &lt;/style&gt;
 &lt;/head&gt;
-&lt;body class=&quot;bg-slate-100 p-4 font-sans text-slate-800 flex flex-col h-full overflow-hidden&quot;&gt;
-  
-  &lt;!-- Giao diện Soạn thảo Code --&gt;
-  &lt;div id=&quot;build&quot; class=&quot;flex gap-4 flex-1 h-full&quot;&gt;
-    &lt;div class=&quot;w-1/3 bg-white p-4 rounded-2xl shadow-lg border-2 border-slate-200 flex flex-col&quot;&gt;
-      &lt;h3 class=&quot;font-black text-slate-400 uppercase text-xs tracking-widest mb-4&quot;&gt;Kho lệnh (Nhấn để ghép)&lt;/h3&gt;
-      &lt;div id=&quot;pool&quot; class=&quot;flex flex-col gap-1.5 overflow-y-auto pr-1&quot;&gt;&lt;/div&gt;
-      &lt;button onclick=&quot;resetAll()&quot; class=&quot;mt-auto bg-red-50 text-red-500 font-bold py-3 rounded-xl border-2 border-red-200 hover:bg-red-100 transition shadow-sm&quot;&gt;🔄 Xóa làm lại&lt;/button&gt;
+&lt;body&gt;
+  &lt;div class=&quot;game-card&quot;&gt;
+    &lt;div class=&quot;title-area&quot;&gt;
+      &lt;h2&gt;🧩 Lắp ráp Chương trình&lt;/h2&gt;
+      &lt;div class=&quot;problem-desc&quot;&gt;&lt;strong&gt;Bài toán:&lt;/strong&gt; Viết chương trình yêu cầu nhập 2 số a và b. So sánh và thông báo ra màn hình số lớn hơn.&lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;flex-1 bg-white p-4 rounded-2xl shadow-lg border-2 border-slate-200 flex flex-col&quot;&gt;
-      &lt;div class=&quot;flex justify-between items-center mb-3&quot;&gt;
-        &lt;h3 class=&quot;font-black text-slate-400 uppercase text-xs tracking-widest&quot;&gt;Khu vực kịch bản (Nhấn để gỡ)&lt;/h3&gt;
-        &lt;span class=&quot;text-xs font-black bg-amber-100 text-amber-600 px-3 py-1 rounded-full border border-amber-200&quot;&gt;Bài toán: Tính Lãi/Lỗ&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;div id=&quot;script&quot; class=&quot;flex-1 bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl p-4 flex flex-col gap-1 overflow-y-auto&quot;&gt;&lt;/div&gt;
-      &lt;button onclick=&quot;test()&quot; class=&quot;mt-4 bg-green-500 text-white font-black text-xl py-4 rounded-xl shadow-[0_6px_0_#166534] active:shadow-none active:translate-y-1.5 transition-all&quot;&gt;▶️ KIỂM TRA &amp; CHẠY THỬ&lt;/button&gt;
-      &lt;div id=&quot;msg&quot; class=&quot;text-center font-bold text-red-500 mt-3 h-6&quot;&gt;&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
 
-  &lt;!-- Giao diện Chạy thực tế (Run Mode) --&gt;
-  &lt;div id=&quot;run&quot; class=&quot;hidden flex-1 bg-white p-8 rounded-3xl shadow-2xl border-4 border-amber-400 flex flex-col items-center justify-center relative bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]&quot;&gt;
-    &lt;button onclick=&quot;back()&quot; class=&quot;absolute top-4 left-4 bg-slate-200 text-slate-700 px-5 py-2 rounded-xl font-bold hover:bg-slate-300 transition shadow-sm border border-slate-300&quot;&gt;⬅️ Sửa Code&lt;/button&gt;
-    
-    &lt;div class=&quot;text-8xl mb-4 animate-bounce-in drop-shadow-xl&quot; id=&quot;cat-avatar&quot;&gt;😺&lt;/div&gt;
-    
-    &lt;div id=&quot;bubble&quot; class=&quot;bg-blue-50 border-2 border-blue-300 px-8 py-5 rounded-2xl text-2xl font-black text-blue-800 mb-8 min-w-[300px] max-w-xl text-center shadow-md relative animate-bounce-in&quot;&gt;
-      Chương trình đã nạp xong!&lt;br&gt;Nhấn BẮT ĐẦU CHẠY.
-      &lt;div class=&quot;absolute -top-3 left-1/2 -translate-x-1/2 w-5 h-5 bg-blue-50 border-t-2 border-l-2 border-blue-300 rotate-45&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;workspace&quot;&gt;
+      &lt;!-- Thư viện lệnh --&gt;
+      &lt;div class=&quot;block-library&quot;&gt;
+        &lt;div class=&quot;lib-title&quot;&gt;Kho lệnh (Nhấn để thêm)&lt;/div&gt;
+        &lt;div class=&quot;block-pool&quot; id=&quot;pool&quot;&gt;
+          &lt;!-- Các khối được sinh bằng JS theo thứ tự ngẫu nhiên --&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+      &lt;!-- Nơi viết Code --&gt;
+      &lt;div class=&quot;script-area&quot;&gt;
+        &lt;div class=&quot;script-title&quot;&gt;Khu vực Lập trình (Nhấn để xóa)&lt;/div&gt;
+        &lt;div class=&quot;script-list&quot; id=&quot;script&quot;&gt;
+          &lt;!-- Các khối được chọn sẽ nằm ở đây --&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
-    
-    &lt;div id=&quot;input-zone&quot; class=&quot;hidden flex gap-3 mb-6&quot;&gt;
-      &lt;input type=&quot;number&quot; id=&quot;val&quot; class=&quot;border-4 border-slate-300 focus:border-blue-500 outline-none rounded-xl px-4 py-2 text-3xl w-48 text-center font-bold text-slate-700 shadow-inner&quot; placeholder=&quot;Nhập số...&quot;&gt;
-      &lt;button onclick=&quot;submitVal()&quot; class=&quot;bg-blue-600 hover:bg-blue-500 text-white px-8 py-2 rounded-xl font-black text-2xl shadow-[0_5px_0_#1e3a8a] active:shadow-none active:translate-y-1 transition-all&quot;&gt;Gửi&lt;/button&gt;
+
+    &lt;div id=&quot;feedback&quot;&gt;&lt;/div&gt;
+
+    &lt;div class=&quot;action-row&quot;&gt;
+      &lt;button class=&quot;btn-clear&quot; onclick=&quot;resetAll()&quot;&gt;🔄 Làm lại từ đầu&lt;/button&gt;
+      &lt;button class=&quot;btn-run&quot; onclick=&quot;checkProgram()&quot;&gt;🚀 Chạy thử Chương trình&lt;/button&gt;
     &lt;/div&gt;
-    
-    &lt;button id=&quot;btn-start&quot; onclick=&quot;startSim()&quot; class=&quot;bg-green-500 text-white font-black py-4 px-12 text-2xl rounded-2xl shadow-[0_6px_0_#166534] hover:bg-green-400 active:shadow-none active:translate-y-1.5 transition-all&quot;&gt;🚩 BẮT ĐẦU CHẠY&lt;/button&gt;
   &lt;/div&gt;
 
   &lt;script&gt;
-    const Snd = {
-      play: (f,t,d) =&gt; {
-         try{ const C = window.AudioContext||window.webkitAudioContext;
-         if(!window.actx) window.actx = new C();
-         const o=actx.createOscillator(), g=actx.createGain(); o.type=t; o.frequency.value=f;
-         g.gain.setValueAtTime(0.1, actx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+d);
-         o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+d); }catch(e){}
-      },
-      click: ()=&gt;Snd.play(800,'sine',0.05), err: ()=&gt;Snd.play(200,'sawtooth',0.3), win: ()=&gt;{Snd.play(500,'sine',0.1);setTimeout(()=&gt;Snd.play(800,'sine',0.2),100)}
-    };
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let ctx = null;
+    function playSnd(freq, type, dur) {
+      try {
+        if(!ctx) ctx = new AudioCtx();
+        if(ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.type = type; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + dur);
+      } catch(e){}
+    }
+    function beepAdd() { playSnd(600, 'sine', 0.1); }
+    function beepRem() { playSnd(300, 'sine', 0.1); }
+    function beepWin() { playSnd(523, 'sine', 0.1); setTimeout(()=&gt;playSnd(659, 'sine', 0.1),100); setTimeout(()=&gt;playSnd(783, 'sine', 0.2),200); }
+    function beepLose() { playSnd(200, 'sawtooth', 0.4); }
 
-    const blocks = [
-      {id:'b1', t:'🚩 Khi bấm vào Cờ xanh', c:'b-event'},
-      {id:'b2', t:'Hỏi &quot;Nhập số tiền BÁN thiệp (a)&quot; và đợi', c:'b-sense'},
-      {id:'b3', t:'Hỏi &quot;Nhập số tiền MUA vật liệu (b)&quot; và đợi', c:'b-sense'},
-      {id:'b4', t:'Nếu a &gt; b thì', c:'b-ctrl'},
-      {id:'b5', t:'Nói &quot;Bạn đã LÃI&quot;', c:'b-look'},
-      {id:'b6', t:'Ngược lại', c:'b-ctrl'},
-      {id:'b7', t:'Nói &quot;Bạn đã LỖ&quot;', c:'b-look'}
+    // Dữ liệu các khối lệnh (Dựa trên cấu trúc bài toán vận dụng KHBD trang 11)
+    const blocksData = [
+      { id: 'start', text: '🚩 Khi nhấn vào Cờ xanh (Bắt đầu)', cls: 'b-event' },
+      { id: 'input', text: 'Nhập số a và nhập số b', cls: 'b-sense' },
+      { id: 'if_gt', text: 'Nếu a &gt; b thì', cls: 'b-ctrl' },
+      { id: 'say_a', text: 'Nói: Số lớn hơn là a', cls: 'b-look' },
+      { id: 'else', text: 'Ngược lại (Nếu a &lt; b)', cls: 'b-ctrl' },
+      { id: 'say_b', text: 'Nói: Số lớn hơn là b', cls: 'b-look' }
     ];
-    let pool = [...blocks].sort(()=&gt;Math.random()-0.5);
-    let script = [];
+
+    // Trình tự đúng của thuật toán
+    const correctOrder = ['start', 'input', 'if_gt', 'say_a', 'else', 'say_b'];
     
-    function render() {
-      document.getElementById('pool').innerHTML = pool.map(b =&gt; `&lt;div class=&quot;block ${b.c}&quot; onclick=&quot;move('${b.id}', true)&quot;&gt;${b.t}&lt;/div&gt;`).join('');
-      document.getElementById('script').innerHTML = script.map(b =&gt; {
-         // Lùi lề cho các lệnh bên trong cấu trúc rẽ nhánh để giống Scratch
-         let ml = (b.id=='b5' || b.id=='b7') ? 'ml-10 relative before:content-[&quot;&quot;] before:absolute before:-left-5 before:top-0 before:w-5 before:h-full before:border-l-4 before:border-slate-300' : 'ml-0';
-         return `&lt;div class=&quot;block ${b.c} ${ml}&quot; onclick=&quot;move('${b.id}', false)&quot;&gt;${b.t}&lt;/div&gt;`;
-      }).join('');
-    }
-    function move(id, toScript) {
-      Snd.click();
-      if(toScript) {
-        let idx = pool.findIndex(b=&gt;b.id==id);
-        script.push(pool.splice(idx, 1)[0]);
-      } else {
-        let idx = script.findIndex(b=&gt;b.id==id);
-        pool.push(script.splice(idx, 1)[0]);
-      }
-      document.getElementById('msg').innerText = '';
-      render();
-    }
-    function resetAll() { Snd.click(); pool = [...blocks].sort(()=&gt;Math.random()-0.5); script = []; render(); document.getElementById('msg').innerText = '';}
-    
-    function test() {
-      // Đáp án đúng trình tự theo KHBD trang 8
-      const ans = ['b1','b2','b3','b4','b5','b6','b7'];
-      let ok = script.length == 7 &amp;&amp; script.every((b,i) =&gt; b.id == ans[i]);
-      if(ok) {
-        Snd.win();
-        document.getElementById('build').classList.add('hidden');
-        document.getElementById('run').classList.remove('hidden');
-        document.getElementById('run').classList.add('flex');
-        resetSim();
-      } else {
-        Snd.err();
-        document.getElementById('msg').innerText = '❌ Chương trình lỗi: Sai trình tự thuật toán hoặc chưa lắp đủ lệnh!';
-      }
-    }
-    
-    function back() {
-      Snd.click();
-      document.getElementById('run').classList.add('hidden');
-      document.getElementById('run').classList.remove('flex');
-      document.getElementById('build').classList.remove('hidden');
+    let currentScript = [];
+    let poolBlocks = [...blocksData];
+
+    function initGame() {
+      // Trộn ngẫu nhiên kho lệnh lúc mới vào
+      poolBlocks.sort(() =&gt; Math.random() - 0.5);
+      renderPool();
+      renderScript();
     }
 
-    let step = 0; let a=0, b=0;
-    function resetSim() {
-      step = 0; a=0; b=0;
-      document.getElementById('bubble').innerHTML = 'Chương trình đã nạp xong!&lt;br&gt;Nhấn &lt;b&gt;BẮT ĐẦU CHẠY&lt;/b&gt;.';
-      document.getElementById('bubble').className = 'bg-blue-50 border-2 border-blue-300 px-8 py-5 rounded-2xl text-2xl font-black text-blue-800 mb-8 min-w-[300px] max-w-xl text-center shadow-md relative animate-bounce-in';
-      document.getElementById('input-zone').classList.add('hidden');
-      document.getElementById('input-zone').classList.remove('flex');
-      document.getElementById('btn-start').classList.remove('hidden');
-      document.getElementById('btn-start').innerText = '🚩 BẮT ĐẦU CHẠY';
-      document.getElementById('cat-avatar').innerText = '😺';
+    function renderPool() {
+      const poolDiv = document.getElementById('pool');
+      poolDiv.innerHTML = '';
+      poolBlocks.forEach(b =&gt; {
+        poolDiv.innerHTML += `&lt;div class=&quot;scratch-block ${b.cls}&quot; onclick=&quot;moveToScript('${b.id}')&quot;&gt;${b.text}&lt;/div&gt;`;
+      });
     }
 
-    function startSim() {
-      Snd.click();
-      document.getElementById('btn-start').classList.add('hidden');
-      step = 1; advance();
+    function renderScript() {
+      const scriptDiv = document.getElementById('script');
+      scriptDiv.innerHTML = '';
+      currentScript.forEach(b =&gt; {
+        // Thêm lùi lề (indent) giả lập cấu trúc rẽ nhánh của Scratch cho đẹp mắt
+        let marginLeft = '0';
+        if (b.id === 'say_a' || b.id === 'say_b') marginLeft = '20px';
+        
+        scriptDiv.innerHTML += `&lt;div class=&quot;scratch-block ${b.cls}&quot; style=&quot;margin-left: ${marginLeft}&quot; onclick=&quot;moveToPool('${b.id}')&quot;&gt;${b.text}&lt;/div&gt;`;
+      });
     }
-    
-    function advance() {
-      const bub = document.getElementById('bubble');
-      const inp = document.getElementById('input-zone');
-      const val = document.getElementById('val');
-      val.value = '';
-      if(step == 1) { 
-        bub.innerText = &quot;Nhập số tiền BÁN thiệp (a):&quot;; 
-        inp.classList.remove('hidden'); inp.classList.add('flex'); 
-        setTimeout(()=&gt;val.focus(), 100); 
+
+    function moveToScript(id) {
+      const blockIndex = poolBlocks.findIndex(b =&gt; b.id === id);
+      if (blockIndex &gt; -1) {
+        const block = poolBlocks.splice(blockIndex, 1)[0];
+        currentScript.push(block);
+        beepAdd();
+        renderPool();
+        renderScript();
+        document.getElementById('feedback').innerHTML = ''; // Clear feedback
       }
-      if(step == 2) { 
-        bub.innerText = &quot;Nhập số tiền MUA vật liệu (b):&quot;; 
-        setTimeout(()=&gt;val.focus(), 100); 
+    }
+
+    function moveToPool(id) {
+      const blockIndex = currentScript.findIndex(b =&gt; b.id === id);
+      if (blockIndex &gt; -1) {
+        const block = currentScript.splice(blockIndex, 1)[0];
+        poolBlocks.push(block);
+        beepRem();
+        renderPool();
+        renderScript();
+        document.getElementById('feedback').innerHTML = '';
       }
-      if(step == 3) {
-        inp.classList.add('hidden'); inp.classList.remove('flex');
-        if(a &gt; b) { 
-          Snd.win();
-          bub.innerHTML = `&quot;Bạn đã LÃI&quot;&lt;br&gt;&lt;span class=&quot;text-4xl text-green-600 mt-3 block&quot;&gt;+ ${a-b} đồng 💰&lt;/span&gt;`; 
-          document.getElementById('cat-avatar').innerText = '😻';
-        } else if (a &lt; b) { 
-          Snd.err();
-          bub.innerHTML = `&quot;Bạn đã LỖ&quot;&lt;br&gt;&lt;span class=&quot;text-4xl text-red-600 mt-3 block&quot;&gt;- ${b-a} đồng 📉&lt;/span&gt;`; 
-          document.getElementById('cat-avatar').innerText = '😿';
-        } else {
-          bub.innerHTML = `&quot;Hòa vốn&quot;&lt;br&gt;&lt;span class=&quot;text-4xl text-slate-600 mt-3 block&quot;&gt;0 đồng ⚖️&lt;/span&gt;`; 
-          document.getElementById('cat-avatar').innerText = '😸';
+    }
+
+    function resetAll() {
+      currentScript = [];
+      poolBlocks = [...blocksData].sort(() =&gt; Math.random() - 0.5);
+      document.getElementById('feedback').innerHTML = '';
+      beepRem();
+      renderPool();
+      renderScript();
+    }
+
+    function checkProgram() {
+      if (currentScript.length &lt; correctOrder.length) {
+        beepLose();
+        document.getElementById('feedback').innerHTML = '&lt;span class=&quot;error-text&quot;&gt;❌ Lỗi: Chương trình chưa hoàn thiện. Em cần sử dụng hết các lệnh!&lt;/span&gt;';
+        return;
+      }
+
+      let isCorrect = true;
+      for (let i = 0; i &lt; correctOrder.length; i++) {
+        if (currentScript[i].id !== correctOrder[i]) {
+          isCorrect = false;
+          break;
         }
-        document.getElementById('btn-start').classList.remove('hidden');
-        document.getElementById('btn-start').innerText = &quot;🔄 CHẠY LẠI TỪ ĐẦU&quot;;
-        step = 0;
+      }
+
+      const fb = document.getElementById('feedback');
+      if (isCorrect) {
+        beepWin();
+        fb.innerHTML = '&lt;span class=&quot;success-text&quot;&gt;🎉 CHÍNH XÁC! Máy tính đã hiểu thuật toán và tìm ra số lớn hơn!&lt;/span&gt;';
+      } else {
+        beepLose();
+        fb.innerHTML = '&lt;span class=&quot;error-text&quot;&gt;❌ Lỗi thuật toán: Trình tự khối lệnh bị sai. Gợi ý: Bắt đầu ➡️ Nhập ➡️ Kiểm tra điều kiện ➡️ Thông báo!&lt;/span&gt;';
       }
     }
-    function submitVal() {
-      let v = parseInt(document.getElementById('val').value);
-      if(isNaN(v)) return;
-      Snd.click();
-      if(step == 1) { a = v; step=2; advance(); }
-      else if(step == 2) { b = v; step=3; advance(); }
-    }
-    
-    // Gửi giá trị khi bấm phím Enter
-    document.getElementById('val').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') submitVal();
-    });
-    
-    render();
+
+    initGame();
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;"></iframe>

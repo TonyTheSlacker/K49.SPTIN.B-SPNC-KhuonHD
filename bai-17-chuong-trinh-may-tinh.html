@@ -19,20 +19,20 @@
         <p>Bài học giúp học sinh hiểu chương trình máy tính là gì và mối liên hệ giữa thuật toán với phần mềm.</p>
       </section>
 
+      <!-- 1. KHỞI ĐỘNG -->
       <section class="lesson-section" aria-labelledby="warmup-title">
         <div class="lesson-section__header">
           <span class="lesson-section__icon" aria-hidden="true">💻</span>
           <div>
             <h2 id="warmup-title">1. Khởi động</h2>
-            <p class="lesson-section__lead">Trò chơi "Làm theo chỉ dẫn": Trải nghiệm việc ra lệnh cho Robot để hiểu cách máy tính nhận chỉ thị.</p>
+            <p class="lesson-section__lead">Trò chơi "Lập trình Robot": Nạp các chỉ dẫn tuần tự để điều khiển Robot vượt chướng ngại vật đến đích.</p>
           </div>
         </div>
         <div class="lesson-frame lesson-frame--wide">
-          <!-- Game Khởi Động: Họa sĩ Robot -->
           <iframe 
-            title="Khởi động - Họa sĩ Robot" 
-            style="width: 100%; height: 600px; border: none; border-radius: 16px; background: #0f172a;"
-            loading="lazy" 
+            title="Khởi động - Lập trình viên Robot"
+            style="width: 100%; height: 620px; border: none; border-radius: 16px; background: #0f172a;"
+            loading="lazy"
             allow="autoplay"
             allowfullscreen
             srcdoc="&lt;!DOCTYPE html&gt;
@@ -40,177 +40,243 @@
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;Khởi động: Họa sĩ Robot&lt;/title&gt;
-  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;title&gt;Robot Runner&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
   &lt;style&gt;
-    * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; }
-    body { background: linear-gradient(135deg, #1e293b, #0f172a); color: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; overflow: hidden;}
-    .game-container { background: #1e293b; border: 2px solid #334155; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); width: 100%; max-width: 700px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+    * { box-sizing: border-box; margin:0; padding:0; font-family:'Nunito', sans-serif; }
+    body { background: #0f172a; color:#f8fafc; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px; }
+    .game-container { display:flex; gap:16px; max-width:850px; width:100%; background:#1e293b; border-radius:18px; padding:16px; border:2px solid #334155; }
+    @media(max-width:700px){ .game-container { flex-direction:column; align-items:center; } }
     
-    .header-box { text-align: center; }
-    h1 { color: #38bdf8; font-weight: 900; font-size: 1.8rem; margin-bottom: 8px;}
-    p.desc { color: #94a3b8; font-size: 1rem; line-height: 1.4; }
-
-    .main-area { display: flex; gap: 20px; height: 250px; }
+    /* Grid 5x5 */
+    .grid-view { display:flex; flex-direction:column; align-items:center; gap:8px; }
+    .grid-board { display:grid; grid-template-columns: repeat(5, 52px); grid-template-rows: repeat(5, 52px); gap:4px; background:#0f172a; padding:6px; border-radius:12px; border:2px solid #475569; }
+    .cell { width:52px; height:52px; background:#1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; transition:0.2s; position:relative; }
+    .cell.rock { background:#475569; }
+    .cell.goal { background:rgba(16,185,129,0.2); border:2px dashed #10b981; }
     
-    /* Khu vực vẽ của Robot */
-    .canvas-area { flex: 1; background: #cbd5e1; border-radius: 16px; position: relative; border: 4px solid #475569; overflow: hidden; display: flex; align-items: center; justify-content: center;}
-    .target-hint { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 8px; font-size: 0.8rem; color: #fff; font-weight: bold;}
+    .bot { width:38px; height:38px; background:#38bdf8; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow:0 0 12px #38bdf8; transition:all 0.3s ease; position:absolute; }
     
-    /* Khu vực lập trình */
-    .code-area { flex: 1; background: #0f172a; border-radius: 16px; border: 2px dashed #38bdf8; padding: 16px; display: flex; flex-direction: column;}
-    .code-title { color: #38bdf8; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
-    .code-list { flex: 1; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-    .code-item { background: #0284c7; color: white; padding: 8px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; animation: popIn 0.3s ease;}
-    .code-num { background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
+    /* Controls & Program Stack */
+    .program-panel { flex:1; display:flex; flex-direction:column; gap:10px; }
+    .panel-title { font-size:1.1rem; color:#38bdf8; font-weight:900; }
+    .code-list { min-height:120px; max-height:160px; overflow-y:auto; background:#0f172a; border-radius:10px; border:1px solid #334155; padding:8px; display:flex; flex-direction:column; gap:6px; }
+    .code-item { background:#334155; padding:6px 12px; border-radius:6px; font-size:0.85rem; font-weight:800; display:flex; justify-content:space-between; align-items:center; border-left:4px solid #38bdf8; }
+    .code-item.active-cmd { background:#0369a1; border-color:#f59e0b; }
     
-    /* Các nút lệnh */
-    .commands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .cmd-btn { background: #334155; border: 2px solid #475569; color: white; padding: 12px 8px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.9rem;}
-    .cmd-btn:hover { background: #475569; border-color: #38bdf8; transform: translateY(-2px);}
-    .cmd-btn:active { transform: translateY(1px); }
-
-    .action-btns { display: flex; gap: 12px; justify-content: center; margin-top: 10px;}
-    .run-btn { background: #10b981; color: white; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 0 #059669;}
-    .run-btn:hover { background: #34d399; transform: translateY(-2px); box-shadow: 0 6px 0 #059669;}
-    .run-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #059669;}
-    .clear-btn { background: #f43f5e; color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-    
-    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-    
-    /* Hình vẽ SVG */
-    svg.drawing { width: 100%; height: 100%; }
-    .draw-path { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
-    
-    /* Overlay kết thúc */
-    .overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s;}
-    .overlay.active { opacity: 1; pointer-events: all; }
-    .overlay h2 { color: #f59e0b; font-size: 2rem; font-weight: 900; margin-bottom: 10px;}
-    .overlay p { color: white; margin-bottom: 20px; text-align: center; font-size: 1.1rem; max-width: 80%;}
+    .btn-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+    .cmd-btn { background:#334155; color:#cbd5e1; border:none; border-radius:8px; padding:10px 4px; font-size:0.85rem; font-weight:800; cursor:pointer; transition:0.2s; }
+    .cmd-btn:hover { background:#475569; color:#fff; }
+    .action-group { display:flex; gap:8px; margin-top:auto; }
+    .run-btn { flex:2; background:#10b981; color:#fff; border:none; border-radius:8px; padding:12px; font-size:1rem; font-weight:900; cursor:pointer; }
+    .run-btn:hover { background:#059669; }
+    .clear-btn { flex:1; background:#ef4444; color:#fff; border:none; border-radius:8px; padding:12px; font-size:0.9rem; font-weight:800; cursor:pointer; }
+    .status-msg { font-size:0.85rem; font-weight:800; min-height:24px; text-align:center; color:#f59e0b; }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
   &lt;div class=&quot;game-container&quot;&gt;
-    &lt;div class=&quot;header-box&quot;&gt;
-      &lt;h1&gt;🤖 HỌA SĨ ROBOT&lt;/h1&gt;
-      &lt;p class=&quot;desc&quot;&gt;Hãy gửi các lệnh chỉ dẫn cho Robot theo đúng trình tự để vẽ một &lt;strong style=&quot;color:#f59e0b&quot;&gt;Ngôi Nhà&lt;/strong&gt;.&lt;br&gt;(Gợi ý: Khung nhà ➡️ Mái nhà ➡️ Cửa chính).&lt;/p&gt;
+    &lt;div class=&quot;grid-view&quot;&gt;
+      &lt;div style=&quot;font-weight:900; font-size:0.95rem; color:#94a3b8;&quot;&gt;SÂN CHƠI LẬP TRÌNH 5x5&lt;/div&gt;
+      &lt;div class=&quot;grid-board&quot; id=&quot;board&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;status-msg&quot; id=&quot;status&quot;&gt;Nạp các lệnh chỉ dẫn rồi bấm 'Chạy'!&lt;/div&gt;
     &lt;/div&gt;
 
-    &lt;div class=&quot;main-area&quot;&gt;
-      &lt;div class=&quot;canvas-area&quot;&gt;
-        &lt;span class=&quot;target-hint&quot;&gt;Màn hình kết quả&lt;/span&gt;
-        &lt;svg class=&quot;drawing&quot; viewBox=&quot;0 0 100 100&quot; id=&quot;canvas&quot;&gt;
-          &lt;!-- Nơi chứa các hình vẽ --&gt;
-        &lt;/svg&gt;
-        &lt;div class=&quot;overlay&quot; id=&quot;success-overlay&quot;&gt;
-          &lt;h2&gt;CHÍNH XÁC! 🎉&lt;/h2&gt;
-          &lt;p&gt;Khi em đưa ra các lệnh đúng trình tự, máy tính (Robot) sẽ hiểu và làm theo. Đó chính là một &lt;strong style=&quot;color:#38bdf8&quot;&gt;Chương trình máy tính&lt;/strong&gt;!&lt;/p&gt;
-          &lt;button class=&quot;run-btn&quot; onclick=&quot;location.reload()&quot;&gt;Chơi lại&lt;/button&gt;
-        &lt;/div&gt;
+    &lt;div class=&quot;program-panel&quot;&gt;
+      &lt;div class=&quot;panel-title&quot;&gt;📜 BẢNG LỆNH CỦA BẠN&lt;/div&gt;
+      &lt;div class=&quot;code-list&quot; id=&quot;code-queue&quot;&gt;
+        &lt;div style=&quot;color:#64748b; font-size:0.85rem; text-align:center; margin-top:35px;&quot;&gt;Chưa có lệnh nào. Nhấn các nút bên dưới để thêm lệnh.&lt;/div&gt;
       &lt;/div&gt;
-      
-      &lt;div class=&quot;code-area&quot;&gt;
-        &lt;div class=&quot;code-title&quot;&gt;📜 Chương trình của bạn&lt;/div&gt;
-        &lt;div class=&quot;code-list&quot; id=&quot;code-list&quot;&gt;&lt;/div&gt;
+
+      &lt;div style=&quot;font-size:0.85rem; color:#94a3b8; font-weight:800;&quot;&gt;Khối lệnh điều khiển:&lt;/div&gt;
+      &lt;div class=&quot;btn-grid&quot;&gt;
+        &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('FORWARD')&quot;&gt;⬆️ Tiến 1 ô&lt;/button&gt;
+        &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('LEFT')&quot;&gt;↩️ Xoay Trái&lt;/button&gt;
+        &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('RIGHT')&quot;&gt;↪️ Xoay Phải&lt;/button&gt;
       &lt;/div&gt;
-    &lt;/div&gt;
 
-    &lt;div class=&quot;commands&quot;&gt;
-      &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('Cua', '🚪 Vẽ cửa chính')&quot;&gt;🚪 Vẽ cửa chính&lt;/button&gt;
-      &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('Mai', '🔺 Vẽ mái nhà')&quot;&gt;🔺 Vẽ mái nhà&lt;/button&gt;
-      &lt;button class=&quot;cmd-btn&quot; onclick=&quot;addCmd('Khung', '🔲 Vẽ khung nhà')&quot;&gt;🔲 Vẽ khung nhà&lt;/button&gt;
-    &lt;/div&gt;
-
-    &lt;div class=&quot;action-btns&quot;&gt;
-      &lt;button class=&quot;clear-btn&quot; onclick=&quot;clearCode()&quot;&gt;Xóa hết&lt;/button&gt;
-      &lt;button class=&quot;run-btn&quot; onclick=&quot;runProgram()&quot;&gt;▶️ Chạy chương trình&lt;/button&gt;
+      &lt;div class=&quot;action-group&quot;&gt;
+        &lt;button class=&quot;run-btn&quot; id=&quot;btn-run&quot; onclick=&quot;runProgram()&quot;&gt;▶️ CHẠY CHƯƠNG TRÌNH&lt;/button&gt;
+        &lt;button class=&quot;clear-btn&quot; onclick=&quot;resetBot()&quot;&gt;🔄 Xóa hết&lt;/button&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 
   &lt;script&gt;
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let ctx = null;
+    const boardEl = document.getElementById('board');
+    const queueEl = document.getElementById('code-queue');
+    const statusEl = document.getElementById('status');
+    const btnRun = document.getElementById('btn-run');
 
-    function playSnd(freq, type, dur) {
+    // Web Audio Sound FX
+    const aCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(f, dur) {
       try {
-        if(!ctx) ctx = new AudioCtx();
-        if(ctx.state === 'suspended') ctx.resume();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.type = type; osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(); osc.stop(ctx.currentTime + dur);
+        if(aCtx.state === 'suspended') aCtx.resume();
+        const o = aCtx.createOscillator();
+        const g = aCtx.createGain();
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0.15, aCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + dur);
+        o.connect(g); g.connect(aCtx.destination);
+        o.start(); o.stop(aCtx.currentTime + dur);
       } catch(e){}
     }
-    function sndClick() { playSnd(800, 'sine', 0.1); }
-    function sndErr() { playSnd(200, 'sawtooth', 0.3); }
-    function sndSuccess() { playSnd(500, 'sine', 0.1); setTimeout(()=&gt;playSnd(600, 'sine', 0.1), 150); setTimeout(()=&gt;playSnd(800, 'sine', 0.3), 300); }
 
+    const map = [
+      [0,0,0,0,0],
+      [0,1,1,0,0],
+      [0,0,0,1,0],
+      [0,1,0,0,0],
+      [0,0,0,0,2] // 2: Cờ đích
+    ];
+    let botPos = {x:0, y:0, dir:0}; // dir: 0: Phải, 1: Xuống, 2: Trái, 3: Lên
     let program = [];
-    const maxCmds = 3;
+    let isRunning = false;
 
-    function addCmd(id, text) {
-      if(program.length &gt;= maxCmds) return;
-      program.push(id);
-      sndClick();
-      renderCode();
+    function initBoard() {
+      boardEl.innerHTML = '';
+      for(let r=0; r&lt;5; r++){
+        for(let c=0; c&lt;5; c++){
+          const d = document.createElement('div');
+          d.className = 'cell';
+          d.id = `cell-${r}-${c}`;
+          if(map[r][c] === 1) { d.classList.add('rock'); d.textContent = '🪨'; }
+          if(map[r][c] === 2) { d.classList.add('goal'); d.textContent = '🚩'; }
+          boardEl.appendChild(d);
+        }
+      }
+      renderBot();
     }
 
-    function clearCode() {
-      program = [];
-      document.getElementById('canvas').innerHTML = '';
-      sndClick();
-      renderCode();
+    function renderBot() {
+      document.querySelectorAll('.bot').forEach(b =&gt; b.remove());
+      const cell = document.getElementById(`cell-${botPos.y}-${botPos.x}`);
+      if(cell){
+        const b = document.createElement('div');
+        b.className = 'bot';
+        const angles = [0, 90, 180, 270];
+        b.style.transform = `rotate(${angles[botPos.dir]}deg)`;
+        b.textContent = '🤖';
+        cell.appendChild(b);
+      }
     }
 
-    function renderCode() {
-      const list = document.getElementById('code-list');
-      list.innerHTML = '';
+    function addCmd(type) {
+      if(isRunning) return;
+      if(program.length &gt;= 14) { statusEl.textContent = 'Đã đầy bộ nhớ 14 lệnh!'; return; }
+      beep(450, 0.08);
+      program.push(type);
+      updateQueueUI();
+    }
+
+    function updateQueueUI() {
+      if(program.length === 0) {
+        queueEl.innerHTML = '&lt;div style=&quot;color:#64748b; font-size:0.85rem; text-align:center; margin-top:35px;&quot;&gt;Chưa có lệnh nào. Nhấn các nút bên dưới để thêm lệnh.&lt;/div&gt;';
+        return;
+      }
+      queueEl.innerHTML = '';
       program.forEach((cmd, idx) =&gt; {
-        let text = cmd === 'Khung' ? '🔲 Vẽ khung nhà' : (cmd === 'Mai' ? '🔺 Vẽ mái nhà' : '🚪 Vẽ cửa chính');
-        list.innerHTML += `&lt;div class=&quot;code-item&quot;&gt;&lt;span class=&quot;code-num&quot;&gt;Lệnh ${idx+1}&lt;/span&gt; ${text}&lt;/div&gt;`;
+        const item = document.createElement('div');
+        item.className = 'code-item';
+        item.id = `cmd-${idx}`;
+        let name = cmd === 'FORWARD' ? 'Bước 1: Tiến 1 ô' : (cmd === 'LEFT' ? 'Xoay Trái 90°' : 'Xoay Phải 90°');
+        item.innerHTML = `&lt;span&gt;${idx+1}. ${name}&lt;/span&gt;&lt;span style=&quot;cursor:pointer; color:#ef4444;&quot; onclick=&quot;removeCmd(${idx})&quot;&gt;✖&lt;/span&gt;`;
+        queueEl.appendChild(item);
       });
+      queueEl.scrollTop = queueEl.scrollHeight;
     }
 
-    function drawSVG(cmd) {
-      const cvs = document.getElementById('canvas');
-      let shape = '';
-      // Tọa độ vẽ tĩnh, màu giả lập nét vẽ sáp
-      if (cmd === 'Khung') shape = `&lt;rect x=&quot;30&quot; y=&quot;50&quot; width=&quot;40&quot; height=&quot;40&quot; class=&quot;draw-path&quot; stroke=&quot;#334155&quot; fill=&quot;#e2e8f0&quot; /&gt;`;
-      if (cmd === 'Mai') shape = `&lt;polygon points=&quot;25,50 50,20 75,50&quot; class=&quot;draw-path&quot; stroke=&quot;#b91c1c&quot; fill=&quot;#fca5a5&quot; /&gt;`;
-      if (cmd === 'Cua') shape = `&lt;rect x=&quot;42&quot; y=&quot;70&quot; width=&quot;16&quot; height=&quot;20&quot; class=&quot;draw-path&quot; stroke=&quot;#92400e&quot; fill=&quot;#fcd34d&quot; /&gt;`;
-      cvs.innerHTML += shape;
+    function removeCmd(idx) {
+      if(isRunning) return;
+      program.splice(idx, 1);
+      updateQueueUI();
     }
 
     async function runProgram() {
-      if (program.length === 0) return;
-      document.getElementById('canvas').innerHTML = '';
-      
-      // Vẽ tuần tự có delay (mô phỏng máy tính đọc lệnh)
+      if(isRunning || program.length === 0) return;
+      isRunning = true;
+      btnRun.disabled = true;
+      statusEl.textContent = 'Máy tính đang thực thi chỉ dẫn...';
+
+      botPos = {x:0, y:0, dir:0};
+      renderBot();
+
       for(let i=0; i&lt;program.length; i++) {
-        sndClick();
-        drawSVG(program[i]);
-        await new Promise(r =&gt; setTimeout(r, 600));
+        document.querySelectorAll('.code-item').forEach(el =&gt; el.classList.remove('active-cmd'));
+        const curEl = document.getElementById(`cmd-${i}`);
+        if(curEl) curEl.classList.add('active-cmd');
+
+        const cmd = program[i];
+        if(cmd === 'LEFT') {
+          botPos.dir = (botPos.dir + 3) % 4;
+          beep(320, 0.1);
+        } else if(cmd === 'RIGHT') {
+          botPos.dir = (botPos.dir + 1) % 4;
+          beep(320, 0.1);
+        } else if(cmd === 'FORWARD') {
+          const dx = [1, 0, -1, 0][botPos.dir];
+          const dy = [0, 1, 0, -1][botPos.dir];
+          const nx = botPos.x + dx;
+          const ny = botPos.y + dy;
+
+          if(nx &lt; 0 || nx &gt; 4 || ny &lt; 0 || ny &gt; 4) {
+            beep(140, 0.3);
+            statusEl.textContent = '❌ Lỗi: Robot đi đụng vào tường!';
+            finishRun();
+            return;
+          }
+          if(map[ny][nx] === 1) {
+            beep(120, 0.4);
+            statusEl.textContent = '💥 Đâm vào tảng đá! Thuật toán chưa tối ưu.';
+            finishRun();
+            return;
+          }
+          botPos.x = nx;
+          botPos.y = ny;
+          beep(580, 0.1);
+        }
+        renderBot();
+        await new Promise(res =&gt; setTimeout(res, 450));
+
+        if(map[botPos.y][botPos.x] === 2) {
+          beep(880, 0.2);
+          setTimeout(()=&gt;beep(1050, 0.3), 150);
+          statusEl.textContent = '🎉 XUẤT SẮC! Robot đã đến đích theo đúng chương trình!';
+          finishRun();
+          return;
+        }
       }
 
-      // Kiểm tra tính đúng đắn của Thuật toán (Khung -&gt; Mái -&gt; Cửa)
-      const isCorrect = program.length === 3 &amp;&amp; program[0]==='Khung' &amp;&amp; program[1]==='Mai' &amp;&amp; program[2]==='Cua';
-      
-      if (isCorrect) {
-        sndSuccess();
-        document.getElementById('success-overlay').classList.add('active');
-      } else {
-        sndErr();
-        alert(&quot;Lỗi: Trình tự các lệnh chưa hợp lý hoặc chưa đủ. Hãy thử: Vẽ khung trước, sau đó lợp mái, cuối cùng lắp cửa nhé!&quot;);
+      if(map[botPos.y][botPos.x] !== 2) {
+        statusEl.textContent = '⚠️ Hết lệnh nhưng chưa đến đích!';
       }
+      finishRun();
     }
+
+    function finishRun() {
+      isRunning = false;
+      btnRun.disabled = false;
+    }
+
+    function resetBot() {
+      if(isRunning) return;
+      program = [];
+      botPos = {x:0, y:0, dir:0};
+      updateQueueUI();
+      renderBot();
+      statusEl.textContent = 'Đã làm mới! Hãy nạp chuỗi lệnh mới.';
+    }
+
+    initBoard();
   &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
+&lt;/html&gt;"
+          ></iframe>
         </div>
       </section>
 
+      <!-- 2. KHÁM PHÁ KIẾN THỨC -->
       <section class="lesson-section" aria-labelledby="knowledge-title">
         <div class="lesson-section__header">
           <span class="lesson-section__icon" aria-hidden="true">📦</span>
@@ -227,30 +293,30 @@
             <h3>Tóm tắt bài học</h3>
             <p>Chương trình máy tính là tập hợp các lệnh giúp máy tính thực hiện một công việc cụ thể theo thuật toán đã định.</p>
             <ul>
-              <li>Thuật toán là ý tưởng từng bước giải quyết vấn đề.</li>
+              <li>Thuật toán là ý tưởng từng bước.</li>
               <li>Chương trình là cách viết thuật toán bằng ngôn ngữ máy tính.</li>
-              <li>Sơ đồ khối giúp thiết kế thuật toán trước khi lập trình.</li>
-              <li>Lập trình kéo thả (như Scratch) giúp ta dễ dàng tạo ra chương trình máy tính.</li>
+              <li>Một chương trình có thể tạo ra nhiều sản phẩm hữu ích.</li>
+              <li>Kiểm tra và sửa lỗi là phần quan trọng khi làm chương trình.</li>
             </ul>
             <a class="lesson-download" href="#" role="button" aria-label="Tải phiếu học tập Bài 17">📥 Tải Phiếu học tập</a>
           </aside>
         </div>
       </section>
 
+      <!-- 3. LUYỆN TẬP & VẬN DỤNG -->
       <section class="lesson-section" aria-labelledby="practice-title">
         <div class="lesson-section__header">
           <span class="lesson-section__icon" aria-hidden="true">🧪</span>
           <div>
             <h2 id="practice-title">3. Luyện tập &amp; Vận dụng</h2>
-            <p class="lesson-section__lead">Thực hành mô phỏng giao diện Scratch: Dựa vào thuật toán để lắp ráp chương trình "Tìm số lớn hơn trong 2 số a và b".</p>
+            <p class="lesson-section__lead">Thực hành lắp ghép và vận hành chương trình Scratch tính lãi lỗ bán thiệp (Theo KHBD Bài 17).</p>
           </div>
         </div>
         <div class="lesson-frame lesson-frame--wide">
-          <!-- Game Vận dụng: Xếp gạch Lập trình (Scratch Simulator) -->
           <iframe 
-            title="Luyện tập - Lắp ráp Chương trình" 
-            style="width: 100%; height: 680px; border: none; border-radius: 16px; background: #0f172a;"
-            loading="lazy" 
+            title="Luyện tập &amp; Vận dụng - Scratch Simulator"
+            style="width: 100%; height: 650px; border: none; border-radius: 16px; background: #0f172a;"
+            loading="lazy"
             allow="autoplay"
             allowfullscreen
             srcdoc="&lt;!DOCTYPE html&gt;
@@ -258,219 +324,236 @@
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;Vận dụng: Xếp gạch Lập trình&lt;/title&gt;
-  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;title&gt;Scratch Lab&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
   &lt;style&gt;
-    * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; }
-    body { background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; overflow: hidden;}
-    .game-card { background: #1e293b; border: 2px solid #334155; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 800px; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:'Nunito', sans-serif; }
+    body { background:#0f172a; color:#f8fafc; padding:14px; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+    .app-box { width:100%; max-width:880px; background:#1e293b; border-radius:18px; border:2px solid #334155; padding:16px; }
     
-    .title-area { text-align: center; border-bottom: 2px dashed #334155; padding-bottom: 16px;}
-    h2 { color: #f59e0b; font-weight: 900; font-size: 1.6rem; margin-bottom: 8px;}
-    .problem-desc { color: #e2e8f0; font-size: 1.05rem; background: #334155; padding: 10px; border-radius: 10px; display: inline-block;}
+    .nav-tabs { display:flex; gap:10px; margin-bottom:14px; border-bottom:2px solid #334155; padding-bottom:10px; }
+    .tab-btn { background:#334155; color:#cbd5e1; border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer; }
+    .tab-btn.active { background:#38bdf8; color:#0f172a; }
 
-    .workspace { display: flex; gap: 20px; height: 380px; }
+    /* Builder Area */
+    .builder-grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    @media(max-width:700px){ .builder-grid { grid-template-columns:1fr; } }
+    .column-box { background:#0f172a; border-radius:12px; padding:12px; border:1px solid #334155; }
+    .column-title { font-size:0.9rem; font-weight:900; color:#38bdf8; margin-bottom:10px; }
     
-    /* Khu vực Thư viện Lệnh (Bên trái) */
-    .block-library { flex: 1; background: #0f172a; border-radius: 16px; padding: 16px; border: 1px solid #475569; display: flex; flex-direction: column; overflow-y: auto;}
-    .lib-title { font-size: 0.9rem; color: #94a3b8; font-weight: 800; margin-bottom: 12px; text-transform: uppercase;}
-    .block-pool { display: flex; flex-direction: column; gap: 10px; }
+    .block-list { display:flex; flex-direction:column; gap:8px; min-height:220px; }
+    .scratch-block { padding:8px 12px; border-radius:8px; font-size:0.85rem; font-weight:800; cursor:pointer; user-select:none; border-left:6px solid rgba(0,0,0,0.3); transition:0.2s; }
+    .scratch-block:hover { transform:translateX(4px); }
+    .c-event { background:#eab308; color:#422006; }
+    .c-sensing { background:#0284c7; color:#fff; }
+    .c-control { background:#f97316; color:#fff; }
+    .c-looks { background:#8b5cf6; color:#fff; }
     
-    /* Khu vực Soạn thảo (Bên phải) */
-    .script-area { flex: 1; background: #fff; border-radius: 16px; padding: 16px; border: 4px solid #cbd5e1; display: flex; flex-direction: column;}
-    .script-title { font-size: 0.9rem; color: #64748b; font-weight: 800; margin-bottom: 12px; text-transform: uppercase;}
-    .script-list { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-
-    /* CSS giả lập khối lệnh Scratch */
-    .scratch-block { cursor: pointer; padding: 12px 16px; border-radius: 6px; font-weight: bold; font-size: 0.95rem; color: white; user-select: none; transition: 0.2s; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1); display: inline-block;}
-    .scratch-block:hover { filter: brightness(1.1); transform: translateY(-1px);}
-    .scratch-block:active { transform: translateY(1px); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2);}
-    
-    /* Màu sắc khối lệnh */
-    .b-event { background: #f59e0b; border-radius: 12px 12px 6px 6px;} /* Bắt đầu - cam */
-    .b-sense { background: #0ea5e9; } /* Nhập dữ liệu - xanh dương nhạt */
-    .b-ctrl { background: #f97316; } /* Điều khiển (Nếu) - cam đậm */
-    .b-look { background: #8b5cf6; } /* Hiển thị (Nói) - tím */
-
-    .action-row { display: flex; justify-content: space-between; align-items: center;}
-    .btn-clear { background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;}
-    .btn-run { background: #10b981; color: white; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 0 #059669;}
-    .btn-run:hover { background: #34d399; }
-    
-    #feedback { font-weight: 800; font-size: 1.1rem; text-align: center; margin-top: 10px; min-height: 24px;}
-    .success-text { color: #10b981; }
-    .error-text { color: #f43f5e; }
+    /* Interactive Run Stage */
+    .stage { background:radial-gradient(circle at center, #334155, #0f172a); border-radius:14px; border:2px solid #475569; min-height:280px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:20px; }
+    .cat-avatar { font-size:4.5rem; transition:transform 0.3s; }
+    .speech-bubble { background:#fff; color:#0f172a; font-weight:800; font-size:1rem; padding:10px 18px; border-radius:16px; border-bottom-left-radius:0; box-shadow:0 6px 16px rgba(0,0,0,0.4); margin-bottom:10px; max-width:320px; text-align:center; }
+    .interactive-input-box { display:flex; gap:8px; width:100%; max-width:320px; margin-top:14px; }
+    .num-input { flex:1; padding:10px; border-radius:8px; border:2px solid #38bdf8; background:#1e293b; color:#fff; font-weight:800; font-size:1rem; outline:none; }
+    .submit-btn { background:#10b981; color:#fff; border:none; padding:10px 16px; border-radius:8px; font-weight:800; cursor:pointer; }
+    .hidden { display:none !important; }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;div class=&quot;game-card&quot;&gt;
-    &lt;div class=&quot;title-area&quot;&gt;
-      &lt;h2&gt;🧩 Lắp ráp Chương trình&lt;/h2&gt;
-      &lt;div class=&quot;problem-desc&quot;&gt;&lt;strong&gt;Bài toán:&lt;/strong&gt; Viết chương trình yêu cầu nhập 2 số a và b. So sánh và thông báo ra màn hình số lớn hơn.&lt;/div&gt;
+  &lt;div class=&quot;app-box&quot;&gt;
+    &lt;div class=&quot;nav-tabs&quot;&gt;
+      &lt;button class=&quot;tab-btn active&quot; id=&quot;tab-build&quot; onclick=&quot;switchTab('build')&quot;&gt;🧩 1. Lập trình ghép khối&lt;/button&gt;
+      &lt;button class=&quot;tab-btn&quot; id=&quot;tab-run&quot; onclick=&quot;switchTab('run')&quot;&gt;🐱 2. Sân khấu chạy thực tế&lt;/button&gt;
     &lt;/div&gt;
 
-    &lt;div class=&quot;workspace&quot;&gt;
-      &lt;!-- Thư viện lệnh --&gt;
-      &lt;div class=&quot;block-library&quot;&gt;
-        &lt;div class=&quot;lib-title&quot;&gt;Kho lệnh (Nhấn để thêm)&lt;/div&gt;
-        &lt;div class=&quot;block-pool&quot; id=&quot;pool&quot;&gt;
-          &lt;!-- Các khối được sinh bằng JS theo thứ tự ngẫu nhiên --&gt;
-        &lt;/div&gt;
+    &lt;!-- TAB 1: GHÉP KHỐI LỆNH --&gt;
+    &lt;div id=&quot;view-build&quot; class=&quot;builder-grid&quot;&gt;
+      &lt;div class=&quot;column-box&quot;&gt;
+        &lt;div class=&quot;column-title&quot;&gt;KHO KHỐI LỆNH (Click để chọn vào kịch bản):&lt;/div&gt;
+        &lt;div class=&quot;block-list&quot; id=&quot;pool-blocks&quot;&gt;&lt;/div&gt;
       &lt;/div&gt;
-      
-      &lt;!-- Nơi viết Code --&gt;
-      &lt;div class=&quot;script-area&quot;&gt;
-        &lt;div class=&quot;script-title&quot;&gt;Khu vực Lập trình (Nhấn để xóa)&lt;/div&gt;
-        &lt;div class=&quot;script-list&quot; id=&quot;script&quot;&gt;
-          &lt;!-- Các khối được chọn sẽ nằm ở đây --&gt;
+      &lt;div class=&quot;column-box&quot;&gt;
+        &lt;div class=&quot;column-title&quot;&gt;KỊCH BẢN TÍNH LÃI/LỖ BÁN THIỆP (Click để gỡ bỏ):&lt;/div&gt;
+        &lt;div class=&quot;block-list&quot; id=&quot;user-script&quot;&gt;
+          &lt;div style=&quot;color:#64748b; font-size:0.85rem; text-align:center; margin-top:50px;&quot;&gt;Hãy bấm chọn các khối bên trái theo đúng thứ tự thuật toán!&lt;/div&gt;
         &lt;/div&gt;
+        &lt;div id=&quot;build-msg&quot; style=&quot;font-size:0.85rem; font-weight:800; margin-top:10px; color:#f59e0b;&quot;&gt;&lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
 
-    &lt;div id=&quot;feedback&quot;&gt;&lt;/div&gt;
-
-    &lt;div class=&quot;action-row&quot;&gt;
-      &lt;button class=&quot;btn-clear&quot; onclick=&quot;resetAll()&quot;&gt;🔄 Làm lại từ đầu&lt;/button&gt;
-      &lt;button class=&quot;btn-run&quot; onclick=&quot;checkProgram()&quot;&gt;🚀 Chạy thử Chương trình&lt;/button&gt;
+    &lt;!-- TAB 2: CHẠY THỰC TẾ --&gt;
+    &lt;div id=&quot;view-run&quot; class=&quot;hidden&quot;&gt;
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div class=&quot;speech-bubble&quot; id=&quot;cat-speech&quot;&gt;Chào bạn! Hãy nhấn lá cờ xanh để bắt đầu tính tiền thiệp nhé!&lt;/div&gt;
+        &lt;div class=&quot;cat-avatar&quot; id=&quot;cat-icon&quot;&gt;🐱&lt;/div&gt;
+        
+        &lt;div class=&quot;interactive-input-box hidden&quot; id=&quot;input-wrap&quot;&gt;
+          &lt;input type=&quot;number&quot; class=&quot;num-input&quot; id=&quot;user-val&quot; placeholder=&quot;Nhập số tiền...&quot;&gt;
+          &lt;button class=&quot;submit-btn&quot; onclick=&quot;processUserInput()&quot;&gt;Gửi ✔&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div style=&quot;display:flex; justify-content:space-between; align-items:center; margin-top:12px;&quot;&gt;
+        &lt;button style=&quot;background:#10b981; color:#fff; border:none; border-radius:8px; padding:10px 18px; font-weight:800; cursor:pointer;&quot; onclick=&quot;startScratchExecution()&quot;&gt;🏳️ NHẤN LÁ CỜ XANH ĐỂ CHẠY&lt;/button&gt;
+        &lt;span style=&quot;color:#94a3b8; font-size:0.85rem; font-weight:700;&quot;&gt;Biến: a = &lt;span id=&quot;var-a&quot; style=&quot;color:#38bdf8;&quot;&gt;0&lt;/span&gt;đ | b = &lt;span id=&quot;var-b&quot; style=&quot;color:#38bdf8;&quot;&gt;0&lt;/span&gt;đ&lt;/span&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 
   &lt;script&gt;
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let ctx = null;
-    function playSnd(freq, type, dur) {
+    const aCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function sfx(f, dur) {
       try {
-        if(!ctx) ctx = new AudioCtx();
-        if(ctx.state === 'suspended') ctx.resume();
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.type = type; osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(); osc.stop(ctx.currentTime + dur);
+        if(aCtx.state === 'suspended') aCtx.resume();
+        const o = aCtx.createOscillator(); const g = aCtx.createGain();
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0.15, aCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + dur);
+        o.connect(g); g.connect(aCtx.destination);
+        o.start(); o.stop(aCtx.currentTime + dur);
       } catch(e){}
     }
-    function beepAdd() { playSnd(600, 'sine', 0.1); }
-    function beepRem() { playSnd(300, 'sine', 0.1); }
-    function beepWin() { playSnd(523, 'sine', 0.1); setTimeout(()=&gt;playSnd(659, 'sine', 0.1),100); setTimeout(()=&gt;playSnd(783, 'sine', 0.2),200); }
-    function beepLose() { playSnd(200, 'sawtooth', 0.4); }
 
-    // Dữ liệu các khối lệnh (Dựa trên cấu trúc bài toán vận dụng KHBD trang 11)
-    const blocksData = [
-      { id: 'start', text: '🚩 Khi nhấn vào Cờ xanh (Bắt đầu)', cls: 'b-event' },
-      { id: 'input', text: 'Nhập số a và nhập số b', cls: 'b-sense' },
-      { id: 'if_gt', text: 'Nếu a &gt; b thì', cls: 'b-ctrl' },
-      { id: 'say_a', text: 'Nói: Số lớn hơn là a', cls: 'b-look' },
-      { id: 'else', text: 'Ngược lại (Nếu a &lt; b)', cls: 'b-ctrl' },
-      { id: 'say_b', text: 'Nói: Số lớn hơn là b', cls: 'b-look' }
+    const correctOrder = [
+      { id: 1, text: &quot;🏳️ Khi bấm vào lá cờ xanh&quot;, cls: &quot;c-event&quot; },
+      { id: 2, text: &quot;❓ Hỏi 'Nhập số tiền bán (a)' và đợi&quot;, cls: &quot;c-sensing&quot; },
+      { id: 3, text: &quot;❓ Hỏi 'Nhập tiền mua vật liệu (b)' và đợi&quot;, cls: &quot;c-sensing&quot; },
+      { id: 4, text: &quot;🔀 Nếu a &gt;= b thì&quot;, cls: &quot;c-control&quot; },
+      { id: 5, text: &quot;💬 Nói 'Tiền lãi là:' kết hợp (a - b)&quot;, cls: &quot;c-looks&quot; },
+      { id: 6, text: &quot;↩️ Nếu không thì&quot;, cls: &quot;c-control&quot; },
+      { id: 7, text: &quot;💬 Nói 'Tiền bị lỗ là:' kết hợp (b - a)&quot;, cls: &quot;c-looks&quot; }
     ];
 
-    // Trình tự đúng của thuật toán
-    const correctOrder = ['start', 'input', 'if_gt', 'say_a', 'else', 'say_b'];
-    
-    let currentScript = [];
-    let poolBlocks = [...blocksData];
+    let pool = [...correctOrder].sort(() =&gt; Math.random() - 0.5);
+    let myScript = [];
 
-    function initGame() {
-      // Trộn ngẫu nhiên kho lệnh lúc mới vào
-      poolBlocks.sort(() =&gt; Math.random() - 0.5);
-      renderPool();
-      renderScript();
-    }
+    function renderBlocks() {
+      const poolEl = document.getElementById('pool-blocks');
+      const scriptEl = document.getElementById('user-script');
+      const msgEl = document.getElementById('build-msg');
 
-    function renderPool() {
-      const poolDiv = document.getElementById('pool');
-      poolDiv.innerHTML = '';
-      poolBlocks.forEach(b =&gt; {
-        poolDiv.innerHTML += `&lt;div class=&quot;scratch-block ${b.cls}&quot; onclick=&quot;moveToScript('${b.id}')&quot;&gt;${b.text}&lt;/div&gt;`;
+      poolEl.innerHTML = '';
+      pool.forEach(b =&gt; {
+        const d = document.createElement('div');
+        d.className = `scratch-block ${b.cls}`;
+        d.textContent = b.text;
+        d.onclick = () =&gt; {
+          sfx(520, 0.08);
+          myScript.push(b);
+          pool = pool.filter(x =&gt; x.id !== b.id);
+          renderBlocks();
+        };
+        poolEl.appendChild(d);
       });
-    }
 
-    function renderScript() {
-      const scriptDiv = document.getElementById('script');
-      scriptDiv.innerHTML = '';
-      currentScript.forEach(b =&gt; {
-        // Thêm lùi lề (indent) giả lập cấu trúc rẽ nhánh của Scratch cho đẹp mắt
-        let marginLeft = '0';
-        if (b.id === 'say_a' || b.id === 'say_b') marginLeft = '20px';
-        
-        scriptDiv.innerHTML += `&lt;div class=&quot;scratch-block ${b.cls}&quot; style=&quot;margin-left: ${marginLeft}&quot; onclick=&quot;moveToPool('${b.id}')&quot;&gt;${b.text}&lt;/div&gt;`;
-      });
-    }
-
-    function moveToScript(id) {
-      const blockIndex = poolBlocks.findIndex(b =&gt; b.id === id);
-      if (blockIndex &gt; -1) {
-        const block = poolBlocks.splice(blockIndex, 1)[0];
-        currentScript.push(block);
-        beepAdd();
-        renderPool();
-        renderScript();
-        document.getElementById('feedback').innerHTML = ''; // Clear feedback
-      }
-    }
-
-    function moveToPool(id) {
-      const blockIndex = currentScript.findIndex(b =&gt; b.id === id);
-      if (blockIndex &gt; -1) {
-        const block = currentScript.splice(blockIndex, 1)[0];
-        poolBlocks.push(block);
-        beepRem();
-        renderPool();
-        renderScript();
-        document.getElementById('feedback').innerHTML = '';
-      }
-    }
-
-    function resetAll() {
-      currentScript = [];
-      poolBlocks = [...blocksData].sort(() =&gt; Math.random() - 0.5);
-      document.getElementById('feedback').innerHTML = '';
-      beepRem();
-      renderPool();
-      renderScript();
-    }
-
-    function checkProgram() {
-      if (currentScript.length &lt; correctOrder.length) {
-        beepLose();
-        document.getElementById('feedback').innerHTML = '&lt;span class=&quot;error-text&quot;&gt;❌ Lỗi: Chương trình chưa hoàn thiện. Em cần sử dụng hết các lệnh!&lt;/span&gt;';
-        return;
-      }
-
-      let isCorrect = true;
-      for (let i = 0; i &lt; correctOrder.length; i++) {
-        if (currentScript[i].id !== correctOrder[i]) {
-          isCorrect = false;
-          break;
-        }
-      }
-
-      const fb = document.getElementById('feedback');
-      if (isCorrect) {
-        beepWin();
-        fb.innerHTML = '&lt;span class=&quot;success-text&quot;&gt;🎉 CHÍNH XÁC! Máy tính đã hiểu thuật toán và tìm ra số lớn hơn!&lt;/span&gt;';
+      if(myScript.length === 0) {
+        scriptEl.innerHTML = '&lt;div style=&quot;color:#64748b; font-size:0.85rem; text-align:center; margin-top:50px;&quot;&gt;Hãy bấm chọn các khối bên trái theo đúng thứ tự thuật toán!&lt;/div&gt;';
       } else {
-        beepLose();
-        fb.innerHTML = '&lt;span class=&quot;error-text&quot;&gt;❌ Lỗi thuật toán: Trình tự khối lệnh bị sai. Gợi ý: Bắt đầu ➡️ Nhập ➡️ Kiểm tra điều kiện ➡️ Thông báo!&lt;/span&gt;';
+        scriptEl.innerHTML = '';
+        myScript.forEach((b, idx) =&gt; {
+          const d = document.createElement('div');
+          d.className = `scratch-block ${b.cls}`;
+          d.innerHTML = `&lt;span&gt;${idx+1}. ${b.text}&lt;/span&gt;&lt;span style=&quot;float:right; opacity:0.6;&quot;&gt;✖&lt;/span&gt;`;
+          d.onclick = () =&gt; {
+            sfx(300, 0.08);
+            pool.push(b);
+            myScript.splice(idx, 1);
+            renderBlocks();
+          };
+          scriptEl.appendChild(d);
+        });
+      }
+
+      // Check correctness
+      let isCorrect = myScript.length === correctOrder.length &amp;&amp; myScript.every((b, i) =&gt; b.id === correctOrder[i].id);
+      if(isCorrect) {
+        msgEl.style.color = '#34d399';
+        msgEl.innerHTML = '🎉 Chính xác! Bạn đã hoàn thiện chương trình Scratch. Hãy chuyển sang tab <strong>2. Sân khấu</strong> để kiểm thử!';
+      } else if(myScript.length &gt; 0) {
+        msgEl.style.color = '#f59e0b';
+        msgEl.textContent = 'Tiếp tục sắp xếp theo đúng trình tự thuật toán (Đầu vào ➔ Xử lý Rẽ nhánh ➔ Đầu ra)...';
+      } else {
+        msgEl.textContent = '';
       }
     }
 
-    initGame();
+    function switchTab(t) {
+      sfx(440, 0.08);
+      document.getElementById('tab-build').classList.toggle('active', t==='build');
+      document.getElementById('tab-run').classList.toggle('active', t==='run');
+      document.getElementById('view-build').classList.toggle('hidden', t!=='build');
+      document.getElementById('view-run').classList.toggle('hidden', t!=='run');
+    }
+
+    // Interactive Scratch Runner
+    let valA = 0;
+    let valB = 0;
+    let step = 0;
+
+    function startScratchExecution() {
+      sfx(660, 0.12);
+      step = 1;
+      valA = 0; valB = 0;
+      document.getElementById('var-a').textContent = '0';
+      document.getElementById('var-b').textContent = '0';
+      document.getElementById('cat-icon').textContent = '🐱';
+      document.getElementById('cat-speech').textContent = 'Bạn bán được bao nhiêu tiền (nhập số tiền a)?';
+      document.getElementById('input-wrap').classList.remove('hidden');
+      document.getElementById('user-val').value = '';
+      document.getElementById('user-val').focus();
+    }
+
+    function processUserInput() {
+      const inp = document.getElementById('user-val');
+      const val = parseFloat(inp.value);
+      if(isNaN(val)) return;
+
+      sfx(520, 0.08);
+
+      if(step === 1) {
+        valA = val;
+        document.getElementById('var-a').textContent = valA.toLocaleString();
+        step = 2;
+        document.getElementById('cat-speech').textContent = 'Tiền mua vật liệu làm thiệp là bao nhiêu (nhập b)?';
+        inp.value = '';
+        inp.focus();
+      } else if(step === 2) {
+        valB = val;
+        document.getElementById('var-b').textContent = valB.toLocaleString();
+        step = 3;
+        document.getElementById('input-wrap').classList.add('hidden');
+        
+        // Execute Condition
+        setTimeout(() =&gt; {
+          if(valA &gt;= valB) {
+            let lai = valA - valB;
+            sfx(880, 0.2);
+            document.getElementById('cat-icon').textContent = '😸';
+            document.getElementById('cat-speech').innerHTML = `Tuyệt vời! Bạn có &lt;strong style=&quot;color:#10b981;&quot;&gt;TIỀN LÃI LÀ: ${lai.toLocaleString()} đồng&lt;/strong&gt;!`;
+          } else {
+            let lo = valB - valA;
+            sfx(220, 0.3);
+            document.getElementById('cat-icon').textContent = '😿';
+            document.getElementById('cat-speech').innerHTML = `Tiếc quá! Đợt này bạn bị &lt;strong style=&quot;color:#ef4444;&quot;&gt;LỖ MẤT: ${lo.toLocaleString()} đồng&lt;/strong&gt; rồi!`;
+          }
+        }, 400);
+      }
+    }
+
+    renderBlocks();
   &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
+&lt;/html&gt;"
+          ></iframe>
         </div>
       </section>
 
+      <!-- ĐIỀU HƯỚNG BÀI HỌC -->
       <nav class="lesson-footer-nav" aria-label="Điều hướng bài học">
         <a class="lesson-footer-nav__link lesson-footer-nav__link--prev" href="bai-16-cac-cau-truc-dieu-khien.html" aria-label="Bài trước">⬅️ Bài trước</a>
-        <a class="lesson-footer-nav__link lesson-footer-nav__link--next" href="index.html" aria-label="Bài tiếp theo">Bài tiếp theo ➡️</a>
+        <a class="lesson-footer-nav__link lesson-footer-nav__link--next" href="index.html" aria-label="Trang chủ">Trang chủ ➡️</a>
       </nav>
     </main>
   </div>
-  
-  <!-- Chứa các mã JS toàn cục (nếu có) -->
   <script src="assets/js/main.js?v=20260804"></script>
 </body>
 </html>

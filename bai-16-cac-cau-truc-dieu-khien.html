@@ -19,7 +19,6 @@
         <p>Bài học giúp học sinh làm quen với cấu trúc rẽ nhánh, lặp và điều khiển luồng thực hiện của thuật toán.</p>
       </section>
 
-      <!-- 1. KHỞI ĐỘNG -->
       <section class="lesson-section" aria-labelledby="warmup-title">
         <div class="lesson-section__header">
           <span class="lesson-section__icon" aria-hidden="true">🔀</span>
@@ -29,7 +28,7 @@
           </div>
         </div>
         <div class="lesson-frame lesson-frame--wide">
-          <!-- Nhúng trực tiếp toàn bộ mã trò chơi qua srcdoc để không bị lỗi 404 -->
+          <!-- Game Khởi Động -->
           <iframe 
             title="Khởi động - Trò chơi Đúng hay Sai" 
             style="width: 100%; height: 580px; border: none; border-radius: 16px; background: #0f172a;"
@@ -51,7 +50,6 @@
     h1 { font-size: 1.6rem; font-weight: 900; color: #38bdf8; margin-bottom: 10px; }
     p.desc { font-size: 0.95rem; color: #94a3b8; line-height: 1.5; margin-bottom: 20px; }
     
-    /* Avatar animation */
     .avatar-box { width: 110px; height: 110px; margin: 0 auto 16px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 4px solid #38bdf8; transition: transform 0.3s; }
     .avatar-svg { width: 75px; height: 75px; }
     .nod-anim { animation: nodEffect 0.5s ease-in-out; }
@@ -68,18 +66,15 @@
       40%, 80% { transform: rotate(14deg); }
     }
 
-    /* Buttons */
     .btn { cursor: pointer; border: none; border-radius: 14px; font-weight: 800; font-size: 1.05rem; padding: 12px 24px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
     .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
     .btn:active { transform: translateY(1px); }
     .btn-primary { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; width: 100%; box-shadow: 0 4px 15px rgba(37,99,235,0.4); }
     
-    /* Topic Selector */
     .topics { display: flex; gap: 12px; margin-bottom: 20px; }
     .topic-btn { flex: 1; padding: 12px; border-radius: 12px; background: #334155; color: #cbd5e1; border: 2px solid transparent; cursor: pointer; font-weight: 700; transition: all 0.2s; }
     .topic-btn.active { border-color: #38bdf8; background: rgba(56,189,248,0.15); color: #38bdf8; }
 
-    /* In-game layout */
     .stats-bar { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 10px 16px; border-radius: 12px; margin-bottom: 16px; font-weight: 700; }
     .timer { color: #f43f5e; font-size: 1.15rem; }
     .score { color: #10b981; font-size: 1.15rem; }
@@ -89,7 +84,6 @@
     .btn-yes { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 4px 14px rgba(16,185,129,0.3); }
     .btn-no { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; box-shadow: 0 4px 14px rgba(244,63,94,0.3); }
 
-    /* Branch Diagram for End Game */
     .diagram { background: #0f172a; border-radius: 14px; padding: 16px; margin: 16px 0; text-align: left; font-size: 0.9rem; border: 1px solid #334155; }
     .diagram-title { font-weight: 800; color: #f59e0b; margin-bottom: 8px; text-align: center; }
     .flow-line { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px 0; font-weight: 700; }
@@ -103,7 +97,6 @@
 &lt;/head&gt;
 &lt;body&gt;
   &lt;div class=&quot;card&quot;&gt;
-    &lt;!-- Màn hình giới thiệu --&gt;
     &lt;div id=&quot;intro-screen&quot;&gt;
       &lt;span class=&quot;badge&quot;&gt;Trò chơi khởi động&lt;/span&gt;
       &lt;h1&gt;ĐÚNG HAY SAI?&lt;/h1&gt;
@@ -124,7 +117,6 @@
       &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;startGame()&quot;&gt;🚀 BẮT ĐẦU CHƠI&lt;/button&gt;
     &lt;/div&gt;
 
-    &lt;!-- Màn hình đang chơi --&gt;
     &lt;div id=&quot;game-screen&quot; class=&quot;hidden&quot;&gt;
       &lt;div class=&quot;stats-bar&quot;&gt;
         &lt;span class=&quot;timer&quot;&gt;⏳ &lt;span id=&quot;timer-val&quot;&gt;60&lt;/span&gt;s&lt;/span&gt;
@@ -146,23 +138,18 @@
       &lt;/div&gt;
 
       &lt;div class=&quot;choices&quot;&gt;
-        &lt;button class=&quot;btn btn-yes&quot; onclick=&quot;handleAnswer(true)&quot;&gt;
-          👍 GẬT ĐẦU (ĐÚNG)
-        &lt;/button&gt;
-        &lt;button class=&quot;btn btn-no&quot; onclick=&quot;handleAnswer(false)&quot;&gt;
-          👎 LẮC ĐẦU (SAI)
-        &lt;/button&gt;
+        &lt;button class=&quot;btn btn-yes&quot; onclick=&quot;handleAnswer(true)&quot;&gt;👍 GẬT ĐẦU&lt;/button&gt;
+        &lt;button class=&quot;btn btn-no&quot; onclick=&quot;handleAnswer(false)&quot;&gt;👎 LẮC ĐẦU&lt;/button&gt;
       &lt;/div&gt;
     &lt;/div&gt;
 
-    &lt;!-- Màn hình kết thúc --&gt;
     &lt;div id=&quot;end-screen&quot; class=&quot;hidden&quot;&gt;
       &lt;span class=&quot;badge&quot; style=&quot;background:#10b981; color:#fff;&quot;&gt;Hết giờ!&lt;/span&gt;
       &lt;h1&gt;XUẤT SẮC!&lt;/h1&gt;
       &lt;p class=&quot;desc&quot;&gt;Đội bạn đã trả lời đúng &lt;strong style=&quot;color:#38bdf8; font-size:1.5rem;&quot; id=&quot;final-score&quot;&gt;0&lt;/strong&gt; câu!&lt;/p&gt;
 
       &lt;div class=&quot;diagram&quot;&gt;
-        &lt;div class=&quot;diagram-title&quot;&gt;💡 Kết nối bài học: Cấu trúc Rẽ nhánh dạng đủ (Hình 6.8)&lt;/div&gt;
+        &lt;div class=&quot;diagram-title&quot;&gt;💡 Kết nối bài học: Cấu trúc Rẽ nhánh&lt;/div&gt;
         &lt;div class=&quot;flow-line&quot;&gt;
           &lt;span class=&quot;rhombus&quot;&gt;Câu khẳng định đúng hay sai?&lt;/span&gt;
         &lt;/div&gt;
@@ -183,66 +170,38 @@
   &lt;script&gt;
     const questionsDB = {
       bio: [
-        { q: &quot;Cá voi thở bằng phổi.&quot;, a: true },
-        { q: &quot;Cây xanh quang hợp giải phóng khí CO₂ vào ban ngày.&quot;, a: false },
-        { q: &quot;Chim cánh cụt không biết bay.&quot;, a: true },
-        { q: &quot;Máu người có màu đỏ do chứa chất diệp lục.&quot;, a: false },
-        { q: &quot;Loài dơi là một loài động vật có vú biết bay.&quot;, a: true },
-        { q: &quot;Nấm thuộc giới thực vật và tự quang hợp được.&quot;, a: false },
-        { q: &quot;Xương người trưởng thành có khoảng 206 cái.&quot;, a: true }
+        { q: 'Cá voi thở bằng phổi.', a: true },
+        { q: 'Cây xanh quang hợp giải phóng khí CO₂ vào ban ngày.', a: false },
+        { q: 'Chim cánh cụt không biết bay.', a: true },
+        { q: 'Máu người có màu đỏ do chứa chất diệp lục.', a: false },
+        { q: 'Loài dơi là động vật có vú biết bay.', a: true }
       ],
       math: [
-        { q: &quot;Số 2 là số nguyên tố chẵn duy nhất.&quot;, a: true },
-        { q: &quot;Tổng ba góc của một tam giác bằng 360 độ.&quot;, a: false },
-        { q: &quot;Một hình vuông thì chắc chắn là hình chữ nhật.&quot;, a: true },
-        { q: &quot;Số 0 là số nguyên tố nhỏ nhất.&quot;, a: false },
-        { q: &quot;Số 17 là một số nguyên tố.&quot;, a: true },
-        { q: &quot;Phép chia bất kỳ số nào cho 0 cũng bằng 0.&quot;, a: false },
-        { q: &quot;25 chia hết cho 5.&quot;, a: true }
+        { q: 'Số 2 là số nguyên tố chẵn duy nhất.', a: true },
+        { q: 'Tổng ba góc của một tam giác bằng 360 độ.', a: false },
+        { q: 'Một hình vuông thì chắc chắn là hình chữ nhật.', a: true },
+        { q: 'Số 0 là số nguyên tố nhỏ nhất.', a: false },
+        { q: 'Phép chia bất kỳ số nào cho 0 cũng bằng 0.', a: false }
       ]
     };
 
-    let curTopic = 'bio';
-    let qList = [];
-    let qIdx = 0;
-    let score = 0;
-    let timeLeft = 60;
-    let timerId = null;
-
-    // Web Audio synthesizer (không cần tải thêm file mp3)
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let ctx = null;
+    let curTopic = 'bio'; let qList = []; let qIdx = 0; let score = 0; let timeLeft = 60; let timerId = null;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext; let ctx = null;
 
     function playBeep(freq, type, duration) {
       try {
         if (!ctx) ctx = new AudioCtx();
         if (ctx.state === 'suspended') ctx.resume();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime);
         gain.gain.setValueAtTime(0.2, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + duration);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + duration);
       } catch (e) {}
     }
-
-    function soundCorrect() {
-      playBeep(587, 'sine', 0.1);
-      setTimeout(() =&gt; playBeep(880, 'sine', 0.25), 100);
-    }
-
-    function soundWrong() {
-      playBeep(180, 'sawtooth', 0.3);
-    }
-
-    function soundTimeout() {
-      playBeep(300, 'square', 0.2);
-      setTimeout(() =&gt; playBeep(200, 'square', 0.4), 250);
-    }
+    function soundCorrect() { playBeep(587, 'sine', 0.1); setTimeout(() =&gt; playBeep(880, 'sine', 0.25), 100); }
+    function soundWrong() { playBeep(180, 'sawtooth', 0.3); }
 
     function setTopic(tp, btn) {
       curTopic = tp;
@@ -255,64 +214,38 @@
       document.getElementById('intro-screen').classList.add('hidden');
       document.getElementById('end-screen').classList.add('hidden');
       document.getElementById('game-screen').classList.remove('hidden');
-
       document.getElementById('topic-name').textContent = curTopic === 'bio' ? '🌿 Sinh học' : '📐 Toán học';
-      score = 0;
-      timeLeft = 60;
+      score = 0; timeLeft = 60;
       document.getElementById('score-val').textContent = score;
       document.getElementById('timer-val').textContent = timeLeft;
 
-      qList = [...questionsDB[curTopic]].sort(() =&gt; Math.random() - 0.5);
-      qIdx = 0;
-      showQuestion();
+      qList = [...questionsDB[curTopic]].sort(() =&gt; Math.random() - 0.5); qIdx = 0; showQuestion();
 
       timerId = setInterval(() =&gt; {
-        timeLeft--;
-        document.getElementById('timer-val').textContent = timeLeft;
-        if (timeLeft &lt;= 0) {
-          clearInterval(timerId);
-          soundTimeout();
-          endGame();
-        }
+        timeLeft--; document.getElementById('timer-val').textContent = timeLeft;
+        if (timeLeft &lt;= 0) { clearInterval(timerId); endGame(); }
       }, 1000);
     }
 
     function showQuestion() {
-      if (qIdx &gt;= qList.length) {
-        qList = [...questionsDB[curTopic]].sort(() =&gt; Math.random() - 0.5);
-        qIdx = 0;
-      }
+      if (qIdx &gt;= qList.length) { qList = [...questionsDB[curTopic]].sort(() =&gt; Math.random() - 0.5); qIdx = 0; }
       document.getElementById('question-display').textContent = qList[qIdx].q;
     }
 
     function handleAnswer(userChoice) {
       const avatar = document.getElementById('avatar-robot');
       const mouth = document.getElementById('mouth');
-
-      // Mô phỏng Gật / Lắc theo lựa chọn
-      avatar.classList.remove('nod-anim', 'shake-anim');
-      void avatar.offsetWidth; // trigger reflow
+      avatar.classList.remove('nod-anim', 'shake-anim'); void avatar.offsetWidth;
 
       if (userChoice === true) {
-        avatar.classList.add('nod-anim');
-        mouth.setAttribute('d', 'M 32 62 Q 50 78 68 62'); // cười tươi
+        avatar.classList.add('nod-anim'); mouth.setAttribute('d', 'M 32 62 Q 50 78 68 62');
       } else {
-        avatar.classList.add('shake-anim');
-        mouth.setAttribute('d', 'M 32 68 Q 50 56 68 68'); // lắc đầu bĩu môi
+        avatar.classList.add('shake-anim'); mouth.setAttribute('d', 'M 32 68 Q 50 56 68 68');
       }
 
-      // Kiểm tra đáp án
-      const isCorrect = userChoice === qList[qIdx].a;
-      if (isCorrect) {
-        score++;
-        document.getElementById('score-val').textContent = score;
-        soundCorrect();
-      } else {
-        soundWrong();
-      }
-
-      qIdx++;
-      setTimeout(showQuestion, 350);
+      if (userChoice === qList[qIdx].a) { score++; document.getElementById('score-val').textContent = score; soundCorrect(); } 
+      else { soundWrong(); }
+      qIdx++; setTimeout(showQuestion, 350);
     }
 
     function endGame() {
@@ -327,12 +260,10 @@
     }
   &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"
-          ></iframe>
+&lt;/html&gt;"></iframe>
         </div>
       </section>
 
-      <!-- 2. KHÁM PHÁ KIẾN THỨC -->
       <section class="lesson-section" aria-labelledby="knowledge-title">
         <div class="lesson-section__header">
           <span class="lesson-section__icon" aria-hidden="true">🧱</span>
@@ -359,27 +290,157 @@
         </div>
       </section>
 
-      <!-- 3. LUYỆN TẬP & VẬN DỤNG -->
       <section class="lesson-section" aria-labelledby="practice-title">
         <div class="lesson-section__header">
           <span class="lesson-section__icon" aria-hidden="true">🧪</span>
           <div>
             <h2 id="practice-title">3. Luyện tập &amp; Vận dụng</h2>
-            <p class="lesson-section__lead">Thực hành chọn đúng cấu trúc điều khiển cho từng tình huống.</p>
+            <p class="lesson-section__lead">Thực hành chọn đúng cấu trúc điều khiển (Tuần tự, Rẽ nhánh, Lặp) cho từng tình huống thực tế.</p>
           </div>
         </div>
         <div class="lesson-frame lesson-frame--wide">
-          <iframe title="Luyện tập - Cấu trúc điều khiển" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>🧪 Luyện tập Bài 16</strong><div>Nhúng bài tập tương tác về rẽ nhánh và lặp.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe>
+          <!-- Game Luyện Tập / Vận Dụng -->
+          <iframe 
+            title="Luyện tập - Phân loại Cấu trúc" 
+            style="width: 100%; height: 620px; border: none; border-radius: 16px; background: #0f172a;"
+            loading="lazy" 
+            allow="autoplay"
+            allowfullscreen
+            srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Luyện Tập - Phân Loại Cấu Trúc&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; }
+    body { background: #0f172a; color: #f8fafc; padding: 16px; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .card { background: #1e293b; border-radius: 16px; padding: 24px; width: 100%; max-width: 600px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; border: 2px solid #334155; position: relative;}
+    h2 { color: #38bdf8; font-weight: 800; font-size: 1.5rem; margin-bottom: 8px; }
+    .progress { font-size: 0.95rem; color: #94a3b8; margin-bottom: 20px; font-weight: 700; background: #0f172a; display:inline-block; padding: 4px 16px; border-radius: 20px;}
+    .question { font-size: 1.15rem; font-weight: 700; margin-bottom: 24px; color: #fff; line-height: 1.5; background: #0f172a; padding: 20px; border-radius: 12px; border: 1px dashed #475569; }
+    .opts { display: flex; flex-direction: column; gap: 12px; }
+    .opt-btn { background: #334155; border: 2px solid #475569; color: #f8fafc; padding: 14px 20px; border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: left; }
+    .opt-btn:hover:not(:disabled) { border-color: #38bdf8; background: #1e293b; transform: translateX(4px); }
+    .opt-btn.correct { background: #065f46 !important; border-color: #10b981 !important; color: #fff !important; }
+    .opt-btn.wrong { background: #7f1d1d !important; border-color: #f43f5e !important; color: #fff !important; }
+    .opt-btn:disabled { cursor: not-allowed; opacity: 0.9; }
+    .explanation { margin-top: 20px; padding: 16px; border-radius: 12px; background: rgba(56,189,248,0.1); border: 1px solid #0284c7; color: #e0f2fe; text-align: left; font-size: 0.95rem; line-height: 1.5; display: none; animation: fadeIn 0.4s ease-in-out;}
+    .next-btn { margin-top: 20px; background: linear-gradient(135deg, #0284c7, #2563eb); border: none; color: white; font-weight: 800; font-size: 1.1rem; padding: 12px 30px; border-radius: 12px; cursor: pointer; display: none; transition: 0.2s; box-shadow: 0 4px 15px rgba(37,99,235,0.4); margin-left: auto; margin-right: auto;}
+    .next-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.6);}
+    .score-board { font-size: 2.2rem; color: #10b981; font-weight: 900; margin: 20px 0; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;card&quot; id=&quot;game&quot;&gt;
+     &lt;h2&gt;🧠 Thợ Săn Cấu Trúc&lt;/h2&gt;
+     &lt;div class=&quot;progress&quot; id=&quot;progress&quot;&gt;Câu 1 / 5&lt;/div&gt;
+     &lt;div class=&quot;question&quot; id=&quot;q-text&quot;&gt;Loading...&lt;/div&gt;
+     &lt;div class=&quot;opts&quot; id=&quot;opts&quot;&gt;&lt;/div&gt;
+     &lt;div class=&quot;explanation&quot; id=&quot;exp&quot;&gt;&lt;/div&gt;
+     &lt;button class=&quot;next-btn&quot; id=&quot;next&quot; onclick=&quot;nextQ()&quot;&gt;Tiếp tục ➡️&lt;/button&gt;
+  &lt;/div&gt;
+  
+  &lt;script&gt;
+     // Dữ liệu được lấy trực tiếp từ Bài tập 1, 2, 3 trong SGK (phần Luyện tập)
+     const data = [
+       { q: 'Nếu có kẻ trên mạng đe doạ thì em cần nói cho cha mẹ biết.', a: 0, 
+         opts: ['Cấu trúc Rẽ nhánh (Dạng thiếu)', 'Cấu trúc Lặp', 'Cấu trúc Tuần tự'], 
+         exp: 'Đúng! Hành động &quot;nói cho cha mẹ&quot; chỉ xảy ra KHI điều kiện &quot;có kẻ đe dọa&quot; là đúng. Nếu không có kẻ đe dọa, em không làm gì cả (rẽ nhánh dạng thiếu).' },
+       { q: 'Nếu vẫn chưa làm hết bài tập, em phải làm bài tập đến khi nào hết.', a: 1, 
+         opts: ['Cấu trúc Rẽ nhánh', 'Cấu trúc Lặp', 'Cấu trúc Tuần tự'], 
+         exp: 'Chính xác! Hành động &quot;làm bài tập&quot; được lặp đi lặp lại. Điều kiện kết thúc vòng lặp ở đây là &quot;đã làm hết bài&quot;.' },
+       { q: 'Sáng thức dậy, em đánh răng, rửa mặt, ăn sáng rồi đi học.', a: 2, 
+         opts: ['Cấu trúc Rẽ nhánh', 'Cấu trúc Lặp', 'Cấu trúc Tuần tự'], 
+         exp: 'Đúng rồi! Các hành động diễn ra lần lượt từ trên xuống dưới, không có điều kiện hay sự lặp lại nào, đó chính là cấu trúc Tuần tự.' },
+       { q: 'Nếu được nghỉ 3 ngày dịp Tết, gia đình em sẽ đi du lịch, ngược lại sẽ ở nhà dọn dẹp.', a: 0, 
+         opts: ['Cấu trúc Rẽ nhánh (Dạng đủ)', 'Cấu trúc Lặp', 'Cấu trúc Tuần tự'], 
+         exp: 'Tuyệt vời! Đây là Rẽ nhánh dạng đủ. Bất kể điều kiện Đúng hay Sai, đều có một hành động tương ứng được thực hiện (Đi du lịch hoặc Ở nhà).' },
+       { q: 'Trong Scratch, bạn Khoa muốn chú cá di chuyển 10 bước liên tục cho đến khi chạm vào biên sân khấu thì dừng lại.', a: 1, 
+         opts: ['Cấu trúc Rẽ nhánh', 'Cấu trúc Lặp', 'Cấu trúc Tuần tự'], 
+         exp: 'Chính xác! Hành động &quot;di chuyển 10 bước&quot; được LẶP LẠI nhiều lần. Vòng lặp này chỉ dừng khi điều kiện &quot;chạm biên&quot; được thỏa mãn (trúng đích).' }
+     ];
+     let cur = 0; let score = 0;
+     const qEl = document.getElementById('q-text');
+     const optsEl = document.getElementById('opts');
+     const expEl = document.getElementById('exp');
+     const nextEl = document.getElementById('next');
+     const progEl = document.getElementById('progress');
+     const gameEl = document.getElementById('game');
+
+     const AudioCtx = window.AudioContext || window.webkitAudioContext;
+     let ctx = null;
+     function playSnd(freq, type, dur) {
+       try {
+         if(!ctx) ctx = new AudioCtx();
+         if(ctx.state === 'suspended') ctx.resume();
+         const osc = ctx.createOscillator(); const gain = ctx.createGain();
+         osc.type = type; osc.frequency.value = freq;
+         gain.gain.setValueAtTime(0.2, ctx.currentTime);
+         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+         osc.connect(gain); gain.connect(ctx.destination);
+         osc.start(); osc.stop(ctx.currentTime + dur);
+       } catch(e){}
+     }
+     function sndC(){ playSnd(600,'sine',0.1); setTimeout(()=&gt;playSnd(900,'sine',0.25),100); }
+     function sndW(){ playSnd(200,'sawtooth',0.3); }
+
+     function loadQ() {
+       expEl.style.display = 'none'; nextEl.style.display = 'none';
+       optsEl.innerHTML = '';
+       const d = data[cur];
+       progEl.innerText = 'Câu ' + (cur+1) + ' / ' + data.length;
+       qEl.innerText = d.q;
+       d.opts.forEach((opt, i) =&gt; {
+         const b = document.createElement('button');
+         b.className = 'opt-btn'; b.innerText = opt;
+         b.onclick = () =&gt; check(i, b);
+         optsEl.appendChild(b);
+       });
+     }
+
+     function check(idx, btn) {
+       const btns = document.querySelectorAll('.opt-btn');
+       btns.forEach(b =&gt; b.disabled = true);
+       const d = data[cur];
+       if(idx === d.a) {
+         btn.classList.add('correct'); score++; sndC();
+       } else {
+         btn.classList.add('wrong'); sndW();
+         btns[d.a].classList.add('correct'); // Highlight câu đúng
+       }
+       expEl.innerHTML = '&lt;strong&gt;💡 Giải thích:&lt;/strong&gt; &lt;br&gt;' + d.exp;
+       expEl.style.display = 'block';
+       nextEl.style.display = 'block';
+     }
+
+     function nextQ() {
+       cur++;
+       if(cur &lt; data.length) loadQ();
+       else end();
+     }
+
+     function end() {
+       gameEl.innerHTML = '&lt;h2 style=&quot;font-size:2rem;&quot;&gt;🎉 Hoàn thành!&lt;/h2&gt;&lt;div class=&quot;score-board&quot;&gt;' + score + ' / ' + data.length + '&lt;/div&gt;&lt;p style=&quot;color:#cbd5e1;margin-bottom:30px;font-size:1.1rem;&quot;&gt;Bạn đã phân biệt rất tốt 3 cấu trúc điều khiển cơ bản!&lt;/p&gt;&lt;button class=&quot;next-btn&quot; style=&quot;display:inline-block;&quot; onclick=&quot;location.reload()&quot;&gt;🔄 Chơi lại&lt;/button&gt;';
+     }
+
+     // Start game
+     loadQ();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
         </div>
       </section>
 
-      <!-- ĐIỀU HƯỚNG BÀI HỌC -->
       <nav class="lesson-footer-nav" aria-label="Điều hướng bài học">
         <a class="lesson-footer-nav__link lesson-footer-nav__link--prev" href="bai-15-thuat-toan.html" aria-label="Bài trước">⬅️ Bài trước</a>
         <a class="lesson-footer-nav__link lesson-footer-nav__link--next" href="bai-17-chuong-trinh-may-tinh.html" aria-label="Bài tiếp theo">Bài tiếp theo ➡️</a>
       </nav>
+      
     </main>
   </div>
+  
   <script src="assets/js/main.js?v=20260804"></script>
 </body>
 </html>

@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khởi động Bài 2: Xử lí thông tin - Siêu Sao Đá Phạt 11m</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Nunito', sans-serif;
+      user-select: none;
+    }
+    body {
+      background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 50%, #fef3c7 100%);
+      min-height: 100vh;
+    }
+    /* Hiệu ứng sân cỏ */
+    .pitch-bg {
+      background: repeating-linear-gradient(
+        0deg,
+        #16a34a,
+        #16a34a 36px,
+        #15803d 36px,
+        #15803d 72px
+      );
+      position: relative;
+      overflow: hidden;
+    }
+    .pitch-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 25%, rgba(255,255,255,0.18), transparent 70%);
+      pointer-events: none;
+    }
+    /* Khung thành và các vùng mục tiêu */
+    .target-zone {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .target-zone:hover {
+      transform: scale(1.06);
+      background-color: rgba(250, 204, 21, 0.45);
+      border-color: #fde047;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.8);
+    }
+    .target-zone.selected {
+      background-color: rgba(34, 197, 94, 0.55);
+      border-color: #4ade80;
+      box-shadow: 0 0 22px rgba(74, 222, 128, 0.95);
+      animation: pulseZone 1s infinite;
+    }
+    @keyframes pulseZone {
+      0%, 100% { transform: scale(1.03); }
+      50% { transform: scale(1.09); }
+    }
+    /* Quả bóng bay */
+    #soccer-ball {
+      transition: all 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    /* Thủ môn di chuyển */
+    #goalkeeper {
+      transition: all 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    /* Sóng não xử lí thông tin */
+    .brain-step {
+      transition: all 0.3s ease;
+    }
+    .brain-step.active {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.45);
+    }
+    /* Hiệu ứng pháo giấy */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: fall 2.4s linear forwards;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="p-2 sm:p-4 md:p-6 text-slate-800">
+
+  <!-- CONTAINER CHÍNH -->
+  <div class="max-w-6xl mx-auto bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden">
+
+    <!-- HEADER: THANH ĐIỀU HƯỚNG & THÔNG TIN BÀI HỌC -->
+    <header class="bg-gradient-to-r from-emerald-700 via-teal-600 to-sky-700 text-white px-4 py-3 sm:px-6 sm:py-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-2xl shadow-inner border border-white/30">
+          ⚽
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-amber-400 text-slate-900 text-xs font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              Chủ đề 1 • Bài 2
+            </span>
+            <span class="text-xs sm:text-sm text-emerald-100 font-semibold">
+              Tin học 6 – Kết nối tri thức với cuộc sống
+            </span>
+          </div>
+          <h1 class="text-lg sm:text-2xl font-black tracking-tight mt-0.5">
+            TRÒ CHƠI KHỞI ĐỘNG: SIÊU SAO ĐÁ PHẠT 11M
+          </h1>
+        </div>
+      </div>
+
+      <!-- Điểm số & Công cụ -->
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+        <div class="bg-white/15 border border-white/25 rounded-2xl px-3.5 py-1.5 flex items-center gap-2">
+          <span class="text-amber-300 text-lg">⭐</span>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-emerald-100 font-bold">Điểm thưởng</div>
+            <div id="score-display" class="text-base sm:text-lg font-black leading-none">0</div>
+          </div>
+        </div>
+
+        <button id="btn-sound" onclick="toggleSound()" class="p-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 transition" title="Bật/Tắt âm thanh">
+          🔊
+        </button>
+        <button onclick="openTeacherModal()" class="px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold text-xs sm:text-sm shadow transition flex items-center gap-1.5">
+          <span>📋</span> <span class="hidden sm:inline">Gợi ý GV</span>
+        </button>
+        <button onclick="toggleFullScreen()" class="p-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 transition" title="Toàn màn hình">
+          ⛶
+        </button>
+      </div>
+    </header>
+
+    <!-- THANH CHUYỂN CHẾ ĐỘ (TABS) -->
+    <div class="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="tab-btn-1" onclick="switchStage(1)" class="px-4 py-2 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center gap-2 bg-emerald-600 text-white shadow">
+          <span>🥅</span> Chặng 1: Sút Phạt Đền (Trải nghiệm)
+        </button>
+        <button id="tab-btn-2" onclick="switchStage(2)" class="px-4 py-2 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center gap-2 bg-white text-slate-600 hover:bg-slate-200 border border-slate-300">
+          <span>🧠</span> Chặng 2: Giải Mã Bộ Não (Hoạt động 1 SGK)
+        </button>
+        <button id="tab-btn-3" onclick="switchStage(3)" class="px-4 py-2 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center gap-2 bg-white text-slate-600 hover:bg-slate-200 border border-slate-300">
+          <span>🚀</span> Chốt Kiến Thức & Vào Bài 2
+        </button>
+      </div>
+
+      <div class="text-xs font-bold text-slate-500 flex items-center gap-2">
+        <span>Tiến độ Khởi động:</span>
+        <div class="w-28 h-2.5 bg-slate-200 rounded-full overflow-hidden">
+          <div id="progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-sky-500 transition-all duration-500" style="width: 20%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         CHẶNG 1: SÚT PHẠT ĐỀN & QUÁ TRÌNH XỬ LÍ THÔNG TIN
+         ========================================== -->
+    <section id="stage-1" class="p-4 sm:p-6">
+      <!-- Hộp ngữ liệu SGK Trang 9 -->
+      <div class="bg-gradient-to-r from-amber-50 via-yellow-50 to-emerald-50 border-2 border-amber-300 rounded-2xl p-4 mb-5 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-start gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-400 text-slate-900 font-black flex items-center justify-center text-xl shrink-0 shadow">
+              📖
+            </div>
+            <div>
+              <span class="text-xs font-black uppercase tracking-wider text-amber-800 bg-amber-200/80 px-2.5 py-0.5 rounded-full">
+                Tình huống Khởi động (SGK Tin học 6 - Trang 9)
+              </span>
+              <p class="text-slate-700 text-sm sm:text-base mt-1.5 leading-relaxed font-medium">
+                “Hãy quan sát một cầu thủ bóng đá thực hiện quả phạt đền. <strong class="text-emerald-700">Mắt liên tục xác định vị trí của thủ môn</strong>, anh phải <strong class="text-sky-700">đánh giá xem góc nào của cầu môn là sơ hở nhất</strong>. Sải bước, lấy đà, trong khoảnh khắc, anh khuất phục thủ môn bằng <strong class="text-rose-600">một cú sút má trong vào góc cao cầu môn</strong>.”
+              </p>
+            </div>
+          </div>
+          <button onclick="speakIntro()" class="shrink-0 self-start md:self-center px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm shadow transition flex items-center gap-1.5">
+            <span>🔊</span> Đọc tình huống
+          </button>
+        </div>
+      </div>
+
+      <!-- Bố cục 2 cột: Sân bóng (Trái) & Bảng điều khiển Bộ não cầu thủ (Phải) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+        <!-- CỘT TRÁI (7/12): SÂN BÓNG TƯƠNG TÁC -->
+        <div class="lg:col-span-7 flex flex-col">
+          <div class="pitch-bg rounded-3xl border-4 border-emerald-800 shadow-xl p-4 sm:p-6 flex flex-col justify-between min-h-[420px] sm:min-h-[460px] relative">
+
+            <!-- Bảng tỉ số trên sân -->
+            <div class="flex items-center justify-between bg-slate-900/85 backdrop-blur text-white px-4 py-2 rounded-2xl border border-white/20 z-10">
+              <div class="flex items-center gap-2">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span id="round-label" class="font-black text-xs sm:text-sm uppercase tracking-wider text-amber-300">
+                  Lượt sút 1 / 3
+                </span>
+              </div>
+              <div class="text-xs sm:text-sm font-bold text-emerald-200" id=" keeper-hint-banner">
+                👉 Bước 1: Hãy bấm "Quan sát thủ môn"
+              </div>
+              <div class="flex items-center gap-1.5 font-black text-sm">
+                <span>⚽ Bàn thắng:</span>
+                <span id="goals-count" class="text-amber-400 text-base">0/3</span>
+              </div>
+            </div>
+
+            <!-- KHU VỰC KHUNG THÀNH (GOALPOST) -->
+            <div class="relative mx-auto w-full max-w-md mt-4 mb-2">
+              <!-- Khung sắt cầu môn -->
+              <div class="border-t-8 border-x-8 border-white rounded-t-lg bg-white/10 backdrop-blur-[1px] p-2 relative h-48 sm:h-56 shadow-inner"
+                   style="background-image: radial-gradient(rgba(255,255,255,0.35) 1px, transparent 1px); background-size: 12px 12px;">
+
+                <!-- 4 Góc sút mục tiêu (Grid 2x2) -->
+                <div class="grid grid-cols-2 grid-rows-2 gap-2 h-full w-full relative z-10">
+                  <!-- Góc 0: Trên Trái -->
+                  <button onclick="selectCorner(0)" id="corner-0" disabled
+                    class="target-zone rounded-xl border-2 border-dashed border-white/60 flex flex-col items-center justify-center p-2 text-white font-bold opacity-50 disabled:cursor-not-allowed">
+                    <span class="text-lg sm:text-xl">🎯</span>
+                    <span class="text-xs sm:text-sm drop-shadow">Góc Trên Bên Trái</span>
+                    <span id="badge-corner-0" class="hidden mt-1 text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-extrabold">SƠ HỞ NHẤT!</span>
+                  </button>
+
+                  <!-- Góc 1: Trên Phải -->
+                  <button onclick="selectCorner(1)" id="corner-1" disabled
+                    class="target-zone rounded-xl border-2 border-dashed border-white/60 flex flex-col items-center justify-center p-2 text-white font-bold opacity-50 disabled:cursor-not-allowed">
+                    <span class="text-lg sm:text-xl">🎯</span>
+                    <span class="text-xs sm:text-sm drop-shadow">Góc Trên Bên Phải</span>
+                    <span id="badge-corner-1" class="hidden mt-1 text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-extrabold">SƠ HỞ NHẤT!</span>
+                  </button>
+
+                  <!-- Góc 2: Dưới Trái -->
+                  <button onclick="selectCorner(2)" id="corner-2" disabled
+                    class="target-zone rounded-xl border-2 border-dashed border-white/60 flex flex-col items-center justify-center p-2 text-white font-bold opacity-50 disabled:cursor-not-allowed">
+                    <span class="text-lg sm:text-xl">🎯</span>
+                    <span class="text-xs sm:text-sm drop-shadow">Góc Dưới Bên Trái</span>
+                    <span id="badge-corner-2" class="hidden mt-1 text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-extrabold">SƠ HỞ NHẤT!</span>
+                  </button>
+
+                  <!-- Góc 3: Dưới Phải -->
+                  <button onclick="selectCorner(3)" id="corner-3" disabled
+                    class="target-zone rounded-xl border-2 border-dashed border-white/60 flex flex-col items-center justify-center p-2 text-white font-bold opacity-50 disabled:cursor-not-allowed">
+                    <span class="text-lg sm:text-xl">🎯</span>
+                    <span class="text-xs sm:text-sm drop-shadow">Góc Dưới Bên Phải</span>
+                    <span id="badge-corner-3" class="hidden mt-1 text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-extrabold">SƠ HỞ NHẤT!</span>
+                  </button>
+                </div>
+
+                <!-- THỦ MÔN (GOALKEEPER SVG) -->
+                <div id="goalkeeper" class="absolute bottom-1 left-[58%] -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center">
+                  <div id="keeper-speech" class="bg-rose-600 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow mb-1 whitespace-nowrap">
+                    🧤 Thủ môn đang lệch phải!
+                  </div>
+                  <div class="w-16 h-20 sm:w-20 sm:h-24 flex items-center justify-center filter drop-shadow-lg">
+                    <svg viewBox="0 0 100 120" class="w-full h-full">
+                      <!-- Tay trái & phải -->
+                      <path d="M15 45 L35 55 M85 45 L65 55" stroke="#fbbf24" stroke-width="10" stroke-linecap="round"/>
+                      <!-- Găng tay -->
+                      <circle cx="12" cy="43" r="9" fill="#ef4444" stroke="#fff" stroke-width="2"/>
+                      <circle cx="88" cy="43" r="9" fill="#ef4444" stroke="#fff" stroke-width="2"/>
+                      <!-- Thân áo -->
+                      <rect x="33" y="42" width="34" height="38" rx="8" fill="#ef4444" stroke="#fff" stroke-width="2"/>
+                      <!-- Số áo 1 -->
+                      <text x="50" y="67" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">1</text>
+                      <!-- Đầu -->
+                      <circle cx="50" cy="24" r="15" fill="#fde68a" stroke="#78350f" stroke-width="2"/>
+                      <!-- Tóc -->
+                      <path d="M35 20 Q50 5 65 20" fill="#1e293b"/>
+                      <!-- Mắt -->
+                      <circle cx="44" cy="24" r="2.2" fill="#1e293b"/>
+                      <circle cx="56" cy="24" r="2.2" fill="#1e293b"/>
+                      <!-- Quần & Chân -->
+                      <rect x="35" y="78" width="13" height="16" rx="3" fill="#1e293b"/>
+                      <rect x="52" y="78" width="13" height="16" rx="3" fill="#1e293b"/>
+                      <line x1="41" y1="94" x2="39" y2="114" stroke="#fde68a" stroke-width="7" stroke-linecap="round"/>
+                      <line x1="59" y1="94" x2="61" y2="114" stroke="#fde68a" stroke-width="7" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+              <!-- Vạch vôi khung thành -->
+              <div class="h-1.5 bg-white w-full shadow"></div>
+            </div>
+
+            <!-- VẠCH 11M, QUẢ BÓNG & CẦU THỦ -->
+            <div class="relative h-32 flex flex-col items-center justify-end mt-2">
+              <!-- Chấm phạt đền 11m -->
+              <div class="w-4 h-2 bg-white/90 rounded-full mb-2"></div>
+
+              <!-- Quả bóng (Soccer Ball) -->
+              <div id="soccer-ball" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 text-3xl sm:text-4xl filter drop-shadow-md">
+                ⚽
+              </div>
+
+              <!-- Cầu thủ sút phạt -->
+              <div id="striker-avatar" class="absolute bottom-0 left-[42%] -translate-x-1/2 z-20 transition-transform duration-300 flex items-center gap-2">
+                <div class="bg-amber-400 text-slate-900 font-black text-xs px-2.5 py-1 rounded-xl shadow border border-white">
+                  🏃 Cầu thủ số 10
+                </div>
+              </div>
+            </div>
+
+            <!-- Thông báo kết quả cú sút (Overlay) -->
+            <div id="shot-feedback" class="hidden absolute inset-x-4 bottom-4 bg-slate-900/95 text-white p-4 rounded-2xl border-2 border-amber-400 z-40 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <span id="shot-feedback-icon" class="text-3xl">🎉</span>
+                <div>
+                  <h4 id="shot-feedback-title" class="font-black text-amber-300 text-base sm:text-lg">VÀOOOO! CÚ SÚT TUYỆT ĐẸP!</h4>
+                  <p id="shot-feedback-desc" class="text-xs sm:text-sm text-slate-200"></p>
+                </div>
+              </div>
+              <button id="btn-next-round" onclick="nextPenaltyRound()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs sm:text-sm shrink-0 shadow-lg transition">
+                Lượt tiếp theo ➔
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CỘT PHẢI (5/12): BỘ NÃO CẦU THỦ XỬ LÍ THÔNG TIN -->
+        <div class="lg:col-span-5 flex flex-col justify-between bg-slate-50 rounded-3xl border-2 border-slate-200 p-4 sm:p-5 shadow-inner">
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="text-2xl">🧠</span>
+                <div>
+                  <h3 class="font-black text-slate-800 text-base sm:text-lg leading-tight">
+                    BỘ NÃO CẦU THỦ ĐANG XỬ LÍ
+                  </h3>
+                  <p class="text-xs text-slate-500 font-semibold">
+                    Thực hiện lần lượt các bước để ghi bàn thắng!
+                  </p>
+                </div>
+              </div>
+              <span class="bg-sky-100 text-sky-800 text-xs font-extrabold px-2.5 py-1 rounded-lg">
+                4 Bước Cơ Bản
+              </span>
+            </div>
+
+            <!-- 4 Bước Xử lí thông tin trực quan -->
+            <div class="space-y-3">
+
+              <!-- Bước 1: Thu nhận thông tin -->
+              <div id="step-card-1" class="brain-step active bg-white p-3.5 rounded-2xl border-2 border-sky-400 shadow-sm">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-sky-600 text-white font-black flex items-center justify-center text-sm shrink-0">1</span>
+                    <div>
+                      <div class="text-xs font-extrabold uppercase tracking-wider text-sky-700">Bước 1: Thu nhận thông tin</div>
+                      <div class="text-sm font-bold text-slate-800 mt-0.5" id="step-1-text">
+                        Dùng mắt quan sát vị trí thủ môn & cầu môn.
+                      </div>
+                    </div>
+                  </div>
+                  <span class="text-xl">👀</span>
+                </div>
+                <div class="mt-2.5">
+                  <button id="btn-observe" onclick="observeKeeper()"
+                    class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black text-sm shadow-md transition flex items-center justify-center gap-2">
+                    <span>👁️</span> Bấm để Mắt quan sát Thủ môn
+                  </button>
+                </div>
+              </div>
+
+              <!-- Bước 2: Lưu trữ thông tin -->
+              <div id="step-card-2" class="brain-step bg-white/70 p-3.5 rounded-2xl border-2 border-slate-200 opacity-60">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-purple-600 text-white font-black flex items-center justify-center text-sm shrink-0">2</span>
+                    <div>
+                      <div class="text-xs font-extrabold uppercase tracking-wider text-purple-700">Bước 2: Lưu trữ thông tin</div>
+                      <div class="text-xs sm:text-sm font-semibold text-slate-700 mt-0.5" id="step-2-text">
+                        Bộ não ghi nhớ vị trí thủ môn và kinh nghiệm đá phạt.
+                      </div>
+                    </div>
+                  </div>
+                  <span class="text-xl">💾</span>
+                </div>
+              </div>
+
+              <!-- Bước 3: Biến đổi (Xử lí) thông tin -->
+              <div id="step-card-3" class="brain-step bg-white/70 p-3.5 rounded-2xl border-2 border-slate-200 opacity-60">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-amber-500 text-white font-black flex items-center justify-center text-sm shrink-0">3</span>
+                    <div>
+                      <div class="text-xs font-extrabold uppercase tracking-wider text-amber-700">Bước 3: Biến đổi (Xử lí) thông tin</div>
+                      <div class="text-xs sm:text-sm font-semibold text-slate-700 mt-0.5" id="step-3-text">
+                        Phân tích góc sơ hở nhất ➔ Chọn góc sút trên cầu môn!
+                      </div>
+                    </div>
+                  </div>
+                  <span class="text-xl">⚡</span>
+                </div>
+              </div>
+
+              <!-- Bước 4: Truyền thông tin -->
+              <div id="step-card-4" class="brain-step bg-white/70 p-3.5 rounded-2xl border-2 border-slate-200 opacity-60">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black flex items-center justify-center text-sm shrink-0">4</span>
+                    <div>
+                      <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Bước 4: Truyền thông tin</div>
+                      <div class="text-xs sm:text-sm font-semibold text-slate-700 mt-0.5" id="step-4-text">
+                        Não truyền lệnh điều khiển đôi chân sút bóng!
+                      </div>
+                    </div>
+                  </div>
+                  <span class="text-xl">🦵</span>
+                </div>
+                <div class="mt-2.5">
+                  <button id="btn-shoot" onclick="shootBall()" disabled
+                    class="w-full py-2.5 px-4 rounded-xl bg-slate-300 text-slate-500 font-black text-sm transition flex items-center justify-center gap-2 cursor-not-allowed">
+                    <span>⚽</span> Thực hiện cú sút!
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Nút chuyển nhanh sang Chặng 2 -->
+          <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+            <span class="text-xs text-slate-500 font-semibold">Đã hiểu tình huống sút phạt?</span>
+            <button onclick="switchStage(2)" class="px-4 py-2 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-extrabold text-xs sm:text-sm transition flex items-center gap-1">
+              Sang Chặng 2: Trả lời câu hỏi ➔
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CHẶNG 2: GIẢI MÃ BỘ NÃO (5 CÂU HỎI HOẠT ĐỘNG 1 SGK TRANG 9)
+         ========================================== -->
+    <section id="stage-2" class="hidden p-4 sm:p-6">
+      <div class="max-w-4xl mx-auto">
+
+        <!-- Tiêu đề Chặng 2 -->
+        <div class="bg-gradient-to-r from-sky-600 to-indigo-700 text-white rounded-3xl p-5 mb-6 shadow-lg flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl">
+              🕵️‍♂️
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-sky-200">
+                Kết nối Khởi động & Hoạt động 1 (SGK Trang 9)
+              </span>
+              <h2 class="text-lg sm:text-2xl font-black">
+                GIẢI MÃ 5 CÂU HỎI VỀ QUÁ TRÌNH XỬ LÍ THÔNG TIN
+              </h2>
+            </div>
+          </div>
+          <div class="bg-white/15 px-4 py-2 rounded-2xl border border-white/20 text-right">
+            <div class="text-xs text-sky-100 font-bold">Câu hỏi hiện tại</div>
+            <div id="quiz-progress-text" class="text-lg font-black text-amber-300">1 / 5</div>
+          </div>
+        </div>
+
+        <!-- Khung hiển thị câu hỏi -->
+        <div id="quiz-container" class="bg-white rounded-3xl border-2 border-slate-200 p-5 sm:p-7 shadow-lg">
+          <!-- Nội dung câu hỏi sẽ được render bằng JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CHẶNG 3: TỔNG KẾT & DẪN DẮT VÀO BÀI 2
+         ========================================== -->
+    <section id="stage-3" class="hidden p-4 sm:p-6">
+      <div class="max-w-4xl mx-auto text-center">
+
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-amber-100 text-5xl mb-3 shadow-inner border-2 border-amber-300">
+          🏆
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-800">
+          CHÚC MỪNG EM ĐÃ HOÀN THÀNH KHỞI ĐỘNG BÀI 2!
+        </h2>
+        <p class="text-slate-600 font-semibold mt-1 text-sm sm:text-base">
+          Qua cú sút phạt đền của cầu thủ, chúng ta đã khám phá ra bí mật hoạt động của bộ não!
+        </p>
+
+        <!-- Sơ đồ 4 bước xử lí thông tin (Chuẩn SGK trang 10) -->
+        <div class="my-6 bg-gradient-to-br from-emerald-50 via-sky-50 to-amber-50 rounded-3xl p-5 sm:p-6 border-2 border-emerald-200 shadow-md text-left">
+          <h3 class="text-center font-black text-base sm:text-lg text-emerald-900 uppercase tracking-wider mb-4">
+            🌟 SƠ ĐỒ 4 BƯỚC CƠ BẢN TRONG XỬ LÍ THÔNG TIN 🌟
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-2xl border-2 border-sky-300 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="bg-sky-600 text-white text-xs font-black px-2.5 py-1 rounded-lg">BƯỚC 1</span>
+                  <span class="text-2xl">👀</span>
+                </div>
+                <h4 class="font-black text-sky-800 text-base">Thu nhận thông tin</h4>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Mắt cầu thủ quan sát vị trí thủ môn, quả bóng và khung thành.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-sky-700">
+                Giác quan: Nghe, Nhìn, Chạm, Nếm, Ngửi
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border-2 border-purple-300 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="bg-purple-600 text-white text-xs font-black px-2.5 py-1 rounded-lg">BƯỚC 2</span>
+                  <span class="text-2xl">🧠</span>
+                </div>
+                <h4 class="font-black text-purple-800 text-base">Lưu trữ thông tin</h4>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Bộ não ghi nhớ vị trí thủ môn và sử dụng kinh nghiệm sút phạt đã có.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-purple-700">
+                Ghi nhớ trong não hoặc ghi chép lên vật mang tin
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border-2 border-amber-400 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="bg-amber-500 text-white text-xs font-black px-2.5 py-1 rounded-lg">BƯỚC 3</span>
+                  <span class="text-2xl">⚡</span>
+                </div>
+                <h4 class="font-black text-amber-800 text-base">Biến đổi thông tin</h4>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Não phân tích, đánh giá điểm sơ hở của cầu môn để quyết định góc sút.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-amber-700">
+                Phân tích, so sánh, suy luận tạo ra thông tin mới
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border-2 border-emerald-400 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="bg-emerald-600 text-white text-xs font-black px-2.5 py-1 rounded-lg">BƯỚC 4</span>
+                  <span class="text-2xl">🦵</span>
+                </div>
+                <h4 class="font-black text-emerald-800 text-base">Truyền thông tin</h4>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Não truyền lệnh điều khiển đôi chân sải bước và sút bóng vào lưới!
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-emerald-700">
+                Chuyển thành hành vi hoặc chia sẻ với người khác
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lời dẫn của Giáo viên vào bài học -->
+        <div class="bg-emerald-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl mb-6 text-left flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-amber-400 text-slate-900 flex items-center justify-center text-3xl shrink-0 shadow">
+            👩‍🏫
+          </div>
+          <div>
+            <div class="text-xs font-extrabold uppercase tracking-wider text-amber-300">
+              Lời dẫn vào Bài học mới (Theo Giáo án Tin học 6 KNTT)
+            </div>
+            <p class="text-sm sm:text-base font-medium mt-1 leading-relaxed">
+              “Câu chuyện về quả phạt đền mà bạn Minh theo dõi gắn liền với hoạt động <strong>xử lí thông tin</strong> của bộ não con người. Vậy quá trình xử lí thông tin gồm những bước cơ bản nào và <strong>máy tính</strong> giúp con người xử lí thông tin hiệu quả ra sao? Chúng ta cùng bước vào <strong>Bài 2: Xử lí thông tin</strong>!”
+            </p>
+          </div>
+        </div>
+
+        <!-- Các nút điều hướng cuối màn -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <button onclick="resetFullGame()" class="px-5 py-3 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-extrabold text-sm transition flex items-center gap-2">
+            <span>🔄</span> Chơi lại từ đầu
+          </button>
+          <a href="../../bai-2-xu-li-thong-tin.html" target="_top" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm shadow-lg transition flex items-center gap-2">
+            <span>📘</span> Quay về trang Bài 2: Xử lí thông tin
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MODAL GỢI Ý TỔ CHỨC DẠY HỌC CHO GIÁO VIÊN -->
+  <div id="teacher-modal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border-2 border-amber-300 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">👩‍🏫</span>
+          <h3 class="text-lg sm:text-xl font-black text-slate-800">
+            HƯỚNG DẪN TỔ CHỨC HOẠT ĐỘNG KHỞI ĐỘNG (BÀI 2)
+          </h3>
+        </div>
+        <button onclick="closeTeacherModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-600">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-4 text-sm text-slate-700 leading-relaxed">
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5">
+          <div class="font-black text-amber-900">1. Mục tiêu sư phạm (Theo SGK & SGV Tin học 6 KNTT):</div>
+          <ul class="list-disc list-inside mt-1 space-y-1">
+            <li>Tạo tâm thế hứng thú cho học sinh thông qua tình huống cầu thủ sút phạt đền 11m (SGK trang 9).</li>
+            <li>Giúp học sinh trực quan hóa các hoạt động diễn ra trong trí óc cầu thủ chỉ trong khoảnh khắc ngắn ngủi: <strong>Thu nhận $\rightarrow$ Lưu trữ $\rightarrow$ Biến đổi (Xử lí) $\rightarrow$ Truyền thông tin</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5">
+          <div class="font-black text-emerald-900">2. Kịch bản tổ chức trên lớp (5 - 8 phút):</div>
+          <ol class="list-decimal list-inside mt-1 space-y-1.5">
+            <li><strong>Bước 1 (Chặng 1 - Trải nghiệm):</strong> GV mời 1 HS đọc to đoạn Khởi động (hoặc bấm nút <em>"Đọc tình huống"</em>), sau đó mời 1–2 HS lên bảng đóng vai cầu thủ thực hiện 3 lượt sút phạt đền theo quy trình 4 bước.</li>
+            <li><strong>Bước 2 (Chặng 2 - Thảo luận nhanh):</strong> GV chuyển sang <em>Chặng 2</em>, cho các nhóm giơ tay trả lời nhanh 5 câu hỏi kết nối trực tiếp vào <strong>Hoạt động 1: Xử lí thông tin (SGK trang 9)</strong>.</li>
+            <li><strong>Bước 3 (Chặng 3 - Chốt & Dẫn nhập):</strong> GV chiếu sơ đồ 4 bước xử lí thông tin và dẫn dắt vào nội dung chính của Bài 2.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="mt-5 text-right">
+        <button onclick="closeTeacherModal()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm shadow">
+          Đã hiểu, đóng cửa sổ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT XỬ LÝ LOGIC TRÒ CHƠI & ÂM THANH -->
+  <script>
+    // ==========================================
+    // 1. HỆ THỐNG ÂM THANH (WEB AUDIO API)
+    // ==========================================
+    let soundEnabled = true;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx && AudioCtx) {
+        audioCtx = new AudioCtx();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      const now = audioCtx.currentTime;
+
+      if (type === 'whistle') {
+        // Tiếng còi trọng tài
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(2800, now);
+        osc.frequency.setValueAtTime(2950, now + 0.08);
+        osc.frequency.setValueAtTime(2750, now + 0.16);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === 'kick') {
+        // Tiếng sút bóng
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(40, now + 0.18);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } else if (type === 'goal') {
+        // Âm thanh ghi bàn chiến thắng
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+          gain.gain.setValueAtTime(0.22, now + idx * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.1);
+          osc.stop(now + idx * 0.1 + 0.35);
+        });
+      } else if (type === 'miss') {
+        // Âm thanh sút hỏng / bị bắt bài
+        const notes = [300, 220];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.18);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.18);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.18 + 0.25);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.18);
+          osc.stop(now + idx * 0.18 + 0.25);
+        });
+      } else if (type === 'click') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(660, now);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('btn-sound').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    function speakIntro() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const text = "Hãy quan sát một cầu thủ bóng đá thực hiện quả phạt đền. Mắt liên tục xác định vị trí của thủ môn, anh phải đánh giá xem góc nào của cầu môn là sơ hở nhất. Sải bước, lấy đà, trong khoảnh khắc, anh khuất phục thủ môn bằng một cú sút má trong vào góc trên bên trái cầu môn.";
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'vi-VN';
+        utterance.rate = 0.98;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        playSound('whistle');
+      }
+    }
+
+    // ==========================================
+    // 2. DỮ LIỆU CHẶNG 1: 3 LƯỢT ĐÁ PHẠT ĐỀN
+    // ==========================================
+    const penaltyRounds = [
+      {
+        round: 1,
+        keeperStartLeft: '65%',
+        keeperHint: 'Thủ môn đang đứng lệch hẳn sang bên PHẢI và hơi cúi thấp!',
+        bestCorner: 0, // Góc trên bên trái (Chuẩn ngữ liệu SGK trang 9)
+        cornerName: 'Góc Trên Bên Trái',
+        keeperDiveIfBest: { left: '68%', bottom: '8px', rotate: '15deg' },
+        explanation: 'Chính xác như trong SGK! Mắt thu nhận thủ môn đứng lệch phải ➔ Não phân tích Góc Trên Bên Trái sơ hở nhất ➔ Điều khiển chân sút ghi bàn!'
+      },
+      {
+        round: 2,
+        keeperStartLeft: '32%',
+        keeperHint: 'Thủ môn đang di chuyển lệch sang bên TRÁI cầu môn!',
+        bestCorner: 1, // Góc trên bên phải
+        cornerName: 'Góc Trên Bên Phải',
+        keeperDiveIfBest: { left: '28%', bottom: '10px', rotate: '-15deg' },
+        explanation: 'Tuyệt vời! Bộ não cầu thủ đã ghi nhớ vị trí thủ môn lệch trái và biến đổi thành quyết định sút vào Góc Trên Bên Phải!'
+      },
+      {
+        round: 3,
+        keeperStartLeft: '64%',
+        keeperHint: 'Thủ môn đang nhón chân chuẩn bị bắt bóng bổng bên PHẢI!',
+        bestCorner: 2, // Góc dưới bên trái
+        cornerName: 'Góc Dưới Bên Trái',
+        keeperDiveIfBest: { left: '70%', bottom: '28px', rotate: '12deg' },
+        explanation: 'Xuất sắc! Nhờ quan sát kỹ và xử lí thông tin nhạy bén, cầu thủ đã sút chìm hiểm hóc vào Góc Dưới Bên Trái!'
+      }
+    ];
+
+    const cornerCoords = [
+      { left: '24%', bottom: '175px', name: 'Góc Trên Bên Trái' },
+      { left: '76%', bottom: '175px', name: 'Góc Trên Bên Phải' },
+      { left: '24%', bottom: '105px', name: 'Góc Dưới Bên Trái' },
+      { left: '76%', bottom: '105px', name: 'Góc Dưới Bên Phải' }
+    ];
+
+    let currentRoundIdx = 0;
+    let selectedCornerIdx = null;
+    let hasObserved = false;
+    let goalsScored = 0;
+    let totalScore = 0;
+
+    function updateScore(points) {
+      totalScore += points;
+      document.getElementById('score-display').textContent = totalScore;
+    }
+
+    function loadPenaltyRound() {
+      const r = penaltyRounds[currentRoundIdx];
+      hasObserved = false;
+      selectedCornerIdx = null;
+
+      document.getElementById('round-label').textContent = `Lượt sút ${r.round} / ${penaltyRounds.length}`;
+      document.getElementById(' keeper-hint-banner').textContent = '👉 Bước 1: Hãy bấm "Quan sát thủ môn"';
+
+      // Đặt lại vị trí thủ môn & bóng
+      const keeper = document.getElementById('goalkeeper');
+      keeper.style.left = r.keeperStartLeft;
+      keeper.style.bottom = '4px';
+      keeper.style.transform = 'translateX(-50%) rotate(0deg)';
+      document.getElementById('keeper-speech').textContent = '🧤 Đố bạn đoán được góc sơ hở!';
+      document.getElementById('keeper-speech').className = 'bg-slate-800 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow mb-1 whitespace-nowrap';
+
+      const ball = document.getElementById('soccer-ball');
+      ball.style.left = '50%';
+      ball.style.bottom = '24px';
+      ball.style.transform = 'translateX(-50%) scale(1) rotate(0deg)';
+
+      // Reset 4 góc sút
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`corner-${i}`);
+        btn.disabled = true;
+        btn.classList.remove('selected');
+        btn.classList.add('opacity-50');
+        document.getElementById(`badge-corner-${i}`).classList.add('hidden');
+      }
+
+      // Reset các thẻ bước xử lí thông tin
+      setBrainStepState(1);
+      const btnObs = document.getElementById('btn-observe');
+      btnObs.disabled = false;
+      btnObs.innerHTML = '<span>👁️</span> Bấm để Mắt quan sát Thủ môn';
+      btnObs.className = 'w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black text-sm shadow-md transition flex items-center justify-center gap-2';
+
+      const btnShoot = document.getElementById('btn-shoot');
+      btnShoot.disabled = true;
+      btnShoot.className = 'w-full py-2.5 px-4 rounded-xl bg-slate-300 text-slate-500 font-black text-sm transition flex items-center justify-center gap-2 cursor-not-allowed';
+
+      document.getElementById('shot-feedback').classList.add('hidden');
+    }
+
+    function setBrainStepState(activeStep) {
+      for (let s = 1; s <= 4; s++) {
+        const card = document.getElementById(`step-card-${s}`);
+        if (s < activeStep) {
+          card.className = 'brain-step bg-emerald-50/90 p-3.5 rounded-2xl border-2 border-emerald-400 opacity-95';
+        } else if (s === activeStep) {
+          card.className = 'brain-step active bg-white p-3.5 rounded-2xl border-2 border-sky-500 shadow-md';
+        } else {
+          card.className = 'brain-step bg-white/70 p-3.5 rounded-2xl border-2 border-slate-200 opacity-60';
+        }
+      }
+    }
+
+    // Bước 1: Quan sát thủ môn (Thu nhận thông tin)
+    function observeKeeper() {
+      if (hasObserved) return;
+      hasObserved = true;
+      playSound('whistle');
+
+      const r = penaltyRounds[currentRoundIdx];
+      document.getElementById('keeper-speech').textContent = `👁️ ${r.keeperHint}`;
+      document.getElementById('keeper-speech').className = 'bg-amber-400 text-slate-950 text-[11px] font-black px-2.5 py-0.5 rounded-full shadow mb-1 whitespace-nowrap animate-bounce';
+
+      document.getElementById(' keeper-hint-banner').textContent = '👉 Bước 2 & 3: Hãy chọn góc cầu môn sơ hở nhất!';
+
+      // Đánh dấu hoàn thành bước 1, kích hoạt bước 2 & 3
+      const btnObs = document.getElementById('btn-observe');
+      btnObs.disabled = true;
+      btnObs.innerHTML = '<span>✅</span> Đã thu nhận thông tin từ Mắt!';
+      btnObs.className = 'w-full py-2 px-4 rounded-xl bg-emerald-600 text-white font-bold text-xs flex items-center justify-center gap-1.5';
+
+      setBrainStepState(3);
+      document.getElementById('step-card-2').className = 'brain-step bg-purple-50 p-3.5 rounded-2xl border-2 border-purple-400';
+
+      // Mở khóa 4 góc sút trên cầu môn và gợi ý góc sơ hở nhất
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`corner-${i}`);
+        btn.disabled = false;
+        btn.classList.remove('opacity-50');
+        if (i === r.bestCorner) {
+          document.getElementById(`badge-corner-${i}`).classList.remove('hidden');
+        }
+      }
+    }
+
+    // Bước 2 & 3: Chọn góc sút (Lưu trữ & Biến đổi thông tin)
+    function selectCorner(cornerIdx) {
+      if (!hasObserved) return;
+      playSound('click');
+      selectedCornerIdx = cornerIdx;
+
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`corner-${i}`);
+        if (i === cornerIdx) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      }
+
+      document.getElementById('step-3-text').innerHTML = `Đã quyết định sút vào: <strong class="text-emerald-700">${cornerCoords[cornerIdx].name}</strong>`;
+      document.getElementById(' keeper-hint-banner').textContent = '👉 Bước 4: Bấm "Thực hiện cú sút!"';
+
+      // Kích hoạt bước 4: Truyền thông tin điều khiển chân sút bóng
+      setBrainStepState(4);
+      const btnShoot = document.getElementById('btn-shoot');
+      btnShoot.disabled = false;
+      btnShoot.className = 'w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-black text-sm shadow-lg transition flex items-center justify-center gap-2 animate-pulse cursor-pointer';
+    }
+
+    // Bước 4: Sút bóng (Truyền thông tin đến đôi chân)
+    function shootBall() {
+      if (selectedCornerIdx === null) return;
+      playSound('kick');
+
+      const btnShoot = document.getElementById('btn-shoot');
+      btnShoot.disabled = true;
+
+      // khóa các góc
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`corner-${i}`).disabled = true;
+      }
+
+      const r = penaltyRounds[currentRoundIdx];
+      const target = cornerCoords[selectedCornerIdx];
+      const ball = document.getElementById('soccer-ball');
+      const keeper = document.getElementById('goalkeeper');
+
+      // Di chuyển quả bóng tới góc đã chọn
+      ball.style.left = target.left;
+      ball.style.bottom = target.bottom;
+      ball.style.transform = 'translateX(-50%) scale(0.65) rotate(540deg)';
+
+      const isGoal = (selectedCornerIdx === r.bestCorner);
+
+      if (isGoal) {
+        // Thủ môn đổ người không kịp
+        keeper.style.left = r.keeperDiveIfBest.left;
+        keeper.style.bottom = r.keeperDiveIfBest.bottom;
+        keeper.style.transform = `translateX(-50%) rotate(${r.keeperDiveIfBest.rotate})`;
+      } else {
+        // Nếu chọn góc không phải sơ hở nhất -> Thủ môn bắt bài ngay góc đó!
+        keeper.style.left = target.left;
+        keeper.style.bottom = (selectedCornerIdx < 2) ? '52px' : '8px';
+        keeper.style.transform = 'translateX(-50%) scale(1.05)';
+      }
+
+      setTimeout(() => {
+        const fb = document.getElementById('shot-feedback');
+        const fbIcon = document.getElementById('shot-feedback-icon');
+        const fbTitle = document.getElementById('shot-feedback-title');
+        const fbDesc = document.getElementById('shot-feedback-desc');
+        const btnNext = document.getElementById('btn-next-round');
+
+        fb.classList.remove('hidden');
+
+        if (isGoal) {
+          playSound('goal');
+          goalsScored++;
+          updateScore(20);
+          document.getElementById('goals-count').textContent = `${goalsScored}/3`;
+          fbIcon.textContent = '🎉';
+          fbTitle.textContent = 'VÀOOOO! BÀN THẮNG TUYỆT ĐẸP (+20 điểm)';
+          fbTitle.className = 'font-black text-amber-300 text-base sm:text-lg';
+          fbDesc.textContent = r.explanation;
+          spawnConfetti();
+        } else {
+          playSound('miss');
+          fbIcon.textContent = '🧤';
+          fbTitle.textContent = 'ÔI TIẾC QUÁ! THỦ MÔN ĐÃ CẢN PHÁ!';
+          fbTitle.className = 'font-black text-rose-400 text-base sm:text-lg';
+          fbDesc.textContent = `Góc sơ hở nhất ở lượt này là "${r.cornerName}". Em hãy quan sát kỹ vị trí thủ môn hơn để xử lí thông tin chính xác nhé!`;
+        }
+
+        if (currentRoundIdx < penaltyRounds.length - 1) {
+          btnNext.textContent = 'Sút lượt tiếp theo ➔';
+        } else {
+          btnNext.textContent = 'Sang Chặng 2: Giải mã Bộ não ➔';
+        }
+      }, 650);
+    }
+
+    function nextPenaltyRound() {
+      playSound('click');
+      if (currentRoundIdx < penaltyRounds.length - 1) {
+        currentRoundIdx++;
+        loadPenaltyRound();
+      } else {
+        switchStage(2);
+      }
+    }
+
+    // ==========================================
+    // 3. DỮ LIỆU CHẶNG 2: 5 CÂU HỎI HOẠT ĐỘNG 1 (SGK TRANG 9)
+    // ==========================================
+    const quizQuestions = [
+      {
+        id: 1,
+        badge: 'Câu hỏi 1 / 5 • Hoạt động 1 SGK trang 9',
+        question: '1. Khi thực hiện quả phạt đền, bộ não của cầu thủ nhận được thông tin từ những giác quan nào?',
+        options: [
+          { text: 'A. Chủ yếu từ Thị giác (Mắt theo dõi vị trí thủ môn, vị trí quả bóng và khoảng cách tới khung thành) và Thính giác (Tai nghe tiếng còi trọng tài).', correct: true },
+          { text: 'B. Chỉ nhận thông tin từ Vị giác (lưỡi) và Khứu giác (mũi).', correct: false },
+          { text: 'C. Bộ não tự suy nghĩ mà không cần bất kì giác quan nào thu nhận thông tin.', correct: false },
+          { text: 'D. Chỉ nhận thông tin từ đôi giày của cầu thủ.', correct: false }
+        ],
+        explanation: 'Chính xác! Nhờ các giác quan (đặc biệt là Đôi mắt quan sát vị trí thủ môn, quả bóng và khoảng cách), bộ não cầu thủ mới thực hiện được bước đầu tiên là THU NHẬN THÔNG TIN.'
+      },
+      {
+        id: 2,
+        badge: 'Câu hỏi 2 / 5 • Hoạt động 1 SGK trang 9',
+        question: '2. Thông tin nào được bộ não cầu thủ ghi nhớ (lưu trữ) và sử dụng khi đá phạt?',
+        options: [
+          { text: 'A. Tên của tất cả khán giả đang ngồi trên sân vận động.', correct: false },
+          { text: 'B. Thông tin về vị trí và động tác của thủ môn đối phương, vị trí quả bóng, khoảng cách và kinh nghiệm sút phạt của cầu thủ.', correct: true },
+          { text: 'C. Lịch thi đấu bóng đá của mùa giải năm sau.', correct: false },
+          { text: 'D. Màu sắc chiếc áo khoác của trọng tài bàn.', correct: false }
+        ],
+        explanation: 'Đúng rồi! Bộ não thực hiện bước LƯU TRỮ THÔNG TIN: ghi nhớ kết quả quan sát vị trí, động tác của thủ môn cùng kinh nghiệm đã có để làm nguyên liệu cho bước phân tích tiếp theo.'
+      },
+      {
+        id: 3,
+        badge: 'Câu hỏi 3 / 5 • Hoạt động 1 SGK trang 9',
+        question: '3. Bộ não cầu thủ biến đổi (xử lí) thông tin nhận được thành thông tin nào?',
+        options: [
+          { text: 'A. Biến đổi thành tiếng còi báo hiệu kết thúc trận đấu.', correct: false },
+          { text: 'B. Dùng kinh nghiệm phân tích vị trí của thủ môn để tìm ra điểm sơ hở của khung thành, từ đó hình thành ý định (quyết định) sút bóng vào góc trên bên trái.', correct: true },
+          { text: 'C. Biến đổi quả bóng tròn thành hình vuông.', correct: false },
+          { text: 'D. Giữ nguyên dữ liệu ban đầu mà không đưa ra bất kì phán đoán nào.', correct: false }
+        ],
+        explanation: 'Xuất sắc! Đó chính là bước BIẾN ĐỔI (XỬ LÍ) THÔNG TIN: Bộ não phân tích, đánh giá, suy luận để biến thông tin quan sát ban đầu thành quyết định góc sút hiệu quả nhất.'
+      },
+      {
+        id: 4,
+        badge: 'Câu hỏi 4 / 5 • Hoạt động 1 SGK trang 9',
+        question: '4. Bộ não chuyển thông tin điều khiển thành thao tác nào của cầu thủ?',
+        options: [
+          { text: 'A. Điều khiển hệ thống cơ bắp và đôi chân sải bước, lấy đà và thực hiện cú sút má trong hiểm hóc vào góc cao khung thành.', correct: true },
+          { text: 'B. Điều khiển thủ môn đối phương đứng yên một chỗ.', correct: false },
+          { text: 'C. Chỉ giữ ý định trong đầu mà không thực hiện bất kì cử động nào.', correct: false },
+          { text: 'D. Điều khiển trọng tài thổi còi phạt đền.', correct: false }
+        ],
+        explanation: 'Tuyệt vời! Đây là bước TRUYỀN THÔNG TIN: Thông tin điều khiển từ bộ não được truyền đến các bộ phận cơ thể (đôi chân) chuyển hoá thành hành động sút bóng ghi bàn.'
+      },
+      {
+        id: 5,
+        badge: 'Câu hỏi 5 / 5 • Hoạt động 1 SGK trang 9',
+        question: '5. Quá trình xử lí thông tin của bộ não gồm những hoạt động (bước) cơ bản nào?',
+        options: [
+          { text: 'A. Gồm 2 bước: Nhìn thấy thông tin và Quên thông tin.', correct: false },
+          { text: 'B. Gồm 3 bước: Suy nghĩ, Đi bộ và Chạy đà.', correct: false },
+          { text: 'C. Gồm 4 hoạt động (bước) cơ bản: Thu nhận thông tin, Lưu trữ thông tin, Biến đổi (Xử lí) thông tin và Truyền thông tin.', correct: true },
+          { text: 'D. Chỉ gồm 1 bước duy nhất là Truyền thông tin.', correct: false }
+        ],
+        explanation: 'Hoàn toàn chính xác! Quá trình xử lí thông tin luôn gồm 4 bước cơ bản: Thu nhận ➔ Lưu trữ ➔ Biến đổi (Xử lí) ➔ Truyền thông tin.'
+      }
+    ];
+
+    let currentQuizIdx = 0;
+    let quizAnswered = false;
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[currentQuizIdx];
+      quizAnswered = false;
+      document.getElementById('quiz-progress-text').textContent = `${currentQuizIdx + 1} / ${quizQuestions.length}`;
+
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = `
+        <div class="mb-4">
+          <span class="bg-indigo-100 text-indigo-800 text-xs font-extrabold px-3 py-1 rounded-full">
+            ${q.badge}
+          </span>
+          <h3 class="text-lg sm:text-xl font-black text-slate-800 mt-3 leading-snug">
+            ${q.question}
+          </h3>
+        </div>
+
+        <div class="space-y-3" id="quiz-options">
+          ${q.options.map((opt, idx) => `
+            <button onclick="answerQuiz(${idx})" id="quiz-opt-${idx}"
+              class="w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/60 transition font-bold text-sm sm:text-base text-slate-700 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 font-black flex items-center justify-center shrink-0 mt-0.5">
+                ${String.fromCharCode(65 + idx)}
+              </span>
+              <span>${opt.text.replace(/^[A-D]\.\s*/, '')}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <div id="quiz-feedback" class="hidden mt-5 p-4 rounded-2xl border-2"></div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="prevQuizQuestion()" ${currentQuizIdx === 0 ? 'disabled' : ''}
+            class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs sm:text-sm disabled:opacity-40 transition">
+            ⬅ Câu trước
+          </button>
+          <button id="btn-next-quiz" onclick="nextQuizQuestion()" class="hidden px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs sm:text-sm shadow-md transition">
+            ${currentQuizIdx < quizQuestions.length - 1 ? 'Câu tiếp theo ➔' : 'Xem Tổng kết Khởi động ➔'}
+          </button>
+        </div>
+      `;
+    }
+
+    function answerQuiz(optIdx) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      const q = quizQuestions[currentQuizIdx];
+      const chosen = q.options[optIdx];
+      const fb = document.getElementById('quiz-feedback');
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.getElementById(`quiz-opt-${idx}`);
+        btn.disabled = true;
+        if (opt.correct) {
+          btn.className = 'w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-extrabold text-sm sm:text-base text-emerald-900 flex items-start gap-3 shadow-sm';
+        } else if (idx === optIdx && !opt.correct) {
+          btn.className = 'w-full text-left p-4 rounded-2xl border-2 border-rose-400 bg-rose-50 font-bold text-sm sm:text-base text-rose-800 flex items-start gap-3';
+        } else {
+          btn.className = 'w-full text-left p-4 rounded-2xl border-2 border-slate-200 opacity-50 font-medium text-sm sm:text-base text-slate-500 flex items-start gap-3';
+        }
+      });
+
+      fb.classList.remove('hidden');
+      if (chosen.correct) {
+        playSound('goal');
+        updateScore(20);
+        fb.className = 'mt-5 p-4 rounded-2xl border-2 border-emerald-400 bg-emerald-50 text-emerald-900';
+        fb.innerHTML = `<div class="font-black text-base mb-1">🌟 Chính xác! (+20 điểm)</div><p class="text-xs sm:text-sm font-semibold">${q.explanation}</p>`;
+      } else {
+        playSound('miss');
+        fb.className = 'mt-5 p-4 rounded-2xl border-2 border-amber-400 bg-amber-50 text-amber-900';
+        fb.innerHTML = `<div class="font-black text-base mb-1">💡 Hãy xem lại đáp án đúng nhé!</div><p class="text-xs sm:text-sm font-semibold">${q.explanation}</p>`;
+      }
+
+      document.getElementById('btn-next-quiz').classList.remove('hidden');
+    }
+
+    function prevQuizQuestion() {
+      if (currentQuizIdx > 0) {
+        playSound('click');
+        currentQuizIdx--;
+        renderQuizQuestion();
+      }
+    }
+
+    function nextQuizQuestion() {
+      playSound('click');
+      if (currentQuizIdx < quizQuestions.length - 1) {
+        currentQuizIdx++;
+        renderQuizQuestion();
+      } else {
+        switchStage(3);
+        spawnConfetti();
+      }
+    }
+
+    // ==========================================
+    // 4. ĐIỀU HƯỚNG CÁC CHẶNG & TIỆN ÍCH
+    // ==========================================
+    function switchStage(stageNum) {
+      playSound('click');
+      document.getElementById('stage-1').classList.add('hidden');
+      document.getElementById('stage-2').classList.add('hidden');
+      document.getElementById('stage-3').classList.add('hidden');
+
+      document.getElementById(`stage-${stageNum}`).classList.remove('hidden');
+
+      const activeClass = 'px-4 py-2 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center gap-2 bg-emerald-600 text-white shadow';
+      const inactiveClass = 'px-4 py-2 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center gap-2 bg-white text-slate-600 hover:bg-slate-200 border border-slate-300';
+
+      document.getElementById('tab-btn-1').className = (stageNum === 1) ? activeClass : inactiveClass;
+      document.getElementById('tab-btn-2').className = (stageNum === 2) ? activeClass : inactiveClass;
+      document.getElementById('tab-btn-3').className = (stageNum === 3) ? activeClass : inactiveClass;
+
+      const progressBar = document.getElementById('progress-bar');
+      if (stageNum === 1) progressBar.style.width = '33%';
+      if (stageNum === 2) {
+        progressBar.style.width = '66%';
+        renderQuizQuestion();
+      }
+      if (stageNum === 3) {
+        progressBar.style.width = '100%';
+        playSound('goal');
+      }
+    }
+
+    function resetFullGame() {
+      currentRoundIdx = 0;
+      goalsScored = 0;
+      totalScore = 0;
+      currentQuizIdx = 0;
+      document.getElementById('score-display').textContent = '0';
+      document.getElementById('goals-count').textContent = '0/3';
+      loadPenaltyRound();
+      switchStage(1);
+    }
+
+    function openTeacherModal() {
+      playSound('click');
+      document.getElementById('teacher-modal').classList.remove('hidden');
+    }
+
+    function closeTeacherModal() {
+      playSound('click');
+      document.getElementById('teacher-modal').classList.add('hidden');
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    function spawnConfetti() {
+      const colors = ['#10b981', '#f59e0b', '#3b82f6', '#ef4444', '#a855f7'];
+      for (let i = 0; i < 36; i++) {
+        const conf = document.createElement('div');
+        conf.className = 'confetti';
+        conf.style.left = Math.random() * 100 + 'vw';
+        conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        conf.style.animationDuration = (Math.random() * 1.2 + 1.5) + 's';
+        document.body.appendChild(conf);
+        setTimeout(() => conf.remove(), 2800);
+      }
+    }
+
+    // Khởi tạo khi tải trang
+    window.addEventListener('DOMContentLoaded', () => {
+      loadPenaltyRound();
+    });
+  </script>
+</body>
+</html>

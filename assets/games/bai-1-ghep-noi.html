@@ -17,3 +17,14 @@ document.querySelector('#reset').addEventListener('click',()=>location.reload())
 message.hidden=true;
 terms.addEventListener('click',()=>{message.hidden=false;});
 </script></body></html>
+
+(function notifyParentHeight() {
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight || document.body.scrollHeight;
+    window.parent.postMessage({ type: 'RESIZE_GAME_IFRAME', height }, '*');
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+  document.addEventListener('click', () => setTimeout(sendHeight, 60));
+})();
+

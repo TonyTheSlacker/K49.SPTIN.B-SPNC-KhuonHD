@@ -1,168 +1,132 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Công cụ hỗ trợ học sinh lớp 6 tiếp thu môn Tin học với giao diện thân thiện và nội dung dễ hiểu.">
-  <title>Hỗ trợ tin học</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260804">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Học liệu số Tin học 6 | Kết nối tri thức với cuộc sống - HCMUE</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
-  <div class="page-shell">
-    <div class="placeholder-banner" aria-hidden="true"></div>
-
-    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-controls="leftSidebar" aria-expanded="false">
-      ☰ Menu chủ đề
-    </button>
-
-    <div class="home-layout">
-      <aside class="left-sidebar" id="leftSidebar" aria-label="Thanh điều hướng bên trái">
-        <div class="left-sidebar__header">
-          <strong>Menu học tập</strong>
-          <button class="left-sidebar__close" id="sidebarClose" type="button" aria-label="Đóng menu">×</button>
-        </div>
-        
-        <div class="sidebar-banner">
-          <div class="sidebar-banner__badge">Danh mục bài học</div>
-          <h2>Chọn nhanh từng bài trong chương trình</h2>
-          <p>Danh mục dưới đây đang được tạo dần để mở rộng nội dung cho từng bài học.</p>
-          <a href="index.html">Trang chủ</a>
-          <a href="#sidebarAccordion">Xem toàn bộ</a>
-        </div>
-
-        <div class="sidebar-accordion" id="sidebarAccordion">
-          <section class="sidebar-group">
-            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-1" data-accordion-trigger>
-              Chủ đề 1. Máy tính và cộng đồng
-            </button>
-            <div class="sidebar-group__panel" id="sidebar-topic-1" hidden>
-              <a href="bai-1-thong-tin-va-du-lieu.html">Bài 1. Thông tin và dữ liệu</a>
-              <a href="bai-2-xu-li-thong-tin.html">Bài 2. Xử lí thông tin</a>
-              <a href="bai-3-thong-tin-trong-may-tinh.html">Bài 3. Thông tin trong máy tính</a>
-            </div>
-          </section>
-
-          <section class="sidebar-group">
-            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-2" data-accordion-trigger>
-              Chủ đề 2. Mạng máy tính và Internet
-            </button>
-            <div class="sidebar-group__panel" id="sidebar-topic-2" hidden>
-              <a href="bai-4-mang-may-tinh.html">Bài 4. Mạng máy tính</a>
-              <a href="bai-5-internet.html">Bài 5. Internet</a>
-            </div>
-          </section>
-
-          <section class="sidebar-group">
-            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-3" data-accordion-trigger>
-              Chủ đề 3. Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin
-            </button>
-            <div class="sidebar-group__panel" id="sidebar-topic-3" hidden>
-              <a href="bai-6-mang-thong-tin-toan-cau.html">Bài 6. Mạng thông tin toàn cầu</a>
-              <a href="bai-7-tim-kiem-thong-tin-tren-internet.html">Bài 7. Tìm kiếm thông tin trên Internet</a>
-              <a href="bai-8-thu-dien-tu.html">Bài 8. Thư điện tử</a>
-            </div>
-          </section>
-
-          <section class="sidebar-group">
-            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-4" data-accordion-trigger>
-              Chủ đề 4. Đạo đức, pháp luật và văn hoá trong môi trường số
-            </button>
-            <div class="sidebar-group__panel" id="sidebar-topic-4" hidden>
-              <a href="bai-9-an-toan-thong-tin-tren-internet.html">Bài 9. An toàn thông tin trên Internet</a>
-            </div>
-          </section>
-
-          <section class="sidebar-group">
-            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-5" data-accordion-trigger>
-              Chủ đề 5. Ứng dụng tin học
-            </button>
-            <div class="sidebar-group__panel" id="sidebar-topic-5" hidden>
-              <a href="bai-10-so-do-tu-duy.html">Bài 10. Sơ đồ tư duy</a>
-              <a href="bai-11-dinh-dang-van-ban.html">Bài 11. Định dạng văn bản</a>
-              <a href="bai-12-trinh-bay-thong-tin-o-dang-bang.html">Bài 12. Trình bày thông tin ở dạng bảng</a>
-              <a href="bai-13-tim-kiem-va-thay-the.html">Bài 13. Tìm kiếm và thay thế</a>
-              <a href="bai-14-thuc-hanh-tong-hop-hoan-thien-so-luu-niem.html">Bài 14. Thực hành tổng hợp: Hoàn thiện sổ lưu niệm</a>
-            </div>
-          </section>
-
-          <section class="sidebar-group">
-            <button class="sidebar-group__toggle" type="button" aria-expanded="false" aria-controls="sidebar-topic-6" data-accordion-trigger>
-              Chủ đề 6. Giải quyết vấn đề với sự trợ giúp của máy tính
-            </button>
-            <div class="sidebar-group__panel" id="sidebar-topic-6" hidden>
-              <a href="bai-15-thuat-toan.html">Bài 15. Thuật toán</a>
-              <a href="bai-16-cac-cau-truc-dieu-khien.html">Bài 16. Các cấu trúc điều khiển</a>
-              <a href="bai-17-chuong-trinh-may-tinh.html">Bài 17. Chương trình máy tính</a>
-              <a href="dictionary.html">Bảng giải thích thuật ngữ</a>
-            </div>
-          </section>
-        </div>
-      </aside>
-
-      <div class="home-content">
-        <header class="hero">
-          <h1>Hỗ trợ tin học</h1>
-        </header>
-
-        <main>
-          <section class="topics" aria-labelledby="topics-title">
-            <div class="section-heading">
-              <h2 id="topics-title">6 chủ đề chính</h2>
-              <p>Chạm vào từng thẻ để bắt đầu hành trình học tập.</p>
-            </div>
-
-            <div class="topic-grid">
-              <article class="topic-card topic-card--blue">
-                <span class="topic-card__icon">1</span>
-                <h3>Làm quen với máy tính</h3>
-                <p>Nhận biết các bộ phận cơ bản và cách sử dụng an toàn.</p>
-                <a href="dictionary.html">Khám phá</a>
-              </article>
-
-              <article class="topic-card topic-card--green">
-                <span class="topic-card__icon">2</span>
-                <h3>Hệ điều hành và thư mục</h3>
-                <p>Biết cách mở, lưu và tìm tệp đúng chỗ.</p>
-                <a href="dictionary.html">Khám phá</a>
-              </article>
-
-              <article class="topic-card topic-card--yellow">
-                <span class="topic-card__icon">3</span>
-                <h3>Soạn thảo văn bản</h3>
-                <p>Gõ chữ, chỉnh sửa và trình bày bài làm gọn gàng.</p>
-                <a href="dictionary.html">Khám phá</a>
-              </article>
-
-              <article class="topic-card topic-card--pink">
-                <span class="topic-card__icon">4</span>
-                <h3>Internet an toàn</h3>
-                <p>Học cách truy cập thông tin đúng, an toàn và có trách nhiệm.</p>
-                <a href="dictionary.html">Khám phá</a>
-              </article>
-
-              <article class="topic-card topic-card--orange">
-                <span class="topic-card__icon">5</span>
-                <h3>Tư duy thuật toán</h3>
-                <p>Rèn luyện cách suy nghĩ theo từng bước để giải quyết vấn đề.</p>
-                <a href="algorithm.html">Mở mô phỏng</a>
-              </article>
-
-              <article class="topic-card topic-card--purple">
-                <span class="topic-card__icon">6</span>
-                <h3>Thực hành dự án nhỏ</h3>
-                <p>Làm quen với nhiệm vụ thú vị để áp dụng kiến thức đã học.</p>
-                <a href="crossword.html">Chơi ô chữ</a>
-              </article>
-            </div>
-          </section>
-        </main>
-      </div>
+  <!-- Dải thông tin học thuật Khoa CNTT - ĐH Sư phạm TP.HCM -->
+  <div class="academic-Ribbon">
+    <div class="academic-Ribbon__inner">
+      <span>Trường Đại học Sư phạm TP. Hồ Chí Minh · Khoa Công nghệ Thông tin (Khóa 49)</span>
+      <span>Chương trình GDPT 2018 · Bộ sách Kết nối tri thức với cuộc sống</span>
     </div>
   </div>
 
-  <script src="assets/js/main.js?v=20260804"></script>
+  <!-- Header chính -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="index.html" class="brand">
+        <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM" class="brand__logo" />
+        <div class="brand__text">
+          <span class="brand__title">Học Liệu Số Tin Học 6</span>
+          <span class="brand__subtitle">Hệ thống bài học tương tác & thực hành tư duy thuật toán</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="index.html" class="main-nav__link is-active">Mục lục bài học</a>
+        <a href="dictionary.html" class="main-nav__link">Từ điển thuật ngữ</a>
+        <a href="crossword.html" class="main-nav__link">Ô chữ ôn tập</a>
+        <a href="algorithm.html" class="main-nav__link">Mô phỏng thuật toán</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Phần giới thiệu định hướng Sư phạm -->
+  <section class="editorial-intro">
+    <div class="container editorial-intro__grid">
+      <div>
+        <span class="kicker">Tài liệu dạy – học trực quan cấp THCS</span>
+        <h1 class="editorial-intro__title">
+          Hệ thống bài học & thực hành Tin học 6 theo định hướng phát triển năng lực
+        </h1>
+        <p class="editorial-intro__lead">
+          Nội dung được biên soạn bám sát 6 chủ đề và 17 bài học trong sách giáo khoa
+          <strong>Tin học 6 (Kết nối tri thức với cuộc sống)</strong>. Mỗi bài học kết hợp
+          phiếu hoạt động khởi động, mô phỏng trực quan và bài tập vận dụng tại lớp hoặc tự học ở nhà.
+        </p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="#muc-luc-chuong-trinh" class="btn btn--primary">Xem danh mục 17 bài học</a>
+          <a href="algorithm.html" class="btn">Thực hành Sơ đồ khối & Thuật toán</a>
+          <a href="dictionary.html" class="btn">Tra cứu thuật ngữ</a>
+        </div>
+      </div>
+
+      <!-- Thẻ tổng quan tiến độ & 3 mạch kiến thức -->
+      <aside class="study-overview-card" aria-label="Tiến độ học tập">
+        <div class="study-overview-card__header">
+          <span class="study-overview-card__title">Tiến độ hoàn thành chương trình</span>
+          <span id="progress-counter" style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">0 / 17 bài</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-secondary);">
+          Chương trình Tin học 6 được tổ chức xoay quanh 3 mạch kiến thức cốt lõi:
+        </p>
+        <div class="strand-legend">
+          <div class="strand-legend__item">
+            <span class="strand-legend__code" style="color: var(--strand-cs-text);">CS · Khoa học MT</span>
+            <span class="strand-legend__desc">Chủ đề 1 & Chủ đề 6</span>
+          </div>
+          <div class="strand-legend__item">
+            <span class="strand-legend__code" style="color: var(--strand-ict-text);">ICT · Công nghệ TT</span>
+            <span class="strand-legend__desc">Chủ đề 2, 3 & 5</span>
+          </div>
+          <div class="strand-legend__item">
+            <span class="strand-legend__code" style="color: var(--strand-dl-text);">DL · Học vấn số</span>
+            <span class="strand-legend__desc">Trọng tâm Chủ đề 4</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Danh mục 6 Chủ đề - 17 Bài học -->
+  <main id="muc-luc-chuong-trinh" class="container" style="padding-bottom: 3rem;">
+    <div class="curriculum-toolbar">
+      <div class="strand-filters" role="group" aria-label="Lọc theo mạch kiến thức">
+        <button type="button" class="filter-btn is-active" data-strand="all">Tất cả (17 bài)</button>
+        <button type="button" class="filter-btn" data-strand="CS">Mạch CS (Khoa học máy tính)</button>
+        <button type="button" class="filter-btn" data-strand="ICT">Mạch ICT (Định hướng ứng dụng)</button>
+        <button type="button" class="filter-btn" data-strand="DL">Mạch DL (Học vấn số hóa)</button>
+      </div>
+
+      <div class="search-input-wrap">
+        <input
+          type="search"
+          id="lesson-search"
+          class="search-input"
+          placeholder="Tìm tên bài học hoặc từ khóa (VD: bit, sơ đồ tư duy)..."
+          aria-label="Tìm kiếm bài học"
+        />
+      </div>
+    </div>
+
+    <!-- Danh sách bài học được render từ assets/js/main.js -->
+    <div id="curriculum-container"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div>
+        <strong style="color: var(--hcmue-navy); display: block; margin-bottom: 0.35rem;">
+          Sản phẩm Nghiên cứu – Học phần Hồ sơ Tốt nghiệp (K49.SPTIN.B)
+        </strong>
+        <p>Khoa Công nghệ Thông tin – Trường Đại học Sư phạm Thành phố Hồ Chí Minh (2023 – 2027).</p>
+        <p style="margin-top: 0.25rem;">Biên soạn dựa trên Chương trình Giáo dục phổ thông môn Tin học 2018.</p>
+      </div>
+      <div style="display: flex; gap: 1.5rem;">
+        <a href="dictionary.html">Từ điển thuật ngữ</a>
+        <a href="crossword.html">Trò chơi ô chữ</a>
+        <a href="algorithm.html">Mô phỏng thuật toán</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
 </body>
 </html>

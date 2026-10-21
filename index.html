@@ -1,132 +1,91 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Học liệu số Tin học 6 | Kết nối tri thức với cuộc sống - HCMUE</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Học Liệu Số Tin Học 6 — Kết Nối Tri Thức Với Cuộc Sống | HCMUE</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=20261021">
 </head>
 <body>
-  <!-- Dải thông tin học thuật Khoa CNTT - ĐH Sư phạm TP.HCM -->
-  <div class="academic-Ribbon">
-    <div class="academic-Ribbon__inner">
-      <span>Trường Đại học Sư phạm TP. Hồ Chí Minh · Khoa Công nghệ Thông tin (Khóa 49)</span>
-      <span>Chương trình GDPT 2018 · Bộ sách Kết nối tri thức với cuộc sống</span>
-    </div>
-  </div>
 
-  <!-- Header chính -->
   <header class="site-header">
-    <div class="site-header__inner">
-      <a href="index.html" class="brand">
-        <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM" class="brand__logo" />
-        <div class="brand__text">
-          <span class="brand__title">Học Liệu Số Tin Học 6</span>
-          <span class="brand__subtitle">Hệ thống bài học tương tác & thực hành tư duy thuật toán</span>
+    <div class="header-inner">
+      <a href="index.html" class="brand-identity">
+        <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM" width="120" height="40">
+        <div class="brand-titles">
+          <span class="brand-dept">Khoa Công nghệ Thông tin · K49.SPTIN.B</span>
+          <span class="brand-name">Học Liệu Số Tin Học 6</span>
         </div>
       </a>
-
       <nav class="main-nav" aria-label="Điều hướng chính">
-        <a href="index.html" class="main-nav__link is-active">Mục lục bài học</a>
-        <a href="dictionary.html" class="main-nav__link">Từ điển thuật ngữ</a>
-        <a href="crossword.html" class="main-nav__link">Ô chữ ôn tập</a>
-        <a href="algorithm.html" class="main-nav__link">Mô phỏng thuật toán</a>
+        <a href="index.html" class="nav-link active">Mục lục bài học</a>
+        <a href="dictionary.html" class="nav-link">Từ điển thuật ngữ</a>
+        <a href="crossword.html" class="nav-link">Ô chữ ôn tập</a>
+        <a href="algorithm.html" class="nav-link">Mô phỏng thuật toán</a>
       </nav>
     </div>
   </header>
 
-  <!-- Phần giới thiệu định hướng Sư phạm -->
-  <section class="editorial-intro">
-    <div class="container editorial-intro__grid">
+  <section class="hero-banner">
+    <div class="hero-container">
       <div>
-        <span class="kicker">Tài liệu dạy – học trực quan cấp THCS</span>
-        <h1 class="editorial-intro__title">
-          Hệ thống bài học & thực hành Tin học 6 theo định hướng phát triển năng lực
-        </h1>
-        <p class="editorial-intro__lead">
-          Nội dung được biên soạn bám sát 6 chủ đề và 17 bài học trong sách giáo khoa
-          <strong>Tin học 6 (Kết nối tri thức với cuộc sống)</strong>. Mỗi bài học kết hợp
-          phiếu hoạt động khởi động, mô phỏng trực quan và bài tập vận dụng tại lớp hoặc tự học ở nhà.
+        <span class="course-kicker">Chương trình GDPT 2018 · Bộ sách Kết nối tri thức với cuộc sống</span>
+        <h1 class="hero-title">Hệ thống bài học tương tác & thực hành Tin học 6</h1>
+        <p class="hero-desc">
+          Học liệu số hỗ trợ dạy và học môn Tin học lớp 6 gồm 6 chủ đề và 17 bài học. Mỗi bài học được thiết kế theo tiến trình sư phạm: Khởi động, Khám phá kiến thức, Luyện tập và Vận dụng.
         </p>
-        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-          <a href="#muc-luc-chuong-trinh" class="btn btn--primary">Xem danh mục 17 bài học</a>
-          <a href="algorithm.html" class="btn">Thực hành Sơ đồ khối & Thuật toán</a>
-          <a href="dictionary.html" class="btn">Tra cứu thuật ngữ</a>
+        <div class="hero-actions">
+          <a href="#curriculum-root" class="btn btn-primary">Xem danh mục 17 bài học</a>
+          <a href="algorithm.html" class="btn btn-outline">Thực hành Sơ đồ khối & Thuật toán</a>
+          <a href="dictionary.html" class="btn btn-outline">Tra cứu thuật ngữ</a>
         </div>
       </div>
 
-      <!-- Thẻ tổng quan tiến độ & 3 mạch kiến thức -->
-      <aside class="study-overview-card" aria-label="Tiến độ học tập">
-        <div class="study-overview-card__header">
-          <span class="study-overview-card__title">Tiến độ hoàn thành chương trình</span>
-          <span id="progress-counter" style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">0 / 17 bài</span>
+      <aside class="progress-summary-card" aria-label="Tiến độ học tập">
+        <div class="progress-header">
+          <span class="progress-label">Tiến độ hoàn thành</span>
+          <span class="progress-count" id="progress-count-text">0 / 17 bài (0%)</span>
         </div>
-        <div class="progress-bar-track">
-          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-bar-fill"></div>
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-secondary);">
-          Chương trình Tin học 6 được tổ chức xoay quanh 3 mạch kiến thức cốt lõi:
-        </p>
         <div class="strand-legend">
-          <div class="strand-legend__item">
-            <span class="strand-legend__code" style="color: var(--strand-cs-text);">CS · Khoa học MT</span>
-            <span class="strand-legend__desc">Chủ đề 1 & Chủ đề 6</span>
-          </div>
-          <div class="strand-legend__item">
-            <span class="strand-legend__code" style="color: var(--strand-ict-text);">ICT · Công nghệ TT</span>
-            <span class="strand-legend__desc">Chủ đề 2, 3 & 5</span>
-          </div>
-          <div class="strand-legend__item">
-            <span class="strand-legend__code" style="color: var(--strand-dl-text);">DL · Học vấn số</span>
-            <span class="strand-legend__desc">Trọng tâm Chủ đề 4</span>
-          </div>
+          <span class="strand-badge strand-cs">CS: Khoa học máy tính</span>
+          <span class="strand-badge strand-ict">ICT: Định hướng ứng dụng</span>
+          <span class="strand-badge strand-dl">DL: Học vấn số hóa</span>
         </div>
       </aside>
     </div>
   </section>
 
-  <!-- Danh mục 6 Chủ đề - 17 Bài học -->
-  <main id="muc-luc-chuong-trinh" class="container" style="padding-bottom: 3rem;">
-    <div class="curriculum-toolbar">
-      <div class="strand-filters" role="group" aria-label="Lọc theo mạch kiến thức">
-        <button type="button" class="filter-btn is-active" data-strand="all">Tất cả (17 bài)</button>
-        <button type="button" class="filter-btn" data-strand="CS">Mạch CS (Khoa học máy tính)</button>
-        <button type="button" class="filter-btn" data-strand="ICT">Mạch ICT (Định hướng ứng dụng)</button>
-        <button type="button" class="filter-btn" data-strand="DL">Mạch DL (Học vấn số hóa)</button>
+  <main class="curriculum-container">
+    <div class="toolbar-filter">
+      <div class="filter-group" role="group" aria-label="Lọc theo mạch kiến thức">
+        <button type="button" class="btn btn-primary" data-strand-filter="ALL">Tất cả (17 bài)</button>
+        <button type="button" class="btn btn-outline" data-strand-filter="CS">Mạch CS (Khoa học máy tính)</button>
+        <button type="button" class="btn btn-outline" data-strand-filter="ICT">Mạch ICT (Ứng dụng)</button>
+        <button type="button" class="btn btn-outline" data-strand-filter="DL">Mạch DL (Học vấn số)</button>
       </div>
-
-      <div class="search-input-wrap">
-        <input
-          type="search"
-          id="lesson-search"
-          class="search-input"
-          placeholder="Tìm tên bài học hoặc từ khóa (VD: bit, sơ đồ tư duy)..."
-          aria-label="Tìm kiếm bài học"
-        />
+      <div class="search-box">
+        <input type="search" id="lesson-search-input" placeholder="Tìm theo tên bài học hoặc nội dung...">
       </div>
     </div>
 
-    <!-- Danh sách bài học được render từ assets/js/main.js -->
-    <div id="curriculum-container"></div>
+    <div id="curriculum-root"></div>
   </main>
 
   <footer class="site-footer">
-    <div class="container site-footer__inner">
+    <div class="footer-inner">
       <div>
-        <strong style="color: var(--hcmue-navy); display: block; margin-bottom: 0.35rem;">
-          Sản phẩm Nghiên cứu – Học phần Hồ sơ Tốt nghiệp (K49.SPTIN.B)
-        </strong>
-        <p>Khoa Công nghệ Thông tin – Trường Đại học Sư phạm Thành phố Hồ Chí Minh (2023 – 2027).</p>
-        <p style="margin-top: 0.25rem;">Biên soạn dựa trên Chương trình Giáo dục phổ thông môn Tin học 2018.</p>
+        <strong>Sản phẩm Nghiên cứu — Học phần Hồ sơ Tốt nghiệp (K49.SPTIN.B)</strong><br>
+        Khoa Công nghệ Thông tin · Trường Đại học Sư phạm Thành phố Hồ Chí Minh (2023 – 2027)
       </div>
-      <div style="display: flex; gap: 1.5rem;">
-        <a href="dictionary.html">Từ điển thuật ngữ</a>
-        <a href="crossword.html">Trò chơi ô chữ</a>
-        <a href="algorithm.html">Mô phỏng thuật toán</a>
+      <div>
+        Biên soạn theo Chương trình Giáo dục phổ thông môn Tin học 2018 (Cấp THCS).
       </div>
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js?v=20261021"></script>
 </body>
 </html>

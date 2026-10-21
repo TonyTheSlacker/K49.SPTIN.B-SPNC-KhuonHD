@@ -1,59 +1,38 @@
-/* ==========================================================================
-   HỌC LIỆU SỐ TIN HỌC 6 - KẾT NỐI TRI THỨC VỚI CUỘC SỐNG
-   Khoa Công nghệ Thông tin - Trường Đại học Sư phạm TP.HCM (HCMUE)
-   ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,600;6..72,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Lexend:wght@500;600;700&display=swap');
 
 :root {
-  /* Bảng màu Sư phạm & SGK Kết nối tri thức */
-  --bg-paper: #f7f6f2;
-  --bg-surface: #ffffff;
-  --bg-subtle: #efede6;
-  --bg-code: #18222d;
+  --bg-page: #F7F6F2;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #EEF2F6;
 
-  /* Màu thương hiệu HCMUE */
-  --hcmue-navy: #0f3d6e;
-  --hcmue-blue: #1a5fb4;
-  --hcmue-sky: #e8f1fb;
+  --text-primary: #182230;
+  --text-secondary: #475467;
+  --text-muted: #667085;
 
-  /* Màu nhấn theo cấu trúc Sách Giáo Khoa */
-  --sgk-core-bg: #fff8f1;
-  --sgk-core-border: #d96b27;
-  --sgk-core-text: #8c3b08;
+  --brand-primary: #0F3D6E;
+  --brand-primary-hover: #0A2B4E;
+  --brand-accent: #D95D24;
+  --brand-accent-soft: #FEF3EE;
 
-  --sgk-activity-bg: #f0f6fc;
-  --sgk-activity-border: #2563eb;
+  --strand-cs-bg: #EBF5FF;
+  --strand-cs-text: #175CD3;
+  --strand-ict-bg: #ECFDF3;
+  --strand-ict-text: #027A48;
+  --strand-dl-bg: #FFF6ED;
+  --strand-dl-text: #C4320A;
 
-  --sgk-practice-bg: #f2fbf6;
-  --sgk-practice-border: #15803d;
+  --border-light: #E4E7EC;
+  --border-strong: #CBD5E1;
 
-  /* Màu phân biệt 3 mạch kiến thức GDPT 2018 */
-  --strand-cs-bg: #ede9fe;
-  --strand-cs-text: #5b21b6;
-  --strand-ict-bg: #e0f2fe;
-  --strand-ict-text: #0369a1;
-  --strand-dl-bg: #fef3c7;
-  --strand-dl-text: #b45309;
-
-  /* Chữ & Đường viền */
-  --text-primary: #1c2430;
-  --text-secondary: #4a5568;
-  --text-muted: #718096;
-  --border-color: #dcd9ce;
-  --border-strong: #b8b3a4;
-
-  /* Kích thước & Bo góc */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --shadow-card: 0 1px 3px rgba(15, 61, 110, 0.05), 0 1px 2px rgba(15, 61, 110, 0.03);
-  --shadow-focus: 0 0 0 3px rgba(26, 95, 180, 0.2);
-
-  /* Font chữ */
-  --font-sans: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: 'Newsreader', Georgia, serif;
+  --font-display: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-sm: 0 2px 6px rgba(16, 24, 40, 0.06);
 }
 
 *, *::before, *::after {
@@ -63,134 +42,30 @@
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--bg-paper);
+  font-family: var(--font-body);
+  background-color: var(--bg-page);
   color: var(--text-primary);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-img, svg, video, canvas {
-  display: block;
-  max-width: 100%;
 }
 
 /* ==========================================================================
-   TYPOGRAPHY & THẺ NGỮ NGHĨA MẶC ĐỊNH (ĐẢM BẢO MỌI TRANG BÀI HỌC ĐỀU ĐẸP)
+   HEADER CHUẨN SƯ PHẠM HCMUE
    ========================================================================== */
-h1 {
-  font-size: clamp(1.65rem, 2.5vw, 2.1rem);
-  font-weight: 700;
-  line-height: 1.28;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-h2 {
-  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--text-primary);
-  margin-bottom: 0.55rem;
-}
-
-h3 {
-  font-size: 1.08rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--text-primary);
-  margin-bottom: 0.45rem;
-}
-
-p {
-  margin-bottom: 0.85rem;
-  color: var(--text-secondary);
-}
-
-p:last-child {
-  margin-bottom: 0;
-}
-
-ul, ol {
-  padding-left: 1.35rem;
-  margin-bottom: 0.85rem;
-}
-
-li + li {
-  margin-top: 0.35rem;
-}
-
-section {
-  margin-bottom: 2.25rem;
-}
-
-/* Quy chuẩn TOÀN BỘ iframe trên mọi bài học (Khắc phục lỗi co 300x150px ở Bài 16) */
-iframe {
-  width: 100% !important;
-  max-width: 100%;
-  flex: 1 1 100%;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  display: block;
-  background-color: var(--bg-surface);
-  min-height: 420px;
-  margin: 1rem 0;
-}
-
-/* Tự động căn giữa cho các trang chưa bọc .container */
-body > *:not(.academic-Ribbon):not(.site-header):not(header):not(nav):not(.navbar):not(.editorial-intro):not(footer):not(.site-footer):not(script):not(style) {
-  max-width: 1240px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-/* ==========================================================================
-   1. THANH ĐIỀU HƯỚNG HỌC THUẬT (TOPBAR & HEADER)
-   ========================================================================== */
-.academic-Ribbon {
-  background-color: var(--hcmue-navy);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.78rem;
-  padding: 0.45rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.academic-Ribbon__inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.site-header,
-header.navbar,
-nav.navbar {
-  background-color: var(--bg-surface);
-  border-bottom: 1px solid var(--border-color);
+.site-header {
+  background: var(--bg-surface);
+  border-bottom: 2px solid var(--brand-primary);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-.site-header__inner,
-.nav-container {
+.header-inner {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0.85rem 1.5rem;
@@ -198,616 +73,543 @@ nav.navbar {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  flex-wrap: wrap;
 }
 
-.brand {
+.brand-identity {
   display: flex;
   align-items: center;
   gap: 0.85rem;
+  text-decoration: none;
+  color: inherit;
 }
 
-.brand__logo {
+.brand-identity img {
   height: 40px;
   width: auto;
 }
 
-.brand__text {
+.brand-titles {
   display: flex;
   flex-direction: column;
 }
 
-.brand__title {
-  font-weight: 700;
+.brand-dept {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.brand-name {
+  font-family: var(--font-display);
   font-size: 1.05rem;
-  color: var(--hcmue-navy);
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  color: var(--brand-primary);
+  line-height: 1.25;
 }
 
-.brand__subtitle {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-}
-
-.main-nav,
-.nav-links {
+.main-nav {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 0;
+  gap: 0.25rem;
+  flex-wrap: wrap;
 }
 
-.main-nav__link,
-.nav-links a {
-  padding: 0.5rem 0.9rem;
-  border-radius: var(--radius-sm);
+.nav-link {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.main-nav__link:hover,
-.nav-links a:hover {
+.nav-link:hover {
   background-color: var(--bg-subtle);
-  color: var(--text-primary);
+  color: var(--brand-primary);
 }
 
-.main-nav__link.is-active,
-.nav-links a.active {
-  background-color: var(--hcmue-sky);
-  color: var(--hcmue-navy);
+.nav-link.active {
+  background-color: var(--brand-primary);
+  color: #FFFFFF;
   font-weight: 600;
 }
 
 /* ==========================================================================
-   2. KHUNG BỐ CỤC CHÍNH (CONTAINERS)
+   TRANG CHỦ (INDEX.HTML)
    ========================================================================== */
-.container {
+.hero-banner {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-light);
+  padding: 2.25rem 1.5rem;
+}
+
+.hero-container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.editorial-intro {
-  padding: 2.5rem 0 2rem;
-  border-bottom: 1px solid var(--border-color);
-  background: linear-gradient(180deg, #ffffff 0%, var(--bg-paper) 100%);
-}
-
-.editorial-intro__grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: 1fr 320px;
   gap: 2.5rem;
-  align-items: start;
+  align-items: center;
 }
 
-.kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+.course-kicker {
+  display: inline-block;
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--hcmue-blue);
-  margin-bottom: 0.75rem;
+  color: var(--brand-accent);
+  margin-bottom: 0.5rem;
 }
 
-.editorial-intro__title {
-  font-family: var(--font-sans);
-  font-size: clamp(1.75rem, 2.8vw, 2.35rem);
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.25;
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.editorial-intro__lead {
-  font-size: 1rem;
+.hero-desc {
+  font-size: 0.98rem;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  max-width: 62ch;
+  max-width: 65ch;
 }
 
-.study-overview-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
+.progress-summary-card {
+  background: var(--bg-page);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 1.35rem;
-  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
 }
 
-.study-overview-card__header {
+.progress-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--bg-subtle);
+  margin-bottom: 0.6rem;
 }
 
-.study-overview-card__title {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--hcmue-navy);
+.progress-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
-.progress-bar-track {
-  width: 100%;
+.progress-count {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--brand-primary);
+}
+
+.progress-track {
   height: 8px;
-  background-color: var(--bg-subtle);
-  border-radius: 999px;
+  background: var(--border-light);
+  border-radius: 4px;
   overflow: hidden;
-  margin: 0.6rem 0 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.progress-bar-fill {
+.progress-fill {
   height: 100%;
-  background-color: var(--hcmue-blue);
+  background: var(--brand-primary);
   width: 0%;
   transition: width 0.3s ease;
 }
 
 .strand-legend {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-  margin-top: 0.75rem;
-}
-
-.strand-legend__item {
-  padding: 0.6rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-paper);
-}
-
-.strand-legend__code {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  display: block;
-}
-
-.strand-legend__desc {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  margin-top: 0.15rem;
-}
-
-/* ==========================================================================
-   3. THANH CÔNG CỤ LỌC & TÌM KIẾM BÀI HỌC
-   ========================================================================== */
-.curriculum-toolbar {
   display: flex;
+  gap: 0.5rem;
   flex-wrap: wrap;
+  font-size: 0.75rem;
+}
+
+.strand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+.strand-cs { background: var(--strand-cs-bg); color: var(--strand-cs-text); }
+.strand-ict { background: var(--strand-ict-bg); color: var(--strand-ict-text); }
+.strand-dl { background: var(--strand-dl-bg); color: var(--strand-dl-text); }
+
+.curriculum-container {
+  max-width: 1240px;
+  margin: 2rem auto 4rem;
+  padding: 0 1.5rem;
+}
+
+.toolbar-filter {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  margin: 2rem 0 1.5rem;
-  padding: 1rem 1.25rem;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-}
-
-.strand-filters {
-  display: flex;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
-  gap: 0.4rem;
 }
 
-.filter-btn {
-  padding: 0.45rem 0.85rem;
-  font-family: var(--font-sans);
-  font-size: 0.84rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  background-color: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.filter-btn:hover {
-  border-color: var(--border-strong);
-  color: var(--text-primary);
-}
-
-.filter-btn.is-active {
-  background-color: var(--hcmue-navy);
-  color: #ffffff;
-  border-color: var(--hcmue-navy);
-}
-
-.search-input-wrap {
+.search-box {
+  flex: 1;
+  min-width: 260px;
+  max-width: 420px;
   position: relative;
-  min-width: 280px;
 }
 
-.search-input {
+.search-box input {
   width: 100%;
-  padding: 0.5rem 0.85rem;
-  font-family: var(--font-sans);
-  font-size: 0.88rem;
-  border: 1px solid var(--border-color);
+  padding: 0.6rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  background-color: var(--bg-paper);
+  background: var(--bg-surface);
   color: var(--text-primary);
 }
 
-.search-input:focus {
-  outline: none;
-  border-color: var(--hcmue-blue);
-  background-color: var(--bg-surface);
-  box-shadow: var(--shadow-focus);
+.search-box input:focus {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: -1px;
 }
 
-/* ==========================================================================
-   4. DANH SÁCH CHỦ ĐỀ & THẺ BÀI HỌC (CHUẨN MỤC LỤC SGK)
-   ========================================================================== */
 .topic-block {
-  margin-bottom: 2.25rem;
+  margin-bottom: 2.5rem;
 }
 
 .topic-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding-bottom: 0.65rem;
+  border-bottom: 2px solid var(--text-primary);
+  padding-bottom: 0.5rem;
   margin-bottom: 1rem;
-  border-bottom: 2px solid var(--hcmue-navy);
-}
-
-.topic-header__left {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-
-.topic-code {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 0.2rem 0.55rem;
-  background-color: var(--hcmue-navy);
-  color: #ffffff;
-  border-radius: 4px;
-  display: inline-block;
 }
 
 .topic-title {
+  font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0;
 }
 
-.lesson-grid {
+.topic-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.lesson-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1rem;
 }
 
-.lesson-card {
+.lesson-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-left: 4px solid var(--brand-primary);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.2rem 1.3rem;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.lesson-card:hover {
-  border-color: var(--hcmue-blue);
-  box-shadow: 0 4px 12px rgba(15, 61, 110, 0.08);
+.lesson-item:hover {
+  border-color: var(--brand-primary);
+  box-shadow: var(--shadow-sm);
 }
 
-.lesson-card__meta {
+.lesson-item.is-completed {
+  border-left-color: #12B76A;
+}
+
+.lesson-item-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .lesson-number {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: var(--hcmue-blue);
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
 
-.strand-badge {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
-  display: inline-block;
-}
-
-.strand-badge--cs {
-  background-color: var(--strand-cs-bg);
-  color: var(--strand-cs-text);
-}
-
-.strand-badge--ict {
-  background-color: var(--strand-ict-bg);
-  color: var(--strand-ict-text);
-}
-
-.strand-badge--dl {
-  background-color: var(--strand-dl-bg);
-  color: var(--strand-dl-text);
-}
-
-.lesson-card__title {
+.lesson-title {
+  font-family: var(--font-display);
   font-size: 1.02rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 0.45rem;
-  line-height: 1.38;
+  margin-bottom: 0.4rem;
+  line-height: 1.35;
 }
 
-.lesson-card__summary {
+.lesson-summary {
   font-size: 0.86rem;
   color: var(--text-secondary);
   margin-bottom: 1rem;
 }
 
-.lesson-card__footer {
+.lesson-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--bg-subtle);
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--border-light);
   font-size: 0.8rem;
-}
-
-.lesson-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: var(--text-muted);
-}
-
-.lesson-status.is-done {
-  color: #15803d;
+  color: var(--brand-primary);
   font-weight: 600;
-}
-
-.lesson-card__cta {
-  font-weight: 600;
-  color: var(--hcmue-blue);
 }
 
 /* ==========================================================================
-   5. BỐ CỤC TRANG BÀI HỌC CHI TIẾT (ÁP DỤNG CHO CẢ 17 BÀI)
+   BỐ CỤC TRANG BÀI HỌC (HỖ TRỢ CẢ .lesson-layout VÀ .page-shell / .lesson-page)
    ========================================================================== */
-.lesson-layout {
-  display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
-  gap: 2rem;
-  padding: 2rem 1.5rem 4rem;
-  align-items: start;
-  max-width: 1240px;
-  margin: 0 auto;
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+.lesson-layout {
+  max-width: 1240px;
+  margin: 2rem auto 4rem;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2.25rem;
+  align-items: start;
+}
+
+/* Nếu trang dùng .lesson-page trực tiếp (chưa qua JS bọc 2 cột) vẫn căn giữa đẹp */
+.lesson-page {
+  max-width: 960px;
+  width: 100%;
+  margin: 2rem auto 4rem;
+  padding: 0 1.5rem;
+}
+
+/* Khi .lesson-page đã nằm trong .lesson-layout 2 cột */
+.lesson-layout .lesson-page,
+.lesson-layout .lesson-main {
+  max-width: 100%;
+  margin: 0;
+  padding: 2.25rem 2.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+/* Cột mục lục Tiến trình bài học bên trái */
 .lesson-sidebar {
   position: sticky;
   top: 84px;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  padding: 1.15rem;
-  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
 }
 
-.lesson-sidebar__title {
+.sidebar-heading {
   font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-muted);
   margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.pedagogical-steps {
+.step-nav {
   list-style: none;
-  padding-left: 0;
-  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
 
-.pedagogical-steps li + li {
-  margin-top: 0;
-}
-
-.pedagogical-steps__link {
+.step-nav a {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   padding: 0.5rem 0.65rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   color: var(--text-secondary);
-  border-left: 3px solid transparent;
-  line-height: 1.35;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
 }
 
-.pedagogical-steps__link:hover,
-.pedagogical-steps__link.is-active {
-  background-color: var(--hcmue-sky);
-  color: var(--hcmue-navy);
-  border-left-color: var(--hcmue-blue);
+.step-nav a:hover,
+.step-nav a.active {
+  background: var(--strand-cs-bg);
+  color: var(--brand-primary);
   font-weight: 600;
 }
 
 .step-index {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 600;
-  min-width: 22px;
-  height: 22px;
+  font-size: 0.75rem;
+  width: 20px;
+  height: 20px;
   border-radius: 4px;
-  background-color: var(--bg-subtle);
+  background: var(--bg-subtle);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.lesson-main {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 2.25rem 2.5rem;
-  box-shadow: var(--shadow-card);
-  min-width: 0;
-}
-
-.lesson-header {
-  border-bottom: 1px solid var(--border-color);
+/* ==========================================================================
+   ĐỊNH DẠNG CÁC CLASS GỐC TRONG BÀI 2 -> BÀI 17 (.lesson-section, .lesson-frame...)
+   ========================================================================== */
+.lesson-header,
+.lesson-hero {
+  border-bottom: 2px solid var(--border-light);
   padding-bottom: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.lesson-header__title {
-  font-size: clamp(1.65rem, 2.4vw, 1.95rem);
+.lesson-header h1,
+.lesson-page h1 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-primary);
-  margin: 0.5rem 0 1rem;
+  color: var(--brand-primary);
+  line-height: 1.3;
+  margin: 0.35rem 0 0.6rem;
 }
 
-/* Hộp Yêu cầu cần đạt (Chuẩn GDPT 2018) */
 .objectives-box {
-  background-color: var(--bg-paper);
-  border: 1px solid var(--border-color);
-  border-left: 4px solid var(--hcmue-navy);
-  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  border-left: 4px solid var(--brand-primary);
   padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   margin-top: 1rem;
 }
 
-.objectives-box__title {
-  font-size: 0.84rem;
-  font-weight: 700;
+.objectives-box h2,
+.objectives-box h3 {
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--hcmue-navy);
-  margin-bottom: 0.45rem;
+  color: var(--brand-primary);
+  margin-bottom: 0.4rem;
 }
 
 .objectives-box ul {
   padding-left: 1.2rem;
-  margin-bottom: 0;
   font-size: 0.92rem;
   color: var(--text-secondary);
 }
 
-/* Các khối nội dung chuẩn Sách Giáo Khoa */
-.lesson-section,
-.lesson-main section {
+/* Mỗi phần Hoạt động (.lesson-section hoặc .pedagogy-section) */
+.pedagogy-section,
+.lesson-section {
   margin-bottom: 2.5rem;
-  scroll-margin-top: 90px;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.lesson-section__header {
+.pedagogy-section:last-of-type,
+.lesson-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 1.5rem;
+}
+
+.lesson-section__header,
+.section-label-bar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1rem;
 }
 
-.section-pill {
+/* Ẩn các icon emoji đầu dòng (⌨️, 📖, 🎮...) để giao diện bớt mùi AI */
+.lesson-section__icon {
+  display: none !important;
+}
+
+.lesson-section__header h2,
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  line-height: 1.35;
+  margin-bottom: 0.25rem;
+}
+
+.lesson-section__lead {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.step-tag {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  padding: 0.25rem 0.6rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 4px;
-  background-color: var(--hcmue-navy);
-  color: #ffffff;
-  flex-shrink: 0;
+  background: var(--brand-primary);
+  color: #FFFFFF;
 }
 
-.lesson-section__title {
-  font-size: 1.28rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0;
-}
+.step-tag.tag-warmup { background: #027A48; }
+.step-tag.tag-explore { background: #0F3D6E; }
+.step-tag.tag-practice { background: #B54708; }
+.step-tag.tag-apply { background: #5925DC; }
 
-/* Hộp Hoạt động (Khởi động / Khám phá) */
-.sgk-activity-box {
-  background-color: var(--sgk-activity-bg);
-  border: 1px solid #bfdbfe;
-  border-left: 4px solid var(--sgk-activity-border);
-  border-radius: var(--radius-sm);
-  padding: 1.25rem 1.5rem;
-  margin: 1.25rem 0;
-}
-
-.sgk-activity-box__label {
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--hcmue-blue);
-  margin-bottom: 0.4rem;
-  display: block;
-}
-
-/* Hộp Kiến thức cốt lõi (Ghi nhớ chuẩn SGK Kết nối tri thức) */
-.sgk-core-box {
-  background-color: var(--sgk-core-bg);
-  border: 1px solid #fed7aa;
-  border-left: 4px solid var(--sgk-core-border);
+/* Hộp Ghi nhớ Kiến thức cốt lõi chuẩn SGK Kết nối tri thức */
+.knowledge-box {
+  background: var(--brand-accent-soft);
+  border: 1px solid #F9DBAF;
+  border-left: 5px solid var(--brand-accent);
   border-radius: var(--radius-sm);
   padding: 1.25rem 1.5rem;
   margin: 1.5rem 0;
 }
 
-.sgk-core-box__label {
-  font-size: 0.82rem;
+.knowledge-box-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--sgk-core-text);
-  margin-bottom: 0.45rem;
-  display: block;
+  letter-spacing: 0.04em;
+  color: var(--brand-accent);
+  margin-bottom: 0.5rem;
 }
 
-.sgk-core-box ul {
-  padding-left: 1.2rem;
-  margin-bottom: 0;
-  color: var(--text-primary);
-}
-
-/* Khung nhúng hoạt động tương tác (Iframe ổn định, không bị kéo giãn vô tận) */
+/* Khung nhúng Game & Video (.lesson-frame, .interactive-embed) */
+.lesson-frame,
 .interactive-embed {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background-color: var(--bg-paper);
-  overflow: hidden;
   margin: 1.25rem 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: var(--shadow-xs);
 }
 
-.interactive-embed__bar {
-  background-color: var(--bg-subtle);
-  padding: 0.55rem 1rem;
-  border-bottom: 1px solid var(--border-color);
+.embed-toolbar {
+  background: var(--bg-subtle);
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -816,120 +618,124 @@ nav.navbar {
   color: var(--text-secondary);
 }
 
-.interactive-embed iframe {
+.lesson-frame iframe,
+.interactive-embed iframe,
+main iframe {
   width: 100% !important;
-  border: none !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
+  min-height: 540px;
+  border: none;
   display: block;
-  min-height: 400px;
-  max-height: 760px;
-  background-color: #ffffff;
+  background: #FFFFFF;
 }
 
-/* Điều hướng cuối bài */
-.lesson-pagination {
+/* Thanh chuyển bài trước / bài tiếp theo (.lesson-footer-nav) */
+.lesson-footer-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+  border-top: 2px solid var(--border-light);
+  flex-wrap: wrap;
 }
 
-.btn {
+.lesson-footer-nav__link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.6rem 1.1rem;
-  font-family: var(--font-sans);
-  font-size: 0.88rem;
+  padding: 0.65rem 1.15rem;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
   font-weight: 600;
+  color: var(--brand-primary);
+  background: var(--bg-page);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.15s ease;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.btn:hover {
-  border-color: var(--hcmue-blue);
-  color: var(--hcmue-blue);
+.lesson-footer-nav__link:hover {
+  background: var(--strand-cs-bg);
+  border-color: var(--brand-primary);
 }
 
-.btn--primary {
-  background-color: var(--hcmue-navy);
-  border-color: var(--hcmue-navy);
-  color: #ffffff;
+.lesson-footer-nav__link--next {
+  background: var(--brand-primary);
+  color: #FFFFFF;
+  border-color: var(--brand-primary);
+  margin-left: auto;
 }
 
-.btn--primary:hover {
-  background-color: var(--hcmue-blue);
-  color: #ffffff;
+.lesson-footer-nav__link--next:hover {
+  background: var(--brand-primary-hover);
+  color: #FFFFFF;
 }
 
-/* ==========================================================================
-   6. TƯƠNG THÍCH NGƯỢC CHO CÁC CLASS CŨ TRONG BÀI 2->17, TỪ ĐIỂN, Ô CHỮ, THUẬT TOÁN
-   ========================================================================== */
-.card,
-.content-card,
-.activity-card,
-.theory-card,
-.quiz-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.35rem;
-  margin-bottom: 1.25rem;
-  box-shadow: var(--shadow-card);
-}
-
-.badge,
-.lesson-badge,
-.pill {
+/* Nút bấm chung */
+.btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  background-color: var(--hcmue-sky);
-  color: var(--hcmue-navy);
-  margin-bottom: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
 }
 
-.site-footer,
-footer {
-  background-color: var(--bg-surface);
-  border-top: 1px solid var(--border-color);
-  padding: 2.25rem 0;
-  margin-top: 4rem;
-  font-size: 0.86rem;
-  color: var(--text-secondary);
+.btn-primary {
+  background: var(--brand-primary);
+  color: #FFFFFF;
 }
 
-.site-footer__inner {
+.btn-primary:hover {
+  background: var(--brand-primary-hover);
+}
+
+.btn-outline {
+  background: var(--bg-surface);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.btn-outline:hover {
+  background: var(--bg-subtle);
+}
+
+.site-footer {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-light);
+  padding: 2rem 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.footer-inner {
+  max-width: 1240px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
 }
 
-@media (max-width: 960px) {
-  .editorial-intro__grid,
+@media (max-width: 900px) {
+  .hero-container,
   .lesson-layout {
     grid-template-columns: 1fr;
   }
   .lesson-sidebar {
     position: static;
   }
-  .lesson-main {
+  .lesson-layout .lesson-page,
+  .lesson-layout .lesson-main {
     padding: 1.5rem;
   }
 }

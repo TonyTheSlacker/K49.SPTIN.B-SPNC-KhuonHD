@@ -54,6 +54,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Khóa cứng kích thước Logo HCMUE để không bao giờ bị phóng to tràn màn hình */
+.site-header img,
+header img,
+.brand-identity img,
+img[src*="Logo"] {
+  height: 40px !important;
+  width: auto !important;
+  max-width: 140px !important;
+  object-fit: contain;
+  display: block;
+}
+
 /* ==========================================================================
    HEADER CHUẨN SƯ PHẠM HCMUE
    ========================================================================== */
@@ -73,6 +85,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .brand-identity {
@@ -81,11 +94,6 @@ body {
   gap: 0.85rem;
   text-decoration: none;
   color: inherit;
-}
-
-.brand-identity img {
-  height: 40px;
-  width: auto;
 }
 
 .brand-titles {
@@ -150,7 +158,7 @@ body {
   max-width: 1240px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 340px;
   gap: 2.5rem;
   align-items: center;
 }
@@ -175,9 +183,16 @@ body {
 }
 
 .hero-desc {
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   color: var(--text-secondary);
   max-width: 65ch;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
 }
 
 .progress-summary-card {
@@ -212,7 +227,7 @@ body {
   background: var(--border-light);
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .progress-fill {
@@ -224,15 +239,14 @@ body {
 
 .strand-legend {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.45rem;
   flex-wrap: wrap;
-  font-size: 0.75rem;
 }
 
 .strand-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.15rem 0.55rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 4px;
   font-weight: 600;
   font-size: 0.72rem;
@@ -258,11 +272,16 @@ body {
   flex-wrap: wrap;
 }
 
+.filter-group {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
 .search-box {
   flex: 1;
   min-width: 260px;
-  max-width: 420px;
-  position: relative;
+  max-width: 380px;
 }
 
 .search-box input {
@@ -292,6 +311,8 @@ body {
   border-bottom: 2px solid var(--text-primary);
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .topic-title {
@@ -308,7 +329,7 @@ body {
 
 .lesson-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 1rem;
 }
 
@@ -377,7 +398,7 @@ body {
 }
 
 /* ==========================================================================
-   BỐ CỤC TRANG BÀI HỌC (HỖ TRỢ CẢ .lesson-layout VÀ .page-shell / .lesson-page)
+   BỐ CỤC TRANG BÀI HỌC (BÀI 1 -> BÀI 17)
    ========================================================================== */
 .page-shell {
   min-height: 100vh;
@@ -387,6 +408,7 @@ body {
 
 .lesson-layout {
   max-width: 1240px;
+  width: 100%;
   margin: 2rem auto 4rem;
   padding: 0 1.5rem;
   display: grid;
@@ -395,7 +417,6 @@ body {
   align-items: start;
 }
 
-/* Nếu trang dùng .lesson-page trực tiếp (chưa qua JS bọc 2 cột) vẫn căn giữa đẹp */
 .lesson-page {
   max-width: 960px;
   width: 100%;
@@ -403,7 +424,6 @@ body {
   padding: 0 1.5rem;
 }
 
-/* Khi .lesson-page đã nằm trong .lesson-layout 2 cột */
 .lesson-layout .lesson-page,
 .lesson-layout .lesson-main {
   max-width: 100%;
@@ -414,7 +434,6 @@ body {
   border-radius: var(--radius-md);
 }
 
-/* Cột mục lục Tiến trình bài học bên trái */
 .lesson-sidebar {
   position: sticky;
   top: 84px;
@@ -473,9 +492,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ==========================================================================
-   ĐỊNH DẠNG CÁC CLASS GỐC TRONG BÀI 2 -> BÀI 17 (.lesson-section, .lesson-frame...)
-   ========================================================================== */
 .lesson-header,
 .lesson-hero {
   border-bottom: 2px solid var(--border-light);
@@ -516,7 +532,6 @@ body {
   color: var(--text-secondary);
 }
 
-/* Mỗi phần Hoạt động (.lesson-section hoặc .pedagogy-section) */
 .pedagogy-section,
 .lesson-section {
   margin-bottom: 2.5rem;
@@ -538,7 +553,6 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Ẩn các icon emoji đầu dòng (⌨️, 📖, 🎮...) để giao diện bớt mùi AI */
 .lesson-section__icon {
   display: none !important;
 }
@@ -575,7 +589,6 @@ body {
 .step-tag.tag-practice { background: #B54708; }
 .step-tag.tag-apply { background: #5925DC; }
 
-/* Hộp Ghi nhớ Kiến thức cốt lõi chuẩn SGK Kết nối tri thức */
 .knowledge-box {
   background: var(--brand-accent-soft);
   border: 1px solid #F9DBAF;
@@ -595,7 +608,6 @@ body {
   margin-bottom: 0.5rem;
 }
 
-/* Khung nhúng Game & Video (.lesson-frame, .interactive-embed) */
 .lesson-frame,
 .interactive-embed {
   margin: 1.25rem 0;
@@ -622,13 +634,12 @@ body {
 .interactive-embed iframe,
 main iframe {
   width: 100% !important;
-  min-height: 540px;
+  min-height: 520px;
   border: none;
   display: block;
   background: #FFFFFF;
 }
 
-/* Thanh chuyển bài trước / bài tiếp theo (.lesson-footer-nav) */
 .lesson-footer-nav {
   display: flex;
   justify-content: space-between;
@@ -673,16 +684,15 @@ main iframe {
   color: #FFFFFF;
 }
 
-/* Nút bấm chung */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  padding: 0.6rem 1.1rem;
+  padding: 0.55rem 1rem;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
@@ -715,6 +725,7 @@ main iframe {
   padding: 2rem 1.5rem;
   font-size: 0.85rem;
   color: var(--text-muted);
+  margin-top: auto;
 }
 
 .footer-inner {

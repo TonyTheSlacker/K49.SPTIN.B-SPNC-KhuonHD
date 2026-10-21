@@ -18,14 +18,14 @@
   --hcmue-sky: #e8f1fb;
 
   /* Màu nhấn theo cấu trúc Sách Giáo Khoa */
-  --sgk-core-bg: #fff8f1;       /* Hộp Kiến thức cốt lõi (Ghi nhớ) */
+  --sgk-core-bg: #fff8f1;
   --sgk-core-border: #d96b27;
   --sgk-core-text: #8c3b08;
 
-  --sgk-activity-bg: #f0f6fc;   /* Hộp Hoạt động học tập */
+  --sgk-activity-bg: #f0f6fc;
   --sgk-activity-border: #2563eb;
 
-  --sgk-practice-bg: #f2fbf6;   /* Hộp Luyện tập & Vận dụng */
+  --sgk-practice-bg: #f2fbf6;
   --sgk-practice-border: #15803d;
 
   /* Màu phân biệt 3 mạch kiến thức GDPT 2018 */
@@ -43,7 +43,7 @@
   --border-color: #dcd9ce;
   --border-strong: #b8b3a4;
 
-  /* Kích thước & Bo góc (Không bo tròn quá đà kiểu AI) */
+  /* Kích thước & Bo góc */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -73,6 +73,7 @@ body {
   color: var(--text-primary);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
 a {
@@ -80,9 +81,81 @@ a {
   text-decoration: none;
 }
 
-img, svg {
+img, svg, video, canvas {
   display: block;
   max-width: 100%;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & THẺ NGỮ NGHĨA MẶC ĐỊNH (ĐẢM BẢO MỌI TRANG BÀI HỌC ĐỀU ĐẸP)
+   ========================================================================== */
+h1 {
+  font-size: clamp(1.65rem, 2.5vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+h2 {
+  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin-bottom: 0.55rem;
+}
+
+h3 {
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin-bottom: 0.45rem;
+}
+
+p {
+  margin-bottom: 0.85rem;
+  color: var(--text-secondary);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul, ol {
+  padding-left: 1.35rem;
+  margin-bottom: 0.85rem;
+}
+
+li + li {
+  margin-top: 0.35rem;
+}
+
+section {
+  margin-bottom: 2.25rem;
+}
+
+/* Quy chuẩn TOÀN BỘ iframe trên mọi bài học (Khắc phục lỗi co 300x150px ở Bài 16) */
+iframe {
+  width: 100% !important;
+  max-width: 100%;
+  flex: 1 1 100%;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  display: block;
+  background-color: var(--bg-surface);
+  min-height: 420px;
+  margin: 1rem 0;
+}
+
+/* Tự động căn giữa cho các trang chưa bọc .container */
+body > *:not(.academic-Ribbon):not(.site-header):not(header):not(nav):not(.navbar):not(.editorial-intro):not(footer):not(.site-footer):not(script):not(style) {
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 /* ==========================================================================
@@ -90,9 +163,9 @@ img, svg {
    ========================================================================== */
 .academic-Ribbon {
   background-color: var(--hcmue-navy);
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.78rem;
-  padding: 0.4rem 1.5rem;
+  padding: 0.45rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -106,7 +179,9 @@ img, svg {
   gap: 0.5rem;
 }
 
-.site-header {
+.site-header,
+header.navbar,
+nav.navbar {
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
@@ -114,7 +189,8 @@ img, svg {
   z-index: 100;
 }
 
-.site-header__inner {
+.site-header__inner,
+.nav-container {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0.85rem 1.5rem;
@@ -122,6 +198,7 @@ img, svg {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .brand {
@@ -152,13 +229,18 @@ img, svg {
   color: var(--text-secondary);
 }
 
-.main-nav {
+.main-nav,
+.nav-links {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
 }
 
-.main-nav__link {
+.main-nav__link,
+.nav-links a {
   padding: 0.5rem 0.9rem;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
@@ -167,12 +249,14 @@ img, svg {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.main-nav__link:hover {
+.main-nav__link:hover,
+.nav-links a:hover {
   background-color: var(--bg-subtle);
   color: var(--text-primary);
 }
 
-.main-nav__link.is-active {
+.main-nav__link.is-active,
+.nav-links a.active {
   background-color: var(--hcmue-sky);
   color: var(--hcmue-navy);
   font-weight: 600;
@@ -187,7 +271,6 @@ img, svg {
   padding: 0 1.5rem;
 }
 
-/* Hero Trang chủ theo phong cách Sách Giáo Khoa Hiện Đại */
 .editorial-intro {
   padding: 2.5rem 0 2rem;
   border-bottom: 1px solid var(--border-color);
@@ -230,7 +313,6 @@ img, svg {
   max-width: 62ch;
 }
 
-/* Bảng tóm tắt tiến độ học tập bên phải Hero */
 .study-overview-card {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
@@ -392,19 +474,21 @@ img, svg {
 
 .topic-code {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
   padding: 0.2rem 0.55rem;
   background-color: var(--hcmue-navy);
   color: #ffffff;
   border-radius: 4px;
+  display: inline-block;
 }
 
 .topic-title {
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-primary);
+  margin-bottom: 0;
 }
 
 .lesson-grid {
@@ -449,6 +533,7 @@ img, svg {
   font-weight: 600;
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
+  display: inline-block;
 }
 
 .strand-badge--cs {
@@ -507,14 +592,16 @@ img, svg {
 }
 
 /* ==========================================================================
-   5. BỐ CỤC TRANG BÀI HỌC CHI TIẾT (LESSON PAGE)
+   5. BỐ CỤC TRANG BÀI HỌC CHI TIẾT (ÁP DỤNG CHO CẢ 17 BÀI)
    ========================================================================== */
 .lesson-layout {
   display: grid;
-  grid-template-columns: 270px 1fr;
+  grid-template-columns: 270px minmax(0, 1fr);
   gap: 2rem;
-  padding: 2rem 0 4rem;
+  padding: 2rem 1.5rem 4rem;
   align-items: start;
+  max-width: 1240px;
+  margin: 0 auto;
 }
 
 .lesson-sidebar {
@@ -524,6 +611,7 @@ img, svg {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 1.15rem;
+  box-shadow: var(--shadow-card);
 }
 
 .lesson-sidebar__title {
@@ -537,9 +625,15 @@ img, svg {
 
 .pedagogical-steps {
   list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+}
+
+.pedagogical-steps li + li {
+  margin-top: 0;
 }
 
 .pedagogical-steps__link {
@@ -548,9 +642,10 @@ img, svg {
   gap: 0.6rem;
   padding: 0.5rem 0.65rem;
   border-radius: var(--radius-sm);
-  font-size: 0.86rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
   border-left: 3px solid transparent;
+  line-height: 1.35;
 }
 
 .pedagogical-steps__link:hover,
@@ -563,15 +658,16 @@ img, svg {
 
 .step-index {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  width: 20px;
-  height: 20px;
+  min-width: 22px;
+  height: 22px;
   border-radius: 4px;
   background-color: var(--bg-subtle);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .lesson-main {
@@ -580,6 +676,7 @@ img, svg {
   border-radius: var(--radius-md);
   padding: 2.25rem 2.5rem;
   box-shadow: var(--shadow-card);
+  min-width: 0;
 }
 
 .lesson-header {
@@ -589,10 +686,10 @@ img, svg {
 }
 
 .lesson-header__title {
-  font-size: 1.85rem;
+  font-size: clamp(1.65rem, 2.4vw, 1.95rem);
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0.4rem 0 1rem;
+  margin: 0.5rem 0 1rem;
 }
 
 /* Hộp Yêu cầu cần đạt (Chuẩn GDPT 2018) */
@@ -602,26 +699,29 @@ img, svg {
   border-left: 4px solid var(--hcmue-navy);
   border-radius: var(--radius-sm);
   padding: 1rem 1.25rem;
+  margin-top: 1rem;
 }
 
 .objectives-box__title {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--hcmue-navy);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.45rem;
 }
 
 .objectives-box ul {
   padding-left: 1.2rem;
+  margin-bottom: 0;
   font-size: 0.92rem;
   color: var(--text-secondary);
 }
 
 /* Các khối nội dung chuẩn Sách Giáo Khoa */
-.lesson-section {
-  margin-bottom: 2.75rem;
+.lesson-section,
+.lesson-main section {
+  margin-bottom: 2.5rem;
   scroll-margin-top: 90px;
 }
 
@@ -629,7 +729,7 @@ img, svg {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1.15rem;
+  margin-bottom: 1.1rem;
 }
 
 .section-pill {
@@ -641,12 +741,14 @@ img, svg {
   border-radius: 4px;
   background-color: var(--hcmue-navy);
   color: #ffffff;
+  flex-shrink: 0;
 }
 
 .lesson-section__title {
-  font-size: 1.3rem;
+  font-size: 1.28rem;
   font-weight: 700;
   color: var(--text-primary);
+  margin-bottom: 0;
 }
 
 /* Hộp Hoạt động (Khởi động / Khám phá) */
@@ -689,14 +791,11 @@ img, svg {
 
 .sgk-core-box ul {
   padding-left: 1.2rem;
+  margin-bottom: 0;
   color: var(--text-primary);
 }
 
-.sgk-core-box li + li {
-  margin-top: 0.4rem;
-}
-
-/* Khung nhúng hoạt động tương tác (Iframe không viền thừa) */
+/* Khung nhúng hoạt động tương tác (Iframe ổn định, không bị kéo giãn vô tận) */
 .interactive-embed {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -718,11 +817,14 @@ img, svg {
 }
 
 .interactive-embed iframe {
-  width: 100%;
-  border: none;
+  width: 100% !important;
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
   display: block;
-  min-height: 360px;
-  background-color: transparent;
+  min-height: 400px;
+  max-height: 760px;
+  background-color: #ffffff;
 }
 
 /* Điều hướng cuối bài */
@@ -730,6 +832,7 @@ img, svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 3rem;
   padding-top: 1.5rem;
@@ -768,11 +871,43 @@ img, svg {
   color: #ffffff;
 }
 
-/* Footer chuẩn Học thuật */
-.site-footer {
+/* ==========================================================================
+   6. TƯƠNG THÍCH NGƯỢC CHO CÁC CLASS CŨ TRONG BÀI 2->17, TỪ ĐIỂN, Ô CHỮ, THUẬT TOÁN
+   ========================================================================== */
+.card,
+.content-card,
+.activity-card,
+.theory-card,
+.quiz-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.35rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+
+.badge,
+.lesson-badge,
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background-color: var(--hcmue-sky);
+  color: var(--hcmue-navy);
+  margin-bottom: 0.5rem;
+}
+
+.site-footer,
+footer {
   background-color: var(--bg-surface);
   border-top: 1px solid var(--border-color);
-  padding: 2.5rem 0;
+  padding: 2.25rem 0;
   margin-top: 4rem;
   font-size: 0.86rem;
   color: var(--text-secondary);

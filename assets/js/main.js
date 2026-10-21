@@ -56,7 +56,7 @@ function toggleLessonComplete(lessonId) {
 }
 
 function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
-  const container = document.getElementById('curriculum-root');
+  const container = document.getElementById('curriculum-root') || document.getElementById('topics-container');
   if (!container) return;
 
   const completed = getCompletedLessons();
@@ -99,7 +99,7 @@ function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
                   <p class="lesson-summary">${lesson.summary}</p>
                 </div>
                 <div class="lesson-footer">
-                  <span>${isDone ? 'Đã hoàn thành' : 'Vào bài học'}</span>
+                  <span>${isDone ? 'Đã hoàn thành ✓' : 'Vào bài học'}</span>
                   <span>→</span>
                 </div>
               </a>
@@ -124,9 +124,6 @@ function updateOverallProgress() {
   if (fillEl) fillEl.style.width = `${(completed.length / total) * 100}%`;
 }
 
-/**
- * Tự động nâng cấp giao diện 2 cột Sách giáo khoa HCMUE cho cả .lesson-page (Bài 2->17)
- */
 function upgradeLegacyPageLayout() {
   if (window.__hcmueLayoutInitialized) return;
   window.__hcmueLayoutInitialized = true;
@@ -134,11 +131,8 @@ function upgradeLegacyPageLayout() {
   const path = window.location.pathname.split('/').pop() || 'index.html';
   const currentLesson = LESSONS_DATA.find(item => item.file === path);
 
-  // 1. Tự động chèn Header HCMUE nếu trang chưa có .site-header
+  // Chỉ chèn Header nếu trang chưa có .site-header (KHÔNG xóa <header class="lesson-hero"> bên trong <main>)
   if (!document.querySelector('.site-header')) {
-    const oldHeader = document.querySelector('header');
-    if (oldHeader) oldHeader.remove();
-
     const subTitle = currentLesson
       ? `Chủ đề ${currentLesson.topic} · ${currentLesson.title}`
       : 'Trường Đại học Sư phạm TP.HCM · K49.SPTIN.B';
@@ -148,7 +142,7 @@ function upgradeLegacyPageLayout() {
     headerEl.innerHTML = `
       <div class="header-inner">
         <a href="index.html" class="brand-identity">
-          <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM">
+          <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM" width="120" height="40">
           <div class="brand-titles">
             <span class="brand-dept">${subTitle}</span>
             <span class="brand-name">Học Liệu Số Tin Học 6</span>
@@ -165,7 +159,7 @@ function upgradeLegacyPageLayout() {
     document.body.prepend(headerEl);
   }
 
-  // 2. Nếu là trang Bài học dùng cấu trúc .lesson-page (Bài 2 -> Bài 17)
+  // Nếu là trang bài học dùng cấu trúc .lesson-page (Bài 2 -> Bài 17)
   if (currentLesson && !document.querySelector('.lesson-layout')) {
     const mainEl = document.querySelector('main.lesson-page') || document.querySelector('main');
     if (!mainEl) return;
@@ -202,9 +196,6 @@ function upgradeLegacyPageLayout() {
   }
 }
 
-/**
- * Đo chiều cao thực của các phần tử con trong iframe, tránh vòng lặp vô hạn 100vh
- */
 function setupIframeAutoResize() {
   const iframes = document.querySelectorAll('iframe');
   iframes.forEach(iframe => {

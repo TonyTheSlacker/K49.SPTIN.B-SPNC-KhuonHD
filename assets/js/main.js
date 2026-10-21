@@ -1,401 +1,396 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const cards = document.querySelectorAll('.topic-card');
-  const pageShell = document.querySelector('.page-shell');
+/**
+ * HỌC LIỆU SỐ TIN HỌC 6 - KẾT NỐI TRI THỨC VỚI CUỘC SỐNG
+ * Nhóm phát triển: K49.SPTIN.B - Trường Đại học Sư phạm TP.HCM (HCMUE)
+ */
 
-  if (!pageShell) return;
+const STORAGE_KEY = 'hcmue_tinhoc6_completed_lessons';
 
-  const currentPage = decodeURIComponent(window.location.pathname.split(/[\\/]/).pop() || 'index.html');
-  const storage = {
-    get(key) {
-      try {
-        return window.localStorage.getItem(key);
-      } catch {
-        return null;
-      }
-    },
-    set(key, value) {
-      try {
-        window.localStorage.setItem(key, value);
-      } catch {
-        // Private browsing and blocked storage should not break navigation.
-      }
-    }
-  };
+const LESSONS_DATA = [
+  { id: 1, topic: 1, strand: 'CS', title: 'Bài 1: Thông tin và dữ liệu', file: 'bai-1-thong-tin-va-du-lieu.html', summary: 'Phân biệt thông tin, dữ liệu, vật mang tin và vai trò của thông tin.', interactiveCount: 3 },
+  { id: 2, topic: 1, strand: 'CS', title: 'Bài 2: Xử lí thông tin', file: 'bai-2-xu-li-thong-tin.html', summary: 'Bốn hoạt động cơ bản của quá trình xử lí thông tin ở người và máy tính.', interactiveCount: 2 },
+  { id: 3, topic: 1, strand: 'CS', title: 'Bài 3: Thông tin trong máy tính', file: 'bai-3-thong-tin-trong-may-tinh.html', summary: 'Biểu diễn thông tin bằng dãy bit và các đơn vị đo dung lượng dữ liệu.', interactiveCount: 2 },
+  { id: 4, topic: 2, strand: 'ICT', title: 'Bài 4: Mạng máy tính', file: 'bai-4-mang-may-tinh.html', summary: 'Khái niệm, lợi ích và các thành phần cơ bản của mạng máy tính.', interactiveCount: 2 },
+  { id: 5, topic: 2, strand: 'ICT', title: 'Bài 5: Internet', file: 'bai-5-internet.html', summary: 'Đặc điểm của mạng máy tính toàn cầu Internet và một số lợi ích chính.', interactiveCount: 2 },
+  { id: 6, topic: 3, strand: 'ICT', title: 'Bài 6: Mạng thông tin toàn cầu', file: 'bai-6-mang-thong-tin-toan-cau.html', summary: 'Siêu văn bản, trang web, website, địa chỉ truy cập và trình duyệt web.', interactiveCount: 3 },
+  { id: 7, topic: 3, strand: 'ICT', title: 'Bài 7: Tìm kiếm thông tin trên Internet', file: 'bai-7-tim-kiem-thong-tin-tren-internet.html', summary: 'Sử dụng máy tìm kiếm và cách xác định từ khóa hiệu quả.', interactiveCount: 3 },
+  { id: 8, topic: 3, strand: 'ICT', title: 'Bài 8: Thư điện tử', file: 'bai-8-thu-dien-tu.html', summary: 'Cấu trúc địa chỉ email, ưu điểm của thư điện tử và thao tác gửi/nhận.', interactiveCount: 2 },
+  { id: 9, topic: 4, strand: 'DL', title: 'Bài 9: An toàn thông tin trên Internet', file: 'bai-9-an-toan-thong-tin-tren-internet.html', summary: 'Nhận diện nguy cơ trên mạng và các quy tắc bảo vệ thông tin cá nhân.', interactiveCount: 2 },
+  { id: 10, topic: 5, strand: 'ICT', title: 'Bài 10: Sơ đồ tư duy', file: 'bai-10-so-do-tu-duy.html', summary: 'Cách tổ chức thông tin trực quan và tạo sơ đồ tư duy bằng phần mềm.', interactiveCount: 2 },
+  { id: 11, topic: 5, strand: 'ICT', title: 'Bài 11: Định dạng văn bản', file: 'bai-11-dinh-dang-van-ban.html', summary: 'Định dạng kí tự, định dạng đoạn văn bản và thiết lập trang in.', interactiveCount: 2 },
+  { id: 12, topic: 5, strand: 'ICT', title: 'Bài 12: Trình bày thông tin ở dạng bảng', file: 'bai-12-trinh-bay-thong-tin-o-dang-bang.html', summary: 'Tạo bảng, chèn/xóa hàng cột và căn chỉnh dữ liệu trong bảng.', interactiveCount: 2 },
+  { id: 13, topic: 5, strand: 'ICT', title: 'Bài 13: Thực hành: Tìm kiếm và thay thế', file: 'bai-13-tim-kiem-va-thay-the.html', summary: 'Sử dụng công cụ Find và Replace để biên tập văn bản nhanh chóng.', interactiveCount: 2 },
+  { id: 14, topic: 5, strand: 'ICT', title: 'Bài 14: Thực hành tổng hợp: Hoàn thiện sổ lưu niệm', file: 'bai-14-thuc-hanh-tong-hop-hoan-thien-so-luu-niem.html', summary: 'Kết hợp sơ đồ tư duy, định dạng văn bản, hình ảnh và bảng biểu.', interactiveCount: 2 },
+  { id: 15, topic: 6, strand: 'CS', title: 'Bài 15: Thuật toán', file: 'bai-15-thuat-toan.html', summary: 'Khái niệm thuật toán, xác định đầu vào (Input), đầu ra (Output) và sơ đồ khối.', interactiveCount: 2 },
+  { id: 16, topic: 6, strand: 'CS', title: 'Bài 16: Các cấu trúc điều khiển', file: 'bai-16-cac-cau-truc-dieu-khien.html', summary: 'Ba cấu trúc điều khiển cơ bản: tuần tự, rẽ nhánh và lặp.', interactiveCount: 2 },
+  { id: 17, topic: 6, strand: 'CS', title: 'Bài 17: Chương trình máy tính', file: 'bai-17-chuong-trinh-may-tinh.html', summary: 'Từ thuật toán đến chương trình máy tính và lập trình trực quan.', interactiveCount: 2 }
+];
 
-  let toastTimer;
-  let lastFocusedElement;
+const TOPICS_META = {
+  1: { code: 'Chủ đề 1 · Chủ đề A', title: 'Máy tính và cộng đồng', desc: 'Mạch Khoa học máy tính (CS) — Bài 1 đến Bài 3' },
+  2: { code: 'Chủ đề 2 · Chủ đề B', title: 'Mạng máy tính và Internet', desc: 'Mạch Công nghệ thông tin và truyền thông (ICT) — Bài 4 đến Bài 5' },
+  3: { code: 'Chủ đề 3 · Chủ đề C', title: 'Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin', desc: 'Mạch Công nghệ thông tin và truyền thông (ICT) — Bài 6 đến Bài 8' },
+  4: { code: 'Chủ đề 4 · Chủ đề D', title: 'Đạo đức, pháp luật và văn hóa trong môi trường số', desc: 'Mạch Học vấn số hóa phổ thông (DL) — Bài 9' },
+  5: { code: 'Chủ đề 5 · Chủ đề E', title: 'Ứng dụng tin học', desc: 'Mạch Công nghệ thông tin và truyền thông (ICT) — Bài 10 đến Bài 14' },
+  6: { code: 'Chủ đề 6 · Chủ đề F', title: 'Giải quyết vấn đề với sự trợ giúp của máy tính', desc: 'Mạch Khoa học máy tính (CS) — Bài 15 đến Bài 17' }
+};
 
-  const showToast = (message) => {
-    let toast = document.getElementById('siteToast');
+function getCompletedLessons() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
 
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'siteToast';
-      toast.className = 'site-toast';
-      toast.setAttribute('role', 'status');
-      toast.setAttribute('aria-live', 'polite');
-      document.body.append(toast);
-    }
+function toggleLessonComplete(lessonId) {
+  const completed = getCompletedLessons();
+  const idx = completed.indexOf(lessonId);
+  if (idx === -1) {
+    completed.push(lessonId);
+  } else {
+    completed.splice(idx, 1);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
+  return completed.includes(lessonId);
+}
 
-    toast.textContent = message;
-    toast.classList.add('is-visible');
-    window.clearTimeout(toastTimer);
-    toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 3200);
-  };
+function stripLeadingEmojis(text) {
+  if (!text) return '';
+  return text.replace(/^[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\s]+/gu, '').trim();
+}
 
-  const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[character]);
+/**
+ * Hiển thị danh mục 17 bài học trên trang chủ (tương thích cả #curriculum-container lẫn #curriculum-root)
+ */
+function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
+  const container =
+    document.getElementById('curriculum-container') ||
+    document.getElementById('curriculum-root') ||
+    document.getElementById('topics-container');
+  if (!container) return;
 
-  document.querySelectorAll('.lesson-frame iframe[src="about:blank"]').forEach((frame) => {
-    const title = frame.getAttribute('title') || 'Hoạt động học tập';
-    const normalizedTitle = title.toLocaleLowerCase('vi-VN');
-    const icon = normalizedTitle.includes('video')
-      ? '📺'
-      : normalizedTitle.includes('luyện tập')
-        ? '🧪'
-        : '✨';
+  const completed = getCompletedLessons();
+  const normalizedFilter = (filterStrand || 'ALL').toUpperCase();
+  const normalizedQuery = searchQuery.trim().toLowerCase();
 
-    frame.srcdoc = `<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,Arial,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>${icon} ${escapeHtml(title)}</strong><div>Nội dung tương tác đang được cập nhật để bài học đầy đủ hơn.</div><small>Em có thể xem phần tóm tắt kiến thức bên cạnh trong lúc chờ nhé.</small></div></body></html>`;
-    frame.removeAttribute('src');
+  let html = '';
+
+  Object.keys(TOPICS_META).forEach(topicKey => {
+    const topicNum = Number(topicKey);
+    const meta = TOPICS_META[topicNum];
+
+    const lessons = LESSONS_DATA.filter(item => {
+      const matchTopic = item.topic === topicNum;
+      const matchStrand = normalizedFilter === 'ALL' || item.strand === normalizedFilter;
+      const matchQuery =
+        !normalizedQuery ||
+        item.title.toLowerCase().includes(normalizedQuery) ||
+        item.summary.toLowerCase().includes(normalizedQuery) ||
+        meta.title.toLowerCase().includes(normalizedQuery);
+      return matchTopic && matchStrand && matchQuery;
+    });
+
+    if (lessons.length === 0) return;
+
+    html += `
+      <section class="topic-block">
+        <div class="topic-header">
+          <div class="topic-header__left">
+            <span class="topic-code">${meta.code}</span>
+            <h2 class="topic-title">${meta.title}</h2>
+          </div>
+          <span class="topic-meta">${meta.desc}</span>
+        </div>
+        <div class="lesson-grid">
+          ${lessons.map(lesson => {
+            const isDone = completed.includes(lesson.id);
+            const strandClass = `strand-${lesson.strand.toLowerCase()}`;
+            return `
+              <a href="${lesson.file}" class="lesson-item ${isDone ? 'is-completed' : ''}">
+                <div>
+                  <div class="lesson-item-top">
+                    <span class="lesson-number">Bài ${String(lesson.id).padStart(2, '0')}</span>
+                    <span class="strand-badge ${strandClass}">Mạch ${lesson.strand}</span>
+                  </div>
+                  <h3 class="lesson-title">${lesson.title.replace(/^Bài \d+:\s*/, '')}</h3>
+                  <p class="lesson-summary">${lesson.summary}</p>
+                </div>
+                <div class="lesson-footer">
+                  <span>${isDone ? '✓ Đã hoàn thành' : `${lesson.interactiveCount} hoạt động tương tác`}</span>
+                  <span>Vào bài học →</span>
+                </div>
+              </a>
+            `;
+          }).join('')}
+        </div>
+      </section>
+    `;
   });
 
-  const favicon = document.querySelector('link[rel="icon"]') || document.createElement('link');
-  favicon.rel = 'icon';
-  favicon.type = 'image/svg+xml';
-  favicon.href = 'images/Logo%20HCMUE.svg';
-  if (!favicon.parentElement) {
-    document.head.append(favicon);
-  }
-
-  document.querySelectorAll('.placeholder-banner, .sidebar-toggle, .left-sidebar').forEach((node) => node.remove());
-
-  const lessonGroups = [
-    {
-      title: 'Chủ đề 1. Máy tính và cộng đồng',
-      lessons: [
-        { label: 'Bài 1. Thông tin và dữ liệu', href: 'bai-1-thong-tin-va-du-lieu.html' },
-        { label: 'Bài 2. Xử lí thông tin', href: 'bai-2-xu-li-thong-tin.html' },
-        { label: 'Bài 3. Thông tin trong máy tính', href: 'bai-3-thong-tin-trong-may-tinh.html' }
-      ]
-    },
-    {
-      title: 'Chủ đề 2. Mạng máy tính và Internet',
-      lessons: [
-        { label: 'Bài 4. Mạng máy tính', href: 'bai-4-mang-may-tinh.html' },
-        { label: 'Bài 5. Internet', href: 'bai-5-internet.html' }
-      ]
-    },
-    {
-      title: 'Chủ đề 3. Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin',
-      lessons: [
-        { label: 'Bài 6. Mạng thông tin toàn cầu', href: 'bai-6-mang-thong-tin-toan-cau.html' },
-        { label: 'Bài 7. Tìm kiếm thông tin trên Internet', href: 'bai-7-tim-kiem-thong-tin-tren-internet.html' },
-        { label: 'Bài 8. Thư điện tử', href: 'bai-8-thu-dien-tu.html' }
-      ]
-    },
-    {
-      title: 'Chủ đề 4. Đạo đức, pháp luật và văn hoá trong môi trường số',
-      lessons: [
-        { label: 'Bài 9. An toàn thông tin trên Internet', href: 'bai-9-an-toan-thong-tin-tren-internet.html' }
-      ]
-    },
-    {
-      title: 'Chủ đề 5. Ứng dụng tin học',
-      lessons: [
-        { label: 'Bài 10. Sơ đồ tư duy', href: 'bai-10-so-do-tu-duy.html' },
-        { label: 'Bài 11. Định dạng văn bản', href: 'bai-11-dinh-dang-van-ban.html' },
-        { label: 'Bài 12. Trình bày thông tin ở dạng bảng', href: 'bai-12-trinh-bay-thong-tin-o-dang-bang.html' },
-        { label: 'Bài 13. Tìm kiếm và thay thế', href: 'bai-13-tim-kiem-va-thay-the.html' },
-        { label: 'Bài 14. Thực hành tổng hợp: Hoàn thiện sổ lưu niệm', href: 'bai-14-thuc-hanh-tong-hop-hoan-thien-so-luu-niem.html' }
-      ]
-    },
-    {
-      title: 'Chủ đề 6. Giải quyết vấn đề với sự trợ giúp của máy tính',
-      lessons: [
-        { label: 'Bài 15. Thuật toán', href: 'bai-15-thuat-toan.html' },
-        { label: 'Bài 16. Các cấu trúc điều khiển', href: 'bai-16-cac-cau-truc-dieu-khien.html' },
-        { label: 'Bài 17. Chương trình máy tính', href: 'bai-17-chuong-trinh-may-tinh.html' },
-        { label: 'Bảng giải thích thuật ngữ', href: 'dictionary.html' }
-      ]
-    }
-  ];
-
-  const header = document.createElement('header');
-  header.className = 'site-header';
-  header.innerHTML = `
-    <div class="site-header__inner">
-      <a class="site-brand" href="index.html" aria-label="Trang chủ Hỗ trợ tin học">
-        <span class="site-brand__logo" aria-hidden="true">
-          <img class="site-brand__logo-img" src="images/Logo%20HCMUE.svg" alt="" />
-        </span>
-        <span class="site-brand__text">Hỗ trợ tin học</span>
-      </a>
-      <nav class="site-nav" aria-label="Điều hướng nhanh">
-        <a class="site-nav__link" href="dictionary.html" data-page="dictionary.html">Từ điển</a>
-        <a class="site-nav__link" href="crossword.html" data-page="crossword.html">Ô chữ</a>
-        <a class="site-nav__link" href="algorithm.html" data-page="algorithm.html">Thuật toán</a>
-      </nav>
-      <div class="site-header__actions">
-        <div class="site-user">
-          <button class="site-action site-action--ghost" id="userMenuToggle" type="button" aria-controls="userMenu" aria-expanded="false">
-            <span class="site-action__icon" aria-hidden="true">👤</span>
-            <span class="site-action__label">Tài khoản</span>
-          </button>
-          <div class="site-user__menu" id="userMenu" hidden>
-            <button class="site-user__item" type="button" id="loginButton">Đăng nhập</button>
-            <button class="site-user__item" type="button" id="themeToggle" aria-pressed="false">Dark Mode</button>
-          </div>
-        </div>
-        <button class="site-action site-action--menu" id="lessonMenuToggle" type="button" aria-controls="lessonDrawer" aria-haspopup="dialog" aria-expanded="false">
-          <span class="site-action__icon" aria-hidden="true">☰</span>
-          <span class="site-action__label">📚 Danh mục bài học</span>
-        </button>
-      </div>
+  container.innerHTML =
+    html ||
+    `<div style="padding: 2rem; text-align: center; background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md);">
+      Không tìm thấy bài học phù hợp với từ khóa "${searchQuery}".
     </div>`;
 
-  pageShell.parentElement.insertBefore(header, pageShell);
+  updateOverallProgress();
+}
 
-  const backdrop = document.createElement('div');
-  backdrop.className = 'lesson-backdrop';
-  backdrop.hidden = true;
-  backdrop.setAttribute('aria-hidden', 'true');
+function updateOverallProgress() {
+  const completed = getCompletedLessons();
+  const total = LESSONS_DATA.length;
+  const percent = Math.round((completed.length / total) * 100);
 
-  const drawer = document.createElement('aside');
-  drawer.className = 'lesson-drawer';
-  drawer.id = 'lessonDrawer';
-  drawer.hidden = true;
-  drawer.setAttribute('role', 'dialog');
-  drawer.setAttribute('aria-modal', 'true');
-  drawer.setAttribute('aria-labelledby', 'lessonDrawerTitle');
-  drawer.setAttribute('aria-hidden', 'true');
-  drawer.innerHTML = `
-    <div class="lesson-drawer__header">
-      <div>
-        <div class="lesson-drawer__eyebrow">Danh mục bài học</div>
-        <h2 id="lessonDrawerTitle">Chọn nhanh từng bài trong chương trình</h2>
+  const countEl = document.getElementById('progress-count-text') || document.getElementById('progress-counter');
+  const fillEl = document.getElementById('progress-bar-fill');
+
+  if (countEl) countEl.textContent = `${completed.length} / ${total} bài (${percent}%)`;
+  if (fillEl) fillEl.style.width = `${percent}%`;
+}
+
+/**
+ * Thay thế các khung đen "Placeholder tối cho chế độ dark mode" ở các bài chưa có game riêng
+ * bằng Hộp Kiến thức cốt lõi chuẩn SGK Kết nối tri thức
+ */
+function upgradeDarkPlaceholders(mainEl, currentLesson) {
+  const allDivs = Array.from(mainEl.querySelectorAll('div, section, article'));
+  allDivs.forEach((el, idx) => {
+    const text = (el.textContent || '').trim();
+    if (
+      text.includes('Placeholder tối cho chế độ dark mode') ||
+      (el.children.length <= 4 && text.includes('Nhúng trò chơi hoặc hình ảnh minh họa'))
+    ) {
+      el.className = 'sgk-core-box';
+      el.removeAttribute('style');
+      el.innerHTML = `
+        <span class="sgk-core-box__label">Tóm tắt kiến thức cốt lõi · ${currentLesson.title}</span>
+        <p style="margin-bottom: 0.5rem; color: var(--text-primary);">
+          <strong>Trọng tâm bài học:</strong> ${currentLesson.summary}
+        </p>
+        <ul>
+          <li>Đọc kĩ tình huống mở đầu trong Sách giáo khoa <em>Tin học 6 – Kết nối tri thức với cuộc sống</em> và thảo luận theo nhóm đôi.</li>
+          <li>Ghi nhớ các khái niệm chính trong hộp kiến thức và hoàn thành câu hỏi củng cố cuối mục.</li>
+        </ul>
+      `;
+    }
+  });
+}
+
+/**
+ * Tự động nâng cấp giao diện 2 cột Sách giáo khoa HCMUE cho các trang Bài 2 -> Bài 17
+ */
+function upgradeLegacyPageLayout() {
+  if (window.__hcmueLayoutInitialized) return;
+  window.__hcmueLayoutInitialized = true;
+
+  const rawPath = window.location.pathname.split('/').pop() || 'index.html';
+  const cleanPath = rawPath.endsWith('.html') ? rawPath : `${rawPath}.html`;
+  const currentLesson = LESSONS_DATA.find(item => item.file === cleanPath || item.file === rawPath);
+
+  // 1. Tự động chèn Header HCMUE nếu trang chưa có .site-header
+  if (!document.querySelector('.site-header')) {
+    const subTitle = currentLesson
+      ? `Chủ đề ${currentLesson.topic} · ${currentLesson.title}`
+      : 'Trường Đại học Sư phạm TP.HCM · K49.SPTIN.B';
+
+    const headerEl = document.createElement('header');
+    headerEl.className = 'site-header';
+    headerEl.innerHTML = `
+      <div class="header-inner">
+        <a href="index.html" class="brand-identity">
+          <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM" width="120" height="40">
+          <div class="brand-titles">
+            <span class="brand-dept">${subTitle}</span>
+            <span class="brand-name">Học Liệu Số Tin Học 6</span>
+          </div>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng chính">
+          <a href="index.html" class="nav-link ${cleanPath === 'index.html' ? 'active' : ''}">Mục lục bài học</a>
+          <a href="dictionary.html" class="nav-link ${cleanPath === 'dictionary.html' ? 'active' : ''}">Từ điển thuật ngữ</a>
+          <a href="crossword.html" class="nav-link ${cleanPath === 'crossword.html' ? 'active' : ''}">Ô chữ ôn tập</a>
+          <a href="algorithm.html" class="nav-link ${cleanPath === 'algorithm.html' ? 'active' : ''}">Mô phỏng thuật toán</a>
+        </nav>
       </div>
-      <button class="lesson-drawer__close" type="button" id="lessonMenuClose" aria-label="Đóng menu">×</button>
-    </div>
-    <a class="lesson-drawer__home" href="index.html">🏠 Về trang chủ</a>
-    <div class="lesson-accordion" id="lessonAccordion"></div>`;
-
-  document.body.append(backdrop, drawer);
-
-  const menuToggle = document.getElementById('lessonMenuToggle');
-  const menuClose = document.getElementById('lessonMenuClose');
-  const userMenuToggle = document.getElementById('userMenuToggle');
-  const userMenu = document.getElementById('userMenu');
-  const loginButton = document.getElementById('loginButton');
-  const themeToggle = document.getElementById('themeToggle');
-  const lessonAccordion = document.getElementById('lessonAccordion');
-
-  const pathFromHref = (href) => decodeURIComponent(href.split('#')[0].split('/').pop() || 'index.html');
-
-  document.querySelectorAll('[data-page]').forEach((link) => {
-    if (pathFromHref(link.getAttribute('href') || '') === currentPage) {
-      link.setAttribute('aria-current', 'page');
-    }
-  });
-
-  const lessonHomeLink = drawer.querySelector('.lesson-drawer__home');
-  if (lessonHomeLink && currentPage === 'index.html') {
-    lessonHomeLink.setAttribute('aria-current', 'page');
+    `;
+    document.body.prepend(headerEl);
   }
 
-  if (userMenu) {
-    userMenu.hidden = true;
-  }
+  // 2. Nếu là trang bài học dùng cấu trúc .lesson-page (Bài 2 -> Bài 17)
+  if (currentLesson && !document.querySelector('.lesson-layout')) {
+    const mainEl = document.querySelector('main.lesson-page') || document.querySelector('main');
+    if (!mainEl) return;
 
-  const themeKey = 'tin-hoc-6-theme';
-
-  const applyTheme = (isDark) => {
-    document.body.classList.toggle('theme-dark', isDark);
-    themeToggle?.setAttribute('aria-pressed', String(isDark));
-    if (themeToggle) {
-      themeToggle.textContent = isDark ? '☀️ Chế độ sáng' : '🌙 Chế độ tối';
-    }
-  };
-
-  applyTheme(storage.get(themeKey) === 'dark');
-
-  const setLessonGroupExpanded = (groupButton, groupPanel, isExpanded) => {
-    groupButton.setAttribute('aria-expanded', String(isExpanded));
-    groupPanel.hidden = !isExpanded;
-  };
-
-  lessonGroups.forEach((group, groupIndex) => {
-    const section = document.createElement('section');
-    section.className = 'lesson-group';
-
-    const isCurrentGroup = group.lessons.some((lesson) => pathFromHref(lesson.href) === currentPage);
-
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'lesson-group__toggle';
-    button.id = `lesson-toggle-${groupIndex + 1}`;
-    button.setAttribute('aria-expanded', String(isCurrentGroup));
-    button.setAttribute('aria-controls', `lesson-panel-${groupIndex + 1}`);
-
-    const title = document.createElement('span');
-    title.className = 'lesson-group__title';
-    title.textContent = group.title;
-
-    const marker = document.createElement('span');
-    marker.className = 'lesson-group__marker';
-    marker.setAttribute('aria-hidden', 'true');
-
-    button.append(title, marker);
-
-    const panel = document.createElement('div');
-    panel.className = 'lesson-group__panel';
-    panel.id = `lesson-panel-${groupIndex + 1}`;
-    panel.setAttribute('aria-labelledby', button.id);
-    panel.hidden = !isCurrentGroup;
-
-    group.lessons.forEach((lesson) => {
-      const link = document.createElement('a');
-      link.href = lesson.href;
-      link.textContent = lesson.label;
-      if (pathFromHref(lesson.href) === currentPage) {
-        link.setAttribute('aria-current', 'page');
+    // Làm sạch emoji đầu dòng ở tiêu đề bài
+    mainEl.querySelectorAll('h1, h2, .lesson-badge, .badge').forEach(el => {
+      if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+        el.textContent = stripLeadingEmojis(el.textContent);
       }
-      panel.append(link);
     });
 
-    button.addEventListener('click', () => {
-      const shouldExpand = button.getAttribute('aria-expanded') !== 'true';
-      lessonAccordion.querySelectorAll('.lesson-group__toggle').forEach((otherButton) => {
-        if (otherButton !== button) {
-          const otherPanel = document.getElementById(otherButton.getAttribute('aria-controls'));
-          if (otherPanel) setLessonGroupExpanded(otherButton, otherPanel, false);
+    // Thay thế các khung đen giữ chỗ (Placeholder) bằng hộp kiến thức chuẩn SGK
+    upgradeDarkPlaceholders(mainEl, currentLesson);
+
+    // Chỉ lấy các <section> thực sự có chứa thẻ <h2> (Bỏ qua phần tiêu đề .lesson-hero để không bị dư "1. Hoạt động 1")
+    const activitySections = Array.from(mainEl.querySelectorAll('section')).filter(sec =>
+      Boolean(sec.querySelector('h2'))
+    );
+
+    const navLinksHtml = activitySections.map((sec, idx) => {
+      const h2 = sec.querySelector('h2');
+      const secId = sec.id || `hoat-dong-${idx + 1}`;
+      sec.id = secId;
+      const cleanTitle = stripLeadingEmojis(h2.textContent);
+      return `
+        <li>
+          <a href="#${secId}" class="${idx === 0 ? 'active' : ''}">
+            <span class="step-index">${idx + 1}</span>
+            <span>${cleanTitle}</span>
+          </a>
+        </li>
+      `;
+    }).join('');
+
+    const layoutWrapper = document.createElement('div');
+    layoutWrapper.className = 'lesson-layout';
+
+    const sidebar = document.createElement('aside');
+    sidebar.className = 'lesson-sidebar';
+    sidebar.innerHTML = `
+      <div class="sidebar-heading">Tiến trình bài học</div>
+      <ul class="step-nav">
+        ${navLinksHtml || '<li><a href="#"><span class="step-index">1</span> Nội dung bài học</a></li>'}
+      </ul>
+      <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-light);">
+        <button id="mark-lesson-complete" data-lesson-id="${currentLesson.id}" class="btn btn-primary" style="width: 100%;">
+          Đánh dấu đã hoàn thành bài học
+        </button>
+      </div>
+    `;
+
+    mainEl.parentNode.insertBefore(layoutWrapper, mainEl);
+    layoutWrapper.appendChild(sidebar);
+    layoutWrapper.appendChild(mainEl);
+  }
+}
+
+/**
+ * Đo chiều cao thực của các phần tử con trong iframe, tránh vòng lặp vô hạn 100vh
+ */
+function setupIframeAutoResize() {
+  const iframes = document.querySelectorAll('iframe');
+  iframes.forEach(iframe => {
+    const src = iframe.getAttribute('src') || '';
+    if (src.startsWith('http://') || src.startsWith('https://')) {
+      iframe.style.height = '480px';
+      return;
+    }
+
+    iframe.setAttribute('scrolling', 'no');
+
+    const updateHeight = () => {
+      try {
+        const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+        if (!doc || !doc.body) return;
+
+        if (!doc.getElementById('hcmue-iframe-fix')) {
+          const styleFix = doc.createElement('style');
+          styleFix.id = 'hcmue-iframe-fix';
+          styleFix.textContent = `
+            html, body {
+              min-height: 0 !important;
+              height: auto !important;
+              overflow-x: hidden !important;
+            }
+          `;
+          if (doc.head) doc.head.appendChild(styleFix);
         }
+
+        const children = Array.from(doc.body.children).filter(
+          el => !['SCRIPT', 'STYLE', 'LINK'].includes(el.tagName)
+        );
+
+        let contentHeight = 0;
+        if (children.length > 0) {
+          const bodyRect = doc.body.getBoundingClientRect();
+          children.forEach(child => {
+            const rect = child.getBoundingClientRect();
+            const bottom = rect.bottom - bodyRect.top;
+            if (bottom > contentHeight) contentHeight = bottom;
+          });
+        } else {
+          contentHeight = doc.body.offsetHeight;
+        }
+
+        const targetHeight = Math.min(Math.max(Math.ceil(contentHeight) + 28, 420), 960);
+        const currentHeight = parseInt(iframe.style.height || '0', 10);
+
+        if (Math.abs(targetHeight - currentHeight) > 6) {
+          iframe.style.height = targetHeight + 'px';
+        }
+      } catch (e) {
+        iframe.style.height = '540px';
+      }
+    };
+
+    iframe.addEventListener('load', () => {
+      updateHeight();
+      setTimeout(updateHeight, 250);
+      setTimeout(updateHeight, 800);
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        if (doc && doc.body) {
+          doc.body.addEventListener('click', () => setTimeout(updateHeight, 120));
+        }
+      } catch (err) {}
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  upgradeLegacyPageLayout();
+  renderCurriculum();
+
+  const filterButtons = document.querySelectorAll('.filter-btn, [data-strand-filter], [data-strand]');
+  const searchInput = document.getElementById('lesson-search-input') || document.getElementById('lesson-search');
+  let activeStrand = 'ALL';
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => {
+        b.classList.remove('is-active', 'btn-primary');
+        if (b.classList.contains('btn')) b.classList.add('btn-outline');
       });
-
-      setLessonGroupExpanded(button, panel, shouldExpand);
-    });
-
-    panel.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => closeLessonMenu());
-    });
-
-    section.append(button, panel);
-    lessonAccordion.append(section);
-  });
-
-  const openLessonMenu = () => {
-    lastFocusedElement = document.activeElement;
-    if (userMenu && !userMenu.hidden) {
-      userMenu.hidden = true;
-      userMenuToggle?.setAttribute('aria-expanded', 'false');
-    }
-    drawer.hidden = false;
-    backdrop.hidden = false;
-    drawer.setAttribute('aria-hidden', 'false');
-    backdrop.setAttribute('aria-hidden', 'false');
-    pageShell.inert = true;
-    header.inert = true;
-    document.body.classList.add('nav-open');
-    menuToggle?.setAttribute('aria-expanded', 'true');
-    window.requestAnimationFrame(() => menuClose?.focus());
-  };
-
-  const closeLessonMenu = () => {
-    const wasOpen = document.body.classList.contains('nav-open');
-    document.body.classList.remove('nav-open');
-    menuToggle?.setAttribute('aria-expanded', 'false');
-    backdrop.hidden = true;
-    drawer.hidden = true;
-    drawer.setAttribute('aria-hidden', 'true');
-    backdrop.setAttribute('aria-hidden', 'true');
-    pageShell.inert = false;
-    header.inert = false;
-
-    if (wasOpen && lastFocusedElement instanceof HTMLElement && lastFocusedElement.isConnected) {
-      lastFocusedElement.focus();
-    }
-    lastFocusedElement = null;
-  };
-
-  menuToggle?.addEventListener('click', () => {
-    const isOpen = document.body.classList.contains('nav-open');
-    if (isOpen) {
-      closeLessonMenu();
-    } else {
-      openLessonMenu();
-    }
-  });
-
-  menuClose?.addEventListener('click', closeLessonMenu);
-  backdrop.addEventListener('click', closeLessonMenu);
-
-  userMenuToggle?.addEventListener('click', (event) => {
-    event.stopPropagation();
-    const isOpen = userMenu ? !userMenu.hidden : false;
-    if (userMenu) userMenu.hidden = isOpen;
-    userMenuToggle.setAttribute('aria-expanded', String(!isOpen));
-  });
-
-  loginButton?.addEventListener('click', () => {
-    if (userMenu) userMenu.hidden = true;
-    userMenuToggle?.setAttribute('aria-expanded', 'false');
-    showToast('Tính năng đăng nhập đang được hoàn thiện.');
-  });
-
-  themeToggle?.addEventListener('click', () => {
-    const isDark = !document.body.classList.contains('theme-dark');
-    storage.set(themeKey, isDark ? 'dark' : 'light');
-    applyTheme(isDark);
-  });
-
-  document.querySelectorAll('a[href="#"]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      const message = link.classList.contains('lesson-download')
-        ? 'Phiếu học tập đang được cập nhật, em quay lại sau nhé.'
-        : 'Liên kết này đang được cập nhật, em quay lại sau nhé.';
-      showToast(message);
-    });
-  });
-
-  document.addEventListener('click', (event) => {
-    const clickedUserMenu = userMenu?.contains(event.target);
-    const clickedUserToggle = userMenuToggle?.contains(event.target);
-    if (!clickedUserMenu && !clickedUserToggle && userMenu && !userMenu.hidden) {
-      userMenu.hidden = true;
-      userMenuToggle?.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      closeLessonMenu();
-      if (userMenu && !userMenu.hidden) {
-        userMenu.hidden = true;
-        userMenuToggle?.setAttribute('aria-expanded', 'false');
+      btn.classList.add('is-active');
+      if (btn.classList.contains('btn')) {
+        btn.classList.remove('btn-outline');
+        btn.classList.add('btn-primary');
       }
-    }
+      activeStrand = btn.getAttribute('data-strand-filter') || btn.getAttribute('data-strand') || 'ALL';
+      renderCurriculum(activeStrand, searchInput ? searchInput.value : '');
+    });
   });
 
-  cards.forEach((card, index) => {
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
-    if (!prefersReducedMotion && typeof card.animate === 'function') {
-      card.animate(
-        [
-          { opacity: 0, transform: 'translateY(14px)' },
-          { opacity: 1, transform: 'translateY(0)' }
-        ],
-        {
-          delay: index * 90,
-          duration: 520,
-          easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-          fill: 'both'
-        }
-      );
-    }
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      renderCurriculum(activeStrand, e.target.value);
+    });
+  }
+
+  const completeBtn = document.getElementById('mark-lesson-complete') || document.getElementById('btn-complete-lesson');
+  if (completeBtn) {
+    const lessonId = Number(completeBtn.getAttribute('data-lesson-id'));
+    const syncState = () => {
+      const isDone = getCompletedLessons().includes(lessonId);
+      completeBtn.textContent = isDone ? '✓ Đã hoàn thành bài học này' : 'Đánh dấu đã hoàn thành bài học';
+      completeBtn.className = isDone ? 'btn btn-outline' : 'btn btn-primary';
+    };
+    syncState();
+    completeBtn.addEventListener('click', () => {
+      toggleLessonComplete(lessonId);
+      syncState();
+    });
+  }
+
+  setupIframeAutoResize();
 });

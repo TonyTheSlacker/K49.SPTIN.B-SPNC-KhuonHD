@@ -1,127 +1,233 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Bài 1 Tin học lớp 6: Thông tin và dữ liệu - trang bài học chuẩn với khởi động, kiến thức, luyện tập và điều hướng.">
-  <title>Bài 1. Thông tin và dữ liệu</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260804">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 1: Thông tin và dữ liệu | Học liệu số Tin học 6 - HCMUE</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
-  <div class="page-shell">
-    <main class="lesson-page">
-      <section class="lesson-page__intro" aria-labelledby="lesson-1-title">
-        <div class="lesson-page__eyebrow">📘 Bài 1 - Tin học 6</div>
-        <h1 id="lesson-1-title">Thông tin và dữ liệu</h1>
+  <div class="academic-Ribbon">
+    <div class="academic-Ribbon__inner">
+      <span>Chủ đề 1 (Chủ đề A): Máy tính và cộng đồng · Mạch Khoa học máy tính (CS)</span>
+      <span>Sách giáo khoa Tin học 6 – Kết nối tri thức với cuộc sống (Trang 5 – 7)</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="index.html" class="brand">
+        <img src="assets/images/Logo HCMUE.svg" alt="Logo HCMUE" class="brand__logo" />
+        <div class="brand__text">
+          <span class="brand__title">Học Liệu Số Tin Học 6</span>
+          <span class="brand__subtitle">Chủ đề 1 · Bài 1: Thông tin và dữ liệu</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="index.html" class="main-nav__link">Mục lục bài học</a>
+        <a href="dictionary.html" class="main-nav__link">Từ điển thuật ngữ</a>
+        <a href="crossword.html" class="main-nav__link">Ô chữ ôn tập</a>
+        <a href="algorithm.html" class="main-nav__link">Mô phỏng thuật toán</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container lesson-layout">
+    <!-- Cột mục lục tiến trình sư phạm bên trái -->
+    <aside class="lesson-sidebar" aria-label="Tiến trình bài học">
+      <div class="lesson-sidebar__title">Tiến trình bài học</div>
+      <ul class="pedagogical-steps">
+        <li>
+          <a href="#yeu-cau-can-dat" class="pedagogical-steps__link is-active">
+            <span class="step-index">0</span> Yêu cầu cần đạt
+          </a>
+        </li>
+        <li>
+          <a href="#khoi-dong" class="pedagogical-steps__link">
+            <span class="step-index">1</span> Hoạt động Khởi động
+          </a>
+        </li>
+        <li>
+          <a href="#kham-pha-1" class="pedagogical-steps__link">
+            <span class="step-index">2</span> 1. Thông tin và dữ liệu
+          </a>
+        </li>
+        <li>
+          <a href="#kham-pha-2" class="pedagogical-steps__link">
+            <span class="step-index">3</span> 2. Tầm quan trọng của thông tin
+          </a>
+        </li>
+        <li>
+          <a href="#luyen-tap" class="pedagogical-steps__link">
+            <span class="step-index">4</span> Hoạt động Luyện tập
+          </a>
+        </li>
+        <li>
+          <a href="#van-dung" class="pedagogical-steps__link">
+            <span class="step-index">5</span> Hoạt động Vận dụng
+          </a>
+        </li>
+      </ul>
+
+      <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--bg-subtle);">
+        <button
+          type="button"
+          id="mark-lesson-complete"
+          data-lesson-id="1"
+          class="btn btn--primary"
+          style="width: 100%; justify-content: center;"
+        >
+          Đánh dấu đã hoàn thành bài học
+        </button>
+      </div>
+    </aside>
+
+    <!-- Nội dung bài học chính -->
+    <main class="lesson-main">
+      <header id="yeu-cau-can-dat" class="lesson-header">
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <span class="topic-code">Bài 01</span>
+          <span class="strand-badge strand-badge--cs">Mạch CS · Khoa học máy tính</span>
+        </div>
+        <h1 class="lesson-header__title">Thông tin và dữ liệu</h1>
+
+        <div class="objectives-box">
+          <div class="objectives-box__title">Yêu cầu cần đạt sau bài học</div>
+          <ul>
+            <li>Phân biệt được <strong>thông tin</strong> và <strong>dữ liệu</strong> thông qua các tình huống thực tế.</li>
+            <li>Nhận biết được <strong>vật mang tin</strong> và nêu được ví dụ minh họa cho mối quan hệ giữa thông tin, dữ liệu và vật mang tin.</li>
+            <li>Nêu được ví dụ minh họa cho tầm quan trọng của thông tin đối với việc ra quyết định của con người.</li>
+          </ul>
+        </div>
+      </header>
+
+      <!-- 1. HOẠT ĐỘNG KHỞI ĐỘNG -->
+      <section id="khoi-dong" class="lesson-section">
+        <div class="lesson-section__header">
+          <span class="section-pill">Hoạt động 1</span>
+          <h2 class="lesson-section__title">Khởi động: Tình huống đèn giao thông và dự báo thời tiết</h2>
+        </div>
+
         <p>
-          Bài học này giúp học sinh phân biệt thông tin và dữ liệu, nhận biết dữ liệu quanh mình
-          và hiểu vì sao máy tính cần dữ liệu để xử lí thông tin.
+          Hằng ngày, em tiếp nhận nhiều tín hiệu và con số xung quanh mình: ánh đèn giao thông chuyển từ xanh sang đỏ,
+          bản tin dự báo thời tiết trên tivi, hay tiếng trống trường báo giờ vào lớp. Hãy thực hiện hoạt động dưới đây
+          để phân biệt điều em <em>nhìn/nghe thấy</em> và <em>sự hiểu biết</em> em rút ra được.
         </p>
+
+        <div class="interactive-embed">
+          <div class="interactive-embed__bar">
+            <span>Phiếu tương tác 1.1 · Khởi động nhận diện Thông tin & Dữ liệu</span>
+            <a href="assets/games/bai-1-khoi-dong.html" target="_blank">Mở toàn màn hình ↗</a>
+          </div>
+          <iframe src="assets/games/bai-1-khoi-dong.html" title="Hoạt động khởi động Bài 1"></iframe>
+        </div>
       </section>
 
-      <section class="lesson-section" aria-labelledby="warmup-title">
+      <!-- 2. HÌNH THÀNH KIẾN THỨC: MỤC 1 -->
+      <section id="kham-pha-1" class="lesson-section">
         <div class="lesson-section__header">
-          <span class="lesson-section__icon" aria-hidden="true">🎮</span>
-          <div>
-            <h2 id="warmup-title">1. Khởi động</h2>
-            <p class="lesson-section__lead">Chơi nhanh một hoạt động nhận biết thông tin và dữ liệu trong đời sống hằng ngày.</p>
-          </div>
+          <span class="section-pill">Khám phá 1</span>
+          <h2 class="lesson-section__title">1. Thông tin và dữ liệu</h2>
         </div>
 
-        <div class="lesson-frame lesson-frame--wide">
-          <iframe
-            title="Khởi động - Thông tin và dữ liệu"
-            src="assets/games/bai-1-khoi-dong.html"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            allowfullscreen>
-          </iframe>
+        <div class="sgk-activity-box">
+          <span class="sgk-activity-box__label">Hoạt động khám phá (SGK trang 5)</span>
+          <p>
+            Bạn Minh nhìn thấy trên màn hình tivi hiển thị các con số <strong>26°C – 32°C</strong> kèm hình đám mây có tia chớp.
+            Minh hiểu rằng hôm nay trời ấm nhưng có thể có mưa dông nên chuẩn bị áo mưa khi đi học.
+          </p>
+          <p style="margin-top: 0.5rem;">
+            Trong tình huống trên: Các con số và hình vẽ trên màn hình là <strong>dữ liệu</strong>; điều bạn Minh biết được về thời tiết
+            là <strong>thông tin</strong>; còn màn hình tivi hiển thị bản tin đóng vai trò giúp truyền tải thông tin.
+          </p>
+        </div>
+
+        <div class="sgk-core-box">
+          <span class="sgk-core-box__label">Kiến thức cốt lõi cần ghi nhớ</span>
+          <ul>
+            <li><strong>Thông tin</strong> là những gì đem lại hiểu biết cho con người về thế giới xung quanh và về chính bản thân mình.</li>
+            <li><strong>Dữ liệu</strong> là các con số, văn bản, hình ảnh, âm thanh,... dùng để thể hiện thông tin. Khi nhìn, nghe và suy nghĩ về dữ liệu, con người sẽ nhận được thông tin.</li>
+            <li><strong>Vật mang tin</strong> là phương tiện được dùng để lưu trữ và truyền tải thông tin (ví dụ: trang giấy, tấm biển báo, thẻ nhớ, đĩa CD).</li>
+          </ul>
+        </div>
+
+        <div class="interactive-embed">
+          <div class="interactive-embed__bar">
+            <span>Phiếu tương tác 1.2 · Phân loại Thông tin – Dữ liệu – Vật mang tin</span>
+            <a href="assets/games/bai-1-ghep-noi.html" target="_blank">Mở toàn màn hình ↗</a>
+          </div>
+          <iframe src="assets/games/bai-1-ghep-noi.html" title="Trò chơi ghép nối Bài 1"></iframe>
         </div>
       </section>
 
-      <section class="lesson-section" aria-labelledby="knowledge-title">
+      <!-- 3. HÌNH THÀNH KIẾN THỨC: MỤC 2 -->
+      <section id="kham-pha-2" class="lesson-section">
         <div class="lesson-section__header">
-          <span class="lesson-section__icon" aria-hidden="true">💡</span>
-          <div>
-            <h2 id="knowledge-title">2. Khám phá kiến thức</h2>
-            <p class="lesson-section__lead">Các ý chính được tóm tắt ngắn gọn để học sinh dễ nhớ và dễ ôn lại.</p>
-          </div>
+          <span class="section-pill">Khám phá 2</span>
+          <h2 class="lesson-section__title">2. Tầm quan trọng của thông tin</h2>
         </div>
 
-        <div class="lesson-knowledge">
-          <div class="lesson-frame lesson-frame--wide">
-            <iframe
-              title="Video bài giảng - Thông tin và dữ liệu"
-              src="about:blank"
-              loading="lazy"
-              referrerpolicy="no-referrer"
-              allowfullscreen>
-            </iframe>
-          </div>
+        <p>
+          Thông tin không chỉ mang lại sự hiểu biết mà còn giúp con người đưa ra những lựa chọn đúng đắn.
+          Ví dụ, trước khi tổ chức buổi dã ngoại cho lớp tại một khu du lịch sinh thái, giáo viên chủ nhiệm và ban cán sự lớp
+          cần tìm hiểu trước các thông tin: địa điểm ở đâu, di chuyển bằng phương tiện gì, thời tiết ngày hôm đó thế nào,
+          chi phí và các quy định an toàn tại nơi đến.
+        </p>
 
-          <aside class="lesson-summary" aria-label="Tóm tắt kiến thức bài 1">
-            <h3>Tóm tắt bài học</h3>
-            <p>
-              <strong>Thông tin</strong> là điều em biết được từ sự vật, hiện tượng hoặc con người.
-              <strong>Dữ liệu</strong> là các con số, chữ cái, hình ảnh, âm thanh... dùng để biểu diễn thông tin.
-            </p>
-            <ul>
-              <li>Dữ liệu có thể là chữ, số, hình ảnh hoặc âm thanh.</li>
-              <li>Một thông tin có thể được biểu diễn bằng nhiều loại dữ liệu khác nhau.</li>
-              <li>Máy tính cần dữ liệu để lưu trữ và xử lí thông tin.</li>
-              <li>Quan sát đúng dữ liệu giúp em hiểu đúng thông tin nhận được.</li>
-            </ul>
-            <a class="lesson-download" href="#" role="button" aria-label="Tải phiếu học tập Bài 1">
-              📥 Tải Phiếu học tập
-            </a>
-
-            <div class="lesson-frame lesson-frame--game lesson-frame--match">
-              <iframe
-                title="Ghép nối khái niệm - Thông tin và dữ liệu"
-                src="assets/games/bai-1-ghep-noi.html"
-                loading="lazy"
-                referrerpolicy="no-referrer"
-                allowfullscreen>
-              </iframe>
-            </div>
-          </aside>
+        <div class="sgk-core-box">
+          <span class="sgk-core-box__label">Kiến thức cốt lõi cần ghi nhớ</span>
+          <ul>
+            <li>Thông tin đem lại sự hiểu biết cho con người. Mọi hoạt động của con người đều cần đến thông tin.</li>
+            <li>Thông tin đúng giúp con người đưa ra những lựa chọn tốt, giúp cho hoạt động của con người đạt hiệu quả.</li>
+          </ul>
         </div>
       </section>
 
-      <section class="lesson-section" aria-labelledby="practice-title">
+      <!-- 4. LUYỆN TẬP -->
+      <section id="luyen-tap" class="lesson-section">
         <div class="lesson-section__header">
-          <span class="lesson-section__icon" aria-hidden="true">🧪</span>
-          <div>
-            <h2 id="practice-title">3. Luyện tập &amp; Vận dụng</h2>
-            <p class="lesson-section__lead">Thực hành nhận diện đâu là thông tin, đâu là dữ liệu qua bài tập tương tác.</p>
-          </div>
+          <span class="section-pill">Hoạt động 3</span>
+          <h2 class="lesson-section__title">Luyện tập củng cố</h2>
         </div>
 
-        <div class="lesson-frame lesson-frame--wide">
-          <iframe
-            title="Luyện tập - Thông tin và dữ liệu"
-            src="assets/games/bai-1-luyen-tap.html"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            allowfullscreen>
-          </iframe>
+        <div class="interactive-embed">
+          <div class="interactive-embed__bar">
+            <span>Phiếu bài tập 1.3 · Câu hỏi trắc nghiệm & tình huống SGK trang 7</span>
+            <a href="assets/games/bai-1-luyen-tap.html" target="_blank">Mở toàn màn hình ↗</a>
+          </div>
+          <iframe src="assets/games/bai-1-luyen-tap.html" title="Hoạt động luyện tập Bài 1"></iframe>
         </div>
       </section>
 
-      <nav class="lesson-footer-nav" aria-label="Điều hướng bài học">
-        <a class="lesson-footer-nav__link lesson-footer-nav__link--prev" href="index.html" aria-label="Bài trước">
-          ⬅️ Bài trước
-        </a>
-        <a class="lesson-footer-nav__link lesson-footer-nav__link--next" href="bai-2-xu-li-thong-tin.html" aria-label="Bài tiếp theo">
-          Bài tiếp theo ➡️
-        </a>
+      <!-- 5. VẬN DỤNG -->
+      <section id="van-dung" class="lesson-section">
+        <div class="lesson-section__header">
+          <span class="section-pill">Hoạt động 4</span>
+          <h2 class="lesson-section__title">Vận dụng thực tiễn</h2>
+        </div>
+
+        <div class="sgk-activity-box" style="background-color: var(--sgk-practice-bg); border-color: #bbf7d0; border-left-color: var(--sgk-practice-border);">
+          <span class="sgk-activity-box__label" style="color: var(--sgk-practice-border);">Nhiệm vụ thảo luận nhóm / Tự chuẩn bị ở nhà</span>
+          <p>
+            <strong>Câu hỏi 1:</strong> Em hãy nêu ví dụ về những tấm bảng chỉ dẫn ở nơi công cộng (bệnh viện, công viên, trường học)
+            và giải thích đâu là <em>dữ liệu</em>, đâu là <em>thông tin</em> và đâu là <em>vật mang tin</em> trong ví dụ đó.
+          </p>
+          <p style="margin-top: 0.65rem;">
+            <strong>Câu hỏi 2:</strong> Lớp em sắp tổ chức buổi dã ngoại. Hãy liệt kê ít nhất 4 câu hỏi để tìm thông tin chuẩn bị cho buổi dã ngoại đó
+            (ví dụ: Đi đến địa điểm nào? Cần mang theo vật dụng cá nhân gì?).
+          </p>
+        </div>
+      </section>
+
+      <!-- Điều hướng chuyển bài -->
+      <nav class="lesson-pagination" aria-label="Chuyển bài học">
+        <a href="index.html" class="btn">← Quay lại Mục lục chương trình</a>
+        <a href="bai-2-xu-li-thong-tin.html" class="btn btn--primary">Bài 2: Xử lí thông tin →</a>
       </nav>
     </main>
   </div>
 
-  <script src="assets/js/main.js?v=20260804"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --game-bg: #ffffff;
+  --game-surface: #f7f6f2;
+  --game-navy: #0f3d6e;
+  --game-blue: #1a5fb4;
+  --game-border: #dcd9ce;
+  --game-text: #1c2430;
+  --game-muted: #4a5568;
+  --game-ok-bg: #ecfdf5;
+  --game-ok-border: #059669;
+  --game-err-bg: #fef2f2;
+  --game-err-border: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background-color: var(--game-bg);
+  color: var(--game-text);
+  padding: 1.25rem;
+  line-height: 1.55;
+}
+
+.worksheet-card {
+  background: var(--game-surface);
+  border: 1px solid var(--game-border);
+  border-radius: 8px;
+  padding: 1.15rem;
+  margin-bottom: 1rem;
+}
+
+.worksheet-question {
+  font-weight: 600;
+  font-size: 0.96rem;
+  margin-bottom: 0.75rem;
+  color: var(--game-navy);
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.65rem;
+}
+
+.option-btn {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: #ffffff;
+  border: 1px solid var(--game-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--game-blue);
+  background: #f0f6fc;
+}
+
+.option-btn.is-correct {
+  background: var(--game-ok-bg);
+  border-color: var(--game-ok-border);
+  color: #065f46;
+  font-weight: 600;
+}
+
+.option-btn.is-wrong {
+  background: var(--game-err-bg);
+  border-color: var(--game-err-border);
+  color: #991b1b;
+}
+
+.feedback-banner {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.86rem;
+  display: none;
+}
+
+.feedback-banner.is-visible {
+  display: block;
+}

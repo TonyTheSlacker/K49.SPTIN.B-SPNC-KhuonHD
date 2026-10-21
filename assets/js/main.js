@@ -1,6 +1,7 @@
 /**
- * Quản lý danh mục chương trình Tin học 6, tiến độ học tập và đồng bộ khung tương tác (iframe)
- * Dự án Học liệu số Tin học 6 - Khoa CNTT - ĐH Sư phạm TP.HCM
+ * Quản lý danh mục chương trình Tin học 6, tự động đồng bộ bố cục 17 bài học
+ * và kiểm soát chiều cao khung tương tác (iframe) chống tràn.
+ * Dự án Học liệu số Tin học 6 - Khoa CNTT - ĐH Sư phạm TP.HCM (HCMUE)
  */
 
 const CURRICULUM_DATA = [
@@ -53,8 +54,8 @@ const CURRICULUM_DATA = [
       {
         id: 5,
         slug: 'bai-5-internet.html',
-        title: 'Bài 5: Internet',
         strand: 'ICT',
+        title: 'Bài 5: Internet',
         summary: 'Đặc điểm toàn cầu, tính tương tác, tính dễ tiếp cận và những lợi ích thiết thực của mạng Internet.',
         interactiveCount: 1
       }
@@ -190,6 +191,15 @@ const CURRICULUM_DATA = [
   }
 ];
 
+const ALL_LESSONS = CURRICULUM_DATA.flatMap((topic) =>
+  topic.lessons.map((lesson) => ({
+    ...lesson,
+    topicCode: topic.topicCode,
+    topicCluster: topic.topicCluster,
+    topicTitle: topic.topicTitle
+  }))
+);
+
 const STORAGE_KEY = 'hcmue_tinhoc6_completed_lessons';
 
 function getCompletedLessons() {
@@ -211,6 +221,192 @@ function toggleLessonComplete(lessonId) {
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
   return completed;
+}
+
+function stripLeadingEmojis(text) {
+  if (!text) return '';
+  return text
+    .replace(/^[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\s]+/gu, '')
+    .trim();
+}
+
+/**
+ * Tự động nâng cấp các trang bài học cũ (Bài 2 -> Bài 17) và các trang công cụ
+ * sang bố cục chuẩn Sư phạm HCMUE nếu trang chưa có .lesson-layout
+ */
+function autoUpgradeLegacyPages() {
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+
+  // 1. Tìm thông tin bài học hiện tại nếu là trang bai-*.html
+  let currentLesson = ALL_LESSONS.find((l) => l.slug === path);
+  if (!currentLesson && path === 'bai15.html') {
+    currentLesson = ALL_LESSONS.find((l) => l.id === 15);
+  }
+
+  // Nếu là trang bài học nhưng chưa được bọc trong .lesson-layout
+  if (currentLesson && !document.querySelector('.lesson-layout')) {
+    // Xóa header/navbar/footer cũ nếu có
+    document.querySelectorAll('header, nav.navbar, .navbar, footer').forEach((el) => {
+      if (!el.closest('main') && !el.closest('section')) {
+        el.remove();
+      }
+    });
+
+    // Gom toàn bộ nội dung bài học hiện tại
+    const existingMain =
+      document.querySelector('main') ||
+      document.querySelector('.lesson-container') ||
+      document.querySelector('.container');
+
+    const contentNodes = [];
+    if (existingMain) {
+      Array.from(existingMain.childNodes).forEach((node) => contentNodes.push(node));
+      existingMain.remove();
+    } else {
+      Array.from(document.body.childNodes).forEach((node) => {
+        if (
+          node.nodeType === 1 &&
+          (node.tagName === 'SCRIPT' || node.tagName === 'STYLE' || node.tagName === 'LINK')
+        ) {
+          return;
+        }
+        contentNodes.push(node);
+      });
+    }
+
+    // Dựng khung Academic Ribbon + Header HCMUE
+    const topBarsHTML = `
+      <div class="academic-Ribbon">
+        <div class="academic-Ribbon__inner">
+          <span>${currentLesson.topicCode} (${currentLesson.topicCluster}): ${currentLesson.topicTitle} · Mạch ${currentLesson.strand}</span>
+          <span>Sách giáo khoa Tin học 6 – Kết nối tri thức với cuộc sống</span>
+        </div>
+      </div>
+      <header class="site-header">
+        <div class="site-header__inner">
+          <a href="index.html" class="brand">
+            <img src="assets/images/Logo HCMUE.svg" alt="Logo HCMUE" class="brand__logo" />
+            <div class="brand__text">
+              <span class="brand__title">Học Liệu Số Tin Học 6</span>
+              <span class="brand__subtitle">${currentLesson.topicCode} · ${currentLesson.title}</span>
+            </div>
+          </a>
+          <nav class="main-nav" aria-label="Điều hướng chính">
+            <a href="index.html" class="main-nav__link">Mục lục bài học</a>
+            <a href="dictionary.html" class="main-nav__link">Từ điển thuật ngữ</a>
+            <a href="crossword.html" class="main-nav__link">Ô chữ ôn tập</a>
+            <a href="algorithm.html" class="main-nav__link">Mô phỏng thuật toán</a>
+          </nav>
+        </div>
+      </header>
+    `;
+
+    const layoutWrap = document.createElement('div');
+    layoutWrap.className = 'container lesson-layout';
+
+    const sidebar = document.createElement('aside');
+    sidebar.className = 'lesson-sidebar';
+    sidebar.setAttribute('aria-label', 'Tiến trình bài học');
+
+    const mainEl = document.createElement('main');
+    mainEl.className = 'lesson-main';
+
+    contentNodes.forEach((node) => mainEl.appendChild(node));
+
+    // Làm sạch emoji đầu dòng ở các thẻ tiêu đề và chuẩn hóa danh sách mục lục bên trái
+    const headings = mainEl.querySelectorAll('h1, h2, .badge, .lesson-badge');
+    headings.forEach((h) => {
+      if (h.childNodes.length === 1 && h.childNodes[0].nodeType === 3) {
+        h.textContent = stripLeadingEmojis(h.textContent);
+      }
+    });
+
+    // Bọc các iframe lẻ vào khung .interactive-embed chuẩn
+    mainEl.querySelectorAll('iframe').forEach((iframe, idx) => {
+      if (!iframe.closest('.interactive-embed')) {
+        const src = iframe.getAttribute('src') || '';
+        const title = iframe.getAttribute('title') || `Hoạt động tương tác ${idx + 1}`;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'interactive-embed';
+        wrapper.innerHTML = `
+          <div class="interactive-embed__bar">
+            <span>Phiếu tương tác ${currentLesson.id}.${idx + 1} · ${title}</span>
+            ${src ? `<a href="${src}" target="_blank">Mở toàn màn hình ↗</a>` : ''}
+          </div>
+        `;
+        iframe.parentNode.insertBefore(wrapper, iframe);
+        wrapper.appendChild(iframe);
+      }
+    });
+
+    // Tự động tạo danh sách "Tiến trình bài học" ở cột trái từ các thẻ h2 / section
+    const sectionHeadings = Array.from(mainEl.querySelectorAll('h2'));
+    const stepsHTML = sectionHeadings
+      .map((h2, index) => {
+        const sectionEl = h2.closest('section') || h2;
+        if (!sectionEl.id) {
+          sectionEl.id = `muc-bai-hoc-${index + 1}`;
+        }
+        const cleanTitle = stripLeadingEmojis(h2.textContent);
+        return `
+          <li>
+            <a href="#${sectionEl.id}" class="pedagogical-steps__link ${index === 0 ? 'is-active' : ''}">
+              <span class="step-index">${index + 1}</span>
+              <span>${cleanTitle}</span>
+            </a>
+          </li>
+        `;
+      })
+      .join('');
+
+    sidebar.innerHTML = `
+      <div class="lesson-sidebar__title">Tiến trình bài học</div>
+      <ul class="pedagogical-steps">
+        ${
+          stepsHTML ||
+          `<li><a href="#" class="pedagogical-steps__link is-active"><span class="step-index">1</span> Nội dung bài học</a></li>`
+        }
+      </ul>
+      <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--bg-subtle);">
+        <button
+          type="button"
+          id="mark-lesson-complete"
+          data-lesson-id="${currentLesson.id}"
+          class="btn btn--primary"
+          style="width: 100%; justify-content: center;"
+        >
+          Đánh dấu đã hoàn thành bài học
+        </button>
+      </div>
+    `;
+
+    // Thêm thanh điều hướng Bài trước / Bài tiếp theo ở cuối bài
+    if (!mainEl.querySelector('.lesson-pagination')) {
+      const prevLesson = ALL_LESSONS.find((l) => l.id === currentLesson.id - 1);
+      const nextLesson = ALL_LESSONS.find((l) => l.id === currentLesson.id + 1);
+      const paginationNav = document.createElement('nav');
+      paginationNav.className = 'lesson-pagination';
+      paginationNav.setAttribute('aria-label', 'Chuyển bài học');
+      paginationNav.innerHTML = `
+        <a href="${prevLesson ? prevLesson.slug : 'index.html'}" class="btn">
+          ← ${prevLesson ? prevLesson.title : 'Quay lại Mục lục chương trình'}
+        </a>
+        ${
+          nextLesson
+            ? `<a href="${nextLesson.slug}" class="btn btn--primary">${nextLesson.title} →</a>`
+            : `<a href="index.html" class="btn btn--primary">Hoàn thành chương trình →</a>`
+        }
+      `;
+      mainEl.appendChild(paginationNav);
+    }
+
+    layoutWrap.appendChild(sidebar);
+    layoutWrap.appendChild(mainEl);
+
+    document.body.insertAdjacentHTML('afterbegin', topBarsHTML);
+    const headerEl = document.querySelector('.site-header');
+    headerEl.insertAdjacentElement('afterend', layoutWrap);
+  }
 }
 
 function updateProgressOverview() {
@@ -304,30 +500,98 @@ function renderCurriculum(filterStrand = 'all', searchQuery = '') {
 }
 
 /**
- * Tự động điều chỉnh chiều cao của các iframe hoạt động (assets/games/*.html)
- * để loại bỏ hoàn toàn hiện tượng 2 thanh cuộn lồng nhau.
+ * Đo chiều cao thật của các phần tử con bên trong iframe (Không dùng documentElement.scrollHeight
+ * và không dùng ResizeObserver để tránh tuyệt đối lỗi lặp vô hạn do min-height: 100vh)
  */
+function measureTrueIframeContentHeight(doc) {
+  if (!doc || !doc.body) return 460;
+
+  const children = Array.from(doc.body.children).filter(
+    (el) => el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE' && el.tagName !== 'LINK'
+  );
+
+  if (children.length === 0) {
+    return Math.min(Math.max(doc.body.offsetHeight, 380), 740);
+  }
+
+  const bodyRect = doc.body.getBoundingClientRect();
+  let maxBottom = 0;
+
+  children.forEach((child) => {
+    const rect = child.getBoundingClientRect();
+    const bottom = rect.bottom - bodyRect.top;
+    if (bottom > maxBottom) {
+      maxBottom = bottom;
+    }
+  });
+
+  const computed = doc.defaultView ? doc.defaultView.getComputedStyle(doc.body) : null;
+  const padBottom = computed ? parseFloat(computed.paddingBottom) || 20 : 20;
+  const rawHeight = Math.ceil(maxBottom + padBottom + 8);
+
+  return Math.min(Math.max(rawHeight, 380), 740);
+}
+
 function initSeamlessIframes() {
-  const iframes = document.querySelectorAll('.interactive-embed iframe');
+  const iframes = document.querySelectorAll('iframe');
+
   iframes.forEach((iframe) => {
-    iframe.addEventListener('load', () => {
+    let lastHeight = 0;
+
+    const adjustIframeHeight = () => {
       try {
-        const doc = iframe.contentDocument || iframe.contentWindow.document;
-        if (doc && doc.body) {
-          const updateHeight = () => {
-            const h = doc.documentElement.scrollHeight || doc.body.scrollHeight;
-            if (h > 200) {
-              iframe.style.height = `${h + 16}px`;
+        const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+        if (!doc || !doc.body) return;
+
+        // Xóa bỏ min-height: 100vh bên trong các file game để ngăn chặn kéo giãn nền
+        if (!doc.getElementById('hcmue-iframe-reset')) {
+          const resetStyle = doc.createElement('style');
+          resetStyle.id = 'hcmue-iframe-reset';
+          resetStyle.textContent = `
+            html, body {
+              min-height: 0 !important;
+              height: auto !important;
+              max-height: none !important;
+              overflow-x: hidden !important;
             }
-          };
-          updateHeight();
-          const observer = new ResizeObserver(updateHeight);
-          observer.observe(doc.body);
+            body {
+              display: block !important;
+              padding-bottom: 16px !important;
+            }
+          `;
+          if (doc.head) {
+            doc.head.appendChild(resetStyle);
+          } else {
+            doc.body.prepend(resetStyle);
+          }
         }
-      } catch (e) {
-        // Trường hợp mở qua giao thức file:// bị giới hạn cross-origin, dùng postMessage dự phòng
+
+        const nextHeight = measureTrueIframeContentHeight(doc);
+        if (Math.abs(nextHeight - lastHeight) > 6) {
+          lastHeight = nextHeight;
+          iframe.style.height = `${nextHeight}px`;
+        }
+      } catch (err) {
+        // Bỏ qua nếu iframe là video ngoài domain (YouTube,...)
       }
+    };
+
+    iframe.addEventListener('load', () => {
+      adjustIframeHeight();
+      setTimeout(adjustIframeHeight, 250);
+
+      try {
+        const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+        if (doc) {
+          doc.addEventListener('click', () => setTimeout(adjustIframeHeight, 90));
+          doc.addEventListener('change', () => setTimeout(adjustIframeHeight, 90));
+        }
+      } catch (e) {}
     });
+
+    if (iframe.complete) {
+      adjustIframeHeight();
+    }
   });
 
   window.addEventListener('message', (event) => {
@@ -335,16 +599,14 @@ function initSeamlessIframes() {
       const targetIframe = Array.from(iframes).find(
         (frame) => frame.contentWindow === event.source
       );
-      if (targetIframe && event.data.height) {
-        targetIframe.style.height = `${event.data.height + 16}px`;
+      if (targetIframe && Number.isFinite(event.data.height)) {
+        const clamped = Math.min(Math.max(Math.ceil(event.data.height), 380), 740);
+        targetIframe.style.height = `${clamped}px`;
       }
     }
   });
 }
 
-/**
- * Khởi tạo nút đánh dấu hoàn thành bài học trên từng trang bài học
- */
 function initLessonCompletionButton() {
   const completeBtn = document.getElementById('mark-lesson-complete');
   if (!completeBtn) return;
@@ -369,6 +631,7 @@ function initLessonCompletionButton() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  autoUpgradeLegacyPages();
   updateProgressOverview();
   renderCurriculum();
   initSeamlessIframes();

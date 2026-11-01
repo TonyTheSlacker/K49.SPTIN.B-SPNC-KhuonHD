@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khám Phá Website Bổ Trợ Tin Học 6</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Font: Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+    }
+    @keyframes bounce-gentle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .animate-gentle {
+      animation: bounce-gentle 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 min-h-screen text-slate-800 flex flex-col justify-between p-4 sm:p-6 relative overflow-x-hidden">
+
+  <!-- Hiệu ứng nền bong bóng mờ -->
+  <div class="fixed top-[-10%] left-[-10%] w-96 h-96 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- Thanh Header trên cùng -->
+  <header class="w-full max-w-4xl mx-auto flex items-center justify-between z-10 py-2">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center text-xl shadow-lg">
+        💻
+      </div>
+      <div>
+        <h1 class="text-white font-extrabold text-base sm:text-lg leading-tight">Bổ Trợ Tin Học 6</h1>
+        <p class="text-cyan-300 text-xs">Đại học Sư phạm TP.HCM (HCMUE)</p>
+      </div>
+    </div>
+    
+    <!-- Nút nhảy thẳng qua web -->
+    <button 
+      onclick="goToMainWeb()"
+      class="text-xs sm:text-sm font-semibold text-white/80 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 transition flex items-center gap-1.5 active:scale-95">
+      <span>Bỏ qua hướng dẫn</span>
+      <span class="text-base">➜</span>
+    </button>
+  </header>
+
+  <!-- Khung nội dung chính (Onboarding Card) -->
+  <main class="w-full max-w-2xl mx-auto my-auto z-10 py-6">
+    <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border-4 border-white/40 p-6 sm:p-8 relative overflow-hidden transition-all duration-300">
+      
+      <!-- Linh vật Robot dẫn đường -->
+      <div class="flex justify-center -mt-2 mb-4">
+        <div class="w-20 h-20 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-3xl shadow-xl flex items-center justify-center text-4xl animate-gentle border-4 border-white">
+          🤖
+        </div>
+      </div>
+
+      <!-- Tiêu đề chung -->
+      <div class="text-center mb-6">
+        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 font-bold text-xs rounded-full uppercase tracking-wider mb-2">
+          Hướng Dẫn Sử Dụng Nhanh
+        </span>
+        <h2 id="stepTitle" class="text-xl sm:text-2xl font-black text-gray-800">
+          Chào mừng em đến với Web Học Tin Học 6!
+        </h2>
+      </div>
+
+      <!-- Nội dung từng bước trình chiếu -->
+      <div class="min-h-[160px] flex items-center">
+        <!-- Bước 1 -->
+        <div id="step1" class="step-content space-y-3 text-center w-full">
+          <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+            Trang web được thiết kế riêng giúp các em làm quen với thế giới số, luyện kỹ năng máy tính và chuẩn bị thật tốt cho các bài kiểm tra định kỳ.
+          </p>
+          <div class="grid grid-cols-2 gap-3 pt-2 text-left text-xs font-semibold">
+            <div class="bg-blue-50 p-3 rounded-2xl border border-blue-200 text-blue-800 flex items-center gap-2">
+              <span class="text-lg">📚</span> Tóm tắt lý thuyết dễ nhớ
+            </div>
+            <div class="bg-purple-50 p-3 rounded-2xl border border-purple-200 text-purple-800 flex items-center gap-2">
+              <span class="text-lg">🎯</span> Bám sát SGK Tin học 6
+            </div>
+          </div>
+        </div>
+
+        <!-- Bước 2 -->
+        <div id="step2" class="step-content hidden space-y-3 text-center w-full">
+          <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+            Học mà chơi, chơi mà học! Em có thể vừa ôn bài vừa tích điểm qua các trò chơi trắc nghiệm và câu đố nhị phân tương tác vui nhộn.
+          </p>
+          <div class="grid grid-cols-2 gap-3 pt-2 text-left text-xs font-semibold">
+            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-amber-800 flex items-center gap-2">
+              <span class="text-lg">🎮</span> Mini-game thử thách
+            </div>
+            <div class="bg-emerald-50 p-3 rounded-2xl border border-emerald-200 text-emerald-800 flex items-center gap-2">
+              <span class="text-lg">🏆</span> Xem điểm & đáp án ngay
+            </div>
+          </div>
+        </div>
+
+        <!-- Bước 3 -->
+        <div id="step3" class="step-content hidden space-y-3 text-center w-full">
+          <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+            Gặp từ khó hay quên định nghĩa? Em chỉ cần mở <b>Từ điển Tin học</b> hoặc hỏi trực tiếp <b>Trợ lý ảo</b> trên web để được giải đáp 24/7.
+          </p>
+          <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-200 text-indigo-900 text-xs sm:text-sm flex items-center justify-center gap-2 font-medium">
+            <span>✨</span> Mọi công cụ đều hoàn toàn miễn phí và dễ dùng trên điện thoại lẫn máy tính.
+          </div>
+        </div>
+      </div>
+
+      <!-- Chỉ số các bước (Dots) -->
+      <div class="flex justify-center items-center gap-2 mt-6 mb-6">
+        <div class="dot w-8 h-2 rounded-full bg-blue-600 transition-all duration-300"></div>
+        <div class="dot w-2 h-2 rounded-full bg-gray-300 transition-all duration-300"></div>
+        <div class="dot w-2 h-2 rounded-full bg-gray-300 transition-all duration-300"></div>
+      </div>
+
+      <!-- Nút điều hướng -->
+      <div class="flex items-center justify-between gap-3 pt-4 border-t border-gray-100">
+        <button 
+          id="prevBtn" 
+          onclick="changeStep(-1)" 
+          class="px-5 py-2.5 rounded-2xl font-bold text-gray-500 hover:bg-gray-100 transition text-sm invisible active:scale-95">
+          Quay lại
+        </button>
+
+        <button 
+          id="nextBtn" 
+          onclick="changeStep(1)" 
+          class="flex-1 max-w-[220px] py-3 px-6 rounded-2xl font-extrabold text-white text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/30 transition transform hover:-translate-y-0.5 active:scale-95 text-center">
+          Tiếp tục ➜
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Chân trang -->
+  <footer class="w-full text-center text-xs text-blue-200/60 z-10 py-2">
+    Dự án hỗ trợ học tập Tin học THCS — Khoa Tin học HCMUE
+  </footer>
+
+  <!-- Logic chuyển bước và Chuyển hướng -->
+  <script>
+    const MAIN_WEBSITE_URL = "https://hotrotinhoc-hcmue.vercel.app/";
+    
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    const titles = [
+      "Chào mừng em đến với Web Học Tin Học 6!",
+      "Luyện Tập Qua Trò Chơi Thú Vị",
+      "Sẵn Sàng Khám Phá Kiến Thức Mới!"
+    ];
+
+    function changeStep(direction) {
+      currentStep += direction;
+
+      if (currentStep > totalSteps) {
+        // Hết bước 3 -> Chuyển hướng ngay sang website chính
+        goToMainWeb();
+        return;
+      }
+
+      // Cập nhật hiển thị bước
+      for (let i = 1; i <= totalSteps; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        if (i === currentStep) {
+          stepEl.classList.remove('hidden');
+        } else {
+          stepEl.classList.add('hidden');
+        }
+      }
+
+      // Đổi tiêu đề
+      document.getElementById('stepTitle').textContent = titles[currentStep - 1];
+
+      // Đổi trạng thái dots
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index + 1 === currentStep) {
+          dot.className = "dot w-8 h-2 rounded-full bg-blue-600 transition-all duration-300";
+        } else {
+          dot.className = "dot w-2 h-2 rounded-full bg-gray-300 transition-all duration-300";
+        }
+      });
+
+      // Điều khiển nút bấm
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      if (currentStep > 1) {
+        prevBtn.classList.remove('invisible');
+      } else {
+        prevBtn.classList.add('invisible');
+      }
+
+      if (currentStep === totalSteps) {
+        nextBtn.innerHTML = "Vào Trang Web Ngay 🚀";
+        nextBtn.className = "flex-1 max-w-[220px] py-3 px-6 rounded-2xl font-extrabold text-white text-sm bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-0.5 active:scale-95 text-center";
+      } else {
+        nextBtn.innerHTML = "Tiếp tục ➜";
+        nextBtn.className = "flex-1 max-w-[220px] py-3 px-6 rounded-2xl font-extrabold text-white text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/30 transition transform hover:-translate-y-0.5 active:scale-95 text-center";
+      }
+    }
+
+    // Hàm chuyển hướng sang web chính của nhóm
+    function goToMainWeb() {
+      window.location.href = MAIN_WEBSITE_URL;
+    }
+  </script>
+</body>
+</html>

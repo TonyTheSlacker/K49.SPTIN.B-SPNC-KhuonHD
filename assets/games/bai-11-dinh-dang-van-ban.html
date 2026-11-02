@@ -81,7 +81,7 @@ button{font-family:inherit; cursor:pointer}
 .actions{display:flex; justify-content:center; gap:.8rem; margin-top:1.1rem; flex-wrap:wrap}
 
 /* ---------- Home ---------- */
-.home{display:grid; grid-template-columns:1.15fr 1fr; gap:1.5rem; align-items:center; min-height:calc(100vh - 7rem)}
+.home{display:grid; grid-template-columns:1.15fr 1fr; gap:1.5rem; align-items:center; min-height:min(calc(100vh - 7rem), 32rem)}
 .badge{display:inline-block; background:#fff; border:2px solid var(--line); color:var(--muted); font-weight:700; border-radius:999px; padding:.3rem .9rem; font-size:.88rem}
 .home h1{font-family:'Baloo 2',cursive; font-size:2.4rem; line-height:1.1; margin:.6rem 0 .8rem; font-weight:800}
 .home h1 span{background:linear-gradient(90deg,var(--primary),var(--rose)); -webkit-background-clip:text; background-clip:text; color:transparent}
@@ -341,9 +341,11 @@ button{font-family:inherit; cursor:pointer}
 </header>
 
 <main id="app"></main>
+<div id="overlays">
 <div id="modalRoot"></div>
 <div id="toast" role="status" aria-live="polite"></div>
 <canvas id="confetti"></canvas>
+</div>
 
 <script>
 /* =========================================================
@@ -354,6 +356,57 @@ button{font-family:inherit; cursor:pointer}
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const app = $('#app');
+
+/* ---------- Khi được nhúng vào trang bài học ----------
+   Trang bài học tự đặt chiều cao khung theo nội dung và tắt thanh cuộn bên trong khung.
+   Vì vậy trò chơi báo trang đo lại khi nội dung đổi, và đặt thông báo, hộp thoại
+   vào phần khung đang nằm trong màn hình. Mở trực tiếp thì mọi thứ chạy như cũ. */
+const embed = (() => {
+  let frame = null;
+  try { frame = window.frameElement; } catch (e) {}
+  const fitted = () => { try { return !!frame && frame.getAttribute('scrolling') === 'no'; } catch (e) { return false; } };
+  // Chiều cao phần bị thanh đầu trang (dính ở mép trên) che mất
+  function headerOffset(pw) {
+    const hdr = pw.document.querySelector('.site-header');
+    const pos = hdr ? pw.getComputedStyle(hdr).position : '';
+    return pos === 'sticky' || pos === 'fixed' ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
+  }
+  // Phần khung đang nằm trong màn hình, tính theo toạ độ bên trong khung
+  function viewBox() {
+    if (fitted()) {
+      try {
+        const pw = window.parent, r = frame.getBoundingClientRect();
+        const top = Math.max(0, headerOffset(pw) - r.top), bottom = Math.min(r.height, pw.innerHeight - r.top);
+        if (bottom - top > 160) return { top, bottom };
+      } catch (e) {}
+    }
+    return { top: 0, bottom: window.innerHeight };
+  }
+  function refit() {
+    try { if (frame && typeof frame.__updateHeightFn === 'function') frame.__updateHeightFn(); } catch (e) {}
+    try { if (window.parent !== window) window.parent.postMessage({ type: 'RESIZE_GAME_IFRAME', height: document.documentElement.scrollHeight }, '*'); } catch (e) {}
+  }
+  // Sang màn hình mới mà đầu khung đã cuộn khuất thì kéo trang lên cho thấy đầu khung
+  function revealTop() {
+    if (!fitted()) return;
+    try {
+      const pw = window.parent, gap = frame.getBoundingClientRect().top - headerOffset(pw);
+      if (gap < 0) pw.scrollBy({ top: gap - 12, behavior: 'smooth' });
+    } catch (e) {}
+  }
+  const toastBottom = () => Math.max(16, window.innerHeight - viewBox().bottom + 20) + 'px';
+  function fitOverlay(bg, box) {
+    const vb = viewBox();
+    bg.style.top = vb.top + 'px';
+    bg.style.bottom = Math.max(0, window.innerHeight - vb.bottom) + 'px';
+    if (box) box.style.maxHeight = Math.max(200, vb.bottom - vb.top - 32) + 'px';
+  }
+  if ('ResizeObserver' in window) {
+    let t;
+    new ResizeObserver(() => { clearTimeout(t); t = setTimeout(refit, 60); }).observe(document.body);
+  }
+  return { viewBox, refit, revealTop, toastBottom, fitOverlay };
+})();
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 /* ---------- Trạng thái ---------- */
@@ -400,6 +453,7 @@ const sfx = {
 let toastTimer;
 function toast(title, text = '', type = 'ok', ms = 2800) {
   const t = $('#toast');
+  t.style.bottom = embed.toastBottom();
   t.className = type;
   t.innerHTML = (title ? `<span class="t">${title}</span>` : '') + text;
   void t.offsetWidth;
@@ -413,13 +467,13 @@ function flyText(txt, nearEl) {
   f.className = 'fly'; f.textContent = txt;
   f.style.left = (r.left + r.width / 2) + 'px';
   f.style.top = (r.top + 10) + 'px';
-  document.body.appendChild(f);
+  $('#overlays').appendChild(f);
   setTimeout(() => f.remove(), 1000);
 }
 function shake(el) { if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
 
 function confetti(duration = 3200) {
-  const c = $('#confetti'), ctx = c.getContext('2d');
+  const c = $('#confetti'), ctx = c.getContext('2d'), vb = embed.viewBox();
   const dpr = window.devicePixelRatio || 1;
   c.width = innerWidth * dpr; c.height = innerHeight * dpr;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -427,7 +481,7 @@ function confetti(duration = 3200) {
   const parts = Array.from({ length: 160 }, (_, i) => {
     const fromLeft = i % 2 === 0;
     return {
-      x: fromLeft ? -10 : innerWidth + 10, y: innerHeight * (.55 + Math.random() * .3),
+      x: fromLeft ? -10 : innerWidth + 10, y: vb.top + (vb.bottom - vb.top) * (.55 + Math.random() * .3),
       vx: (fromLeft ? 1 : -1) * (4 + Math.random() * 7), vy: -(9 + Math.random() * 9),
       w: 6 + Math.random() * 8, h: 8 + Math.random() * 10,
       rot: Math.random() * 6, vr: (Math.random() - .5) * .3, color: colors[i % colors.length]
@@ -452,6 +506,7 @@ function show(html) {
   app.innerHTML = html;
   app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter');
   window.scrollTo(0, 0);
+  embed.revealTop();
 }
 
 /* ---------- Hộp thoại ---------- */
@@ -459,6 +514,7 @@ function openModal(html, { bare = false, wide = false } = {}) {
   const root = $('#modalRoot');
   root.innerHTML = `<div class="modal-bg"><div class="modal${bare ? ' bare' : ''}${wide ? ' wide' : ''}" role="dialog" aria-modal="true">${html}</div></div>`;
   const m = $('.modal', root);
+  embed.fitOverlay($('.modal-bg', root), m);
   $$('[data-x]', m).forEach(b => b.addEventListener('click', closeModal));
   if (!bare) $('.modal-bg', root).addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
   return m;

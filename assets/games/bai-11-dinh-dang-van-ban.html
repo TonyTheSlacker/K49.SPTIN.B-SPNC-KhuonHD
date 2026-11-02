@@ -394,6 +394,14 @@ const embed = (() => {
       if (gap < 0) pw.scrollBy({ top: gap - 12, behavior: 'smooth' });
     } catch (e) {}
   }
+  // Mở hộp thoại khi khung đang khuất gần hết thì kéo trang cho khung hiện rõ trước
+  function focusFrame() {
+    if (!fitted()) return;
+    try {
+      const pw = window.parent, r = frame.getBoundingClientRect(), off = headerOffset(pw), vb = viewBox();
+      if (vb.bottom - vb.top < Math.min(r.height, pw.innerHeight - off) * 0.7) pw.scrollBy({ top: r.top - off - 12, behavior: 'instant' });
+    } catch (e) {}
+  }
   const toastBottom = () => Math.max(16, window.innerHeight - viewBox().bottom + 20) + 'px';
   function fitOverlay(bg, box) {
     const vb = viewBox();
@@ -405,7 +413,7 @@ const embed = (() => {
     let t;
     new ResizeObserver(() => { clearTimeout(t); t = setTimeout(refit, 60); }).observe(document.body);
   }
-  return { viewBox, refit, revealTop, toastBottom, fitOverlay };
+  return { viewBox, refit, revealTop, focusFrame, toastBottom, fitOverlay };
 })();
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -489,7 +497,7 @@ function confetti(duration = 3200) {
   });
   const start = performance.now();
   (function frame(now) {
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    ctx.clearRect(0, 0, c.width / dpr, c.height / dpr);
     parts.forEach(p => {
       p.vy += .25; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
       ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
@@ -497,7 +505,7 @@ function confetti(duration = 3200) {
       ctx.restore();
     });
     if (now - start < duration) requestAnimationFrame(frame);
-    else ctx.clearRect(0, 0, innerWidth, innerHeight);
+    else ctx.clearRect(0, 0, c.width / dpr, c.height / dpr);
   })(start);
 }
 
@@ -511,6 +519,7 @@ function show(html) {
 
 /* ---------- Hộp thoại ---------- */
 function openModal(html, { bare = false, wide = false } = {}) {
+  embed.focusFrame();
   const root = $('#modalRoot');
   root.innerHTML = `<div class="modal-bg"><div class="modal${bare ? ' bare' : ''}${wide ? ' wide' : ''}" role="dialog" aria-modal="true">${html}</div></div>`;
   const m = $('.modal', root);

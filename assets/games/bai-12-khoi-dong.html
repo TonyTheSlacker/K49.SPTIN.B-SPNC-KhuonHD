@@ -492,7 +492,7 @@ function confetti(duration = 3200) {
   });
   const start = performance.now();
   (function frame(now) {
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    ctx.clearRect(0, 0, c.width / dpr, c.height / dpr);
     parts.forEach(p => {
       p.vy += .25; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
       ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
@@ -500,7 +500,7 @@ function confetti(duration = 3200) {
       ctx.restore();
     });
     if (now - start < duration) requestAnimationFrame(frame);
-    else ctx.clearRect(0, 0, innerWidth, innerHeight);
+    else ctx.clearRect(0, 0, c.width / dpr, c.height / dpr);
   })(start);
 }
 

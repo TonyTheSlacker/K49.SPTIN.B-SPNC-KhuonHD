@@ -134,8 +134,8 @@ button{font-family:inherit; cursor:pointer}
 .card.locked{cursor:default}
 .card.locked:hover{transform:none}
 .card.placed{border-color:var(--c, var(--ok)); animation:pop .45s}
-.ghost{position:fixed !important; z-index:1000; pointer-events:none; margin:0 !important; transform:rotate(3deg) scale(1.06); box-shadow:0 18px 30px rgba(40,50,110,.3) !important; opacity:.96}
-.ghost.back{transition:left .3s ease, top .3s ease; transform:none}
+.drag-ghost{position:fixed !important; z-index:1000; pointer-events:none; margin:0 !important; transform:rotate(3deg) scale(1.06); box-shadow:0 18px 30px rgba(40,50,110,.3) !important; opacity:.96}
+.drag-ghost.back{transition:left .3s ease, top .3s ease; transform:none}
 
 .pool{
   display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center;
@@ -472,7 +472,7 @@ function draggable(el, zoneSel, onDrop) {
     const r = el.getBoundingClientRect();
     const g = el.cloneNode(true);
     g.removeAttribute('id');
-    g.classList.add('ghost');
+    g.classList.add('drag-ghost');
     g.classList.remove('drag-me');
     Object.assign(g.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
     $('#overlays').appendChild(g);

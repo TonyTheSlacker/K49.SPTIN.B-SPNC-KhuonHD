@@ -172,7 +172,7 @@ button{cursor:pointer}
 .card.br-card{border-color:#c9d6f5; box-shadow:0 4px 0 #c9d6f5}
 .card.picked{border-color:var(--primary2); background:#fff8e6; transform:translateY(-3px)}
 .card.src{opacity:.3}
-.ghost{position:fixed !important; z-index:1000; pointer-events:none; margin:0 !important; transform:rotate(3deg) scale(1.06) !important; box-shadow:0 18px 30px rgba(40,50,110,.3) !important; opacity:.96}
+.drag-ghost{position:fixed !important; z-index:1000; pointer-events:none; margin:0 !important; transform:rotate(3deg) scale(1.06) !important; box-shadow:0 18px 30px rgba(40,50,110,.3) !important; opacity:.96}
 .opt{border:3px solid #e5e7f5; background:#fff; border-radius:16px; padding:.7rem 1rem; font-weight:800; font-size:1rem; color:var(--ink); box-shadow:0 4px 0 #e5e7f5; max-width:22rem; transition:transform .12s, border-color .2s}
 .opt:hover{transform:translateY(-2px); border-color:var(--primary2)}
 .opt small{display:block; font-weight:700; color:var(--muted); font-size:.78rem; margin-bottom:.15rem}
@@ -613,7 +613,7 @@ function bindCard(card) {
       const r = card.getBoundingClientRect();
       dx = start.x - r.left; dy = start.y - r.top;
       ghost = card.cloneNode(true);
-      ghost.classList.add('ghost'); ghost.classList.remove('picked');
+      ghost.classList.add('drag-ghost'); ghost.classList.remove('picked');
       ghost.style.width = r.width + 'px';
       $('#overlays').appendChild(ghost);
       card.classList.add('src'); moved = true;

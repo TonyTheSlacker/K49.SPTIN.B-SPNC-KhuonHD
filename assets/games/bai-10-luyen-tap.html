@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sơ đồ tư duy của An</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#fff8eb; --bg2:#fef3d9;
+  --ink:#1f2a44; --muted:#5d6b85; --line:#f1dfb0;
+  --primary:#d88900; --primary2:#f3a900;
+  --ok:#1fa97a; --bad:#e25555; --blue:#2b6cd4; --rose:#d6336c;
+  --gray:#9aa3b5;
+  --shadow:0 14px 28px rgba(60,49,22,.12);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{font-size:clamp(13px, .55vw + 9px, 19px)}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,214,102,.35) 0, transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(124,228,200,.28) 0, transparent 35%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+button, input{font-family:inherit}
+button{cursor:pointer}
+[hidden]{display:none !important}
+.muted{color:var(--muted)}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:.7rem; flex-wrap:wrap;
+  padding:.5rem 1rem;
+  background:rgba(255,255,255,.85); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.05rem; margin-right:auto; white-space:nowrap}
+.pill{display:flex; align-items:center; gap:.5rem; background:#fff; border:2px solid var(--line); border-radius:999px; padding:.3rem .85rem; font-weight:700; font-size:.95rem}
+.pill b{color:var(--primary); font-size:1.1rem; min-width:1.6em; text-align:center; display:inline-block}
+.pill b.bump{animation:bump .6s}
+.bar{width:80px; height:10px; background:#e8eaf6; border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,#34c29a,var(--primary)); border-radius:99px; transition:width .6s}
+.icon-btn{width:2.4rem; height:2.4rem; border-radius:50%; border:2px solid var(--line); background:#fff; font-size:1.15rem; display:grid; place-items:center; transition:transform .15s}
+.icon-btn:hover{transform:scale(1.08)}
+
+#app{max-width:1200px; margin:0 auto; padding:1rem 1rem 2.5rem}
+#app.enter{animation:enter .4s ease}
+@keyframes enter{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+
+.btn{
+  border:none; border-radius:999px; color:#fff; font-weight:800; font-size:1rem; letter-spacing:.02em; padding:.75em 1.6em;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:0 5px 0 #a86400, 0 10px 20px rgba(216,137,0,.3);
+  transition:transform .12s, box-shadow .12s, filter .2s;
+}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(4px); box-shadow:0 1px 0 #a86400, 0 4px 10px rgba(216,137,0,.3)}
+.btn.big{font-size:1.25rem; padding:.85em 2em}
+.btn.small{font-size:.9rem; padding:.55em 1.2em}
+.btn.ghost{background:#fff; color:var(--primary); box-shadow:0 5px 0 #f1dfb0, 0 8px 16px rgba(0,0,0,.06); border:2px solid #f1dfb0}
+.btn.green{background:linear-gradient(135deg,#1fa97a,#2cc79a); box-shadow:0 5px 0 #14805b, 0 10px 20px rgba(31,169,122,.3)}
+.pulse{animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)} 50%{transform:scale(1.05)}}
+.actions{display:flex; justify-content:center; gap:.8rem; margin-top:1.1rem; flex-wrap:wrap}
+
+/* ---------- Màn hình đầu ---------- */
+.home{display:grid; grid-template-columns:1.15fr 1fr; gap:1.5rem; align-items:center; min-height:min(calc(100vh - 7rem), 32rem)}
+.badge{display:inline-block; background:#fff; border:2px solid var(--line); color:var(--muted); font-weight:700; border-radius:999px; padding:.3rem .9rem; font-size:.88rem}
+.home h1{font-family:'Baloo 2',cursive; font-size:2.4rem; line-height:1.1; margin:.6rem 0 .8rem; font-weight:800}
+.home h1 span{background:linear-gradient(90deg,var(--primary),var(--rose)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.bubble{background:#fff; border-radius:20px; padding:.75rem 1.05rem; margin:.6rem 0; box-shadow:var(--shadow); font-size:1.02rem; line-height:1.5; max-width:34rem; animation:fadeUp .6s both}
+.bubble.b1{border-left:6px solid var(--blue)}
+.bubble.b2{border-left:6px solid var(--rose); animation-delay:.25s}
+.home-btns{display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin:1.3rem 0 1rem}
+.quest{display:flex; gap:.6rem; flex-wrap:wrap}
+.quest span{background:rgba(255,255,255,.7); border-radius:12px; padding:.35rem .7rem; font-size:.88rem; font-weight:700; color:var(--muted); border:2px solid transparent}
+.quest span.done{border-color:var(--ok); color:var(--ok); background:#eafaf4}
+.home-art svg{width:100%; height:auto; max-height:18rem; filter:drop-shadow(0 16px 26px rgba(60,49,22,.15))}
+.floaty{animation:floaty 4s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
+@keyframes fadeUp{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+
+/* ---------- Khung làm bài ---------- */
+.ch-head{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin-bottom:.8rem}
+.ch-tag{background:var(--ink); color:#fff; font-weight:800; border-radius:12px; padding:.3rem .75rem; font-size:.88rem}
+.ch-head h2{font-family:'Baloo 2',cursive; margin:0; font-size:1.55rem; font-weight:800}
+.work{display:grid; grid-template-columns:minmax(14rem,17rem) minmax(0,1fr); gap:1rem; align-items:start}
+.guide{background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:.9rem; display:flex; flex-direction:column; gap:.75rem}
+.story{margin:0; background:#fff7e0; border-radius:14px; padding:.65rem .8rem; font-size:.93rem; line-height:1.5}
+.an-card{background:#f4f8ff; border:2px solid #d6e4fb; border-radius:14px; padding:.6rem .75rem}
+.an-h{font-weight:800; font-size:.9rem; color:var(--blue); margin-bottom:.3rem}
+.an-card p{margin:0; font-size:.92rem; line-height:1.6}
+.mk{background:none; color:inherit; transition:background .3s}
+.mk.got{background:#ffe8a3; border-radius:4px; box-shadow:0 0 0 2px #ffe8a3; font-weight:800}
+.steps-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.4rem}
+.steps-list li{display:flex; gap:.55rem; align-items:flex-start; padding:.45rem .55rem; border-radius:14px; color:var(--muted); font-size:.9rem; line-height:1.4}
+.steps-list .n{flex:none; width:1.65rem; height:1.65rem; border-radius:50%; display:grid; place-items:center; background:#eef0f6; font-weight:800; font-size:.82rem}
+.steps-list li.now{background:#fff3d6; color:var(--ink); box-shadow:inset 0 0 0 2px var(--primary2)}
+.steps-list li.now .n{background:var(--primary); color:#fff}
+.steps-list li.done{color:var(--ok)}
+.steps-list li.done .n{background:var(--ok); color:#fff}
+.steps-list p{margin:.3rem 0 0; font-size:.86rem}
+.done-box{background:#effbf6; border:2px solid #b7ebd6; border-radius:16px; padding:.8rem; text-align:center; animation:pop .5s}
+.done-box b{font-size:1.08rem; color:var(--ok)}
+.done-box p{margin:.4rem 0 .8rem; font-size:.9rem; line-height:1.45}
+.done-box .btn{margin:.25rem}
+.ed-col{display:flex; flex-direction:column; gap:.8rem; min-width:0}
+
+/* ---------- Sơ đồ tư duy ---------- */
+.board-wrap{background:#fff; border-radius:18px; box-shadow:var(--shadow); padding:.7rem; border:1px solid #efe3c4}
+.map{position:relative; padding:.9rem .4rem}
+.map .links{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible}
+.map .links path{fill:none; stroke-width:5; stroke-linecap:round}
+.map-grid{position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:1.4rem 2.4rem; align-items:center}
+.center, .br-node{grid-column:var(--col); grid-row:var(--row)}
+.center{
+  position:relative; z-index:1; justify-self:center; min-width:7.5rem; padding:.75rem 1.2rem; border-radius:999px; border:none;
+  background:linear-gradient(135deg,var(--primary),#e8558c); color:#fff; text-align:center;
+  font-family:'Baloo 2',cursive; font-weight:800; font-size:1.3rem; line-height:1.15;
+  box-shadow:0 8px 20px rgba(216,137,0,.3); transition:transform .15s, box-shadow .2s;
+}
+.center.empty{background:repeating-linear-gradient(45deg,#fffaf0,#fffaf0 8px,#fdf0d5 8px,#fdf0d5 16px); color:var(--muted); border:3px dashed var(--primary2); box-shadow:none; font-size:1rem; font-family:inherit}
+.center .c-ic{margin-right:.25rem}
+.center input{width:9.5rem; max-width:100%; border:none; background:transparent; color:#fff; text-align:center; font:inherit; outline:none}
+.center input::placeholder{color:rgba(255,255,255,.8)}
+.center:has(input:focus){box-shadow:0 0 0 4px rgba(43,108,212,.35), 0 8px 20px rgba(216,137,0,.3)}
+.br-node{
+  --c:var(--gray);
+  position:relative; z-index:1; min-width:0; background:#fff; border:3px solid var(--c); border-radius:16px;
+  box-shadow:0 6px 14px rgba(31,42,68,.08); transition:border-color .3s, transform .15s, box-shadow .2s; text-align:left;
+}
+.br-node.empty{
+  border-style:dashed; border-color:#cfd3ee; min-height:4.2rem; display:grid; place-items:center; padding:.5rem;
+  background:repeating-linear-gradient(45deg,#fafaff,#fafaff 8px,#f1f2fb 8px,#f1f2fb 16px);
+  color:var(--muted); font-weight:700; font-size:.82rem; text-align:center;
+}
+.br-h{background:var(--c); color:#fff; font-family:'Baloo 2',cursive; font-weight:800; font-size:1.02rem; line-height:1.2; padding:.35rem .65rem; border-radius:12px 12px 0 0; display:flex; align-items:center; gap:.4rem; transition:background .3s}
+.br-h .b-ic{font-size:1.2rem}
+.br-h .br-name{flex:1; min-width:0; overflow-wrap:anywhere}
+.br-kws{display:flex; flex-wrap:wrap; gap:.35rem; padding:.5rem; min-height:2.5rem}
+.kw{display:inline-flex; align-items:center; gap:.25rem; background:#f7f8fc; border:2px solid var(--c); border-radius:999px; padding:.12rem .6rem; font-weight:700; font-size:.88rem; animation:pop .35s; max-width:100%; overflow-wrap:anywhere}
+.kw.long{border-style:dashed; border-color:var(--bad); background:#fff1f1; color:#a32020; font-size:.82rem; border-radius:10px}
+.kw button{border:none; background:none; color:var(--muted); font-weight:900; padding:0 .1rem; font-size:.9rem}
+[data-drop]{cursor:pointer}
+[data-drop].can-drop{outline:3px dashed var(--primary2); outline-offset:3px}
+[data-drop].over{outline:3px solid var(--primary); outline-offset:3px; transform:scale(1.03)}
+.br-node.sel, .center.sel{box-shadow:0 0 0 4px rgba(43,108,212,.45)}
+.flash{animation:flash 1s 2}
+@keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(243,169,0,0)} 50%{box-shadow:0 0 0 6px rgba(243,169,0,.75)}}
+.map.plain .br-node{--c:var(--gray) !important}
+.map.plain .b-ic, .map.plain .c-ic{display:none}
+.map.plain .center{background:#9aa3b5; box-shadow:none}
+
+/* ---------- Khay thẻ ---------- */
+.pool-wrap{background:rgba(255,255,255,.7); border-radius:18px; padding:.7rem .8rem; border:2px dashed #e9d9b0}
+.pool-h{font-weight:800; font-size:.92rem; margin-bottom:.5rem}
+.pool{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; align-items:center; min-height:3rem}
+.card{
+  border:3px solid #e5e7f5; background:#fff; border-radius:14px; padding:.5rem .95rem; font-weight:800; font-size:1rem; color:var(--ink);
+  box-shadow:0 4px 0 #e5e7f5; cursor:grab; touch-action:none; user-select:none; -webkit-user-select:none;
+  transition:transform .12s, border-color .2s, background .2s, opacity .2s;
+}
+.card:hover{transform:translateY(-2px); border-color:#f1c97a}
+.card.br-card{border-color:#c9d6f5; box-shadow:0 4px 0 #c9d6f5}
+.card.picked{border-color:var(--primary2); background:#fff8e6; transform:translateY(-3px)}
+.card.src{opacity:.3}
+.ghost{position:fixed !important; z-index:1000; pointer-events:none; margin:0 !important; transform:rotate(3deg) scale(1.06) !important; box-shadow:0 18px 30px rgba(40,50,110,.3) !important; opacity:.96}
+.opt{border:3px solid #e5e7f5; background:#fff; border-radius:16px; padding:.7rem 1rem; font-weight:800; font-size:1rem; color:var(--ink); box-shadow:0 4px 0 #e5e7f5; max-width:22rem; transition:transform .12s, border-color .2s}
+.opt:hover{transform:translateY(-2px); border-color:var(--primary2)}
+.opt small{display:block; font-weight:700; color:var(--muted); font-size:.78rem; margin-bottom:.15rem}
+.pal{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; justify-content:center; width:100%}
+.pal + .pal{margin-top:.55rem}
+.pal > b{font-size:.88rem; margin-right:.2rem}
+.sw{width:2.2rem; height:2.2rem; border-radius:50%; border:3px solid #fff; background:var(--sw); box-shadow:0 0 0 2px #dfe3ec; transition:transform .12s}
+.sw:hover{transform:scale(1.12)}
+.sw.used{opacity:.35}
+.sw.on{box-shadow:0 0 0 3px var(--ink)}
+.pic-btn{border:3px solid #e5e7f5; background:#fff; border-radius:12px; width:2.7rem; height:2.7rem; font-size:1.4rem; display:grid; place-items:center; transition:transform .12s, border-color .2s}
+.pic-btn:hover{transform:translateY(-2px); border-color:var(--primary2)}
+.status{width:100%; text-align:center; font-weight:800; font-size:.88rem; color:var(--muted); margin-top:.5rem}
+
+/* ---------- Phần 2: tự làm ---------- */
+.seg{display:grid; grid-template-columns:1fr 1fr; gap:.3rem; background:#f3f0e6; padding:.3rem; border-radius:14px}
+.seg button{border:none; border-radius:10px; padding:.5rem .3rem; font-weight:800; font-size:.85rem; background:transparent; color:var(--muted)}
+.seg button.on{background:#fff; color:var(--ink); box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.checklist{background:#f8faff; border:2px dashed #cfd8ee; border-radius:16px; padding:.65rem .75rem; display:flex; flex-direction:column; gap:.25rem}
+.checklist h3{margin:0 0 .2rem; font-size:1rem}
+.chk{display:flex; gap:.55rem; align-items:flex-start; padding:.35rem .4rem; border-radius:10px; cursor:pointer; font-size:.9rem; line-height:1.35}
+.chk:hover{background:#eef3ff}
+.chk input{width:1.15rem; height:1.15rem; margin:.1rem 0 0; accent-color:var(--ok); flex:none; cursor:pointer}
+.chk input:checked + span{color:var(--ok)}
+.tools{display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; padding:.2rem .2rem .6rem; border-bottom:1px dashed #efe3c4}
+.tools > b{font-size:.9rem}
+.chip{border:2px solid #f1dfb0; background:#fffaf0; border-radius:999px; padding:.3rem .75rem; font-size:.85rem; font-weight:800; color:var(--ink); transition:transform .12s, border-color .2s, opacity .2s}
+.chip:hover{border-color:var(--primary2); transform:translateY(-1px)}
+.chip:disabled{opacity:.4; cursor:default; transform:none}
+.map.edit .br-node{min-width:11rem}
+.br-x{border:none; background:rgba(255,255,255,.25); color:#fff; width:1.5rem; height:1.5rem; border-radius:50%; font-weight:900; font-size:.75rem; flex:none}
+.ic-btn{border:2px dashed rgba(255,255,255,.7); background:rgba(255,255,255,.18); color:#fff; border-radius:8px; min-width:1.9rem; height:1.9rem; font-size:1.05rem; display:grid; place-items:center; flex:none}
+.ic-btn.has{border-style:solid; border-color:transparent; background:rgba(255,255,255,.25)}
+.sws{display:flex; flex-wrap:wrap; gap:.3rem; padding:.45rem .5rem 0}
+.sws .sw{width:1.35rem; height:1.35rem; border-width:2px}
+.kw-add{display:flex; gap:.3rem; padding:0 .5rem .5rem}
+.kw-add input{flex:1; min-width:0; border:2px solid #e3e6ef; border-radius:10px; padding:.3rem .5rem; font-size:.85rem; font-weight:700; outline:none}
+.kw-add input:focus{border-color:var(--c)}
+.kw-add button{border:none; border-radius:10px; background:var(--c); color:#fff; font-weight:900; width:2rem}
+.empty-hint{grid-column:1 / -1; grid-row:2; text-align:center; color:var(--muted); font-weight:700; font-size:.9rem; padding:.6rem}
+.save-row{display:flex; flex-wrap:wrap; gap:.7rem; align-items:center; justify-content:center; padding-top:.6rem; border-top:1px dashed #efe3c4}
+.save-row small{font-weight:700; color:var(--ok)}
+.tip{background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:.65rem .9rem; font-size:.9rem; line-height:1.5}
+.paper{background:#fff; border-radius:18px; box-shadow:var(--shadow); padding:1rem 1.1rem}
+.paper h3{font-family:'Baloo 2',cursive; margin:0 0 .5rem; font-size:1.3rem}
+.paper ol{margin:0 0 .9rem; padding-left:1.3rem; line-height:1.65}
+.photo-pick{display:inline-flex; align-items:center; gap:.4rem; cursor:pointer}
+.photo-pick input{position:absolute; opacity:0; width:1px; height:1px}
+.photo-prev{margin-top:.8rem; border:3px dashed #e3e6ef; border-radius:16px; min-height:9rem; display:grid; place-items:center; color:var(--muted); font-weight:700; overflow:hidden; background:#fafbff}
+.photo-prev img{display:block; max-width:100%; max-height:26rem}
+
+/* ---------- Hộp thoại ---------- */
+.modal-bg{position:fixed; inset:0; z-index:700; background:rgba(31,42,68,.5); display:grid; place-items:center; padding:1rem; animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}}
+.modal{background:#fff; border-radius:22px; box-shadow:0 20px 50px rgba(0,0,0,.3); width:min(100%,32rem); max-height:calc(100vh - 2rem); overflow:auto; padding:1.1rem 1.25rem; animation:pop .3s}
+.modal.wide{width:min(100%,50rem)}
+.modal h3{font-family:'Baloo 2',cursive; font-size:1.35rem; margin:0 0 .7rem}
+.modal p{line-height:1.5}
+.pic-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem}
+.pic-grid .pic-btn{width:100%; height:3.2rem; font-size:1.7rem}
+.field{width:100%; border:2px solid #d5dbea; border-radius:12px; padding:.6rem .8rem; font:inherit; font-weight:700; outline:none}
+.field:focus{border-color:var(--blue)}
+.preview{display:block; width:100%; border-radius:14px; border:2px solid #eee}
+.cmp-table{width:100%; border-collapse:collapse; font-size:.88rem}
+.cmp-table th,.cmp-table td{padding:.5rem .55rem; border-bottom:1px solid #eceef4; text-align:left; vertical-align:top; line-height:1.4}
+.cmp-table th{background:#f5f6fa; font-size:.78rem; color:var(--muted)}
+.cmp-table td.c{text-align:center}
+.cmp-table tr.ok td:last-child{color:var(--ok); font-weight:700}
+.cmp-table tr.bad td:last-child{color:var(--bad); font-weight:700}
+.cmp-table tr.warn td:last-child{color:#b7791f; font-weight:700}
+.cmp-table tr.todo td:last-child{color:var(--muted)}
+.cmp-msg{font-weight:800; background:#fff7e0; border-radius:14px; padding:.7rem 1rem; margin:1rem 0 0}
+
+/* ---------- Kết thúc ---------- */
+.win{text-align:center; max-width:52rem; margin:0 auto}
+.trophy{font-size:5rem; animation:floaty 3s ease-in-out infinite; display:inline-block}
+.win h1{font-family:'Baloo 2',cursive; font-size:2.3rem; margin:.2rem 0; font-weight:800; background:linear-gradient(90deg,#f0a500,var(--rose),var(--blue)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.win h2{font-family:'Baloo 2',cursive; font-size:1.35rem; margin:.3rem 0 .9rem}
+.scorebox{display:inline-block; background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:.9rem 2.2rem; margin:.4rem 0 1rem}
+.scorebox .lbl{font-weight:800; color:var(--muted)}
+.scorebox .val{font-family:'Baloo 2',cursive; font-size:3rem; font-weight:800; color:var(--primary); line-height:1.1}
+.msg{font-size:1.15rem; font-weight:800; background:#fff7e0; border-radius:16px; padding:.75rem 1.1rem; display:inline-block; margin-bottom:1rem}
+.learned{display:grid; grid-template-columns:1fr 1fr; gap:.7rem; text-align:left; margin:0 auto; max-width:46rem}
+.learned div{background:#fff; border-radius:14px; padding:.65rem .95rem; font-weight:700; box-shadow:var(--shadow); animation:fadeUp .5s both}
+
+/* ---------- Toast & hiệu ứng ---------- */
+#toast{
+  position:fixed; left:50%; bottom:1.4rem; transform:translate(-50%,calc(100% + 3rem)); visibility:hidden;
+  z-index:900; background:#fff; border-radius:18px; box-shadow:0 14px 34px rgba(40,50,110,.25);
+  padding:.8rem 1.3rem; font-size:1rem; font-weight:700; max-width:min(92vw,36rem); text-align:center; line-height:1.45;
+  border:3px solid var(--primary); transition:transform .35s cubic-bezier(.2,1.4,.4,1), visibility .35s; pointer-events:none;
+}
+#toast.show{transform:translate(-50%,0); visibility:visible}
+#toast.ok{border-color:var(--ok)}
+#toast.bad{border-color:#f0b400; background:#fffbea}
+#toast .t{display:block; font-size:1.2rem; font-weight:900; margin-bottom:.15rem}
+.fly{position:fixed; z-index:950; pointer-events:none; font-weight:900; font-size:1.5rem; color:#f0a500; text-shadow:0 2px 0 #fff; animation:fly 1s ease-out forwards}
+@keyframes fly{from{opacity:1; transform:translate(-50%,0) scale(.8)} to{opacity:0; transform:translate(-50%,-70px) scale(1.3)}}
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:800; width:100%; height:100%}
+.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)}}
+@keyframes pop{0%{transform:scale(.85)} 60%{transform:scale(1.05)} 100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)} 40%{transform:scale(1.6); color:var(--ok)} 100%{transform:scale(1)}}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px){
+  .home{grid-template-columns:1fr; text-align:center; min-height:0}
+  .bubble{margin-left:auto; margin-right:auto}
+  .home-btns, .quest{justify-content:center}
+  .home-art{order:-1; max-width:20rem; margin:0 auto}
+  .work{grid-template-columns:1fr}
+  .steps-list li:not(.now){display:none}
+  .learned{grid-template-columns:1fr}
+}
+@media (max-width: 600px){
+  .map-grid{grid-template-columns:1fr 1fr; gap:1.1rem .7rem}
+  .center, .br-node{grid-column:var(--ncol); grid-row:var(--nrow)}
+  .map.edit .br-node{grid-column:1 / -1; grid-row:auto}
+  .empty-hint{grid-row:auto}
+}
+@media (max-width: 520px){
+  .home h1{font-size:1.9rem}
+  .ch-head h2{font-size:1.25rem}
+  .bar{width:50px}
+  .brand{display:none}
+  .topbar{justify-content:center}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">🧠 Sơ đồ tư duy của An</div>
+  <div class="pill">⭐ Điểm: <b id="score">0</b></div>
+  <div class="pill">🏆 Phần: <span id="prog">0/2</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="icon-btn" id="soundBtn" type="button" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh">🔊</button>
+  <button class="icon-btn" id="homeBtn" type="button" title="Về màn hình đầu" aria-label="Về màn hình đầu">🏠</button>
+</header>
+
+<main id="app"></main>
+<div id="overlays">
+<div id="modalRoot"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti"></canvas>
+</div>
+
+<script>
+/* =========================================================
+   SƠ ĐỒ TƯ DUY – Tin học 6, Bài 10: Luyện tập & Vận dụng
+   Phần 1 (Luyện tập): giúp bạn An hoàn thành sơ đồ theo chỉ dẫn
+   Phần 2 (Vận dụng): tự làm sơ đồ tư duy về chính em
+   ========================================================= */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+/* ---------- Khi được nhúng vào trang bài học ----------
+   Trang bài học tự đặt chiều cao khung theo nội dung và tắt thanh cuộn bên trong khung.
+   Vì vậy trò chơi báo trang đo lại khi nội dung đổi, và đặt thông báo, hộp thoại
+   vào phần khung đang nằm trong màn hình. Mở trực tiếp thì mọi thứ chạy như cũ. */
+const embed = (() => {
+  let frame = null;
+  try { frame = window.frameElement; } catch (e) {}
+  const fitted = () => { try { return !!frame && frame.getAttribute('scrolling') === 'no'; } catch (e) { return false; } };
+  // Chiều cao phần bị thanh đầu trang (dính ở mép trên) che mất
+  function headerOffset(pw) {
+    const hdr = pw.document.querySelector('.site-header');
+    const pos = hdr ? pw.getComputedStyle(hdr).position : '';
+    return pos === 'sticky' || pos === 'fixed' ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
+  }
+  // Phần khung đang nằm trong màn hình, tính theo toạ độ bên trong khung
+  function viewBox() {
+    if (fitted()) {
+      try {
+        const pw = window.parent, r = frame.getBoundingClientRect();
+        const top = Math.max(0, headerOffset(pw) - r.top), bottom = Math.min(r.height, pw.innerHeight - r.top);
+        if (bottom - top > 160) return { top, bottom };
+      } catch (e) {}
+    }
+    return { top: 0, bottom: window.innerHeight };
+  }
+  function refit() {
+    try { if (frame && typeof frame.__updateHeightFn === 'function') frame.__updateHeightFn(); } catch (e) {}
+    try { if (window.parent !== window) window.parent.postMessage({ type: 'RESIZE_GAME_IFRAME', height: document.documentElement.scrollHeight }, '*'); } catch (e) {}
+  }
+  // Sang màn hình mới mà đầu khung đã cuộn khuất thì kéo trang lên cho thấy đầu khung
+  function revealTop() {
+    if (!fitted()) return;
+    try {
+      const pw = window.parent, gap = frame.getBoundingClientRect().top - headerOffset(pw);
+      if (gap < 0) pw.scrollBy({ top: gap - 12, behavior: 'smooth' });
+    } catch (e) {}
+  }
+  // Mở hộp thoại khi khung đang khuất gần hết thì kéo trang cho khung hiện rõ trước
+  function focusFrame() {
+    if (!fitted()) return;
+    try {
+      const pw = window.parent, r = frame.getBoundingClientRect(), off = headerOffset(pw), vb = viewBox();
+      if (vb.bottom - vb.top < Math.min(r.height, pw.innerHeight - off) * 0.7) pw.scrollBy({ top: r.top - off - 12, behavior: 'instant' });
+    } catch (e) {}
+  }
+  const toastBottom = () => Math.max(16, window.innerHeight - viewBox().bottom + 20) + 'px';
+  function fitOverlay(bg, box) {
+    const vb = viewBox();
+    bg.style.top = vb.top + 'px';
+    bg.style.bottom = Math.max(0, window.innerHeight - vb.bottom) + 'px';
+    if (box) box.style.maxHeight = Math.max(200, vb.bottom - vb.top - 32) + 'px';
+  }
+  if ('ResizeObserver' in window) {
+    let t;
+    new ResizeObserver(() => { clearTimeout(t); t = setTimeout(refit, 60); }).observe(document.body);
+  }
+  return { viewBox, refit, revealTop, focusFrame, toastBottom, fitOverlay };
+})();
+
+/* ---------- Trạng thái chung ---------- */
+// Phần 1: 5 bước, mỗi bước 10 điểm (5 điểm nếu làm sai trước khi đúng). Phần 2: 50 điểm.
+const state = { p1: [0, 0, 0, 0, 0], p2: 0, part1Done: false, part2Done: false, sound: true };
+const totalScore = () => state.p1.reduce((a, b) => a + b, 0) + state.p2;
+let mapRO = null;
+
+function updateHUD(bump) {
+  const s = $('#score');
+  s.textContent = totalScore();
+  if (bump) { s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
+  const done = (state.part1Done ? 1 : 0) + (state.part2Done ? 1 : 0);
+  $('#prog').textContent = done + '/2';
+  $('#progBar').style.width = (done / 2 * 100) + '%';
+  $('#soundBtn').textContent = state.sound ? '🔊' : '🔇';
+}
+
+/* ---------- Âm thanh (Web Audio – không cần file) ---------- */
+let actx = null;
+function tone(freq, dur, type = 'sine', when = 0, vol = .15) {
+  if (!state.sound) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = actx.currentTime + when;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(actx.destination);
+    o.start(t); o.stop(t + dur + .05);
+  } catch (e) {}
+}
+const sfx = {
+  click() { tone(520, .07, 'triangle', 0, .08); },
+  drop()  { tone(440, .08, 'triangle', 0, .08); tone(660, .1, 'triangle', .06, .08); },
+  ok()    { tone(660, .15, 'triangle'); tone(990, .25, 'triangle', .1); },
+  bad()   { tone(260, .2, 'sine', 0, .12); tone(200, .28, 'sine', .12, .1); },
+  win()   { [523, 659, 784, 1047].forEach((f, i) => tone(f, .3, 'triangle', i * .12, .16)); tone(1319, .7, 'triangle', .52, .14); }
+};
+
+/* ---------- Thông báo & hiệu ứng ---------- */
+let toastTimer;
+function toast(title, text = '', type = 'ok', ms = 2800) {
+  const t = $('#toast');
+  t.style.bottom = embed.toastBottom();
+  t.className = type;
+  t.innerHTML = (title ? `<span class="t">${title}</span>` : '') + text;
+  void t.offsetWidth;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function flyText(txt, nearEl) {
+  const r = nearEl.getBoundingClientRect();
+  const f = document.createElement('div');
+  f.className = 'fly'; f.textContent = txt;
+  f.style.left = (r.left + r.width / 2) + 'px';
+  f.style.top = (r.top + 10) + 'px';
+  $('#overlays').appendChild(f);
+  setTimeout(() => f.remove(), 1000);
+}
+function shake(el) { if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+function flash(el) { if (!el) return; el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+function confetti(duration = 3200) {
+  const c = $('#confetti'), ctx = c.getContext('2d'), vb = embed.viewBox();
+  const dpr = window.devicePixelRatio || 1;
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const colors = ['#d6336c', '#e8590c', '#b7791f', '#2f9e44', '#1c7ed6', '#7048e8'];
+  const parts = Array.from({ length: 160 }, (_, i) => {
+    const fromLeft = i % 2 === 0;
+    return {
+      x: fromLeft ? -10 : innerWidth + 10, y: vb.top + (vb.bottom - vb.top) * (.55 + Math.random() * .3),
+      vx: (fromLeft ? 1 : -1) * (4 + Math.random() * 7), vy: -(9 + Math.random() * 9),
+      w: 6 + Math.random() * 8, h: 8 + Math.random() * 10,
+      rot: Math.random() * 6, vr: (Math.random() - .5) * .3, color: colors[i % colors.length]
+    };
+  });
+  const start = performance.now();
+  (function frame(now) {
+    ctx.clearRect(0, 0, c.width / dpr, c.height / dpr);
+    parts.forEach(p => {
+      p.vy += .25; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    if (now - start < duration) requestAnimationFrame(frame);
+    else ctx.clearRect(0, 0, c.width / dpr, c.height / dpr);
+  })(start);
+}
+
+function show(html) {
+  closeModal();
+  if (mapRO) { mapRO.disconnect(); mapRO = null; }
+  dnd.clear();
+  app.innerHTML = html;
+  app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter');
+  window.scrollTo(0, 0);
+  embed.revealTop();
+}
+
+/* ---------- Hộp thoại ---------- */
+function openModal(html, { wide = false } = {}) {
+  embed.focusFrame();
+  const root = $('#modalRoot');
+  root.innerHTML = `<div class="modal-bg"><div class="modal${wide ? ' wide' : ''}" role="dialog" aria-modal="true">${html}</div></div>`;
+  const m = $('.modal', root);
+  embed.fitOverlay($('.modal-bg', root), m);
+  $$('[data-x]', m).forEach(b => b.addEventListener('click', closeModal));
+  $('.modal-bg', root).addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+  return m;
+}
+function closeModal() { $('#modalRoot').innerHTML = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#modalRoot .modal')) closeModal(); });
+
+/* ---------- Dữ liệu ---------- */
+const COLORS = ['#d6336c', '#e8590c', '#b7791f', '#2f9e44', '#1c7ed6', '#7048e8'];
+const COLOR_NAMES = { '#d6336c': 'hồng', '#e8590c': 'cam', '#b7791f': 'vàng', '#2f9e44': 'xanh lá', '#1c7ed6': 'xanh dương', '#7048e8': 'tím' };
+const PICS = ['👨‍👩‍👧', '🏠', '⚽', '🎨', '💻', '📐', '🚀', '⭐', '📚', '🎵', '🐶', '🤝'];
+const GRAY = '#9aa3b5';
+
+const AN_TEXT = 'Mình là An, học sinh lớp 6A. Nhà mình có bố, mẹ và một em gái nhỏ. Mình rất thích đá bóng mỗi buổi chiều và vẽ tranh vào cuối tuần. Ở trường, mình thích nhất môn Tin học và Toán. Ước mơ của mình là trở thành kĩ sư phần mềm.';
+const BRANCHES = [
+  { id: 'fam',   name: 'Gia đình' },
+  { id: 'hob',   name: 'Sở thích' },
+  { id: 'sub',   name: 'Môn học yêu thích' },
+  { id: 'dream', name: 'Ước mơ' }
+];
+const ABOUT = { fam: 'người trong gia đình An', hob: 'việc An thích làm', sub: 'môn học An thích', dream: 'điều An mong muốn sau này' };
+const KEYWORDS = [
+  { w: 'bố', b: 'fam' }, { w: 'mẹ', b: 'fam' }, { w: 'em gái', b: 'fam' },
+  { w: 'đá bóng', b: 'hob' }, { w: 'vẽ tranh', b: 'hob' },
+  { w: 'Tin học', b: 'sub' }, { w: 'Toán', b: 'sub' },
+  { w: 'kĩ sư phần mềm', b: 'dream' }
+];
+const CENTER_CARDS = ['Gia đình', 'Bạn An', 'đá bóng', 'Lớp 6A'];
+const CENTER_WHY = {
+  'Gia đình': '“Gia đình” chỉ là một ý trong đoạn văn, nó sẽ là một <b>chủ đề nhánh</b>.',
+  'đá bóng': '“đá bóng” là một chi tiết nhỏ, nó sẽ là <b>từ khóa</b> trên nhánh Sở thích.',
+  'Lớp 6A': '“Lớp 6A” chỉ là một chi tiết. Cả đoạn văn đang giới thiệu về <b>ai</b>?'
+};
+const brName = id => (BRANCHES.find(b => b.id === id) || {}).name || id;
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* =========================================================
+   VẼ SƠ ĐỒ (dùng chung cho hai phần)
+   Chủ đề chính ở cột giữa, các nhánh xếp hai bên; đường nối vẽ bằng SVG
+   ========================================================= */
+function placeVars(i, n) {
+  const rows = Math.max(1, Math.ceil(n / 2));
+  if (i < 0) return `--col:2;--row:1 / span ${rows};--ncol:1 / -1;--nrow:1`;
+  return `--col:${i % 2 ? 3 : 1};--row:${Math.floor(i / 2) + 1};--ncol:${i % 2 + 1};--nrow:${Math.floor(i / 2) + 2}`;
+}
+function drawLinks(map) {
+  const svg = $('.links', map), center = $('.center', map);
+  if (!svg || !center) return;
+  const box = map.getBoundingClientRect(), c = center.getBoundingClientRect();
+  const ccx = c.left + c.width / 2, ccy = c.top + c.height / 2;
+  const paths = $$('.br-node', map).map(node => {
+    const b = node.getBoundingClientRect();
+    const color = node.classList.contains('empty') ? '#d5d9e8' : getComputedStyle(node).getPropertyValue('--c').trim() || GRAY;
+    const dash = node.classList.contains('empty') ? ' stroke-dasharray="1 10"' : '';
+    const bcx = b.left + b.width / 2, headY = b.top + Math.min(b.height / 2, 20);
+    let sx, sy, ex, ey, vertical = false;
+    if (b.top >= c.bottom - 4) { vertical = true; sx = ccx; sy = c.bottom; ex = bcx; ey = b.top; }
+    else if (bcx < ccx) { sx = c.left + 6; sy = ccy; ex = b.right; ey = headY; }
+    else { sx = c.right - 6; sy = ccy; ex = b.left; ey = headY; }
+    sx -= box.left; ex -= box.left; sy -= box.top; ey -= box.top;
+    const d = vertical
+      ? `M${sx} ${sy} C${sx} ${(sy + ey) / 2} ${ex} ${(sy + ey) / 2} ${ex} ${ey}`
+      : `M${sx} ${sy} C${(sx + ex) / 2} ${sy} ${(sx + ex) / 2} ${ey} ${ex} ${ey}`;
+    return `<path d="${d.replace(/(\d+\.\d)\d+/g, '$1')}" stroke="${color}"${dash}/>`;
+  });
+  svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+  svg.innerHTML = paths.join('');
+}
+function watchMap(map) {
+  if (mapRO) mapRO.disconnect();
+  if ('ResizeObserver' in window) { mapRO = new ResizeObserver(() => drawLinks(map)); mapRO.observe(map); }
+  requestAnimationFrame(() => drawLinks(map));
+}
+
+/* ---------- Kéo thả (chuột + cảm ứng) và chạm để chọn ---------- */
+const dnd = {
+  sel: null, targets: '[data-drop]', onDrop: null, locked: () => false,
+  clear() {
+    if (this.sel) this.sel.classList.remove('picked');
+    this.sel = null;
+    $$('.can-drop').forEach(t => t.classList.remove('can-drop'));
+  },
+  select(card) {
+    if (this.sel === card) { this.clear(); return; }
+    this.clear();
+    this.sel = card;
+    card.classList.add('picked');
+    $$(this.targets).forEach(t => t.classList.add('can-drop'));
+    sfx.click();
+  },
+  dropOn(target) {
+    if (!this.sel || this.locked()) return false;
+    const card = this.sel;
+    this.clear();
+    this.onDrop && this.onDrop(card, target);
+    return true;
+  }
+};
+function bindCard(card) {
+  let start = null, ghost = null, over = null, dx = 0, dy = 0, moved = false;
+  card.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || dnd.locked()) return;
+    start = { x: e.clientX, y: e.clientY }; moved = false;
+    try { card.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  card.addEventListener('pointermove', e => {
+    if (!start) return;
+    if (!ghost) {
+      if (Math.hypot(e.clientX - start.x, e.clientY - start.y) < 6) return;
+      const r = card.getBoundingClientRect();
+      dx = start.x - r.left; dy = start.y - r.top;
+      ghost = card.cloneNode(true);
+      ghost.classList.add('ghost'); ghost.classList.remove('picked');
+      ghost.style.width = r.width + 'px';
+      $('#overlays').appendChild(ghost);
+      card.classList.add('src'); moved = true;
+      dnd.clear();
+    }
+    ghost.style.left = (e.clientX - dx) + 'px';
+    ghost.style.top = (e.clientY - dy) + 'px';
+    const t = document.elementFromPoint(e.clientX, e.clientY);
+    const z = t && t.closest('[data-drop]');
+    if (z !== over) { over && over.classList.remove('over'); over = z; over && over.classList.add('over'); }
+  });
+  const end = () => {
+    if (!start) return;
+    start = null;
+    if (!ghost) return;
+    ghost.remove(); ghost = null;
+    card.classList.remove('src');
+    if (over) {
+      const z = over; over = null;
+      z.classList.remove('over');
+      dnd.sel = card; dnd.dropOn(z);
+    }
+  };
+  card.addEventListener('pointerup', end);
+  card.addEventListener('pointercancel', end);
+  card.addEventListener('click', () => { if (moved) { moved = false; return; } if (!dnd.locked()) dnd.select(card); });
+}
+function bindTargets(root, onClickNoSel) {
+  $$('[data-drop]', root).forEach(t => {
+    const act = () => { if (!dnd.dropOn(t) && onClickNoSel) onClickNoSel(t); };
+    t.addEventListener('click', e => { if (e.target.closest('input, form, [data-act]')) return; act(); });
+    if (t.tagName !== 'BUTTON') t.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); act(); } });
+  });
+}
+
+/* =========================================================
+   MÀN HÌNH ĐẦU
+   ========================================================= */
+function renderHome() {
+  show(`<div class="home">
+    <div>
+      <span class="badge">🧪 Bài 10 · Luyện tập &amp; Vận dụng</span>
+      <h1>Sơ đồ tư duy: <span>Bạn An &amp; chính em</span></h1>
+      <div class="bubble b1">🧒 Bạn An viết một đoạn giới thiệu bản thân dài 5 câu và muốn chuyển thành <b>sơ đồ tư duy</b>. Em giúp An từng bước nhé!</div>
+      <div class="bubble b2">🌟 Sau đó, em tự làm một sơ đồ tư duy giới thiệu về <b>chính mình</b>.</div>
+      <div class="home-btns">
+        <button class="btn big pulse" id="startBtn" type="button">Bắt đầu ▶</button>
+        <button class="btn ghost" id="jumpBtn" type="button">Làm Phần 2</button>
+      </div>
+      <div class="quest">
+        <span class="${state.part1Done ? 'done' : ''}">${state.part1Done ? '✔' : '①'} Luyện tập: Sơ đồ của bạn An</span>
+        <span class="${state.part2Done ? 'done' : ''}">${state.part2Done ? '✔' : '②'} Vận dụng: Sơ đồ về chính em</span>
+      </div>
+    </div>
+    <div class="home-art floaty" aria-hidden="true">
+      <svg viewBox="0 0 320 220">
+        <g fill="none" stroke-width="6" stroke-linecap="round">
+          <path d="M160 110 C120 110 110 52 70 52" stroke="#d6336c"/><path d="M160 110 C200 110 210 52 250 52" stroke="#e8590c"/>
+          <path d="M160 110 C120 110 110 168 70 168" stroke="#2f9e44"/><path d="M160 110 C200 110 210 168 250 168" stroke="#1c7ed6"/>
+        </g>
+        <g font-family="Nunito, sans-serif" font-weight="800" font-size="13" fill="#fff" text-anchor="middle">
+          <rect x="18" y="36" width="104" height="32" rx="12" fill="#d6336c"/><text x="70" y="57">👨‍👩‍👧 Gia đình</text>
+          <rect x="198" y="36" width="104" height="32" rx="12" fill="#e8590c"/><text x="250" y="57">⚽ Sở thích</text>
+          <rect x="18" y="152" width="104" height="32" rx="12" fill="#2f9e44"/><text x="70" y="173">💻 Môn học</text>
+          <rect x="198" y="152" width="104" height="32" rx="12" fill="#1c7ed6"/><text x="250" y="173">🚀 Ước mơ</text>
+        </g>
+        <ellipse cx="160" cy="110" rx="52" ry="28" fill="#d88900"/>
+        <text x="160" y="117" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-weight="800" font-size="20" fill="#fff">Bạn An</text>
+      </svg>
+    </div>
+  </div>`);
+  $('#startBtn').addEventListener('click', () => { sfx.click(); renderPart1(); });
+  $('#jumpBtn').addEventListener('click', () => { sfx.click(); renderPart2(); });
+}
+
+/* =========================================================
+   PHẦN 1 – LUYỆN TẬP: GIÚP BẠN AN HOÀN THÀNH SƠ ĐỒ (làm theo chỉ dẫn)
+   ========================================================= */
+const P1_STEPS = [
+  { label: 'Chọn chủ đề chính, đặt vào giữa',
+    how: 'Kéo thẻ nói về <b>cả đoạn văn</b> của An vào <b>ô giữa</b> sơ đồ. Cũng có thể bấm chọn thẻ rồi bấm vào ô giữa.',
+    ok: 'Chủ đề chính đặt ở giữa: cả sơ đồ đều nói về <b>Bạn An</b>.' },
+  { label: 'Kéo 4 chủ đề nhánh ra quanh trung tâm',
+    how: 'Kéo lần lượt <b>Gia đình, Sở thích, Môn học yêu thích, Ước mơ</b> vào 4 ô trống quanh chủ đề chính.',
+    ok: 'Các chủ đề nhánh tỏa ra từ trung tâm, mỗi nhánh là một ý lớn.' },
+  { label: 'Kéo các từ khóa vào đúng nhánh',
+    how: 'Đọc lại đoạn văn của An rồi kéo mỗi từ khóa vào nhánh phù hợp, ví dụ <b>“đá bóng”</b> vào <b>Sở thích</b>.',
+    ok: 'Mỗi nhánh đã có các từ khóa cụ thể.' },
+  { label: 'Chọn cách ghi đúng trên nhánh',
+    how: 'Lúc đầu An định ghi cả một câu dài lên nhánh Sở thích. Em chọn cách ghi phù hợp cho sơ đồ tư duy.',
+    ok: 'Trên nhánh chỉ ghi <b>từ khóa ngắn gọn</b>, sơ đồ mới gọn và dễ nhớ.' },
+  { label: 'Tô màu nhánh và thêm hình minh họa',
+    how: 'Nháy vào một nhánh rồi chọn màu, mỗi nhánh <b>một màu khác nhau</b>. Sau đó chọn một nhánh (hoặc chủ đề chính) và thêm <b>ít nhất 1 hình</b>.',
+    ok: 'Màu sắc và hình ảnh làm sơ đồ dễ nhìn, dễ nhớ hơn.' }
+];
+let p1 = null;
+
+function renderPart1() {
+  p1 = {
+    step: 0, mistakes: 0, busy: false,
+    center: false, slots: [null, null, null, null],
+    kws: { fam: [], hob: [], sub: [], dream: [] }, kwOrder: shuffle(KEYWORDS.map((_, i) => i)),
+    centerCards: shuffle(CENTER_CARDS), colors: {}, icons: {}, selBr: null, demoLong: false, plain: false
+  };
+  state.p1 = [0, 0, 0, 0, 0];
+  state.part1Done = false;
+  updateHUD();
+  dnd.locked = () => !p1 || p1.busy;
+  dnd.onDrop = p1Drop;
+  let html = esc(AN_TEXT);
+  KEYWORDS.forEach((k, i) => { html = html.replace(k.w, `\u0001${i}\u0002`); });
+  html = html.replace(/\u0001(\d+)\u0002/g, (_, i) => `<mark class="mk" data-k="${i}">${esc(KEYWORDS[i].w)}</mark>`);
+  show(`<div class="ch-head"><span class="ch-tag">Phần 1 · Luyện tập</span><h2>Giúp bạn An hoàn thành sơ đồ</h2></div>
+    <div class="work">
+      <aside class="guide" id="guide">
+        <div class="an-card"><div class="an-h">🧒 Đoạn giới thiệu của An</div><p>${html}</p></div>
+        <ol class="steps-list" id="stepsList"></ol>
+      </aside>
+      <div class="ed-col">
+        <section class="board-wrap" aria-label="Sơ đồ tư duy của An"><div class="map" id="map"></div></section>
+        <div class="pool-wrap" id="poolWrap"><div class="pool-h" id="poolH"></div><div class="pool" id="pool"></div></div>
+      </div>
+    </div>`);
+  renderSteps(); renderMap1(); renderPool();
+}
+
+function renderSteps() {
+  $('#stepsList').innerHTML = P1_STEPS.map((s, i) => {
+    const cls = i < p1.step ? 'done' : i === p1.step ? 'now' : '';
+    return `<li class="${cls}"><span class="n">${i < p1.step ? '✔' : i + 1}</span><div><b>${s.label}</b>${i === p1.step ? `<p>${s.how}</p>` : ''}</div></li>`;
+  }).join('');
+}
+
+function renderMap1() {
+  const map = $('#map'), st = p1.step;
+  const center = p1.center
+    ? `<div class="center${p1.selBr === 'center' ? ' sel' : ''}" data-drop="centerNode" tabindex="0" role="button" style="${placeVars(-1, 4)}">${p1.icons.center ? `<span class="c-ic">${p1.icons.center}</span>` : ''}Bạn An</div>`
+    : `<button type="button" class="center empty" data-drop="center" style="${placeVars(-1, 4)}">Chủ đề chính?</button>`;
+  const nodes = p1.slots.map((id, i) => {
+    if (!id) return `<button type="button" class="br-node empty" data-drop="slot" data-slot="${i}" style="${placeVars(i, 4)}">${st >= 1 ? 'Thả chủ đề nhánh vào đây' : ''}</button>`;
+    const kws = p1.kws[id].map(k => `<span class="kw">${esc(KEYWORDS[k].w)}</span>`).join('')
+      + (p1.demoLong && id === 'hob' ? '<span class="kw long">An rất thích đá bóng mỗi buổi chiều</span>' : '');
+    return `<div class="br-node${p1.selBr === id ? ' sel' : ''}" data-drop="branch" data-br="${id}" tabindex="0" role="button" aria-label="Nhánh ${brName(id)}"
+      style="${placeVars(i, 4)};--c:${p1.colors[id] || GRAY}">
+      <div class="br-h">${p1.icons[id] ? `<span class="b-ic">${p1.icons[id]}</span>` : ''}<span class="br-name">${brName(id)}</span></div>
+      <div class="br-kws">${kws}</div></div>`;
+  }).join('');
+  map.className = 'map' + (p1.plain ? ' plain' : '');
+  map.innerHTML = `<svg class="links" aria-hidden="true"></svg><div class="map-grid">${center}${nodes}</div>`;
+  bindTargets(map, p1TargetClick);
+  dnd.targets = ['[data-drop="center"]', '[data-drop="slot"]', '[data-drop="branch"]'][st] || '[data-none]';
+  watchMap(map);
+}
+
+function cardHTML(label, val, cls = '') {
+  return `<button type="button" class="card ${cls}" data-val="${esc(val)}">${esc(label)}</button>`;
+}
+function renderPool() {
+  const pool = $('#pool'), head = $('#poolH'), st = p1.step;
+  dnd.clear();
+  $('#poolWrap').hidden = st >= P1_STEPS.length;
+  if (st === 0) {
+    head.textContent = '🃏 Thẻ nào là chủ đề chính?';
+    pool.innerHTML = p1.centerCards.map(v => cardHTML(v, v)).join('');
+  } else if (st === 1) {
+    head.textContent = '🌿 Chủ đề nhánh';
+    pool.innerHTML = BRANCHES.filter(b => !p1.slots.includes(b.id)).map(b => cardHTML(b.name, b.id, 'br-card')).join('');
+  } else if (st === 2) {
+    head.textContent = '🔑 Từ khóa trong đoạn văn của An';
+    const placed = Object.values(p1.kws).flat();
+    pool.innerHTML = p1.kwOrder.filter(i => !placed.includes(i)).map(i => cardHTML(KEYWORDS[i].w, i)).join('');
+  } else if (st === 3) {
+    head.textContent = '✍️ Trên nhánh Sở thích, nên ghi thế nào?';
+    pool.innerHTML = shuffle([
+      `<button type="button" class="opt" data-opt="long"><small>Cách 1</small>An rất thích đá bóng mỗi buổi chiều</button>`,
+      `<button type="button" class="opt" data-opt="short"><small>Cách 2</small>đá bóng</button>`
+    ]).join('');
+    $$('.opt', pool).forEach(b => b.addEventListener('click', () => p1Option(b)));
+    return;
+  } else if (st === 4) {
+    head.textContent = '🎨 Tô màu và thêm hình';
+    const used = Object.entries(p1.colors);
+    pool.innerHTML = `<div class="pal"><b>Màu:</b>${COLORS.map(c => {
+        const owner = used.find(([, v]) => v === c);
+        return `<button type="button" class="sw${owner ? (owner[0] === p1.selBr ? ' on' : ' used') : ''}" data-color="${c}" style="--sw:${c}" title="Màu ${COLOR_NAMES[c]}" aria-label="Màu ${COLOR_NAMES[c]}"></button>`;
+      }).join('')}</div>
+      <div class="pal"><b>Hình:</b>${PICS.slice(0, 8).map(p => `<button type="button" class="pic-btn" data-pic="${p}" aria-label="Thêm hình ${p}">${p}</button>`).join('')}</div>
+      <div class="status">🎨 Đã tô: ${Object.keys(p1.colors).length}/4 nhánh · 🖼️ Hình: ${Object.keys(p1.icons).length} (cần ít nhất 1)</div>`;
+    $$('[data-color]', pool).forEach(b => b.addEventListener('click', () => p1Color(b)));
+    $$('[data-pic]', pool).forEach(b => b.addEventListener('click', () => p1Pic(b.dataset.pic)));
+    return;
+  } else {
+    pool.innerHTML = '';
+    return;
+  }
+  $$('.card', pool).forEach(bindCard);
+}
+
+function p1TargetClick(t) {
+  if (p1.busy) return;
+  if (p1.step === 4 && (t.dataset.drop === 'branch' || t.dataset.drop === 'centerNode')) {
+    p1.selBr = t.dataset.br || 'center';
+    sfx.click(); renderMap1(); renderPool();
+    return;
+  }
+  if (p1.step <= 2) toast('Chọn thẻ trước', 'Em kéo thẻ ở khay bên dưới thả vào đây, hoặc bấm chọn thẻ rồi bấm vào đây.', 'bad');
+}
+function p1Miss(el, msg, hintEl) {
+  p1.mistakes++;
+  sfx.bad(); shake(el);
+  const showHint = p1.mistakes >= 2 && hintEl;
+  toast('Chưa đúng rồi 🤔', msg + (showHint ? '<br>💡 Chỗ đúng đang nhấp nháy.' : ''), 'bad', 3400);
+  if (showHint) flash(hintEl);
+}
+function p1Drop(card, t) {
+  if (p1.busy) return;
+  const val = card.dataset.val, kind = t.dataset.drop, st = p1.step;
+  if (st === 0) {
+    if (kind !== 'center') { toast('Đặt vào ô giữa nhé', 'Chủ đề chính luôn nằm ở <b>giữa</b> sơ đồ.', 'bad'); return; }
+    if (val !== 'Bạn An') { p1Miss(t, CENTER_WHY[val], $('.card[data-val="Bạn An"]')); return; }
+    p1.center = true; sfx.drop();
+    renderMap1(); renderPool(); p1StepDone();
+  } else if (st === 1) {
+    if (kind !== 'slot') { toast('Chọn ô trống', 'Kéo chủ đề nhánh vào một <b>ô trống</b> quanh chủ đề chính.', 'bad'); return; }
+    p1.slots[+t.dataset.slot] = val; sfx.drop();
+    renderMap1(); renderPool();
+    if (p1.slots.every(Boolean)) p1StepDone();
+  } else if (st === 2) {
+    if (kind !== 'branch') { toast('Thả vào một nhánh', 'Từ khóa nằm trên <b>nhánh</b>, không đặt vào chủ đề chính.', 'bad'); return; }
+    const k = +val, kw = KEYWORDS[k], b = t.dataset.br;
+    if (kw.b !== b) {
+      p1Miss(t, `“${esc(kw.w)}” chưa thuộc nhánh <b>${brName(b)}</b>. Đọc lại đoạn văn: “${esc(kw.w)}” nói về ${ABOUT[kw.b]}.`, $(`[data-br="${kw.b}"]`));
+      return;
+    }
+    p1.kws[b].push(k); sfx.drop();
+    const mk = $(`.mk[data-k="${k}"]`); if (mk) mk.classList.add('got');
+    renderMap1(); renderPool();
+    if (Object.values(p1.kws).flat().length === KEYWORDS.length) p1StepDone();
+  }
+}
+function p1Option(btn) {
+  if (p1.busy) return;
+  if (btn.dataset.opt === 'short') { p1StepDone(); return; }
+  p1Miss(btn, 'Câu dài làm nhánh rối như một đoạn văn, khó nhìn và khó nhớ. Trên nhánh chỉ ghi <b>từ khóa ngắn gọn</b> thôi!', $('[data-opt="short"]'));
+  p1.demoLong = true; renderMap1();
+  setTimeout(() => { if (p1 && p1.demoLong) { p1.demoLong = false; if ($('#map')) renderMap1(); } }, 2400);
+}
+function p1Color(btn) {
+  if (p1.busy) return;
+  const color = btn.dataset.color;
+  if (!p1.selBr || p1.selBr === 'center') {
+    sfx.bad();
+    toast('Chọn một nhánh trước', p1.selBr === 'center' ? 'Màu dùng để phân biệt các <b>nhánh</b>. Em nháy vào một nhánh nhé.' : 'Nháy vào một <b>nhánh</b> trên sơ đồ, rồi mới chọn màu.', 'bad');
+    $$('#map .br-node').forEach(flash);
+    return;
+  }
+  const other = Object.keys(p1.colors).find(id => id !== p1.selBr && p1.colors[id] === color);
+  if (other) { p1Miss(btn, `Màu ${COLOR_NAMES[color]} đã dùng cho nhánh <b>${brName(other)}</b>. Mỗi nhánh một màu khác nhau để dễ phân biệt nhé!`); return; }
+  p1.colors[p1.selBr] = color; sfx.click();
+  const next = p1.slots.find(id => !p1.colors[id]);
+  if (next) p1.selBr = next;
+  renderMap1(); renderPool(); p1CheckLook();
+}
+function p1Pic(pic) {
+  if (p1.busy) return;
+  if (!p1.selBr) {
+    sfx.bad();
+    toast('Chọn chỗ để thêm hình', 'Nháy vào một nhánh hoặc chủ đề chính, rồi chọn hình.', 'bad');
+    return;
+  }
+  p1.icons[p1.selBr] = pic; sfx.drop();
+  renderMap1(); renderPool(); p1CheckLook();
+}
+function p1CheckLook() {
+  if (p1.slots.every(id => p1.colors[id]) && Object.keys(p1.icons).length >= 1) p1StepDone();
+}
+function p1StepDone() {
+  const i = p1.step, st = P1_STEPS[i];
+  const pts = p1.mistakes === 0 ? 10 : 5;
+  state.p1[i] = pts;
+  sfx.ok(); flyText('+' + pts + ' ⭐', $('#score')); updateHUD(true);
+  toast('Chính xác! 🎉', st.ok, 'ok', 2600);
+  p1.busy = true;
+  setTimeout(() => {
+    p1.step++; p1.mistakes = 0; p1.busy = false; p1.selBr = null;
+    if (p1.step === 4) p1.selBr = p1.slots[0];
+    renderSteps(); renderMap1(); renderPool();
+    if (p1.step >= P1_STEPS.length) p1Finish();
+  }, 900);
+}
+function p1Finish() {
+  state.part1Done = true;
+  updateHUD();
+  const box = document.createElement('div');
+  box.className = 'done-box';
+  box.innerHTML = `<b>🎉 Hoàn thành Phần 1!</b>
+    <p>Sơ đồ của An đã có đủ: <b>chủ đề chính</b>, <b>chủ đề nhánh</b>, <b>từ khóa</b>, <b>màu sắc</b> và <b>hình ảnh</b>.</p>
+    <button class="btn ghost small" id="plainBtn" type="button">👀 Xem khi chưa tô màu</button>
+    <button class="btn green" id="toP2" type="button">Sang Phần 2 ➜</button>`;
+  $('#guide').appendChild(box);
+  $('#plainBtn').addEventListener('click', () => {
+    p1.plain = !p1.plain; sfx.click(); renderMap1();
+    $('#plainBtn').textContent = p1.plain ? '🎨 Xem khi đã tô màu' : '👀 Xem khi chưa tô màu';
+    if (p1.plain) toast('Khi chưa tô màu', 'Các nhánh trông giống hệt nhau, khó phân biệt và khó nhớ hơn đúng không?', 'ok', 3200);
+  });
+  $('#toP2').addEventListener('click', () => { sfx.click(); renderPart2(); });
+  sfx.win(); confetti(1800);
+}
+
+/* =========================================================
+   PHẦN 2 – VẬN DỤNG: SƠ ĐỒ TƯ DUY VỀ CHÍNH EM (tự làm)
+   ========================================================= */
+const SUGGEST = ['Gia đình', 'Sở thích', 'Môn học yêu thích', 'Ước mơ', 'Bạn thân'];
+const CHECKS = [
+  { id: 'name',   label: 'Viết <b>tên em</b> ở giữa làm chủ đề chính' },
+  { id: 'branch', label: 'Vẽ <b>ít nhất 3 nhánh</b>' },
+  { id: 'kws',    label: 'Mỗi nhánh có <b>ít nhất 2 từ khóa</b>' },
+  { id: 'color',  label: 'Mỗi nhánh <b>một màu</b> (thêm hình nếu thích)' },
+  { id: 'save',   label: '<b>Lưu tệp</b> hoặc <b>chụp ảnh</b> sản phẩm' }
+];
+const DRAFT_KEY = 'bai10_so_do_ve_em';
+let p2 = null;
+
+function loadDraft() {
+  try {
+    const d = JSON.parse(localStorage.getItem(DRAFT_KEY));
+    if (d && Array.isArray(d.branches)) return d;
+  } catch (e) {}
+  return null;
+}
+function saveDraft() {
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ mode: p2.mode, name: p2.name, branches: p2.branches })); } catch (e) {}
+}
+
+function renderPart2() {
+  const d = loadDraft();
+  p2 = {
+    mode: d && d.mode === 'paper' ? 'paper' : 'pc', name: d ? String(d.name || '') : '',
+    branches: d ? d.branches.slice(0, 6).map(b => ({ name: String(b.name || ''), color: b.color || null, icon: b.icon || null, kws: (b.kws || []).map(String).slice(0, 6) })) : [],
+    saved: false, savedName: '', photo: null, ticks: {}
+  };
+  dnd.locked = () => true;
+  show(`<div class="ch-head"><span class="ch-tag">Phần 2 · Vận dụng</span><h2>Sơ đồ tư duy về chính em</h2></div>
+    <div class="work">
+      <aside class="guide">
+        <p class="story">🌟 Em tự làm sơ đồ tư duy giới thiệu bản thân: làm ngay trên máy, hoặc vẽ trên giấy rồi chụp ảnh nếu ở nhà không có phần mềm.</p>
+        <div class="seg" role="group" aria-label="Cách làm">
+          <button type="button" data-mode="pc">💻 Làm trên máy</button>
+          <button type="button" data-mode="paper">📝 Vẽ trên giấy</button>
+        </div>
+        <div class="checklist"><h3>📋 Bảng kiểm của em</h3>
+          ${CHECKS.map(c => `<label class="chk"><input type="checkbox" data-chk="${c.id}"><span>${c.label}</span></label>`).join('')}
+        </div>
+        <button class="btn green" id="checkBtn" type="button">✅ Kiểm tra &amp; hoàn thành</button>
+      </aside>
+      <div class="ed-col" id="p2main"></div>
+    </div>`);
+  $$('[data-mode]').forEach(b => b.addEventListener('click', () => { p2.mode = b.dataset.mode; sfx.click(); saveDraft(); renderP2Main(); }));
+  $$('[data-chk]').forEach(cb => cb.addEventListener('change', () => { p2.ticks[cb.dataset.chk] = cb.checked; sfx.click(); }));
+  $('#checkBtn').addEventListener('click', openCheck);
+  renderP2Main();
+}
+
+function renderP2Main() {
+  $$('[data-mode]').forEach(b => { const on = b.dataset.mode === p2.mode; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  const main = $('#p2main');
+  if (mapRO) { mapRO.disconnect(); mapRO = null; }
+  if (p2.mode === 'paper') {
+    main.innerHTML = `<section class="paper">
+      <h3>📝 Vẽ sơ đồ trên giấy</h3>
+      <ol>
+        <li>Đặt tờ giấy <b>nằm ngang</b>, viết <b>tên em</b> thật to ở giữa.</li>
+        <li>Vẽ <b>ít nhất 3 nhánh</b> tỏa ra, gợi ý: ${SUGGEST.join(', ')}.</li>
+        <li>Trên mỗi nhánh ghi <b>ít nhất 2 từ khóa</b> ngắn gọn.</li>
+        <li>Mỗi nhánh dùng <b>một màu bút</b> khác nhau, vẽ thêm hình nếu thích.</li>
+        <li><b>Chụp ảnh</b> sơ đồ rồi chọn ảnh ở dưới để xem lại.</li>
+      </ol>
+      <label class="btn photo-pick"><input type="file" accept="image/*" id="photoIn">📷 Chọn ảnh chụp sơ đồ</label>
+      <div class="photo-prev" id="photoPrev">${p2.photo ? `<img src="${p2.photo}" alt="Ảnh chụp sơ đồ tư duy của em">` : 'Chưa có ảnh'}</div>
+      <p class="muted" style="margin:.5rem 0 0; font-size:.85rem">Ảnh chỉ hiện trên máy của em, không được gửi đi đâu.</p>
+    </section>`;
+    $('#photoIn').addEventListener('change', e => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      if (p2.photo) URL.revokeObjectURL(p2.photo);
+      p2.photo = URL.createObjectURL(f);
+      $('#photoPrev').innerHTML = `<img src="${p2.photo}" alt="Ảnh chụp sơ đồ tư duy của em">`;
+      sfx.ok(); toast('Đã có ảnh sản phẩm 📷', 'Em nhớ đánh dấu vào bảng kiểm nhé.');
+    });
+    return;
+  }
+  main.innerHTML = `<section class="board-wrap">
+      <div class="tools"><b>🌿 Thêm nhánh:</b>
+        ${SUGGEST.map(s => `<button type="button" class="chip" data-add="${esc(s)}">${esc(s)}</button>`).join('')}
+        <button type="button" class="chip" id="addOwn">＋ Nhánh khác</button>
+      </div>
+      <div class="map edit" id="map2"></div>
+      <div class="save-row"><button type="button" class="btn" id="saveImg">💾 Lưu ảnh sơ đồ</button><small id="saveNote">${p2.saved ? '✔ Đã lưu ' + esc(p2.savedName) : ''}</small></div>
+    </section>
+    <div class="tip">💡 Giống sơ đồ của An: trên nhánh chỉ ghi <b>từ khóa ngắn gọn</b> (1–3 từ), mỗi nhánh <b>một màu</b>. Bấm ô màu tròn trên nhánh để tô, bấm 🖼️ để thêm hình.</div>`;
+  $$('[data-add]').forEach(b => b.addEventListener('click', () => addBranch(b.dataset.add)));
+  $('#addOwn').addEventListener('click', openOwnBranch);
+  $('#saveImg').addEventListener('click', savePNG);
+  renderMap2();
+}
+
+function renderMap2() {
+  const map = $('#map2');
+  if (!map) return;
+  const n = p2.branches.length;
+  $$('[data-add]').forEach(b => { b.disabled = p2.branches.some(x => x.name === b.dataset.add) || n >= 6; });
+  const own = $('#addOwn'); if (own) own.disabled = n >= 6;
+  const center = `<div class="center" style="${placeVars(-1, n)}"><input id="myName" maxlength="24" placeholder="Tên em" aria-label="Tên em (chủ đề chính)" value="${esc(p2.name)}"></div>`;
+  const nodes = p2.branches.map((b, i) => `
+    <div class="br-node" data-i="${i}" style="${placeVars(i, n)};--c:${b.color || GRAY}">
+      <div class="br-h">
+        <button type="button" class="ic-btn${b.icon ? ' has' : ''}" data-act="icon" title="Thêm hình" aria-label="Thêm hình cho nhánh">${b.icon || '🖼️'}</button>
+        <span class="br-name">${esc(b.name)}</span>
+        <button type="button" class="br-x" data-act="del" title="Xóa nhánh" aria-label="Xóa nhánh ${esc(b.name)}">✕</button>
+      </div>
+      <div class="sws">${COLORS.map(c => `<button type="button" class="sw${b.color === c ? ' on' : ''}" data-act="color" data-color="${c}" style="--sw:${c}" title="Màu ${COLOR_NAMES[c]}" aria-label="Tô màu ${COLOR_NAMES[c]}"></button>`).join('')}</div>
+      <div class="br-kws">${b.kws.map((k, j) => `<span class="kw">${esc(k)}<button type="button" data-act="delkw" data-j="${j}" aria-label="Xóa từ khóa ${esc(k)}">×</button></span>`).join('')}</div>
+      <form class="kw-add" data-act="addkw"><input maxlength="30" placeholder="Thêm từ khóa" aria-label="Thêm từ khóa cho nhánh ${esc(b.name)}"><button type="submit" aria-label="Thêm">＋</button></form>
+    </div>`).join('');
+  const hint = n ? '' : '<div class="empty-hint">⬆️ Bấm các gợi ý ở trên để thêm nhánh (ít nhất 3 nhánh).</div>';
+  map.innerHTML = `<svg class="links" aria-hidden="true"></svg><div class="map-grid">${center}${nodes}${hint}</div>`;
+  $('#myName').addEventListener('input', e => { p2.name = e.target.value; saveDraft(); });
+  map.onclick = e => {
+    const btn = e.target.closest('[data-act]');
+    if (!btn || btn.tagName === 'FORM') return;
+    const i = +btn.closest('.br-node').dataset.i, b = p2.branches[i], act = btn.dataset.act;
+    if (act === 'del') { p2.branches.splice(i, 1); sfx.click(); }
+    else if (act === 'color') { b.color = btn.dataset.color; sfx.click(); }
+    else if (act === 'delkw') { b.kws.splice(+btn.dataset.j, 1); sfx.click(); }
+    else if (act === 'icon') { openIconPicker(i); return; }
+    saveDraft(); renderMap2();
+  };
+  $$('.kw-add', map).forEach(f => f.addEventListener('submit', e => {
+    e.preventDefault();
+    const i = +f.closest('.br-node').dataset.i, inp = $('input', f), v = inp.value.trim().replace(/\s+/g, ' ');
+    if (!v) return;
+    const b = p2.branches[i];
+    if (b.kws.length >= 6) { toast('Nhánh đã đủ nhiều từ khóa', 'Mỗi nhánh nên có 2–4 từ khóa thôi nhé.', 'bad'); return; }
+    b.kws.push(v); sfx.drop(); saveDraft(); renderMap2();
+    if (v.split(' ').length > 4) toast('Từ khóa hơi dài', `“${esc(v)}” giống một câu. Từ khóa nên ngắn gọn 1–3 từ như sơ đồ của An nhé!`, 'bad', 3400);
+    const again = $(`.br-node[data-i="${i}"] .kw-add input`); if (again) again.focus();
+  }));
+  watchMap(map);
+}
+function addBranch(name) {
+  name = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 24);
+  if (!name) return;
+  if (p2.branches.length >= 6) { toast('Đủ 6 nhánh rồi', 'Sơ đồ nhiều nhánh quá sẽ khó nhìn.', 'bad'); return; }
+  if (p2.branches.some(b => b.name.toLowerCase() === name.toLowerCase())) { toast('Nhánh đã có', `Sơ đồ đã có nhánh “${esc(name)}”.`, 'bad'); return; }
+  p2.branches.push({ name, color: null, icon: null, kws: [] });
+  sfx.drop(); saveDraft(); renderMap2();
+}
+function openOwnBranch() {
+  const m = openModal(`<h3>🌿 Thêm nhánh khác</h3>
+    <form id="ownForm"><input class="field" id="ownName" maxlength="24" placeholder="Ví dụ: Thú cưng, Món ăn yêu thích" aria-label="Tên nhánh">
+    <div class="actions"><button type="button" class="btn ghost" data-x>Hủy</button><button type="submit" class="btn">Thêm nhánh</button></div></form>`);
+  $('#ownName', m).focus();
+  $('#ownForm', m).addEventListener('submit', e => { e.preventDefault(); const v = $('#ownName', m).value; closeModal(); addBranch(v); });
+}
+function openIconPicker(i) {
+  const m = openModal(`<h3>🖼️ Thêm hình cho nhánh “${esc(p2.branches[i].name)}”</h3>
+    <div class="pic-grid">${PICS.map(p => `<button type="button" class="pic-btn" data-pic="${p}" aria-label="Hình ${p}">${p}</button>`).join('')}</div>
+    <div class="actions"><button type="button" class="btn ghost" id="noPic">Bỏ hình</button><button type="button" class="btn ghost" data-x>Đóng</button></div>`);
+  $$('[data-pic]', m).forEach(b => b.addEventListener('click', () => { p2.branches[i].icon = b.dataset.pic; closeModal(); sfx.drop(); saveDraft(); renderMap2(); }));
+  $('#noPic', m).addEventListener('click', () => { p2.branches[i].icon = null; closeModal(); saveDraft(); renderMap2(); });
+}
+
+/* ---------- Lưu sơ đồ thành ảnh PNG ---------- */
+function roundRect(g, x, y, w, h, r) {
+  g.beginPath();
+  g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+}
+function slug(s) {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'em';
+}
+function drawPNG() {
+  const W = 1600, H = 1000, cx = W / 2, cy = H / 2 + 20;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  const font = (w, s) => `${w} ${s}px Nunito, "Segoe UI", "Segoe UI Emoji", "Apple Color Emoji", Arial, sans-serif`;
+  g.fillStyle = '#fffaf0'; g.fillRect(0, 0, W, H);
+  g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+  g.fillStyle = '#5d6b85'; g.font = font('700', 26);
+  g.fillText('Sơ đồ tư duy giới thiệu bản thân · Tin học 6 – Bài 10', 40, 56);
+  const pill = (x, y, text, bg, fg, size, border) => {
+    g.font = font('800', size);
+    const w = g.measureText(text).width + size * 1.6, h = size * 2;
+    const left = Math.min(Math.max(x - w / 2, 16), W - w - 16), top = Math.min(Math.max(y - h / 2, 76), H - h - 16);
+    roundRect(g, left, top, w, h, h / 2);
+    g.fillStyle = bg; g.fill();
+    if (border) { g.lineWidth = 5; g.strokeStyle = border; g.stroke(); }
+    g.fillStyle = fg; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText(text, left + w / 2, top + h / 2 + 2);
+  };
+  const bs = p2.branches, n = bs.length;
+  bs.forEach((b, i) => {
+    const ang = -Math.PI / 2 + (i + .5) * 2 * Math.PI / n;
+    const cos = Math.cos(ang), sin = Math.sin(ang);
+    const bx = cx + cos * 380, by = cy + sin * 240, col = b.color || GRAY;
+    // Từ khóa xếp vuông góc với nhánh; khoảng cách đủ cho chữ dài nhất khỏi đè nhau
+    g.font = font('800', 24);
+    const maxW = Math.max(0, ...b.kws.map(k => g.measureText(k).width)) + 38 + 16;
+    const gap = Math.abs(sin) * maxW + Math.abs(cos) * 60;
+    b.kws.forEach((k, j) => {
+      const t = j - (b.kws.length - 1) / 2;
+      const kx = bx + cos * 190 - sin * t * gap, ky = by + sin * 130 + cos * t * gap;
+      g.strokeStyle = col; g.lineWidth = 5; g.lineCap = 'round';
+      g.beginPath(); g.moveTo(bx, by); g.quadraticCurveTo(bx + cos * 90, by + sin * 60, kx, ky); g.stroke();
+      pill(kx, ky, k, '#ffffff', '#1f2a44', 24, col);
+    });
+    g.strokeStyle = col; g.lineWidth = 14; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(cx, cy); g.bezierCurveTo((cx + bx) / 2, cy, (cx + bx) / 2, by, bx, by); g.stroke();
+    pill(bx, by, (b.icon ? b.icon + ' ' : '') + b.name, col, '#ffffff', 32);
+  });
+  const name = p2.name.trim() || 'Tên em';
+  g.font = font('800', 46);
+  const rw = Math.max(150, g.measureText(name).width / 2 + 60);
+  const grd = g.createLinearGradient(cx - rw, cy - 60, cx + rw, cy + 60);
+  grd.addColorStop(0, '#d88900'); grd.addColorStop(1, '#e8558c');
+  g.beginPath(); g.ellipse(cx, cy, rw, 70, 0, 0, Math.PI * 2); g.fillStyle = grd; g.fill();
+  g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(name, cx, cy + 3);
+  return c;
+}
+function savePNG() {
+  if (!p2.name.trim() || !p2.branches.length) {
+    sfx.bad();
+    toast('Chưa lưu được', 'Em viết <b>tên</b> ở giữa và thêm <b>nhánh</b> trước khi lưu nhé!', 'bad');
+    if (!p2.name.trim()) shake($('#map2 .center'));
+    return;
+  }
+  const canvas = drawPNG(), fname = `so-do-tu-duy-${slug(p2.name)}.png`;
+  const preview = canvas.toDataURL('image/png');
+  try {
+    const a = document.createElement('a');
+    a.href = preview; a.download = fname;
+    $('#overlays').appendChild(a); a.click(); a.remove();
+  } catch (e) {}
+  p2.saved = true; p2.savedName = fname;
+  const note = $('#saveNote'); if (note) note.textContent = '✔ Đã lưu ' + fname;
+  sfx.ok();
+  openModal(`<h3>💾 Đã lưu ảnh sơ đồ</h3>
+    <img class="preview" src="${preview}" alt="Ảnh sơ đồ tư duy vừa lưu">
+    <p>Ảnh <b>${esc(fname)}</b> đã được tải về máy (thường nằm trong thư mục <b>Tải xuống</b>). Em nhớ đánh dấu vào bảng kiểm nhé.</p>
+    <div class="actions"><button type="button" class="btn" data-x>Đóng</button></div>`, { wide: true });
+}
+
+/* ---------- Bảng kiểm ---------- */
+// null = đã làm đúng, 'self' = em tự kiểm tra trên giấy, chuỗi = lí do chưa đạt
+function p2Status() {
+  if (p2.mode === 'paper') {
+    return { name: 'self', branch: 'self', kws: 'self', color: 'self', save: p2.photo ? null : 'Chưa chọn ảnh chụp sơ đồ.' };
+  }
+  const bs = p2.branches, n = bs.length;
+  const few = bs.filter(b => b.kws.length < 2).map(b => b.name);
+  const nocolor = bs.filter(b => !b.color).map(b => b.name);
+  const seen = {}, dup = [];
+  bs.forEach(b => { if (b.color) { if (seen[b.color]) dup.push(`${seen[b.color]} và ${b.name}`); else seen[b.color] = b.name; } });
+  return {
+    name: p2.name.trim() ? null : 'Chưa viết tên ở giữa.',
+    branch: n >= 3 ? null : `Mới có ${n} nhánh, cần ít nhất 3.`,
+    kws: !n ? 'Chưa có nhánh nào.' : few.length ? `Nhánh ${few.join(', ')} chưa đủ 2 từ khóa.` : null,
+    color: !n ? 'Chưa có nhánh nào.' : nocolor.length ? `Nhánh ${nocolor.join(', ')} chưa tô màu.` : dup.length ? `Nhánh ${dup[0]} đang cùng một màu.` : null,
+    save: p2.saved ? null : 'Chưa lưu ảnh sơ đồ.'
+  };
+}
+function openCheck() {
+  const st = p2Status();
+  const ok = id => st[id] === null || st[id] === 'self';
+  const rows = CHECKS.map(c => {
+    const ticked = !!p2.ticks[c.id], s = st[c.id];
+    let cls, res;
+    if (s === 'self') { cls = ticked ? 'ok' : 'todo'; res = ticked ? '✅ Em đã tự kiểm tra trên giấy' : '⬜ Em xem lại sơ đồ trên giấy rồi đánh dấu nhé'; }
+    else if (s === null && ticked) { cls = 'ok'; res = '✅ Đúng như em đánh dấu'; }
+    else if (s === null) { cls = 'warn'; res = '👍 Em làm rồi, nhớ đánh dấu vào bảng kiểm nhé'; }
+    else if (ticked) { cls = 'bad'; res = '⚠️ ' + esc(s) + ' Em kiểm tra lại nhé.'; }
+    else { cls = 'todo'; res = '⬜ ' + esc(s); }
+    return `<tr class="${cls}"><td>${c.label}</td><td class="c">${ticked ? '☑️' : '⬜'}</td><td>${res}</td></tr>`;
+  }).join('');
+  const doneCount = CHECKS.filter(c => ok(c.id)).length;
+  const allTicked = CHECKS.every(c => p2.ticks[c.id]);
+  const win = doneCount === CHECKS.length && allTicked;
+  const msg = win ? '🌟 Tuyệt vời! Sơ đồ tư duy về em đã đủ cả 5 việc.'
+    : doneCount === CHECKS.length ? '👍 Sơ đồ đã đủ 5 việc rồi! Em đánh dấu nốt vào bảng kiểm nhé.'
+    : `✏️ Em đã làm được ${doneCount}/5 việc. Làm tiếp những dòng chưa đạt rồi kiểm tra lại nhé.`;
+  const m = openModal(`<h3>📋 Kiểm tra bảng kiểm</h3>
+    <table class="cmp-table"><thead><tr><th>Việc cần làm</th><th>Em đánh dấu</th><th>Kết quả</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="cmp-msg">${msg}</p>
+    <div class="actions">${win
+      ? '<button type="button" class="btn green" id="finishBtn">Hoàn thành 🏆</button>'
+      : '<button type="button" class="btn" data-x>✏️ Làm tiếp</button>'}</div>`, { wide: true });
+  if (win) {
+    sfx.ok();
+    $('#finishBtn', m).addEventListener('click', () => {
+      state.part2Done = true;
+      if (!state.p2) { state.p2 = 50; flyText('+50 ⭐', $('#score')); }
+      updateHUD(true);
+      renderWin();
+    });
+  }
+}
+
+/* =========================================================
+   KẾT THÚC
+   ========================================================= */
+function renderWin() {
+  const score = totalScore();
+  const msg = !state.part1Done ? '🌟 Sơ đồ của em đẹp lắm! Em làm thêm Phần 1 để luyện cùng bạn An nhé.'
+    : score >= 90 ? '🌟 Xuất sắc! Em đã nắm chắc cách vẽ sơ đồ tư duy.'
+    : score >= 70 ? '👏 Giỏi lắm! Em đã biết các thành phần của sơ đồ tư duy.'
+    : '💪 Em đã hoàn thành! Làm lại để đạt điểm cao hơn nhé.';
+  const learned = [
+    '🎯 Chủ đề chính đặt ở giữa', '🌿 Chủ đề nhánh tỏa ra xung quanh', '🔑 Trên nhánh ghi từ khóa ngắn gọn',
+    '🎨 Mỗi nhánh một màu cho dễ phân biệt', '🖼️ Thêm hình để dễ nhớ', '💾 Lưu tệp hoặc chụp ảnh sản phẩm'
+  ];
+  show(`<div class="win">
+    <div class="trophy">🏆</div>
+    <h1>Hoàn thành Luyện tập &amp; Vận dụng!</h1>
+    <div class="scorebox"><div class="lbl">Điểm của em</div><div class="val">${score}/100</div></div>
+    <div><span class="msg">${msg}</span></div>
+    <h2>Sơ đồ tư duy gồm:</h2>
+    <div class="learned">${learned.map((t, i) => `<div style="animation-delay:${i * .08}s">${t}</div>`).join('')}</div>
+    <div class="actions">
+      ${state.part1Done ? '' : '<button type="button" class="btn" id="doP1">🧒 Làm Phần 1</button>'}
+      <button type="button" class="btn ghost" id="againBtn">🔁 Làm lại từ đầu</button>
+    </div>
+  </div>`);
+  const p1Btn = $('#doP1');
+  if (p1Btn) p1Btn.addEventListener('click', () => { sfx.click(); renderPart1(); });
+  $('#againBtn').addEventListener('click', () => {
+    state.p1 = [0, 0, 0, 0, 0]; state.p2 = 0; state.part1Done = false; state.part2Done = false;
+    updateHUD(); sfx.click(); renderHome();
+  });
+  sfx.win(); confetti();
+}
+
+/* ---------- Khởi động ---------- */
+$('#soundBtn').addEventListener('click', () => { state.sound = !state.sound; updateHUD(); sfx.click(); });
+$('#homeBtn').addEventListener('click', () => { sfx.click(); renderHome(); });
+updateHUD();
+renderHome();
+</script>
+</body>
+</html>

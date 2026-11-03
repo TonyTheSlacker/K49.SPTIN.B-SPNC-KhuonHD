@@ -19,7 +19,7 @@
   --radius:22px;
 }
 *{box-sizing:border-box}
-html{font-size:clamp(13px, .55vw + 9px, 19px)}
+html{font-size:clamp(15px, .4vw + 12.5px, 18px)}
 body{
   margin:0; min-height:100vh; color:var(--ink);
   font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -56,7 +56,9 @@ button{font-family:inherit; cursor:pointer}
   border:2px solid var(--line); background:#fff; font-size:1.15rem;
   display:grid; place-items:center; transition:transform .15s;
 }
-.icon-btn:hover{transform:scale(1.08)}
+.icon-btn{color:var(--muted)}
+.icon-btn svg{width:1.25rem; height:1.25rem; display:block}
+.icon-btn:hover{transform:scale(1.08); color:var(--ink)}
 
 /* ---------- Layout ---------- */
 #app{max-width:1200px; margin:0 auto; padding:1rem 1rem 2.5rem}
@@ -130,7 +132,7 @@ button{font-family:inherit; cursor:pointer}
 .steps-list li.now .n{background:var(--primary); color:#fff}
 .steps-list li.done{color:var(--ok)}
 .steps-list li.done .n{background:var(--ok); color:#fff}
-.steps-list p{margin:.3rem 0 0; font-size:.86rem}
+.steps-list p{margin:.3rem 0 0; font-size:.9rem}
 .done-box{background:#effbf6; border:2px solid #b7ebd6; border-radius:16px; padding:.8rem; text-align:center; animation:pop .5s}
 .done-box b{font-size:1.08rem; color:var(--ok)}
 .done-box p{margin:.4rem 0 .9rem; font-size:.9rem; line-height:1.45}
@@ -142,21 +144,20 @@ button{font-family:inherit; cursor:pointer}
 .dots{display:flex; gap:.3rem}
 .dots i{width:.6rem; height:.6rem; border-radius:50%; background:rgba(255,255,255,.55)}
 .ribbon{display:flex; flex-wrap:wrap; gap:.4rem 0; padding:.45rem .3rem; background:#f5f6fa; border-bottom:1px solid #e3e6f0}
-.grp{display:flex; flex-direction:column; align-items:center; gap:.15rem; padding:0 .45rem; border-right:1px solid #dfe3ec}
+.grp{display:flex; flex-direction:column; align-items:center; gap:.15rem; padding:0 .35rem; border-right:1px solid #dfe3ec}
 .grp:last-child{border-right:0}
 .grp-btns{display:flex; gap:.2rem}
-.grp-lbl{font-size:.66rem; color:var(--muted); font-weight:700; white-space:nowrap}
+.grp-lbl{font-size:.72rem; color:var(--muted); font-weight:700; white-space:nowrap}
 .tb{
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.1rem;
-  min-width:3rem; padding:.28rem .3rem; border-radius:10px; border:2px solid transparent;
-  background:transparent; color:var(--ink); font-size:.68rem; font-weight:700;
+  min-width:2.7rem; padding:.28rem .25rem; border-radius:10px; border:2px solid transparent;
+  background:transparent; color:var(--ink); font-size:.75rem; font-weight:700;
   transition:background .15s, border-color .15s, transform .1s;
 }
 .tb:hover{background:#e8eefb}
 .tb:active{transform:scale(.94)}
 .tb.on{background:#dbe6fa; border-color:var(--word)}
 .tb svg{width:1.35rem; height:1.35rem; color:#2f3b57}
-.tb .emo{font-style:normal; font-size:1.15rem; line-height:1.35rem}
 .tb.hint{animation:hintGlow 1.1s infinite}
 @keyframes hintGlow{0%,100%{box-shadow:0 0 0 0 rgba(243,169,0,0)} 50%{box-shadow:0 0 0 4px rgba(243,169,0,.6)}}
 .canvas{background:#e7e9f0; padding:1rem; display:flex; justify-content:center; align-items:flex-start; min-height:18rem}
@@ -208,7 +209,7 @@ button{font-family:inherit; cursor:pointer}
   display:flex; flex-direction:column; align-items:center; gap:.9rem;
   box-shadow:inset 0 0 20px rgba(0,0,0,.25), var(--shadow); animation:pop .5s;
 }
-.board-h{background:#fff; border-radius:999px; padding:.2rem .9rem; font-weight:800; font-size:.85rem; color:#8a5a2b}
+.board-h{background:#fff; border-radius:999px; padding:.2rem .9rem; font-weight:800; font-size:.9rem; color:#8a5a2b}
 .pin-wrap{position:relative; rotate:-2deg}
 .pin{position:absolute; top:-.9rem; left:50%; transform:translateX(-50%); font-size:1.4rem; z-index:2}
 
@@ -221,7 +222,7 @@ button{font-family:inherit; cursor:pointer}
 .chk input:checked + span{color:var(--ok)}
 .suggest{background:#fff; border-radius:18px; box-shadow:var(--shadow); padding:.7rem .9rem; font-size:.92rem}
 .chips{display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.5rem}
-.chip{border:2px solid #f1dfb0; background:#fffaf0; border-radius:12px; padding:.4rem .7rem; font-size:.84rem; font-weight:700; color:var(--ink); text-align:left; transition:transform .12s, border-color .2s}
+.chip{border:2px solid #f1dfb0; background:#fffaf0; border-radius:12px; padding:.4rem .7rem; font-size:.9rem; font-weight:700; color:var(--ink); text-align:left; transition:transform .12s, border-color .2s}
 .chip:hover{border-color:var(--primary2); transform:translateY(-2px)}
 .chip.used{opacity:.55}
 
@@ -234,7 +235,7 @@ button{font-family:inherit; cursor:pointer}
 .modal h3{font-family:'Baloo 2',cursive; font-size:1.35rem; margin:0 0 .7rem}
 .modal p{line-height:1.5}
 .pic-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem}
-.pic-opt{border:3px solid #e5e7f5; background:#fff; border-radius:16px; padding:.55rem; display:flex; flex-direction:column; align-items:center; gap:.2rem; font-weight:700; font-size:.82rem; color:var(--ink); transition:transform .12s, border-color .2s}
+.pic-opt{border:3px solid #e5e7f5; background:#fff; border-radius:16px; padding:.55rem; display:flex; flex-direction:column; align-items:center; gap:.2rem; font-weight:700; font-size:.9rem; color:var(--ink); transition:transform .12s, border-color .2s}
 .pic-opt span{font-size:2.3rem; line-height:1.2}
 .pic-opt:hover{border-color:var(--primary2); transform:translateY(-2px)}
 .lbl{font-weight:800}
@@ -250,8 +251,9 @@ button{font-family:inherit; cursor:pointer}
 .cmp .page.mini.portrait{width:min(100%,11rem)}
 .cmp-table{width:100%; border-collapse:collapse; font-size:.88rem}
 .cmp-table th,.cmp-table td{padding:.5rem .55rem; border-bottom:1px solid #eceef4; text-align:left; vertical-align:top; line-height:1.4}
-.cmp-table th{background:#f5f6fa; font-size:.78rem; color:var(--muted)}
-.cmp-table td.c{text-align:center}
+.cmp-table th{background:#f5f6fa; font-size:.84rem; color:var(--muted)}
+.cmp-table td.c{text-align:center; font-weight:900}
+.cmp-table tr.ok td.c, .cmp-table tr.bad td.c{color:var(--ok)}
 .cmp-table tr.ok td:last-child{color:var(--ok); font-weight:700}
 .cmp-table tr.bad td:last-child{color:var(--bad); font-weight:700}
 .cmp-table tr.warn td:last-child{color:#b7791f; font-weight:700}
@@ -318,12 +320,15 @@ button{font-family:inherit; cursor:pointer}
   .learned{grid-template-columns:1fr}
 }
 @media (max-width: 520px){
-  .home h1{font-size:1.9rem}
+  .home h1{font-size:1.75rem}
   .ch-head h2{font-size:1.25rem}
   .bar{width:50px}
   .brand{display:none}
   .topbar{justify-content:center}
   .canvas{padding:.7rem}
+}
+@media (pointer: coarse){
+  input:not([type=checkbox]):not([type=file]){font-size:max(16px, 1em)}
 }
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
@@ -333,11 +338,11 @@ button{font-family:inherit; cursor:pointer}
 <body>
 
 <header class="topbar">
-  <div class="brand">📢 Thông báo &amp; Thiệp 20/11</div>
-  <div class="pill">⭐ Điểm: <b id="score">0</b></div>
-  <div class="pill">🏆 Phần: <span id="prog">0/2</span><div class="bar"><i id="progBar"></i></div></div>
-  <button class="icon-btn" id="soundBtn" type="button" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh">🔊</button>
-  <button class="icon-btn" id="homeBtn" type="button" title="Về màn hình đầu" aria-label="Về màn hình đầu">🏠</button>
+  <div class="brand">Thông báo &amp; Thiệp 20/11</div>
+  <div class="pill">Điểm: <b id="score">0</b></div>
+  <div class="pill">Phần: <span id="prog">0/2</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="icon-btn" id="soundBtn" type="button" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18 7a7 7 0 0 1 0 10"/></svg></button>
+  <button class="icon-btn" id="homeBtn" type="button" title="Về màn hình đầu" aria-label="Về màn hình đầu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h4.5v-5.5h3V20H18V9.5"/></svg></button>
 </header>
 
 <main id="app"></main>
@@ -430,7 +435,7 @@ function updateHUD(bump) {
   const done = (state.part1Done ? 1 : 0) + (state.part2Done ? 1 : 0);
   $('#prog').textContent = done + '/2';
   $('#progBar').style.width = (done / 2 * 100) + '%';
-  $('#soundBtn').textContent = state.sound ? '🔊' : '🔇';
+  $('#soundBtn').innerHTML = state.sound ? ICON.sound : ICON.mute;
 }
 
 /* ---------- Âm thanh (Web Audio – không cần file) ---------- */
@@ -546,6 +551,17 @@ function shortcut(e, h) {
 }
 
 /* ---------- Thanh công cụ ---------- */
+const ICON = {
+  sound: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18 7a7 7 0 0 1 0 10"/></svg>',
+  mute: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M16 10l5 5"/><path d="M21 10l-5 5"/></svg>'
+};
+const FILE_ICON = {
+  picture: '<rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="8.5" cy="10" r="1.7" fill="currentColor"/><path d="M4.5 17.5l5-5 3.5 3.5 2.5-2.5 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  open: '<path d="M3 7a1.5 1.5 0 0 1 1.5-1.5H9L11 8h8.5A1.5 1.5 0 0 1 21 9.5V18a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  save: '<path d="M5 3.5h11l3.5 3.5v12a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V5A1.5 1.5 0 0 1 5 3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.5 3.5v4.5h7V3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="7" y="13" width="10" height="7.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  print: '<path d="M7 9V3.5h10V9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="3" y="9" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="7" y="14" width="10" height="6.5" fill="#fff" stroke="currentColor" stroke-width="1.8"/>'
+};
+const fileIcon = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${FILE_ICON[k]}</svg>`;
 const ALIGN = {
   left:    { name: 'Căn trái',        short: 'Trái', key: 'L' },
   center:  { name: 'Căn giữa',        short: 'Giữa', key: 'E' },
@@ -578,11 +594,11 @@ function ribbon({ insert = false, open = false } = {}) {
       ${tb('data-orient="portrait"', 'Hướng trang đứng', orientIcon('portrait'), 'Đứng')}
       ${tb('data-orient="landscape"', 'Hướng trang ngang', orientIcon('landscape'), 'Ngang')}
       </div><div class="grp-lbl">Hướng trang</div></div>
-    ${insert ? `<div class="grp"><div class="grp-btns">${tb('data-cmd="picture"', 'Chèn hình minh họa', '<i class="emo">🖼️</i>', 'Hình ảnh')}</div><div class="grp-lbl">Chèn</div></div>` : ''}
+    ${insert ? `<div class="grp"><div class="grp-btns">${tb('data-cmd="picture"', 'Chèn hình minh họa', fileIcon('picture'), 'Hình ảnh')}</div><div class="grp-lbl">Chèn</div></div>` : ''}
     <div class="grp"><div class="grp-btns">
-      ${open ? tb('data-cmd="open"', 'Mở tệp', '<i class="emo">📂</i>', 'Mở') : ''}
-      ${tb('data-cmd="save"', 'Lưu tệp (Ctrl+S)', '<i class="emo">💾</i>', 'Lưu')}
-      ${tb('data-cmd="print"', 'In (Ctrl+P)', '<i class="emo">🖨️</i>', 'In')}
+      ${open ? tb('data-cmd="open"', 'Mở tệp', fileIcon('open'), 'Mở') : ''}
+      ${tb('data-cmd="save"', 'Lưu tệp (Ctrl+S)', fileIcon('save'), 'Lưu')}
+      ${tb('data-cmd="print"', 'In (Ctrl+P)', fileIcon('print'), 'In')}
       </div><div class="grp-lbl">Tệp</div></div>
   </div>`;
 }
@@ -611,7 +627,7 @@ function miniCopy(el) {
 }
 function printAnim(pageEl, done) {
   const m = openModal(`<div class="printer"><div class="printer-body"><span class="led"></span></div>
-    <div class="paper-slot"><div class="paper-out"></div></div><p class="printer-msg">🖨️ Đang in…</p></div>`, { bare: true });
+    <div class="paper-slot"><div class="paper-out"></div></div><p class="printer-msg">Đang in…</p></div>`, { bare: true });
   $('.paper-out', m).appendChild(miniCopy(pageEl));
   sfx.print();
   setTimeout(() => { closeModal(); done && done(); }, 2000);
@@ -624,17 +640,17 @@ function renderHome() {
   keyHandler = null;
   show(`<div class="home">
     <div>
-      <span class="badge">🧪 Bài 11 · Luyện tập &amp; Vận dụng</span>
+      <span class="badge">Bài 11 · Luyện tập &amp; Vận dụng</span>
       <h1>Thông báo &amp; <span>Thiệp 20/11</span></h1>
-      <div class="bubble b1">📨 Lớp trưởng soạn thông báo họp lớp chuẩn bị chào mừng <b>Ngày Nhà giáo Việt Nam 20/11</b> nhưng chưa trình bày. Em sửa giúp bạn nhé!</div>
-      <div class="bubble b2">💌 Sau đó, em tự làm một tấm thiệp tặng thầy cô đúng như thông báo yêu cầu.</div>
+      <div class="bubble b1">Lớp trưởng soạn thông báo họp lớp chuẩn bị chào mừng <b>Ngày Nhà giáo Việt Nam 20/11</b> nhưng chưa trình bày. Em sửa giúp bạn nhé!</div>
+      <div class="bubble b2">Sau đó, em tự làm một tấm thiệp tặng thầy cô đúng như thông báo yêu cầu.</div>
       <div class="home-btns">
-        <button class="btn big pulse" id="startBtn" type="button">Bắt đầu ▶</button>
+        <button class="btn big pulse" id="startBtn" type="button">Bắt đầu →</button>
         <button class="btn ghost" id="jumpBtn" type="button">Làm Phần 2</button>
       </div>
       <div class="quest">
-        <span class="${state.part1Done ? 'done' : ''}">${state.part1Done ? '✔' : '①'} Luyện tập: Trình bày thông báo</span>
-        <span class="${state.part2Done ? 'done' : ''}">${state.part2Done ? '✔' : '②'} Vận dụng: Làm thiệp 20/11</span>
+        <span class="${state.part1Done ? 'done' : ''}">${state.part1Done ? '✓' : '①'} Luyện tập: Trình bày thông báo</span>
+        <span class="${state.part2Done ? 'done' : ''}">${state.part2Done ? '✓' : '②'} Vận dụng: Làm thiệp 20/11</span>
       </div>
     </div>
     <div class="home-art" aria-hidden="true">
@@ -677,7 +693,7 @@ function renderPart1() {
   show(`<div class="ch-head"><span class="ch-tag">Phần 1 · Luyện tập</span><h2>Trình bày thông báo của lớp</h2></div>
     <div class="work">
       <aside class="guide" id="guide">
-        <p class="story">📨 Lớp trưởng soạn xong thông báo nhưng <b>chưa trình bày</b>. Em sửa giúp bạn theo từng bước nhé!</p>
+        <p class="story">Lớp trưởng soạn xong thông báo nhưng <b>chưa trình bày</b>. Em sửa giúp bạn theo từng bước nhé!</p>
         <ol class="steps-list" id="stepsList"></ol>
       </aside>
       <section class="editor" aria-label="Phần mềm soạn thảo văn bản">
@@ -708,7 +724,7 @@ function renderPart1() {
 function renderSteps() {
   $('#stepsList').innerHTML = P1_STEPS.map((s, i) => {
     const cls = i < p1.step ? 'done' : i === p1.step ? 'now' : '';
-    return `<li class="${cls}"><span class="n">${i < p1.step ? '✔' : i + 1}</span><div><b>${s.label}</b>${i === p1.step ? `<p>${s.how}</p>` : ''}</div></li>`;
+    return `<li class="${cls}"><span class="n">${i < p1.step ? '✓' : i + 1}</span><div><b>${s.label}</b>${i === p1.step ? `<p>${s.how}</p>` : ''}</div></li>`;
   }).join('');
   $$('.ribbon .tb').forEach(b => b.classList.remove('hint'));
   refreshGuide();
@@ -734,7 +750,7 @@ function p1Miss(btnSel, msg) {
   p1.mistakes++;
   sfx.bad();
   shake($(`.ribbon ${btnSel}`));
-  toast('Chưa đúng rồi 🤔', msg + (p1.mistakes >= 2 ? '<br>💡 Nút cần chọn đang nhấp nháy trên thanh công cụ.' : ''), 'bad', 3400);
+  toast('Chưa đúng rồi!', msg + (p1.mistakes >= 2 ? '<br>Nút cần chọn đang nhấp nháy trên thanh công cụ.' : ''), 'bad', 3400);
   if (p1.mistakes >= 2) hintButton();
 }
 
@@ -783,8 +799,8 @@ function p1Cmd(c) {
   if (p1.busy) return;
   const st = P1_STEPS[p1.step];
   if (st.kind !== 'cmd') {
-    if (c === 'save') { sfx.click(); toast('Đã lưu 💾', 'Lưu thường xuyên để không bị mất bài. Giờ em làm tiếp bước đang sáng nhé.'); }
-    else if (c === 'print') toast('Khoan in đã! ✋', 'Trình bày xong rồi hãy in để không tốn giấy nhé.', 'bad');
+    if (c === 'save') { sfx.click(); toast('Đã lưu', 'Lưu thường xuyên để không bị mất bài. Giờ em làm tiếp bước đang sáng nhé.'); }
+    else if (c === 'print') toast('Khoan in đã!', 'Trình bày xong rồi hãy in để không tốn giấy nhé.', 'bad');
     else toast('Chưa cần mở tệp', 'Thông báo của lớp trưởng đang mở sẵn rồi.', 'bad');
     return;
   }
@@ -798,10 +814,10 @@ function p1StepDone() {
   const pts = p1.mistakes === 0 ? 10 : 5;
   state.p1[i] = pts;
   sfx.ok();
-  flyText('+' + pts + ' ⭐', $('#score'));
+  flyText('+' + pts, $('#score'));
   updateHUD(true);
   p1.busy = true;
-  toast('Chính xác! 🎉', st.ok, 'ok', 2600);
+  toast('Chính xác!', st.ok, 'ok', 2600);
   if (st.kind === 'cmd') {
     setTimeout(() => printAnim($('#page'), p1Finish), 700);
     return;
@@ -818,12 +834,12 @@ function p1Finish() {
   state.part1Done = true;
   updateHUD();
   const notice = miniCopy($('#page'));
-  $('#canvas').innerHTML = `<div class="board"><div class="board-h">📌 BẢNG TIN LỚP 6A</div><div class="pin-wrap"><span class="pin">📌</span></div></div>`;
+  $('#canvas').innerHTML = `<div class="board"><div class="board-h">BẢNG TIN LỚP 6A</div><div class="pin-wrap"><span class="pin">📌</span></div></div>`;
   $('#canvas .pin-wrap').appendChild(notice);
   $$('.ribbon .tb').forEach(b => { b.disabled = true; b.style.opacity = '.5'; });
   const box = document.createElement('div');
   box.className = 'done-box';
-  box.innerHTML = `<b>🎉 Hoàn thành Phần 1!</b><p>Thông báo đã được in và dán lên bảng tin. Giờ em làm tấm thiệp như thông báo yêu cầu nhé!</p>
+  box.innerHTML = `<b>Hoàn thành Phần 1!</b><p>Thông báo đã được in và dán lên bảng tin. Giờ em làm tấm thiệp như thông báo yêu cầu nhé!</p>
     <button class="btn green" id="toP2" type="button">Sang Phần 2 ➜</button>`;
   $('#guide').appendChild(box);
   $('#toP2').addEventListener('click', () => { sfx.click(); renderPart2(); });
@@ -855,11 +871,11 @@ function renderPart2() {
   show(`<div class="ch-head"><span class="ch-tag">Phần 2 · Vận dụng</span><h2>Làm tấm thiệp tặng thầy cô</h2></div>
     <div class="work">
       <aside class="guide">
-        <p class="story">💌 Thông báo nhắc <b>mỗi bạn làm một tấm thiệp</b> tặng thầy cô. Lần này em <b>tự làm</b> nhé! Xong việc nào, em tự đánh dấu vào bảng kiểm.</p>
-        <div class="checklist"><h3>📋 Bảng kiểm của em</h3>
+        <p class="story">Thông báo nhắc <b>mỗi bạn làm một tấm thiệp</b> tặng thầy cô. Lần này em <b>tự làm</b> nhé! Xong việc nào, em tự đánh dấu vào bảng kiểm.</p>
+        <div class="checklist"><h3>Bảng kiểm của em</h3>
           ${CHECKS.map(c => `<label class="chk"><input type="checkbox" data-chk="${c.id}"><span>${c.label}</span></label>`).join('')}
         </div>
-        <button class="btn green" id="compareBtn" type="button">🔍 So sánh với thiệp mẫu</button>
+        <button class="btn green" id="compareBtn" type="button">So sánh với thiệp mẫu</button>
       </aside>
       <div class="ed-col">
         <section class="editor" aria-label="Phần mềm soạn thảo văn bản">
@@ -867,14 +883,14 @@ function renderPart2() {
           ${ribbon({ insert: true })}
           <div class="canvas">
             <div class="page card portrait" id="card">
-              <div class="blk head" data-blk="head" tabindex="0" role="button" style="text-align:center">🌸 Mừng Ngày Nhà giáo Việt Nam 20/11 🌸</div>
+              <div class="blk head" data-blk="head" tabindex="0" role="button" style="text-align:center">Mừng Ngày Nhà giáo Việt Nam 20/11</div>
               <div class="pic" id="pic" hidden></div>
               <div class="blk wish" id="wish" contenteditable="true" spellcheck="false" aria-label="Lời chúc" data-ph="Gõ lời chúc của em vào đây…"></div>
               <div class="blk sender" id="sender" contenteditable="true" spellcheck="false" aria-label="Tên người gửi" data-ph="Gõ tên người gửi, ví dụ: Học sinh lớp 6A – Lê Văn Bình"></div>
             </div>
           </div>
         </section>
-        <div class="suggest"><b>💡 Gợi ý lời chúc</b> <small class="muted">(bấm vào câu để thêm vào thiệp)</small>
+        <div class="suggest"><b>Gợi ý lời chúc</b> <small class="muted">(bấm vào câu để thêm vào thiệp)</small>
           <div class="chips">${WISHES.map((w, i) => `<button type="button" class="chip" data-wish="${i}">${w}</button>`).join('')}</div>
         </div>
       </div>
@@ -940,7 +956,7 @@ function setPic(emoji) {
   $('.pic-x', pic).addEventListener('click', () => { setPic(null); sfx.click(); });
 }
 function openPicPicker() {
-  const m = openModal(`<h3>🖼️ Chèn hình minh họa</h3><p class="muted">Chọn một hình để chèn vào thiệp:</p>
+  const m = openModal(`<h3>Chèn hình minh họa</h3><p class="muted">Chọn một hình để chèn vào thiệp:</p>
     <div class="pic-grid">${PICS.map(([e, n], i) => `<button type="button" class="pic-opt" data-pic="${i}"><span>${e}</span>${n}</button>`).join('')}</div>
     <div class="actions"><button type="button" class="btn ghost" data-x>Hủy</button></div>`);
   $$('[data-pic]', m).forEach(b => b.addEventListener('click', () => {
@@ -949,11 +965,11 @@ function openPicPicker() {
   }));
 }
 function openSave() {
-  const m = openModal(`<h3>💾 Lưu tệp</h3>
+  const m = openModal(`<h3>Lưu tệp</h3>
     <label class="lbl" for="fname">Tên tệp</label>
     <div class="fname"><input id="fname" value="${esc(p2.fileName || 'Thiep-20-11')}" maxlength="40" autocomplete="off"><em>.docx</em></div>
     <p class="muted">Tệp sẽ được lưu vào thư mục <b>Tài liệu</b> trên máy tính.</p>
-    <div class="actions"><button type="button" class="btn ghost" data-x>Hủy</button><button type="button" class="btn" id="doSave">💾 Lưu</button></div>`);
+    <div class="actions"><button type="button" class="btn ghost" data-x>Hủy</button><button type="button" class="btn" id="doSave">Lưu</button></div>`);
   const inp = $('#fname', m);
   inp.focus(); inp.select();
   const go = () => {
@@ -961,13 +977,13 @@ function openSave() {
     p2.fileName = name; p2.saved = true;
     $('#docName').textContent = name + '.docx';
     closeModal(); sfx.ok();
-    toast('Đã lưu tệp 💾', `Thiệp được lưu với tên <b>${esc(name)}.docx</b>.`);
+    toast('Đã lưu tệp', `Thiệp được lưu với tên <b>${esc(name)}.docx</b>.`);
   };
   $('#doSave', m).addEventListener('click', go);
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
 }
 function p2Print() {
-  printAnim($('#card'), () => toast('In xong rồi 🖨️', 'Em có thể tặng tấm thiệp này cho thầy cô!'));
+  printAnim($('#card'), () => toast('In xong rồi!', 'Em có thể tặng tấm thiệp này cho thầy cô!'));
 }
 
 // Kiểm tra thiệp: null = đã làm đúng, chuỗi = lí do chưa đạt
@@ -983,7 +999,7 @@ function p2Status() {
   };
 }
 const SAMPLE_CARD = `<div class="page card landscape mini" aria-hidden="true">
-  <div class="blk head" style="text-align:center">🌸 Mừng Ngày Nhà giáo Việt Nam 20/11 🌸</div>
+  <div class="blk head" style="text-align:center">Mừng Ngày Nhà giáo Việt Nam 20/11</div>
   <div class="pic"><span class="pic-img">💐</span></div>
   <div class="blk wish" style="text-align:center">Nhân Ngày Nhà giáo Việt Nam 20/11, em kính chúc thầy cô luôn mạnh khỏe và hạnh phúc. Em cảm ơn thầy cô đã tận tình dạy dỗ chúng em.</div>
   <div class="blk sender" style="text-align:right">Học trò của thầy cô<br>Trần Thu Hà – Lớp 6A</div>
@@ -997,32 +1013,32 @@ function openCompare() {
   const rows = CHECKS.map(c => {
     const done = !st[c.id], ticked = !!p2.ticks[c.id];
     let cls, res;
-    if (done && ticked)       { cls = 'ok';   res = '✅ Đúng như em đánh dấu'; }
-    else if (done)            { cls = 'warn'; res = '👍 Em làm rồi, nhớ đánh dấu vào bảng kiểm nhé'; }
-    else if (ticked)          { cls = 'bad';  res = '⚠️ ' + st[c.id] + ' Em kiểm tra lại nhé.'; }
-    else                      { cls = 'todo'; res = '⬜ ' + st[c.id]; }
-    return `<tr class="${cls}"><td>${c.label}</td><td class="c">${ticked ? '☑️' : '⬜'}</td><td>${res}</td></tr>`;
+    if (done && ticked)       { cls = 'ok';   res = 'Đúng như em đánh dấu'; }
+    else if (done)            { cls = 'warn'; res = 'Em làm rồi, nhớ đánh dấu vào bảng kiểm nhé'; }
+    else if (ticked)          { cls = 'bad';  res = st[c.id] + ' Em kiểm tra lại nhé.'; }
+    else                      { cls = 'todo'; res = st[c.id]; }
+    return `<tr class="${cls}"><td>${c.label}</td><td class="c" aria-label="${ticked ? 'Đã đánh dấu' : 'Chưa đánh dấu'}">${ticked ? '✓' : '–'}</td><td>${res}</td></tr>`;
   }).join('');
-  const msg = allDone && allTicked ? '🌟 Tuyệt vời! Thiệp của em đã đủ cả 5 việc giống thiệp mẫu.'
-    : allDone ? '👍 Thiệp đã đủ 5 việc rồi! Em đánh dấu nốt vào bảng kiểm nhé.'
-    : `✏️ Em đã làm được ${doneCount}/5 việc. Sửa thêm những dòng chưa đạt rồi so sánh lại nhé.`;
+  const msg = allDone && allTicked ? 'Tuyệt vời! Thiệp của em đã đủ cả 5 việc giống thiệp mẫu.'
+    : allDone ? 'Thiệp đã đủ 5 việc rồi! Em đánh dấu nốt vào bảng kiểm nhé.'
+    : `Em đã làm được ${doneCount}/5 việc. Sửa thêm những dòng chưa đạt rồi so sánh lại nhé.`;
 
-  const m = openModal(`<h3>🔍 So sánh với thiệp mẫu</h3>
+  const m = openModal(`<h3>So sánh với thiệp mẫu</h3>
     <div class="cmp">
-      <figure><figcaption>⭐ Thiệp mẫu</figcaption>${SAMPLE_CARD}</figure>
-      <figure><figcaption>✏️ Thiệp của em</figcaption><div id="cmpMine"></div></figure>
+      <figure><figcaption>Thiệp mẫu</figcaption>${SAMPLE_CARD}</figure>
+      <figure><figcaption>Thiệp của em</figcaption><div id="cmpMine"></div></figure>
     </div>
     <table class="cmp-table"><thead><tr><th>Việc cần làm</th><th>Em đánh dấu</th><th>Kết quả trên thiệp</th></tr></thead><tbody>${rows}</tbody></table>
     <p class="cmp-msg">${msg}</p>
     <div class="actions">${allDone && allTicked
-      ? '<button type="button" class="btn green" id="finishBtn">Hoàn thành 🏆</button>'
-      : '<button type="button" class="btn" data-x>✏️ Sửa tiếp thiệp</button>'}</div>`, { wide: true });
+      ? '<button type="button" class="btn green" id="finishBtn">Hoàn thành</button>'
+      : '<button type="button" class="btn" data-x>Sửa tiếp thiệp</button>'}</div>`, { wide: true });
   $('#cmpMine', m).replaceWith(miniCopy($('#card')));
   if (allDone && allTicked) {
     sfx.ok();
     $('#finishBtn', m).addEventListener('click', () => {
       state.part2Done = true;
-      if (!state.p2) { state.p2 = 50; flyText('+50 ⭐', $('#score')); }
+      if (!state.p2) { state.p2 = 50; flyText('+50', $('#score')); }
       updateHUD(true);
       renderWin();
     });
@@ -1035,13 +1051,13 @@ function openCompare() {
 function renderWin() {
   keyHandler = null;
   const score = totalScore();
-  const msg = !state.part1Done ? '💌 Thiệp đẹp lắm! Em làm thêm Phần 1 để luyện trình bày thông báo nhé.'
-    : score >= 90 ? '🌟 Xuất sắc! Em trình bày văn bản rất chuẩn.'
-    : score >= 70 ? '👏 Giỏi lắm! Em đã nắm được cách định dạng văn bản.'
-    : '💪 Em đã hoàn thành! Làm lại để đạt điểm cao hơn nhé.';
+  const msg = !state.part1Done ? 'Thiệp đẹp lắm! Em làm thêm Phần 1 để luyện trình bày thông báo nhé.'
+    : score >= 90 ? 'Xuất sắc! Em trình bày văn bản rất chuẩn.'
+    : score >= 70 ? 'Giỏi lắm! Em đã nắm được cách định dạng văn bản.'
+    : 'Em đã hoàn thành! Làm lại để đạt điểm cao hơn nhé.';
   const learned = [
-    '🎯 Tiêu đề: căn giữa', '📏 Đoạn nội dung: căn đều hai bên', '✍️ Ngày tháng, tên người viết: căn phải',
-    '📄 Thông báo: trang đứng – 💌 Thiệp: trang ngang', '🖼️ Chèn hình minh họa cho sinh động', '💾 Lưu tệp, 🖨️ In để có bản giấy'
+    'Tiêu đề: căn giữa', 'Đoạn nội dung: căn đều hai bên', 'Ngày tháng, tên người viết: căn phải',
+    'Thông báo: trang đứng – Thiệp: trang ngang', 'Chèn hình minh họa cho sinh động', 'Lưu tệp, In để có bản giấy'
   ];
   show(`<div class="win">
     <div class="trophy">🏆</div>
@@ -1051,8 +1067,8 @@ function renderWin() {
     <h2>Em đã biết:</h2>
     <div class="learned">${learned.map((t, i) => `<div style="animation-delay:${i * .08}s">${t}</div>`).join('')}</div>
     <div class="actions">
-      ${state.part1Done ? '' : '<button type="button" class="btn" id="doP1">📢 Làm Phần 1</button>'}
-      <button type="button" class="btn ghost" id="againBtn">🔁 Làm lại từ đầu</button>
+      ${state.part1Done ? '' : '<button type="button" class="btn" id="doP1">Làm Phần 1</button>'}
+      <button type="button" class="btn ghost" id="againBtn">Làm lại từ đầu</button>
     </div>
   </div>`);
   const p1Btn = $('#doP1');

@@ -1159,6 +1159,15 @@ iframe {
   min-height: 480px;
 }
 
+/* Video đặt thẳng trong trang (file mp4 trong assets/videos) */
+.lesson-frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
 /* Thanh nút điều hướng Từng Bước khổng lồ bên dưới mỗi Hoạt động */
 .kid-step-controls {
   display: flex;

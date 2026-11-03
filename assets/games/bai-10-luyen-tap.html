@@ -18,7 +18,7 @@
   --radius:22px;
 }
 *{box-sizing:border-box}
-html{font-size:clamp(13px, .55vw + 9px, 19px)}
+html{font-size:clamp(15px, .4vw + 12.5px, 18px)}
 body{
   margin:0; min-height:100vh; color:var(--ink);
   font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -49,7 +49,9 @@ button{cursor:pointer}
 .bar{width:80px; height:10px; background:#e8eaf6; border-radius:99px; overflow:hidden}
 .bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,#34c29a,var(--primary)); border-radius:99px; transition:width .6s}
 .icon-btn{width:2.4rem; height:2.4rem; border-radius:50%; border:2px solid var(--line); background:#fff; font-size:1.15rem; display:grid; place-items:center; transition:transform .15s}
-.icon-btn:hover{transform:scale(1.08)}
+.icon-btn{color:var(--muted)}
+.icon-btn svg{width:1.25rem; height:1.25rem; display:block}
+.icon-btn:hover{transform:scale(1.08); color:var(--ink)}
 
 #app{max-width:1200px; margin:0 auto; padding:1rem 1rem 2.5rem}
 #app.enter{animation:enter .4s ease}
@@ -107,7 +109,7 @@ button{cursor:pointer}
 .steps-list li.now .n{background:var(--primary); color:#fff}
 .steps-list li.done{color:var(--ok)}
 .steps-list li.done .n{background:var(--ok); color:#fff}
-.steps-list p{margin:.3rem 0 0; font-size:.86rem}
+.steps-list p{margin:.3rem 0 0; font-size:.9rem}
 .done-box{background:#effbf6; border:2px solid #b7ebd6; border-radius:16px; padding:.8rem; text-align:center; animation:pop .5s}
 .done-box b{font-size:1.08rem; color:var(--ok)}
 .done-box p{margin:.4rem 0 .8rem; font-size:.9rem; line-height:1.45}
@@ -140,14 +142,14 @@ button{cursor:pointer}
 .br-node.empty{
   border-style:dashed; border-color:#cfd3ee; min-height:4.2rem; display:grid; place-items:center; padding:.5rem;
   background:repeating-linear-gradient(45deg,#fafaff,#fafaff 8px,#f1f2fb 8px,#f1f2fb 16px);
-  color:var(--muted); font-weight:700; font-size:.82rem; text-align:center;
+  color:var(--muted); font-weight:700; font-size:.88rem; text-align:center;
 }
 .br-h{background:var(--c); color:#fff; font-family:'Baloo 2',cursive; font-weight:800; font-size:1.02rem; line-height:1.2; padding:.35rem .65rem; border-radius:12px 12px 0 0; display:flex; align-items:center; gap:.4rem; transition:background .3s}
 .br-h .b-ic{font-size:1.2rem}
 .br-h .br-name{flex:1; min-width:0; overflow-wrap:anywhere}
 .br-kws{display:flex; flex-wrap:wrap; gap:.35rem; padding:.5rem; min-height:2.5rem}
 .kw{display:inline-flex; align-items:center; gap:.25rem; background:#f7f8fc; border:2px solid var(--c); border-radius:999px; padding:.12rem .6rem; font-weight:700; font-size:.88rem; animation:pop .35s; max-width:100%; overflow-wrap:anywhere}
-.kw.long{border-style:dashed; border-color:var(--bad); background:#fff1f1; color:#a32020; font-size:.82rem; border-radius:10px}
+.kw.long{border-style:dashed; border-color:var(--bad); background:#fff1f1; color:#a32020; font-size:.88rem; border-radius:10px}
 .kw button{border:none; background:none; color:var(--muted); font-weight:900; padding:0 .1rem; font-size:.9rem}
 [data-drop]{cursor:pointer}
 [data-drop].can-drop{outline:3px dashed var(--primary2); outline-offset:3px}
@@ -175,7 +177,7 @@ button{cursor:pointer}
 .drag-ghost{position:fixed !important; z-index:1000; pointer-events:none; margin:0 !important; transform:rotate(3deg) scale(1.06) !important; box-shadow:0 18px 30px rgba(40,50,110,.3) !important; opacity:.96}
 .opt{border:3px solid #e5e7f5; background:#fff; border-radius:16px; padding:.7rem 1rem; font-weight:800; font-size:1rem; color:var(--ink); box-shadow:0 4px 0 #e5e7f5; max-width:22rem; transition:transform .12s, border-color .2s}
 .opt:hover{transform:translateY(-2px); border-color:var(--primary2)}
-.opt small{display:block; font-weight:700; color:var(--muted); font-size:.78rem; margin-bottom:.15rem}
+.opt small{display:block; font-weight:700; color:var(--muted); font-size:.85rem; margin-bottom:.15rem}
 .pal{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; justify-content:center; width:100%}
 .pal + .pal{margin-top:.55rem}
 .pal > b{font-size:.88rem; margin-right:.2rem}
@@ -189,7 +191,7 @@ button{cursor:pointer}
 
 /* ---------- Phần 2: tự làm ---------- */
 .seg{display:grid; grid-template-columns:1fr 1fr; gap:.3rem; background:#f3f0e6; padding:.3rem; border-radius:14px}
-.seg button{border:none; border-radius:10px; padding:.5rem .3rem; font-weight:800; font-size:.85rem; background:transparent; color:var(--muted)}
+.seg button{border:none; border-radius:10px; padding:.5rem .3rem; font-weight:800; font-size:.9rem; background:transparent; color:var(--muted)}
 .seg button.on{background:#fff; color:var(--ink); box-shadow:0 2px 6px rgba(0,0,0,.08)}
 .checklist{background:#f8faff; border:2px dashed #cfd8ee; border-radius:16px; padding:.65rem .75rem; display:flex; flex-direction:column; gap:.25rem}
 .checklist h3{margin:0 0 .2rem; font-size:1rem}
@@ -199,12 +201,13 @@ button{cursor:pointer}
 .chk input:checked + span{color:var(--ok)}
 .tools{display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; padding:.2rem .2rem .6rem; border-bottom:1px dashed #efe3c4}
 .tools > b{font-size:.9rem}
-.chip{border:2px solid #f1dfb0; background:#fffaf0; border-radius:999px; padding:.3rem .75rem; font-size:.85rem; font-weight:800; color:var(--ink); transition:transform .12s, border-color .2s, opacity .2s}
+.chip{border:2px solid #f1dfb0; background:#fffaf0; border-radius:999px; padding:.3rem .75rem; font-size:.9rem; font-weight:800; color:var(--ink); transition:transform .12s, border-color .2s, opacity .2s}
 .chip:hover{border-color:var(--primary2); transform:translateY(-1px)}
 .chip:disabled{opacity:.4; cursor:default; transform:none}
 .map.edit .br-node{min-width:11rem}
 .br-x{border:none; background:rgba(255,255,255,.25); color:#fff; width:1.5rem; height:1.5rem; border-radius:50%; font-weight:900; font-size:.75rem; flex:none}
 .ic-btn{border:2px dashed rgba(255,255,255,.7); background:rgba(255,255,255,.18); color:#fff; border-radius:8px; min-width:1.9rem; height:1.9rem; font-size:1.05rem; display:grid; place-items:center; flex:none}
+.ic-btn svg{width:1.05rem; height:1.05rem}
 .ic-btn.has{border-style:solid; border-color:transparent; background:rgba(255,255,255,.25)}
 .sws{display:flex; flex-wrap:wrap; gap:.3rem; padding:.45rem .5rem 0}
 .sws .sw{width:1.35rem; height:1.35rem; border-width:2px}
@@ -238,7 +241,7 @@ button{cursor:pointer}
 .preview{display:block; width:100%; border-radius:14px; border:2px solid #eee}
 .cmp-table{width:100%; border-collapse:collapse; font-size:.88rem}
 .cmp-table th,.cmp-table td{padding:.5rem .55rem; border-bottom:1px solid #eceef4; text-align:left; vertical-align:top; line-height:1.4}
-.cmp-table th{background:#f5f6fa; font-size:.78rem; color:var(--muted)}
+.cmp-table th{background:#f5f6fa; font-size:.84rem; color:var(--muted)}
 .cmp-table td.c{text-align:center}
 .cmp-table tr.ok td:last-child{color:var(--ok); font-weight:700}
 .cmp-table tr.bad td:last-child{color:var(--bad); font-weight:700}
@@ -278,6 +281,13 @@ button{cursor:pointer}
 @keyframes bump{0%{transform:scale(1)} 40%{transform:scale(1.6); color:var(--ok)} 100%{transform:scale(1)}}
 
 /* ---------- Responsive ---------- */
+/* Khung soạn sơ đồ hẹp (khung bài học trên máy tính): chủ đề chính ở trên, các nhánh xếp 2 cột */
+.map.edit{container-type:inline-size}
+@container (max-width: 40rem){
+  .map.edit .map-grid{grid-template-columns:1fr 1fr; gap:1.1rem .9rem}
+  .map.edit .center, .map.edit .br-node{grid-column:var(--ncol); grid-row:var(--nrow)}
+  .map.edit .empty-hint{grid-row:auto}
+}
 @media (max-width: 760px){
   .home{grid-template-columns:1fr; text-align:center; min-height:0}
   .bubble{margin-left:auto; margin-right:auto}
@@ -294,11 +304,14 @@ button{cursor:pointer}
   .empty-hint{grid-row:auto}
 }
 @media (max-width: 520px){
-  .home h1{font-size:1.9rem}
+  .home h1{font-size:1.75rem}
   .ch-head h2{font-size:1.25rem}
   .bar{width:50px}
   .brand{display:none}
   .topbar{justify-content:center}
+}
+@media (pointer: coarse){
+  input:not([type=checkbox]):not([type=file]){font-size:max(16px, 1em)}
 }
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
@@ -308,11 +321,11 @@ button{cursor:pointer}
 <body>
 
 <header class="topbar">
-  <div class="brand">🧠 Sơ đồ tư duy của An</div>
-  <div class="pill">⭐ Điểm: <b id="score">0</b></div>
-  <div class="pill">🏆 Phần: <span id="prog">0/2</span><div class="bar"><i id="progBar"></i></div></div>
-  <button class="icon-btn" id="soundBtn" type="button" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh">🔊</button>
-  <button class="icon-btn" id="homeBtn" type="button" title="Về màn hình đầu" aria-label="Về màn hình đầu">🏠</button>
+  <div class="brand">Sơ đồ tư duy của An</div>
+  <div class="pill">Điểm: <b id="score">0</b></div>
+  <div class="pill">Phần: <span id="prog">0/2</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="icon-btn" id="soundBtn" type="button" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18 7a7 7 0 0 1 0 10"/></svg></button>
+  <button class="icon-btn" id="homeBtn" type="button" title="Về màn hình đầu" aria-label="Về màn hình đầu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h4.5v-5.5h3V20H18V9.5"/></svg></button>
 </header>
 
 <main id="app"></main>
@@ -405,7 +418,7 @@ function updateHUD(bump) {
   const done = (state.part1Done ? 1 : 0) + (state.part2Done ? 1 : 0);
   $('#prog').textContent = done + '/2';
   $('#progBar').style.width = (done / 2 * 100) + '%';
-  $('#soundBtn').textContent = state.sound ? '🔊' : '🔇';
+  $('#soundBtn').innerHTML = state.sound ? ICON.sound : ICON.mute;
 }
 
 /* ---------- Âm thanh (Web Audio – không cần file) ---------- */
@@ -511,6 +524,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#modalR
 /* ---------- Dữ liệu ---------- */
 const COLORS = ['#d6336c', '#e8590c', '#b7791f', '#2f9e44', '#1c7ed6', '#7048e8'];
 const COLOR_NAMES = { '#d6336c': 'hồng', '#e8590c': 'cam', '#b7791f': 'vàng', '#2f9e44': 'xanh lá', '#1c7ed6': 'xanh dương', '#7048e8': 'tím' };
+const ICON = {
+  sound: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18 7a7 7 0 0 1 0 10"/></svg>',
+  mute: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M16 10l5 5"/><path d="M21 10l-5 5"/></svg>',
+  pic: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8.5" cy="10" r="1.7" fill="currentColor"/><path d="M4.5 17.5l5-5 3.5 3.5 2.5-2.5 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>'
+};
 const PICS = ['👨‍👩‍👧', '🏠', '⚽', '🎨', '💻', '📐', '🚀', '⭐', '📚', '🎵', '🐶', '🤝'];
 const GRAY = '#9aa3b5';
 
@@ -655,17 +673,17 @@ function bindTargets(root, onClickNoSel) {
 function renderHome() {
   show(`<div class="home">
     <div>
-      <span class="badge">🧪 Bài 10 · Luyện tập &amp; Vận dụng</span>
+      <span class="badge">Bài 10 · Luyện tập &amp; Vận dụng</span>
       <h1>Sơ đồ tư duy: <span>Bạn An &amp; chính em</span></h1>
-      <div class="bubble b1">🧒 Bạn An viết một đoạn giới thiệu bản thân dài 5 câu và muốn chuyển thành <b>sơ đồ tư duy</b>. Em giúp An từng bước nhé!</div>
-      <div class="bubble b2">🌟 Sau đó, em tự làm một sơ đồ tư duy giới thiệu về <b>chính mình</b>.</div>
+      <div class="bubble b1">Bạn An viết một đoạn giới thiệu bản thân dài 5 câu và muốn chuyển thành <b>sơ đồ tư duy</b>. Em giúp An từng bước nhé!</div>
+      <div class="bubble b2">Sau đó, em tự làm một sơ đồ tư duy giới thiệu về <b>chính mình</b>.</div>
       <div class="home-btns">
-        <button class="btn big pulse" id="startBtn" type="button">Bắt đầu ▶</button>
+        <button class="btn big pulse" id="startBtn" type="button">Bắt đầu →</button>
         <button class="btn ghost" id="jumpBtn" type="button">Làm Phần 2</button>
       </div>
       <div class="quest">
-        <span class="${state.part1Done ? 'done' : ''}">${state.part1Done ? '✔' : '①'} Luyện tập: Sơ đồ của bạn An</span>
-        <span class="${state.part2Done ? 'done' : ''}">${state.part2Done ? '✔' : '②'} Vận dụng: Sơ đồ về chính em</span>
+        <span class="${state.part1Done ? 'done' : ''}">${state.part1Done ? '✓' : '①'} Luyện tập: Sơ đồ của bạn An</span>
+        <span class="${state.part2Done ? 'done' : ''}">${state.part2Done ? '✓' : '②'} Vận dụng: Sơ đồ về chính em</span>
       </div>
     </div>
     <div class="home-art floaty" aria-hidden="true">
@@ -729,7 +747,7 @@ function renderPart1() {
   show(`<div class="ch-head"><span class="ch-tag">Phần 1 · Luyện tập</span><h2>Giúp bạn An hoàn thành sơ đồ</h2></div>
     <div class="work">
       <aside class="guide" id="guide">
-        <div class="an-card"><div class="an-h">🧒 Đoạn giới thiệu của An</div><p>${html}</p></div>
+        <div class="an-card"><div class="an-h">Đoạn giới thiệu của An</div><p>${html}</p></div>
         <ol class="steps-list" id="stepsList"></ol>
       </aside>
       <div class="ed-col">
@@ -743,7 +761,7 @@ function renderPart1() {
 function renderSteps() {
   $('#stepsList').innerHTML = P1_STEPS.map((s, i) => {
     const cls = i < p1.step ? 'done' : i === p1.step ? 'now' : '';
-    return `<li class="${cls}"><span class="n">${i < p1.step ? '✔' : i + 1}</span><div><b>${s.label}</b>${i === p1.step ? `<p>${s.how}</p>` : ''}</div></li>`;
+    return `<li class="${cls}"><span class="n">${i < p1.step ? '✓' : i + 1}</span><div><b>${s.label}</b>${i === p1.step ? `<p>${s.how}</p>` : ''}</div></li>`;
   }).join('');
 }
 
@@ -776,17 +794,17 @@ function renderPool() {
   dnd.clear();
   $('#poolWrap').hidden = st >= P1_STEPS.length;
   if (st === 0) {
-    head.textContent = '🃏 Thẻ nào là chủ đề chính?';
+    head.textContent = 'Thẻ nào là chủ đề chính?';
     pool.innerHTML = p1.centerCards.map(v => cardHTML(v, v)).join('');
   } else if (st === 1) {
-    head.textContent = '🌿 Chủ đề nhánh';
+    head.textContent = 'Chủ đề nhánh';
     pool.innerHTML = BRANCHES.filter(b => !p1.slots.includes(b.id)).map(b => cardHTML(b.name, b.id, 'br-card')).join('');
   } else if (st === 2) {
-    head.textContent = '🔑 Từ khóa trong đoạn văn của An';
+    head.textContent = 'Từ khóa trong đoạn văn của An';
     const placed = Object.values(p1.kws).flat();
     pool.innerHTML = p1.kwOrder.filter(i => !placed.includes(i)).map(i => cardHTML(KEYWORDS[i].w, i)).join('');
   } else if (st === 3) {
-    head.textContent = '✍️ Trên nhánh Sở thích, nên ghi thế nào?';
+    head.textContent = 'Trên nhánh Sở thích, nên ghi thế nào?';
     pool.innerHTML = shuffle([
       `<button type="button" class="opt" data-opt="long"><small>Cách 1</small>An rất thích đá bóng mỗi buổi chiều</button>`,
       `<button type="button" class="opt" data-opt="short"><small>Cách 2</small>đá bóng</button>`
@@ -794,14 +812,14 @@ function renderPool() {
     $$('.opt', pool).forEach(b => b.addEventListener('click', () => p1Option(b)));
     return;
   } else if (st === 4) {
-    head.textContent = '🎨 Tô màu và thêm hình';
+    head.textContent = 'Tô màu và thêm hình';
     const used = Object.entries(p1.colors);
     pool.innerHTML = `<div class="pal"><b>Màu:</b>${COLORS.map(c => {
         const owner = used.find(([, v]) => v === c);
         return `<button type="button" class="sw${owner ? (owner[0] === p1.selBr ? ' on' : ' used') : ''}" data-color="${c}" style="--sw:${c}" title="Màu ${COLOR_NAMES[c]}" aria-label="Màu ${COLOR_NAMES[c]}"></button>`;
       }).join('')}</div>
       <div class="pal"><b>Hình:</b>${PICS.slice(0, 8).map(p => `<button type="button" class="pic-btn" data-pic="${p}" aria-label="Thêm hình ${p}">${p}</button>`).join('')}</div>
-      <div class="status">🎨 Đã tô: ${Object.keys(p1.colors).length}/4 nhánh · 🖼️ Hình: ${Object.keys(p1.icons).length} (cần ít nhất 1)</div>`;
+      <div class="status">Đã tô: ${Object.keys(p1.colors).length}/4 nhánh · Hình: ${Object.keys(p1.icons).length} (cần ít nhất 1)</div>`;
     $$('[data-color]', pool).forEach(b => b.addEventListener('click', () => p1Color(b)));
     $$('[data-pic]', pool).forEach(b => b.addEventListener('click', () => p1Pic(b.dataset.pic)));
     return;
@@ -825,7 +843,7 @@ function p1Miss(el, msg, hintEl) {
   p1.mistakes++;
   sfx.bad(); shake(el);
   const showHint = p1.mistakes >= 2 && hintEl;
-  toast('Chưa đúng rồi 🤔', msg + (showHint ? '<br>💡 Chỗ đúng đang nhấp nháy.' : ''), 'bad', 3400);
+  toast('Chưa đúng rồi!', msg + (showHint ? '<br>Chỗ đúng đang nhấp nháy.' : ''), 'bad', 3400);
   if (showHint) flash(hintEl);
 }
 function p1Drop(card, t) {
@@ -894,8 +912,8 @@ function p1StepDone() {
   const i = p1.step, st = P1_STEPS[i];
   const pts = p1.mistakes === 0 ? 10 : 5;
   state.p1[i] = pts;
-  sfx.ok(); flyText('+' + pts + ' ⭐', $('#score')); updateHUD(true);
-  toast('Chính xác! 🎉', st.ok, 'ok', 2600);
+  sfx.ok(); flyText('+' + pts, $('#score')); updateHUD(true);
+  toast('Chính xác!', st.ok, 'ok', 2600);
   p1.busy = true;
   setTimeout(() => {
     p1.step++; p1.mistakes = 0; p1.busy = false; p1.selBr = null;
@@ -909,14 +927,14 @@ function p1Finish() {
   updateHUD();
   const box = document.createElement('div');
   box.className = 'done-box';
-  box.innerHTML = `<b>🎉 Hoàn thành Phần 1!</b>
+  box.innerHTML = `<b>Hoàn thành Phần 1!</b>
     <p>Sơ đồ của An đã có đủ: <b>chủ đề chính</b>, <b>chủ đề nhánh</b>, <b>từ khóa</b>, <b>màu sắc</b> và <b>hình ảnh</b>.</p>
-    <button class="btn ghost small" id="plainBtn" type="button">👀 Xem khi chưa tô màu</button>
+    <button class="btn ghost small" id="plainBtn" type="button">Xem khi chưa tô màu</button>
     <button class="btn green" id="toP2" type="button">Sang Phần 2 ➜</button>`;
   $('#guide').appendChild(box);
   $('#plainBtn').addEventListener('click', () => {
     p1.plain = !p1.plain; sfx.click(); renderMap1();
-    $('#plainBtn').textContent = p1.plain ? '🎨 Xem khi đã tô màu' : '👀 Xem khi chưa tô màu';
+    $('#plainBtn').textContent = p1.plain ? 'Xem khi đã tô màu' : 'Xem khi chưa tô màu';
     if (p1.plain) toast('Khi chưa tô màu', 'Các nhánh trông giống hệt nhau, khó phân biệt và khó nhớ hơn đúng không?', 'ok', 3200);
   });
   $('#toP2').addEventListener('click', () => { sfx.click(); renderPart2(); });
@@ -959,15 +977,15 @@ function renderPart2() {
   show(`<div class="ch-head"><span class="ch-tag">Phần 2 · Vận dụng</span><h2>Sơ đồ tư duy về chính em</h2></div>
     <div class="work">
       <aside class="guide">
-        <p class="story">🌟 Em tự làm sơ đồ tư duy giới thiệu bản thân: làm ngay trên máy, hoặc vẽ trên giấy rồi chụp ảnh nếu ở nhà không có phần mềm.</p>
+        <p class="story">Em tự làm sơ đồ tư duy giới thiệu bản thân: làm ngay trên máy, hoặc vẽ trên giấy rồi chụp ảnh nếu ở nhà không có phần mềm.</p>
         <div class="seg" role="group" aria-label="Cách làm">
-          <button type="button" data-mode="pc">💻 Làm trên máy</button>
-          <button type="button" data-mode="paper">📝 Vẽ trên giấy</button>
+          <button type="button" data-mode="pc">Làm trên máy</button>
+          <button type="button" data-mode="paper">Vẽ trên giấy</button>
         </div>
-        <div class="checklist"><h3>📋 Bảng kiểm của em</h3>
+        <div class="checklist"><h3>Bảng kiểm của em</h3>
           ${CHECKS.map(c => `<label class="chk"><input type="checkbox" data-chk="${c.id}"><span>${c.label}</span></label>`).join('')}
         </div>
-        <button class="btn green" id="checkBtn" type="button">✅ Kiểm tra &amp; hoàn thành</button>
+        <button class="btn green" id="checkBtn" type="button">Kiểm tra &amp; hoàn thành</button>
       </aside>
       <div class="ed-col" id="p2main"></div>
     </div>`);
@@ -983,7 +1001,7 @@ function renderP2Main() {
   if (mapRO) { mapRO.disconnect(); mapRO = null; }
   if (p2.mode === 'paper') {
     main.innerHTML = `<section class="paper">
-      <h3>📝 Vẽ sơ đồ trên giấy</h3>
+      <h3>Vẽ sơ đồ trên giấy</h3>
       <ol>
         <li>Đặt tờ giấy <b>nằm ngang</b>, viết <b>tên em</b> thật to ở giữa.</li>
         <li>Vẽ <b>ít nhất 3 nhánh</b> tỏa ra, gợi ý: ${SUGGEST.join(', ')}.</li>
@@ -991,7 +1009,7 @@ function renderP2Main() {
         <li>Mỗi nhánh dùng <b>một màu bút</b> khác nhau, vẽ thêm hình nếu thích.</li>
         <li><b>Chụp ảnh</b> sơ đồ rồi chọn ảnh ở dưới để xem lại.</li>
       </ol>
-      <label class="btn photo-pick"><input type="file" accept="image/*" id="photoIn">📷 Chọn ảnh chụp sơ đồ</label>
+      <label class="btn photo-pick"><input type="file" accept="image/*" id="photoIn">Chọn ảnh chụp sơ đồ</label>
       <div class="photo-prev" id="photoPrev">${p2.photo ? `<img src="${p2.photo}" alt="Ảnh chụp sơ đồ tư duy của em">` : 'Chưa có ảnh'}</div>
       <p class="muted" style="margin:.5rem 0 0; font-size:.85rem">Ảnh chỉ hiện trên máy của em, không được gửi đi đâu.</p>
     </section>`;
@@ -1001,19 +1019,19 @@ function renderP2Main() {
       if (p2.photo) URL.revokeObjectURL(p2.photo);
       p2.photo = URL.createObjectURL(f);
       $('#photoPrev').innerHTML = `<img src="${p2.photo}" alt="Ảnh chụp sơ đồ tư duy của em">`;
-      sfx.ok(); toast('Đã có ảnh sản phẩm 📷', 'Em nhớ đánh dấu vào bảng kiểm nhé.');
+      sfx.ok(); toast('Đã có ảnh sản phẩm', 'Em nhớ đánh dấu vào bảng kiểm nhé.');
     });
     return;
   }
   main.innerHTML = `<section class="board-wrap">
-      <div class="tools"><b>🌿 Thêm nhánh:</b>
+      <div class="tools"><b>Thêm nhánh:</b>
         ${SUGGEST.map(s => `<button type="button" class="chip" data-add="${esc(s)}">${esc(s)}</button>`).join('')}
         <button type="button" class="chip" id="addOwn">＋ Nhánh khác</button>
       </div>
       <div class="map edit" id="map2"></div>
-      <div class="save-row"><button type="button" class="btn" id="saveImg">💾 Lưu ảnh sơ đồ</button><small id="saveNote">${p2.saved ? '✔ Đã lưu ' + esc(p2.savedName) : ''}</small></div>
+      <div class="save-row"><button type="button" class="btn" id="saveImg">Lưu ảnh sơ đồ</button><small id="saveNote">${p2.saved ? '✓ Đã lưu ' + esc(p2.savedName) : ''}</small></div>
     </section>
-    <div class="tip">💡 Giống sơ đồ của An: trên nhánh chỉ ghi <b>từ khóa ngắn gọn</b> (1–3 từ), mỗi nhánh <b>một màu</b>. Bấm ô màu tròn trên nhánh để tô, bấm 🖼️ để thêm hình.</div>`;
+    <div class="tip">Giống sơ đồ của An: trên nhánh chỉ ghi <b>từ khóa ngắn gọn</b> (1–3 từ), mỗi nhánh <b>một màu</b>. Bấm ô màu tròn trên nhánh để tô, bấm ô hình nhỏ để thêm hình.</div>`;
   $$('[data-add]').forEach(b => b.addEventListener('click', () => addBranch(b.dataset.add)));
   $('#addOwn').addEventListener('click', openOwnBranch);
   $('#saveImg').addEventListener('click', savePNG);
@@ -1030,7 +1048,7 @@ function renderMap2() {
   const nodes = p2.branches.map((b, i) => `
     <div class="br-node" data-i="${i}" style="${placeVars(i, n)};--c:${b.color || GRAY}">
       <div class="br-h">
-        <button type="button" class="ic-btn${b.icon ? ' has' : ''}" data-act="icon" title="Thêm hình" aria-label="Thêm hình cho nhánh">${b.icon || '🖼️'}</button>
+        <button type="button" class="ic-btn${b.icon ? ' has' : ''}" data-act="icon" title="Thêm hình" aria-label="Thêm hình cho nhánh">${b.icon || ICON.pic}</button>
         <span class="br-name">${esc(b.name)}</span>
         <button type="button" class="br-x" data-act="del" title="Xóa nhánh" aria-label="Xóa nhánh ${esc(b.name)}">✕</button>
       </div>
@@ -1038,7 +1056,7 @@ function renderMap2() {
       <div class="br-kws">${b.kws.map((k, j) => `<span class="kw">${esc(k)}<button type="button" data-act="delkw" data-j="${j}" aria-label="Xóa từ khóa ${esc(k)}">×</button></span>`).join('')}</div>
       <form class="kw-add" data-act="addkw"><input maxlength="30" placeholder="Thêm từ khóa" aria-label="Thêm từ khóa cho nhánh ${esc(b.name)}"><button type="submit" aria-label="Thêm">＋</button></form>
     </div>`).join('');
-  const hint = n ? '' : '<div class="empty-hint">⬆️ Bấm các gợi ý ở trên để thêm nhánh (ít nhất 3 nhánh).</div>';
+  const hint = n ? '' : '<div class="empty-hint">Bấm các gợi ý ở trên để thêm nhánh (ít nhất 3 nhánh).</div>';
   map.innerHTML = `<svg class="links" aria-hidden="true"></svg><div class="map-grid">${center}${nodes}${hint}</div>`;
   $('#myName').addEventListener('input', e => { p2.name = e.target.value; saveDraft(); });
   map.onclick = e => {
@@ -1072,14 +1090,14 @@ function addBranch(name) {
   sfx.drop(); saveDraft(); renderMap2();
 }
 function openOwnBranch() {
-  const m = openModal(`<h3>🌿 Thêm nhánh khác</h3>
+  const m = openModal(`<h3>Thêm nhánh khác</h3>
     <form id="ownForm"><input class="field" id="ownName" maxlength="24" placeholder="Ví dụ: Thú cưng, Món ăn yêu thích" aria-label="Tên nhánh">
     <div class="actions"><button type="button" class="btn ghost" data-x>Hủy</button><button type="submit" class="btn">Thêm nhánh</button></div></form>`);
   $('#ownName', m).focus();
   $('#ownForm', m).addEventListener('submit', e => { e.preventDefault(); const v = $('#ownName', m).value; closeModal(); addBranch(v); });
 }
 function openIconPicker(i) {
-  const m = openModal(`<h3>🖼️ Thêm hình cho nhánh “${esc(p2.branches[i].name)}”</h3>
+  const m = openModal(`<h3>Thêm hình cho nhánh “${esc(p2.branches[i].name)}”</h3>
     <div class="pic-grid">${PICS.map(p => `<button type="button" class="pic-btn" data-pic="${p}" aria-label="Hình ${p}">${p}</button>`).join('')}</div>
     <div class="actions"><button type="button" class="btn ghost" id="noPic">Bỏ hình</button><button type="button" class="btn ghost" data-x>Đóng</button></div>`);
   $$('[data-pic]', m).forEach(b => b.addEventListener('click', () => { p2.branches[i].icon = b.dataset.pic; closeModal(); sfx.drop(); saveDraft(); renderMap2(); }));
@@ -1160,9 +1178,9 @@ function savePNG() {
     $('#overlays').appendChild(a); a.click(); a.remove();
   } catch (e) {}
   p2.saved = true; p2.savedName = fname;
-  const note = $('#saveNote'); if (note) note.textContent = '✔ Đã lưu ' + fname;
+  const note = $('#saveNote'); if (note) note.textContent = '✓ Đã lưu ' + fname;
   sfx.ok();
-  openModal(`<h3>💾 Đã lưu ảnh sơ đồ</h3>
+  openModal(`<h3>Đã lưu ảnh sơ đồ</h3>
     <img class="preview" src="${preview}" alt="Ảnh sơ đồ tư duy vừa lưu">
     <p>Ảnh <b>${esc(fname)}</b> đã được tải về máy (thường nằm trong thư mục <b>Tải xuống</b>). Em nhớ đánh dấu vào bảng kiểm nhé.</p>
     <div class="actions"><button type="button" class="btn" data-x>Đóng</button></div>`, { wide: true });
@@ -1193,30 +1211,30 @@ function openCheck() {
   const rows = CHECKS.map(c => {
     const ticked = !!p2.ticks[c.id], s = st[c.id];
     let cls, res;
-    if (s === 'self') { cls = ticked ? 'ok' : 'todo'; res = ticked ? '✅ Em đã tự kiểm tra trên giấy' : '⬜ Em xem lại sơ đồ trên giấy rồi đánh dấu nhé'; }
-    else if (s === null && ticked) { cls = 'ok'; res = '✅ Đúng như em đánh dấu'; }
-    else if (s === null) { cls = 'warn'; res = '👍 Em làm rồi, nhớ đánh dấu vào bảng kiểm nhé'; }
-    else if (ticked) { cls = 'bad'; res = '⚠️ ' + esc(s) + ' Em kiểm tra lại nhé.'; }
-    else { cls = 'todo'; res = '⬜ ' + esc(s); }
-    return `<tr class="${cls}"><td>${c.label}</td><td class="c">${ticked ? '☑️' : '⬜'}</td><td>${res}</td></tr>`;
+    if (s === 'self') { cls = ticked ? 'ok' : 'todo'; res = ticked ? 'Em đã tự kiểm tra trên giấy' : 'Em xem lại sơ đồ trên giấy rồi đánh dấu nhé'; }
+    else if (s === null && ticked) { cls = 'ok'; res = 'Đúng như em đánh dấu'; }
+    else if (s === null) { cls = 'warn'; res = 'Em làm rồi, nhớ đánh dấu vào bảng kiểm nhé'; }
+    else if (ticked) { cls = 'bad'; res = esc(s) + ' Em kiểm tra lại nhé.'; }
+    else { cls = 'todo'; res = esc(s); }
+    return `<tr class="${cls}"><td>${c.label}</td><td class="c" aria-label="${ticked ? 'Đã đánh dấu' : 'Chưa đánh dấu'}">${ticked ? '✓' : '–'}</td><td>${res}</td></tr>`;
   }).join('');
   const doneCount = CHECKS.filter(c => ok(c.id)).length;
   const allTicked = CHECKS.every(c => p2.ticks[c.id]);
   const win = doneCount === CHECKS.length && allTicked;
-  const msg = win ? '🌟 Tuyệt vời! Sơ đồ tư duy về em đã đủ cả 5 việc.'
-    : doneCount === CHECKS.length ? '👍 Sơ đồ đã đủ 5 việc rồi! Em đánh dấu nốt vào bảng kiểm nhé.'
-    : `✏️ Em đã làm được ${doneCount}/5 việc. Làm tiếp những dòng chưa đạt rồi kiểm tra lại nhé.`;
-  const m = openModal(`<h3>📋 Kiểm tra bảng kiểm</h3>
+  const msg = win ? 'Tuyệt vời! Sơ đồ tư duy về em đã đủ cả 5 việc.'
+    : doneCount === CHECKS.length ? 'Sơ đồ đã đủ 5 việc rồi! Em đánh dấu nốt vào bảng kiểm nhé.'
+    : `Em đã làm được ${doneCount}/5 việc. Làm tiếp những dòng chưa đạt rồi kiểm tra lại nhé.`;
+  const m = openModal(`<h3>Kiểm tra bảng kiểm</h3>
     <table class="cmp-table"><thead><tr><th>Việc cần làm</th><th>Em đánh dấu</th><th>Kết quả</th></tr></thead><tbody>${rows}</tbody></table>
     <p class="cmp-msg">${msg}</p>
     <div class="actions">${win
-      ? '<button type="button" class="btn green" id="finishBtn">Hoàn thành 🏆</button>'
-      : '<button type="button" class="btn" data-x>✏️ Làm tiếp</button>'}</div>`, { wide: true });
+      ? '<button type="button" class="btn green" id="finishBtn">Hoàn thành</button>'
+      : '<button type="button" class="btn" data-x>Làm tiếp</button>'}</div>`, { wide: true });
   if (win) {
     sfx.ok();
     $('#finishBtn', m).addEventListener('click', () => {
       state.part2Done = true;
-      if (!state.p2) { state.p2 = 50; flyText('+50 ⭐', $('#score')); }
+      if (!state.p2) { state.p2 = 50; flyText('+50', $('#score')); }
       updateHUD(true);
       renderWin();
     });
@@ -1228,13 +1246,13 @@ function openCheck() {
    ========================================================= */
 function renderWin() {
   const score = totalScore();
-  const msg = !state.part1Done ? '🌟 Sơ đồ của em đẹp lắm! Em làm thêm Phần 1 để luyện cùng bạn An nhé.'
-    : score >= 90 ? '🌟 Xuất sắc! Em đã nắm chắc cách vẽ sơ đồ tư duy.'
-    : score >= 70 ? '👏 Giỏi lắm! Em đã biết các thành phần của sơ đồ tư duy.'
-    : '💪 Em đã hoàn thành! Làm lại để đạt điểm cao hơn nhé.';
+  const msg = !state.part1Done ? 'Sơ đồ của em đẹp lắm! Em làm thêm Phần 1 để luyện cùng bạn An nhé.'
+    : score >= 90 ? 'Xuất sắc! Em đã nắm chắc cách vẽ sơ đồ tư duy.'
+    : score >= 70 ? 'Giỏi lắm! Em đã biết các thành phần của sơ đồ tư duy.'
+    : 'Em đã hoàn thành! Làm lại để đạt điểm cao hơn nhé.';
   const learned = [
-    '🎯 Chủ đề chính đặt ở giữa', '🌿 Chủ đề nhánh tỏa ra xung quanh', '🔑 Trên nhánh ghi từ khóa ngắn gọn',
-    '🎨 Mỗi nhánh một màu cho dễ phân biệt', '🖼️ Thêm hình để dễ nhớ', '💾 Lưu tệp hoặc chụp ảnh sản phẩm'
+    'Chủ đề chính đặt ở giữa', 'Chủ đề nhánh tỏa ra xung quanh', 'Trên nhánh ghi từ khóa ngắn gọn',
+    'Mỗi nhánh một màu cho dễ phân biệt', 'Thêm hình để dễ nhớ', 'Lưu tệp hoặc chụp ảnh sản phẩm'
   ];
   show(`<div class="win">
     <div class="trophy">🏆</div>
@@ -1244,8 +1262,8 @@ function renderWin() {
     <h2>Sơ đồ tư duy gồm:</h2>
     <div class="learned">${learned.map((t, i) => `<div style="animation-delay:${i * .08}s">${t}</div>`).join('')}</div>
     <div class="actions">
-      ${state.part1Done ? '' : '<button type="button" class="btn" id="doP1">🧒 Làm Phần 1</button>'}
-      <button type="button" class="btn ghost" id="againBtn">🔁 Làm lại từ đầu</button>
+      ${state.part1Done ? '' : '<button type="button" class="btn" id="doP1">Làm Phần 1</button>'}
+      <button type="button" class="btn ghost" id="againBtn">Làm lại từ đầu</button>
     </div>
   </div>`);
   const p1Btn = $('#doP1');

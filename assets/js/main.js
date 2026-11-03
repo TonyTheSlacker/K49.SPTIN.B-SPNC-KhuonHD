@@ -276,6 +276,10 @@ function upgradeKidFriendlyLayout() {
       } else {
         sec.classList.toggle('is-hidden-step', idx !== activeStepIndex);
       }
+      // Video ở bước vừa bị ẩn thì dừng lại, không phát tiếng ngầm
+      if (sec.classList.contains('is-hidden-step')) {
+        sec.querySelectorAll('video').forEach(v => v.pause());
+      }
     });
 
     pillButtons.forEach((btn, idx) => {

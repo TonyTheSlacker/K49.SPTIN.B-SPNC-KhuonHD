@@ -356,10 +356,28 @@ const embed = (() => {
   return { viewBox, refit, revealTop, toastBottom, fitOverlay };
 })();
 
+/* ---------- Các thử thách đang dùng ----------
+   Khởi động chỉ giữ 2 thử thách cho gọn trong 2–3 phút. Thử thách 2 (Tìm kẻ lạc đường) và 3 (Đường đi của ý tưởng)
+   vẫn còn nguyên code bên dưới, chỉ tạm tắt; muốn bật lại thì thêm 'c2', 'c3' vào danh sách theo đúng thứ tự. */
+const ACTIVE = ['c1', 'c4'];
+const QUEST_NAME = { c1: 'Ai về nhà nấy?', c2: 'Tìm kẻ lạc đường', c3: 'Đường đi của ý tưởng', c4: 'Khôi phục sổ' };
+const LEARNED = {
+  c1: 'Biết cách sắp xếp ý tưởng theo nhóm',
+  c2: 'Nhận biết thông tin chưa hợp lý',
+  c3: 'Biết trình tự cơ bản khi tạo sơ đồ tư duy',
+  c4: 'Xác định chủ đề và các nhánh'
+};
+const TOTAL = ACTIVE.length;
+const MAX_SCORE = TOTAL * 15;
+const nextOf = id => ACTIVE[ACTIVE.indexOf(id) + 1] || 'win';
+// Sai quá số lần này trong một thử thách thì phải làm lại thử thách đó từ đầu, để em suy nghĩ trước khi kéo
+const MAX_WRONG = 3;
+
 /* ---------- Trạng thái & lưu trữ ---------- */
 const KEY = 'giaicuu_soluuniem_6a';
 function freshState(sound = true) {
-  return { score: 0, progress: 0, pts: [0, 0, 0, 0], sound };
+  // wrong: tổng số lần sai của từng thử thách, cộng dồn qua các lần làm lại (dùng để tính điểm)
+  return { score: 0, progress: 0, pts: ACTIVE.map(() => 0), wrong: {}, total: TOTAL, sound };
 }
 function loadState() {
   try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; }
@@ -367,7 +385,9 @@ function loadState() {
 function saveState() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
 }
-let state = Object.assign(freshState(), loadState() || {});
+// Bỏ tiến độ đã lưu từ bản cũ có số thử thách khác
+const saved = loadState();
+let state = saved && saved.total === TOTAL ? Object.assign(freshState(), saved) : freshState(saved ? saved.sound !== false : true);
 
 // Điểm mỗi thử thách: làm đúng ngay 15 – sai 1–2 lần 10 – sai nhiều hơn 5
 const pointsFor = mistakes => mistakes === 0 ? 15 : mistakes <= 2 ? 10 : 5;
@@ -376,14 +396,15 @@ function updateHUD(bump) {
   const s = $('#score');
   s.textContent = state.score;
   if (bump) { s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
-  $('#prog').textContent = state.progress + '/4';
-  $('#progBar').style.width = (state.progress / 4 * 100) + '%';
+  $('#prog').textContent = state.progress + '/' + TOTAL;
+  $('#progBar').style.width = (state.progress / TOTAL * 100) + '%';
   $('#soundBtn').innerHTML = state.sound ? ICON.sound : ICON.mute;
 }
 
-function completeChallenge(i, mistakes) {
-  if (state.progress > i) return 0; // đã hoàn thành trước đó
-  const p = pointsFor(mistakes);
+function completeChallenge(id) {
+  const i = ACTIVE.indexOf(id);
+  if (i < 0 || state.progress > i) return 0; // thử thách đang tắt, hoặc đã hoàn thành trước đó
+  const p = pointsFor(state.wrong[id] || 0);
   state.pts[i] = p;
   state.score = state.pts.reduce((a, b) => a + b, 0);
   state.progress = i + 1;
@@ -391,6 +412,21 @@ function completeChallenge(i, mistakes) {
   flyText('+' + p, $('#score'));
   updateHUD(true);
   return p;
+}
+
+// Ghi một lần sai. Sai đủ MAX_WRONG lần thì khóa các thẻ, báo cho em rồi mở lại thử thách từ đầu.
+// Trả về true nếu thử thách sẽ được làm lại.
+function wrongMove(id, attempt, cardsSel, hint) {
+  state.wrong[id] = (state.wrong[id] || 0) + 1;
+  saveState();
+  if (attempt < MAX_WRONG) {
+    toast('', `${hint} Em còn được sai ${MAX_WRONG - attempt} lần.`, 'bad');
+    return false;
+  }
+  $$(cardsSel).forEach(c => c.classList.add('locked'));
+  toast(`Em đã sai ${MAX_WRONG} lần`, 'Hãy đọc kĩ rồi làm lại thử thách này từ đầu nhé.', 'bad', 2600);
+  setTimeout(() => go(id), 2400);
+  return true;
 }
 
 /* ---------- Âm thanh (Web Audio – không cần file) ---------- */
@@ -574,11 +610,12 @@ function drawLinks() {
 addEventListener('resize', () => requestAnimationFrame(drawLinks));
 
 function relink() { requestAnimationFrame(drawLinks); setTimeout(drawLinks, 560); }
-function chHead(n, title, task) {
+function chHead(id, title, task) {
+  const n = ACTIVE.indexOf(id) + 1;
   return `<div class="ch-head">
-      <div class="ch-tag">Thử thách ${n}/4</div>
+      <div class="ch-tag">Thử thách ${n}/${TOTAL}</div>
       <h2>${title}</h2>
-      <div class="steps">${[1, 2, 3, 4].map(k => `<i class="${k < n ? 'done' : k === n ? 'now' : ''}"></i>`).join('')}</div>
+      <div class="steps">${ACTIVE.map((_, k) => `<i class="${k + 1 < n ? 'done' : k + 1 === n ? 'now' : ''}"></i>`).join('')}</div>
     </div>
     <div class="task" id="task">${task}</div>`;
 }
@@ -587,7 +624,7 @@ function setTask(html, success) {
   t.innerHTML = html;
   t.classList.toggle('success', !!success);
 }
-function showNext(label = 'TIẾP TỤC ➜') {
+function showNext(label = 'TIẾP TỤC →') {
   const b = $('#nextBtn');
   b.innerHTML = label;
   b.classList.remove('hidden');
@@ -635,26 +672,24 @@ const BOOK_SVG = `
   
 </svg>`;
 
-const QUESTS = ['Ai về nhà nấy?', 'Tìm kẻ lạc đường', 'Đường đi của ý tưởng', 'Khôi phục sổ'];
-
 const SCREENS = {
   /* ---------------- TRANG CHỦ ---------------- */
   home: {
     html() {
-      const cont = state.progress > 0 && state.progress < 4;
+      const cont = state.progress > 0 && state.progress < TOTAL;
       return `<section class="home">
         <div class="home-text">
           <span class="badge">Tin học 6 · Bài 10: Sơ đồ tư duy</span>
           <h1>GIẢI CỨU<br><span>SỔ LƯU NIỆM 6A</span></h1>
           <div class="bubble b1">“Ôi không! Sổ lưu niệm của lớp 6A bị xáo trộn rồi!”</div>
-          <div class="bubble b2">“Hãy hoàn thành <b>4 thử thách</b> để khôi phục lại cuốn sổ bằng kiến thức về <b>sơ đồ tư duy</b> nhé!”</div>
+          <div class="bubble b2">“Hãy hoàn thành <b>${TOTAL} thử thách</b> để khôi phục lại cuốn sổ bằng kiến thức về <b>sơ đồ tư duy</b> nhé!”</div>
           <div class="home-btns">
             ${cont
-              ? `<button class="btn big pulse" data-act="continue">CHƠI TIẾP (${state.progress}/4) →</button>
+              ? `<button class="btn big pulse" data-act="continue">CHƠI TIẾP (${state.progress}/${TOTAL}) →</button>
                  <button class="btn ghost" data-act="start">BẮT ĐẦU LẠI</button>`
               : `<button class="btn big pulse" data-act="start">BẮT ĐẦU →</button>`}
           </div>
-          <div class="quest">${QUESTS.map((q, i) => `<span class="${i < state.progress ? 'done' : ''}">${i < state.progress ? '✓ ' : ''}${q}</span>`).join('')}</div>
+          <div class="quest">${ACTIVE.map((id, i) => `<span class="${i < state.progress ? 'done' : ''}">${i < state.progress ? '✓ ' : ''}${QUEST_NAME[id]}</span>`).join('')}</div>
         </div>
         <div class="home-art">${BOOK_SVG}</div>
       </section>`;
@@ -662,8 +697,8 @@ const SCREENS = {
     init() {
       $$('[data-act]').forEach(b => b.onclick = () => {
         sfx.click();
-        if (b.dataset.act === 'start') { state = freshState(state.sound); saveState(); updateHUD(); go('c1'); }
-        else go(['c1', 'c2', 'c3', 'c4'][state.progress]);
+        if (b.dataset.act === 'start') { state = freshState(state.sound); saveState(); updateHUD(); go(ACTIVE[0]); }
+        else go(ACTIVE[state.progress] || ACTIVE[0]);
       });
     }
   },
@@ -685,7 +720,7 @@ const SCREENS = {
         { t: 'Giải bóng đá', g: 'tt' },
         { t: 'Sinh nhật đáng nhớ', g: 'kn' }
       ]);
-      return chHead(1, 'AI VỀ NHÀ NẤY?', 'Hãy kéo mỗi thông tin vào đúng nhóm!') + `
+      return chHead('c1', 'AI VỀ NHÀ NẤY?', `Hãy kéo mỗi thông tin vào đúng nhóm!<small>Sai ${MAX_WRONG} lần sẽ phải làm lại thử thách này từ đầu.</small>`) + `
         <div class="pool" id="pool">
           ${cards.map(c => `<div class="card" data-g="${c.g}" style="--c:${COLORS[c.g]}">${c.t}</div>`).join('')}
         </div>
@@ -708,7 +743,7 @@ const SCREENS = {
           sfx.ok();
           flyText('✓', card);
           if (placed === total) {
-            const p = completeChallenge(0, mistakes);
+            const p = completeChallenge('c1');
             setTask('Tuyệt vời! Em đã sắp xếp tất cả thông tin vào đúng nhóm!', true);
             toast('Hoàn thành!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok');
             showNext();
@@ -720,17 +755,17 @@ const SCREENS = {
         mistakes++;
         sfx.bad();
         shake(zone);
-        toast('', 'Hãy suy nghĩ xem thông tin này thuộc nhóm nào nhé!', 'bad');
+        wrongMove('c1', mistakes, '#pool .card', 'Hãy suy nghĩ xem thông tin này thuộc nhóm nào nhé!');
         return false;
       }));
-      $('#nextBtn').onclick = () => { sfx.click(); go('c2'); };
+      $('#nextBtn').onclick = () => { sfx.click(); go(nextOf('c1')); };
     }
   },
 
   /* ---------------- THỬ THÁCH 2 ---------------- */
   c2: {
     html() {
-      return chHead(2, 'TÌM KẺ LẠC ĐƯỜNG', 'Hãy tìm thông tin đang ở nhầm vị trí!<small>Nháy chuột vào một thành phần trong sơ đồ.</small>') +
+      return chHead('c2', 'TÌM KẺ LẠC ĐƯỜNG', 'Hãy tìm thông tin đang ở nhầm vị trí!<small>Nháy chuột vào một thành phần trong sơ đồ.</small>') +
         `<div class="clickable" id="mapWrap">` +
         mindMapHTML('📖 SỔ LƯU NIỆM 6A', [
           { id: 'tv', name: '👩‍🎓 THÀNH VIÊN', kids: [{ id: 'k-ds', t: 'Danh sách lớp' }, { id: 'k-cb', t: 'Các bạn trong lớp' }] },
@@ -773,7 +808,8 @@ const SCREENS = {
               n.style.setProperty('--c', 'var(--kn)');
               n.classList.remove('drag-me');
               n.classList.add('locked', 'found');
-              const p = completeChallenge(1, mistakes);
+              state.wrong.c2 = mistakes;
+              const p = completeChallenge('c2');
               sfx.ok();
               relink();
               setTask('Tuyệt vời! “Sinh nhật” đã về đúng nhánh <b style="color:var(--kn)">Kỉ niệm</b>!', true);
@@ -798,14 +834,14 @@ const SCREENS = {
         }
       });
       relink();
-      $('#nextBtn').onclick = () => { sfx.click(); go('c3'); };
+      $('#nextBtn').onclick = () => { sfx.click(); go(nextOf('c2')); };
     }
   },
 
   /* ---------------- THỬ THÁCH 3 ---------------- */
   c3: {
     html() {
-      return chHead(3, 'ĐƯỜNG ĐI CỦA Ý TƯỞNG', 'Hãy sắp xếp các bước theo trình tự hợp lý!<small>Kéo các thẻ vào ô ① → ⑤ khi tạo sơ đồ tư duy bằng phần mềm.</small>') + `
+      return chHead('c3', 'ĐƯỜNG ĐI CỦA Ý TƯỞNG', 'Hãy sắp xếp các bước theo trình tự hợp lý!<small>Kéo các thẻ vào ô ① → ⑤ khi tạo sơ đồ tư duy bằng phần mềm.</small>') + `
         <div class="pool" id="pool"></div>
         <div class="road" id="road"></div>
         <div class="actions">
@@ -863,7 +899,8 @@ const SCREENS = {
           done = true;
           slotEls.forEach((s, k) => setTimeout(() => { s.classList.add('right'); tone(520 + k * 90, .12, 'triangle'); }, k * 120));
           setTimeout(() => {
-            const p = completeChallenge(2, mistakes);
+            state.wrong.c3 = mistakes;
+            const p = completeChallenge('c3');
             sfx.ok();
             setTask('TUYỆT VỜI! Em đã tìm được đường đi của ý tưởng!', true);
             toast('TUYỆT VỜI!', 'Em đã tìm được đường đi của ý tưởng!' + (p ? ` <b>+${p} điểm</b>` : ''), 'ok');
@@ -881,7 +918,7 @@ const SCREENS = {
           toast('', 'Hãy thử sắp xếp lại nhé!', 'bad');
         }
       };
-      $('#nextBtn').onclick = () => { sfx.click(); go('c4'); };
+      $('#nextBtn').onclick = () => { sfx.click(); go(nextOf('c3')); };
     }
   },
 
@@ -889,7 +926,7 @@ const SCREENS = {
   c4: {
     html() {
       const pieces = shuffle([{ t: 'Kỉ niệm', ok: 1 }, { t: 'Giáo viên' }, { t: 'Phòng học' }]);
-      return chHead(4, 'KHÔI PHỤC SỔ LƯU NIỆM', 'Nhánh nào còn thiếu để hoàn thiện sơ đồ?<small>Kéo mảnh ghép đúng vào ô dấu chấm hỏi.</small>') + `
+      return chHead('c4', 'KHÔI PHỤC SỔ LƯU NIỆM', `Nhánh nào còn thiếu để hoàn thiện sơ đồ?<small>Kéo mảnh ghép đúng vào ô dấu chấm hỏi. Sai ${MAX_WRONG} lần sẽ phải làm lại thử thách này từ đầu.</small>`) + `
         <div class="c4-grid">
           ${mindMapHTML('💝 SỔ LƯU NIỆM 6A', [
             { id: 'tv', name: '👩‍🎓 Thành viên', kids: [{ id: 'q-ds', t: 'Danh sách lớp' }] },
@@ -912,7 +949,7 @@ const SCREENS = {
           mistakes++;
           sfx.bad();
           shake(slot);
-          toast('', 'Mảnh ghép này chưa phù hợp với sổ lưu niệm. Hãy thử mảnh khác nhé!', 'bad');
+          wrongMove('c4', mistakes, '#pieces .card', 'Mảnh ghép này chưa phù hợp với sổ lưu niệm. Hãy thử mảnh khác nhé!');
           return false;
         }
         // ghép đúng
@@ -925,7 +962,7 @@ const SCREENS = {
         card.remove();
         $$('#pieces .card').forEach(c => c.classList.add('locked'));
         relink();
-        const p = completeChallenge(3, mistakes);
+        const p = completeChallenge('c4');
         sfx.win();
         confetti();
         setTask('SỔ LƯU NIỆM ĐÃ ĐƯỢC KHÔI PHỤC!', true);
@@ -933,7 +970,7 @@ const SCREENS = {
         showNext('XEM KẾT QUẢ →');
         return true;
       }));
-      $('#nextBtn').onclick = () => { sfx.click(); go('win'); };
+      $('#nextBtn').onclick = () => { sfx.click(); go(nextOf('c4')); };
     }
   },
 
@@ -941,15 +978,15 @@ const SCREENS = {
   win: {
     html() {
       const s = state.score;
-      const msg = s >= 50 ? 'Xuất sắc! Em đã giải cứu thành công Sổ lưu niệm 6A!'
-                : s >= 30 ? 'Rất tốt! Em đã nắm khá chắc kiến thức.'
+      const msg = s >= MAX_SCORE * 5 / 6 ? 'Xuất sắc! Em đã giải cứu thành công Sổ lưu niệm 6A!'
+                : s >= MAX_SCORE / 2 ? 'Rất tốt! Em đã nắm khá chắc kiến thức.'
                 : 'Hãy thử lại một lần nữa để củng cố kiến thức nhé!';
-      const learned = ['Biết cách sắp xếp ý tưởng', 'Xác định chủ đề và các nhánh', 'Nhận biết thông tin chưa hợp lý', 'Biết trình tự cơ bản khi tạo sơ đồ tư duy'];
+      const learned = ACTIVE.map(id => LEARNED[id]);
       return `<section class="win">
         <div class="trophy">🏆</div>
         <h1>CHÚC MỪNG!</h1>
         <h2>SỔ LƯU NIỆM 6A ĐÃ ĐƯỢC KHÔI PHỤC!</h2>
-        <div class="scorebox"><div class="lbl">ĐIỂM CỦA EM</div><div class="val"><span id="finalScore">0</span><small style="font-size:1.4rem;color:var(--muted)"> / 60</small></div></div>
+        <div class="scorebox"><div class="lbl">ĐIỂM CỦA EM</div><div class="val"><span id="finalScore">0</span><small style="font-size:1.4rem;color:var(--muted)"> / ${MAX_SCORE}</small></div></div>
         <div><div class="msg">${msg}</div></div>
         <div class="learned">${learned.map((l, i) => `<div style="animation-delay:${.3 + i * .15}s">${l}</div>`).join('')}</div>
         <div class="actions">
@@ -967,7 +1004,7 @@ const SCREENS = {
       $$('[data-act]').forEach(b => b.onclick = () => {
         sfx.click();
         state = freshState(state.sound); saveState(); updateHUD();
-        go(b.dataset.act === 'replay' ? 'c1' : 'home');
+        go(b.dataset.act === 'replay' ? ACTIVE[0] : 'home');
       });
     }
   }

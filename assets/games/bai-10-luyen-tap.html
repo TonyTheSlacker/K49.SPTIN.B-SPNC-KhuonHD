@@ -110,6 +110,7 @@ button{cursor:pointer}
 .steps-list li.done{color:var(--ok)}
 .steps-list li.done .n{background:var(--ok); color:#fff}
 .steps-list p{margin:.3rem 0 0; font-size:.9rem}
+.steps-list p.rule{color:var(--muted); font-style:italic; font-size:.85rem}
 .done-box{background:#effbf6; border:2px solid #b7ebd6; border-radius:16px; padding:.8rem; text-align:center; animation:pop .5s}
 .done-box b{font-size:1.08rem; color:var(--ok)}
 .done-box p{margin:.4rem 0 .8rem; font-size:.9rem; line-height:1.45}
@@ -716,7 +717,7 @@ const P1_STEPS = [
     ok: 'Chủ đề chính đặt ở giữa: cả sơ đồ đều nói về <b>Bạn An</b>.' },
   { label: 'Kéo 4 chủ đề nhánh ra quanh trung tâm',
     how: 'Kéo lần lượt <b>Gia đình, Sở thích, Môn học yêu thích, Ước mơ</b> vào 4 ô trống quanh chủ đề chính.',
-    ok: 'Các chủ đề nhánh tỏa ra từ trung tâm, mỗi nhánh là một ý lớn.' },
+    ok: 'Các chủ đề nhánh tỏa ra từ trung tâm, mỗi nhánh là một ý lớn.', free: true },
   { label: 'Kéo các từ khóa vào đúng nhánh',
     how: 'Đọc lại đoạn văn của An rồi kéo mỗi từ khóa vào nhánh phù hợp, ví dụ <b>“đá bóng”</b> vào <b>Sở thích</b>.',
     ok: 'Mỗi nhánh đã có các từ khóa cụ thể.' },
@@ -728,10 +729,13 @@ const P1_STEPS = [
     ok: 'Màu sắc và hình ảnh làm sơ đồ dễ nhìn, dễ nhớ hơn.' }
 ];
 let p1 = null;
+// Sai quá số lần này trong một bước thì phải làm lại bước đó từ đầu, để em suy nghĩ trước khi kéo
+const MAX_WRONG = 3;
 
 function renderPart1() {
   p1 = {
-    step: 0, mistakes: 0, busy: false,
+    // mistakes: số lần sai ở lượt đang làm; stepWrong: cộng dồn cả các lượt làm lại, dùng để tính điểm
+    step: 0, mistakes: 0, stepWrong: 0, busy: false,
     center: false, slots: [null, null, null, null],
     kws: { fam: [], hob: [], sub: [], dream: [] }, kwOrder: shuffle(KEYWORDS.map((_, i) => i)),
     centerCards: shuffle(CENTER_CARDS), colors: {}, icons: {}, selBr: null, demoLong: false, plain: false
@@ -761,7 +765,8 @@ function renderPart1() {
 function renderSteps() {
   $('#stepsList').innerHTML = P1_STEPS.map((s, i) => {
     const cls = i < p1.step ? 'done' : i === p1.step ? 'now' : '';
-    return `<li class="${cls}"><span class="n">${i < p1.step ? '✓' : i + 1}</span><div><b>${s.label}</b>${i === p1.step ? `<p>${s.how}</p>` : ''}</div></li>`;
+    const now = i === p1.step ? `<p>${s.how}</p>${s.free ? '' : `<p class="rule">Sai ${MAX_WRONG} lần sẽ phải làm lại bước này.</p>`}` : '';
+    return `<li class="${cls}"><span class="n">${i < p1.step ? '✓' : i + 1}</span><div><b>${s.label}</b>${now}</div></li>`;
   }).join('');
 }
 
@@ -840,11 +845,32 @@ function p1TargetClick(t) {
   if (p1.step <= 2) toast('Chọn thẻ trước', 'Em kéo thẻ ở khay bên dưới thả vào đây, hoặc bấm chọn thẻ rồi bấm vào đây.', 'bad');
 }
 function p1Miss(el, msg, hintEl) {
-  p1.mistakes++;
+  p1.mistakes++; p1.stepWrong++;
   sfx.bad(); shake(el);
+  if (p1.mistakes >= MAX_WRONG) { p1Restart(); return; }
   const showHint = p1.mistakes >= 2 && hintEl;
-  toast('Chưa đúng rồi!', msg + (showHint ? '<br>Chỗ đúng đang nhấp nháy.' : ''), 'bad', 3400);
+  toast('Chưa đúng rồi!', msg + (showHint ? '<br>Chỗ đúng đang nhấp nháy.' : '') + `<br>Em còn được sai ${MAX_WRONG - p1.mistakes} lần.`, 'bad', 3400);
   if (showHint) flash(hintEl);
+}
+// Sai đủ MAX_WRONG lần: khóa lại một lúc, rồi đưa bước đang làm về như lúc mới bắt đầu
+function p1Restart() {
+  p1.busy = true;
+  const cur = p1;
+  toast(`Em đã sai ${MAX_WRONG} lần`, 'Hãy đọc kĩ rồi làm lại bước này từ đầu nhé.', 'bad', 2600);
+  setTimeout(() => {
+    if (p1 !== cur || !$('#map')) return; // em đã rời Phần 1 hoặc bắt đầu lại từ đầu
+    const st = p1.step;
+    if (st === 0) p1.centerCards = shuffle(CENTER_CARDS);
+    if (st === 2) {
+      p1.kws = { fam: [], hob: [], sub: [], dream: [] };
+      p1.kwOrder = shuffle(KEYWORDS.map((_, i) => i));
+      $$('.mk.got').forEach(m => m.classList.remove('got'));
+    }
+    if (st === 3) p1.demoLong = false;
+    if (st === 4) { p1.colors = {}; p1.icons = {}; p1.selBr = p1.slots[0]; }
+    p1.mistakes = 0; p1.busy = false;
+    renderMap1(); renderPool();
+  }, 2400);
 }
 function p1Drop(card, t) {
   if (p1.busy) return;
@@ -910,13 +936,13 @@ function p1CheckLook() {
 }
 function p1StepDone() {
   const i = p1.step, st = P1_STEPS[i];
-  const pts = p1.mistakes === 0 ? 10 : 5;
+  const pts = p1.stepWrong === 0 ? 10 : 5;
   state.p1[i] = pts;
   sfx.ok(); flyText('+' + pts, $('#score')); updateHUD(true);
   toast('Chính xác!', st.ok, 'ok', 2600);
   p1.busy = true;
   setTimeout(() => {
-    p1.step++; p1.mistakes = 0; p1.busy = false; p1.selBr = null;
+    p1.step++; p1.mistakes = 0; p1.stepWrong = 0; p1.busy = false; p1.selBr = null;
     if (p1.step === 4) p1.selBr = p1.slots[0];
     renderSteps(); renderMap1(); renderPool();
     if (p1.step >= P1_STEPS.length) p1Finish();
@@ -930,7 +956,7 @@ function p1Finish() {
   box.innerHTML = `<b>Hoàn thành Phần 1!</b>
     <p>Sơ đồ của An đã có đủ: <b>chủ đề chính</b>, <b>chủ đề nhánh</b>, <b>từ khóa</b>, <b>màu sắc</b> và <b>hình ảnh</b>.</p>
     <button class="btn ghost small" id="plainBtn" type="button">Xem khi chưa tô màu</button>
-    <button class="btn green" id="toP2" type="button">Sang Phần 2 ➜</button>`;
+    <button class="btn green" id="toP2" type="button">Sang Phần 2 →</button>`;
   $('#guide').appendChild(box);
   $('#plainBtn').addEventListener('click', () => {
     p1.plain = !p1.plain; sfx.click(); renderMap1();

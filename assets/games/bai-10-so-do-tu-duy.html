@@ -57,7 +57,9 @@ button{font-family:inherit; cursor:pointer}
   border:2px solid var(--line); background:#fff; font-size:1.25rem;
   display:grid; place-items:center; transition:transform .15s;
 }
-.icon-btn:hover{transform:scale(1.08)}
+.icon-btn{color:var(--muted)}
+.icon-btn svg{width:1.25rem; height:1.25rem; display:block}
+.icon-btn:hover{transform:scale(1.08); color:var(--ink)}
 
 /* ---------- Layout ---------- */
 #app{max-width:1200px; margin:0 auto; padding:1.2rem 1.2rem 3rem; transition:opacity .25s, transform .25s}
@@ -143,7 +145,7 @@ button{font-family:inherit; cursor:pointer}
   background:rgba(255,255,255,.55); border:3px dashed #cfd3ee; margin-bottom:1.2rem;
 }
 .pool.over{border-color:var(--primary); background:#f2f2ff}
-.pool:empty::after{content:"✨"; font-size:1.6rem; opacity:.5}
+.pool:empty::after{content:"✓"; font-size:1.6rem; opacity:.5}
 .zones{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
 .zone{
   background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
@@ -260,7 +262,7 @@ button{font-family:inherit; cursor:pointer}
   .pieces{flex-direction:row; flex-wrap:wrap; justify-content:center}
   .pieces h3{width:100%}
   .road{grid-template-columns:1fr; max-width:24rem; margin:0 auto}
-  .slot:not(:last-child)::after{content:"⬇"; right:50%; top:auto; bottom:-.9rem; transform:translate(50%,50%)}
+  .slot:not(:last-child)::after{content:"↓"; right:50%; top:auto; bottom:-.9rem; transform:translate(50%,50%)}
   .slot .card{flex-direction:row}
   .learned{grid-template-columns:1fr}
   .steps{margin-left:0}
@@ -278,11 +280,11 @@ button{font-family:inherit; cursor:pointer}
 <body>
 
 <header class="topbar">
-  <div class="brand">📖 Giải cứu Sổ lưu niệm 6A</div>
-  <div class="pill">⭐ Điểm: <b id="score">0</b></div>
-  <div class="pill">🏆 Tiến trình: <span id="prog">0/4</span><div class="bar"><i id="progBar"></i></div></div>
-  <button class="icon-btn" id="soundBtn" title="Bật/tắt âm thanh">🔊</button>
-  <button class="icon-btn" id="homeBtn" title="Về trang chủ">🏠</button>
+  <div class="brand">Giải cứu Sổ lưu niệm 6A</div>
+  <div class="pill">Điểm: <b id="score">0</b></div>
+  <div class="pill">Tiến trình: <span id="prog">0/4</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="icon-btn" id="soundBtn" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18 7a7 7 0 0 1 0 10"/></svg></button>
+  <button class="icon-btn" id="homeBtn" title="Về màn hình đầu" aria-label="Về màn hình đầu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h4.5v-5.5h3V20H18V9.5"/></svg></button>
 </header>
 
 <main id="app"></main>
@@ -298,6 +300,10 @@ button{font-family:inherit; cursor:pointer}
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const app = $('#app');
+const ICON = {
+  sound: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18 7a7 7 0 0 1 0 10"/></svg>',
+  mute: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M16 10l5 5"/><path d="M21 10l-5 5"/></svg>'
+};
 
 /* ---------- Khi được nhúng vào trang bài học ----------
    Trang bài học tự đặt chiều cao khung theo nội dung và tắt thanh cuộn bên trong khung.
@@ -372,7 +378,7 @@ function updateHUD(bump) {
   if (bump) { s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
   $('#prog').textContent = state.progress + '/4';
   $('#progBar').style.width = (state.progress / 4 * 100) + '%';
-  $('#soundBtn').textContent = state.sound ? '🔊' : '🔇';
+  $('#soundBtn').innerHTML = state.sound ? ICON.sound : ICON.mute;
 }
 
 function completeChallenge(i, mistakes) {
@@ -382,7 +388,7 @@ function completeChallenge(i, mistakes) {
   state.score = state.pts.reduce((a, b) => a + b, 0);
   state.progress = i + 1;
   saveState();
-  flyText('+' + p + ' ⭐', $('#score'));
+  flyText('+' + p, $('#score'));
   updateHUD(true);
   return p;
 }
@@ -524,7 +530,7 @@ function mindMapHTML(rootText, branches) {
       ${branches.map(b => `
         <div class="mm-col ${b.hidden ? 'hidden' : ''}" id="col-${b.id}">
           ${b.slot
-            ? `<div class="node branch drop-slot slot-pulse" id="b-${b.id}" data-parent="mm-root">❓</div>`
+            ? `<div class="node branch drop-slot slot-pulse" id="b-${b.id}" data-parent="mm-root">?</div>`
             : `<div class="node branch" id="b-${b.id}" data-parent="mm-root" data-color="${b.id}" style="--c:${COLORS[b.id]}">${b.name}</div>`}
           <div class="mm-kids">
             ${(b.kids || []).map(k => `<div class="node leaf" id="${k.id}" data-parent="b-${b.id}" data-color="${b.id}" style="--c:${COLORS[b.id]}">${k.t}</div>`).join('')}
@@ -623,13 +629,13 @@ const BOOK_SVG = `
     <rect x="232" y="206" width="52" height="30" rx="10" fill="#d9a514"/><text x="258" y="227" text-anchor="middle" font-size="16">🏆</text>
     <rect x="330" y="206" width="52" height="30" rx="10" fill="#e8558c"/><text x="356" y="227" text-anchor="middle" font-size="16">💝</text>
   </g>
-  <text x="30" y="46" font-size="26" class="twinkle">✨</text>
-  <text x="392" y="36" font-size="22" class="twinkle" style="animation-delay:.7s">⭐</text>
-  <text x="404" y="300" font-size="22" class="twinkle" style="animation-delay:1.2s">✨</text>
-  <text x="12" y="300" font-size="30" style="transform-origin:28px 290px" class="floaty">🧩</text>
+  
+  
+  
+  
 </svg>`;
 
-const QUESTS = ['🧩 Ai về nhà nấy?', '🔎 Tìm kẻ lạc đường', '🧠 Đường đi của ý tưởng', '🔐 Khôi phục sổ'];
+const QUESTS = ['Ai về nhà nấy?', 'Tìm kẻ lạc đường', 'Đường đi của ý tưởng', 'Khôi phục sổ'];
 
 const SCREENS = {
   /* ---------------- TRANG CHỦ ---------------- */
@@ -638,17 +644,17 @@ const SCREENS = {
       const cont = state.progress > 0 && state.progress < 4;
       return `<section class="home">
         <div class="home-text">
-          <span class="badge">💻 Tin học 6 · Bài 10: Sơ đồ tư duy</span>
-          <h1>📖 GIẢI CỨU<br><span>SỔ LƯU NIỆM 6A</span></h1>
-          <div class="bubble b1">😱 “Ôi không! Sổ lưu niệm của lớp 6A bị xáo trộn rồi!”</div>
-          <div class="bubble b2">🦸 “Hãy hoàn thành <b>4 thử thách</b> để khôi phục lại cuốn sổ bằng kiến thức về <b>sơ đồ tư duy</b> nhé!”</div>
+          <span class="badge">Tin học 6 · Bài 10: Sơ đồ tư duy</span>
+          <h1>GIẢI CỨU<br><span>SỔ LƯU NIỆM 6A</span></h1>
+          <div class="bubble b1">“Ôi không! Sổ lưu niệm của lớp 6A bị xáo trộn rồi!”</div>
+          <div class="bubble b2">“Hãy hoàn thành <b>4 thử thách</b> để khôi phục lại cuốn sổ bằng kiến thức về <b>sơ đồ tư duy</b> nhé!”</div>
           <div class="home-btns">
             ${cont
-              ? `<button class="btn big pulse" data-act="continue">▶️ CHƠI TIẾP (${state.progress}/4)</button>
-                 <button class="btn ghost" data-act="start">🚀 BẮT ĐẦU LẠI</button>`
-              : `<button class="btn big pulse" data-act="start">🚀 BẮT ĐẦU</button>`}
+              ? `<button class="btn big pulse" data-act="continue">CHƠI TIẾP (${state.progress}/4) →</button>
+                 <button class="btn ghost" data-act="start">BẮT ĐẦU LẠI</button>`
+              : `<button class="btn big pulse" data-act="start">BẮT ĐẦU →</button>`}
           </div>
-          <div class="quest">${QUESTS.map((q, i) => `<span class="${i < state.progress ? 'done' : ''}">${i < state.progress ? '✅' : ''} ${q}</span>`).join('')}</div>
+          <div class="quest">${QUESTS.map((q, i) => `<span class="${i < state.progress ? 'done' : ''}">${i < state.progress ? '✓ ' : ''}${q}</span>`).join('')}</div>
         </div>
         <div class="home-art">${BOOK_SVG}</div>
       </section>`;
@@ -672,16 +678,16 @@ const SCREENS = {
         { id: 'kn', icon: '💝', name: 'KỈ NIỆM' }
       ];
       const cards = shuffle([
-        { t: 'Danh sách lớp', g: 'tv', i: '📋' },
-        { t: 'Các bạn trong lớp', g: 'tv', i: '👫' },
-        { t: 'Hội diễn văn nghệ', g: 'hd', i: '🎤' },
-        { t: 'Chuyến tham quan', g: 'hd', i: '🚌' },
-        { t: 'Giải bóng đá', g: 'tt', i: '⚽' },
-        { t: 'Sinh nhật đáng nhớ', g: 'kn', i: '🎂' }
+        { t: 'Danh sách lớp', g: 'tv' },
+        { t: 'Các bạn trong lớp', g: 'tv' },
+        { t: 'Hội diễn văn nghệ', g: 'hd' },
+        { t: 'Chuyến tham quan', g: 'hd' },
+        { t: 'Giải bóng đá', g: 'tt' },
+        { t: 'Sinh nhật đáng nhớ', g: 'kn' }
       ]);
-      return chHead(1, 'AI VỀ NHÀ NẤY?', '🧩 Hãy kéo mỗi thông tin vào đúng nhóm!') + `
+      return chHead(1, 'AI VỀ NHÀ NẤY?', 'Hãy kéo mỗi thông tin vào đúng nhóm!') + `
         <div class="pool" id="pool">
-          ${cards.map(c => `<div class="card" data-g="${c.g}" style="--c:${COLORS[c.g]}"><span class="ic">${c.i}</span>${c.t}</div>`).join('')}
+          ${cards.map(c => `<div class="card" data-g="${c.g}" style="--c:${COLORS[c.g]}">${c.t}</div>`).join('')}
         </div>
         <div class="zones">
           ${groups.map(g => `<div class="zone" data-g="${g.id}" style="--c:${COLORS[g.id]}">
@@ -700,21 +706,21 @@ const SCREENS = {
           card.classList.add('placed', 'locked');
           placed++;
           sfx.ok();
-          flyText('⭐', card);
+          flyText('✓', card);
           if (placed === total) {
             const p = completeChallenge(0, mistakes);
-            setTask('🎉 Tuyệt vời! Em đã sắp xếp tất cả thông tin vào đúng nhóm!', true);
-            toast('🎉 Hoàn thành!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok');
+            setTask('Tuyệt vời! Em đã sắp xếp tất cả thông tin vào đúng nhóm!', true);
+            toast('Hoàn thành!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok');
             showNext();
           } else {
-            toast('🎉 Chính xác!', 'Em đã phân loại thông tin đúng.', 'ok', 1800);
+            toast('Chính xác!', 'Em đã phân loại thông tin đúng.', 'ok', 1800);
           }
           return true;
         }
         mistakes++;
         sfx.bad();
         shake(zone);
-        toast('', '💡 Hãy suy nghĩ xem thông tin này thuộc nhóm nào nhé!', 'bad');
+        toast('', 'Hãy suy nghĩ xem thông tin này thuộc nhóm nào nhé!', 'bad');
         return false;
       }));
       $('#nextBtn').onclick = () => { sfx.click(); go('c2'); };
@@ -724,7 +730,7 @@ const SCREENS = {
   /* ---------------- THỬ THÁCH 2 ---------------- */
   c2: {
     html() {
-      return chHead(2, 'TÌM KẺ LẠC ĐƯỜNG', '🔎 Hãy tìm thông tin đang ở nhầm vị trí!<small>👆 Nháy chuột vào một thành phần trong sơ đồ.</small>') +
+      return chHead(2, 'TÌM KẺ LẠC ĐƯỜNG', 'Hãy tìm thông tin đang ở nhầm vị trí!<small>Nháy chuột vào một thành phần trong sơ đồ.</small>') +
         `<div class="clickable" id="mapWrap">` +
         mindMapHTML('📖 SỔ LƯU NIỆM 6A', [
           { id: 'tv', name: '👩‍🎓 THÀNH VIÊN', kids: [{ id: 'k-ds', t: 'Danh sách lớp' }, { id: 'k-cb', t: 'Các bạn trong lớp' }] },
@@ -738,7 +744,7 @@ const SCREENS = {
       let mistakes = 0, found = false;
       const wrongSeen = new Set();
       const kn = $('#col-kn .mm-kids');
-      kn.innerHTML = `<div class="node leaf drop-slot slot-pulse" id="slot-kn" data-parent="b-kn" data-color="kn" style="--c:var(--kn)">⬇ Thả vào đây</div>`;
+      kn.innerHTML = `<div class="node leaf drop-slot slot-pulse" id="slot-kn" data-parent="b-kn" data-color="kn" style="--c:var(--kn)">Thả vào đây</div>`;
 
       $$('#mm .node').forEach(n => {
         if (n.id === 'mm-root') return;
@@ -749,8 +755,8 @@ const SCREENS = {
             $('#mapWrap').classList.remove('clickable');
             n.classList.add('found');
             sfx.ok();
-            toast('🎯 CHÍNH XÁC!', 'Sinh nhật là một <b>kỉ niệm</b> đáng nhớ.', 'ok', 3200);
-            setTask('🎯 CHÍNH XÁC! Sinh nhật là một kỉ niệm đáng nhớ nên được đưa vào nhánh <b style="color:var(--kn)">Kỉ niệm</b>.<small>✋ Hãy kéo “Sinh nhật” sang nhánh Kỉ niệm!</small>', true);
+            toast('CHÍNH XÁC!', 'Sinh nhật là một <b>kỉ niệm</b> đáng nhớ.', 'ok', 3200);
+            setTask('CHÍNH XÁC! Sinh nhật là một kỉ niệm đáng nhớ nên được đưa vào nhánh <b style="color:var(--kn)">Kỉ niệm</b>.<small>Hãy kéo “Sinh nhật” sang nhánh Kỉ niệm!</small>', true);
             setTimeout(() => {
               const col = $('#col-kn');
               col.classList.remove('hidden');
@@ -770,8 +776,8 @@ const SCREENS = {
               const p = completeChallenge(1, mistakes);
               sfx.ok();
               relink();
-              setTask('🎉 Tuyệt vời! “Sinh nhật” đã về đúng nhánh <b style="color:var(--kn)">Kỉ niệm</b>!', true);
-              toast('🎉 Hoàn thành!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok');
+              setTask('Tuyệt vời! “Sinh nhật” đã về đúng nhánh <b style="color:var(--kn)">Kỉ niệm</b>!', true);
+              toast('Hoàn thành!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok');
               showNext();
               return true;
             });
@@ -780,7 +786,7 @@ const SCREENS = {
             sfx.bad();
             n.classList.remove('wrong'); void n.offsetWidth; n.classList.add('wrong');
             setTimeout(() => n.classList.remove('wrong'), 600);
-            toast('', '💡 Thông tin này có vẻ đang ở đúng vị trí. Hãy quan sát tiếp nhé!', 'bad');
+            toast('', 'Thông tin này có vẻ đang ở đúng vị trí. Hãy quan sát tiếp nhé!', 'bad');
           }
         });
       });
@@ -788,7 +794,7 @@ const SCREENS = {
       document.addEventListener('pointerup', function hint() {
         if (!$('#slot-kn')) return document.removeEventListener('pointerup', hint);
         if (found && $('#k-sn') && $('#k-sn').classList.contains('src')) {
-          setTimeout(() => { if ($('#slot-kn')) toast('', '💡 Hãy kéo “Sinh nhật” vào ô trống của nhánh Kỉ niệm nhé!', 'bad'); }, 50);
+          setTimeout(() => { if ($('#slot-kn')) toast('', 'Hãy kéo “Sinh nhật” vào ô trống của nhánh Kỉ niệm nhé!', 'bad'); }, 50);
         }
       });
       relink();
@@ -799,22 +805,22 @@ const SCREENS = {
   /* ---------------- THỬ THÁCH 3 ---------------- */
   c3: {
     html() {
-      return chHead(3, 'ĐƯỜNG ĐI CỦA Ý TƯỞNG', '🧠 Hãy sắp xếp các bước theo trình tự hợp lý!<small>✋ Kéo các thẻ vào ô ① → ⑤ khi tạo sơ đồ tư duy bằng phần mềm.</small>') + `
+      return chHead(3, 'ĐƯỜNG ĐI CỦA Ý TƯỞNG', 'Hãy sắp xếp các bước theo trình tự hợp lý!<small>Kéo các thẻ vào ô ① → ⑤ khi tạo sơ đồ tư duy bằng phần mềm.</small>') + `
         <div class="pool" id="pool"></div>
         <div class="road" id="road"></div>
         <div class="actions">
           <button class="btn ghost" id="resetBtn">↺ Làm lại</button>
-          <button class="btn" id="checkBtn" disabled>✔ KIỂM TRA</button>
+          <button class="btn" id="checkBtn" disabled>KIỂM TRA</button>
           <button class="btn green hidden" id="nextBtn"></button>
         </div>`;
     },
     init() {
       const STEPS = {
-        s1: { i: '🖥️', t: 'Mở phần mềm' },
-        s2: { i: '🌳', t: 'Tạo sơ đồ' },
-        s3: { i: '✏️', t: 'Nhập chủ đề' },
-        s4: { i: '🌿', t: 'Thêm nhánh' },
-        s5: { i: '💾', t: 'Lưu sơ đồ' }
+        s1: { t: 'Mở phần mềm' },
+        s2: { t: 'Tạo sơ đồ' },
+        s3: { t: 'Nhập chủ đề' },
+        s4: { t: 'Thêm nhánh' },
+        s5: { t: 'Lưu sơ đồ' }
       };
       const ANSWER = ['s1', 's2', 's3', 's4', 's5'];
       let pool, slots, mistakes = 0, done = false;
@@ -822,7 +828,7 @@ const SCREENS = {
         do { pool = shuffle(ANSWER); } while (pool.join() === ANSWER.join());
         slots = [null, null, null, null, null];
       };
-      const cardHTML = (id, from) => `<div class="card" data-id="${id}" data-from="${from}"><span class="ic">${STEPS[id].i}</span><span>${STEPS[id].t}</span></div>`;
+      const cardHTML = (id, from) => `<div class="card" data-id="${id}" data-from="${from}"><span>${STEPS[id].t}</span></div>`;
       const nums = ['①', '②', '③', '④', '⑤'];
 
       function render() {
@@ -859,8 +865,8 @@ const SCREENS = {
           setTimeout(() => {
             const p = completeChallenge(2, mistakes);
             sfx.ok();
-            setTask('🎉 TUYỆT VỜI! Em đã tìm được đường đi của ý tưởng!', true);
-            toast('🎉 TUYỆT VỜI!', 'Em đã tìm được đường đi của ý tưởng!' + (p ? ` <b>+${p} điểm</b>` : ''), 'ok');
+            setTask('TUYỆT VỜI! Em đã tìm được đường đi của ý tưởng!', true);
+            toast('TUYỆT VỜI!', 'Em đã tìm được đường đi của ý tưởng!' + (p ? ` <b>+${p} điểm</b>` : ''), 'ok');
             render();
             $$('#road .slot').forEach(s => s.classList.add('right'));
             $('#resetBtn').classList.add('hidden');
@@ -872,7 +878,7 @@ const SCREENS = {
           sfx.bad();
           slotEls.forEach((s, k) => { if (slots[k] !== ANSWER[k]) { s.classList.remove('wrongslot'); void s.offsetWidth; s.classList.add('wrongslot'); } });
           setTimeout(() => slotEls.forEach(s => s.classList.remove('wrongslot')), 1200);
-          toast('', '💡 Hãy thử sắp xếp lại nhé!', 'bad');
+          toast('', 'Hãy thử sắp xếp lại nhé!', 'bad');
         }
       };
       $('#nextBtn').onclick = () => { sfx.click(); go('c4'); };
@@ -883,7 +889,7 @@ const SCREENS = {
   c4: {
     html() {
       const pieces = shuffle([{ t: 'Kỉ niệm', ok: 1 }, { t: 'Giáo viên' }, { t: 'Phòng học' }]);
-      return chHead(4, 'KHÔI PHỤC SỔ LƯU NIỆM', '🔐 Nhánh nào còn thiếu để hoàn thiện sơ đồ?<small>✋ Kéo mảnh ghép đúng vào ô ❓</small>') + `
+      return chHead(4, 'KHÔI PHỤC SỔ LƯU NIỆM', 'Nhánh nào còn thiếu để hoàn thiện sơ đồ?<small>Kéo mảnh ghép đúng vào ô dấu chấm hỏi.</small>') + `
         <div class="c4-grid">
           ${mindMapHTML('💝 SỔ LƯU NIỆM 6A', [
             { id: 'tv', name: '👩‍🎓 Thành viên', kids: [{ id: 'q-ds', t: 'Danh sách lớp' }] },
@@ -893,7 +899,7 @@ const SCREENS = {
           ])}
           <div class="pieces" id="pieces">
             <h3>Mảnh ghép</h3>
-            ${pieces.map(p => `<div class="card" data-ok="${p.ok ? 1 : 0}"><span class="ic">🧩</span>${p.t}</div>`).join('')}
+            ${pieces.map(p => `<div class="card" data-ok="${p.ok ? 1 : 0}">${p.t}</div>`).join('')}
           </div>
         </div>
         <div class="actions"><button class="btn green hidden" id="nextBtn"></button></div>`;
@@ -906,7 +912,7 @@ const SCREENS = {
           mistakes++;
           sfx.bad();
           shake(slot);
-          toast('', '💡 Mảnh ghép này chưa phù hợp với sổ lưu niệm. Hãy thử mảnh khác nhé!', 'bad');
+          toast('', 'Mảnh ghép này chưa phù hợp với sổ lưu niệm. Hãy thử mảnh khác nhé!', 'bad');
           return false;
         }
         // ghép đúng
@@ -922,9 +928,9 @@ const SCREENS = {
         const p = completeChallenge(3, mistakes);
         sfx.win();
         confetti();
-        setTask('🎉 SỔ LƯU NIỆM ĐÃ ĐƯỢC KHÔI PHỤC!', true);
-        toast('🎉 SỔ LƯU NIỆM ĐÃ ĐƯỢC KHÔI PHỤC!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok', 3200);
-        showNext('XEM KẾT QUẢ 🏆');
+        setTask('SỔ LƯU NIỆM ĐÃ ĐƯỢC KHÔI PHỤC!', true);
+        toast('SỔ LƯU NIỆM ĐÃ ĐƯỢC KHÔI PHỤC!', p ? `Em nhận được <b>+${p} điểm</b>.` : '', 'ok', 3200);
+        showNext('XEM KẾT QUẢ →');
         return true;
       }));
       $('#nextBtn').onclick = () => { sfx.click(); go('win'); };
@@ -935,20 +941,20 @@ const SCREENS = {
   win: {
     html() {
       const s = state.score;
-      const msg = s >= 50 ? '🏆 Xuất sắc! Em đã giải cứu thành công Sổ lưu niệm 6A!'
-                : s >= 30 ? '⭐ Rất tốt! Em đã nắm khá chắc kiến thức.'
-                : '🌱 Hãy thử lại một lần nữa để củng cố kiến thức nhé!';
+      const msg = s >= 50 ? 'Xuất sắc! Em đã giải cứu thành công Sổ lưu niệm 6A!'
+                : s >= 30 ? 'Rất tốt! Em đã nắm khá chắc kiến thức.'
+                : 'Hãy thử lại một lần nữa để củng cố kiến thức nhé!';
       const learned = ['Biết cách sắp xếp ý tưởng', 'Xác định chủ đề và các nhánh', 'Nhận biết thông tin chưa hợp lý', 'Biết trình tự cơ bản khi tạo sơ đồ tư duy'];
       return `<section class="win">
         <div class="trophy">🏆</div>
         <h1>CHÚC MỪNG!</h1>
-        <h2>📖 SỔ LƯU NIỆM 6A ĐÃ ĐƯỢC KHÔI PHỤC!</h2>
-        <div class="scorebox"><div class="lbl">⭐ ĐIỂM CỦA EM</div><div class="val"><span id="finalScore">0</span><small style="font-size:1.4rem;color:var(--muted)"> / 60</small></div></div>
+        <h2>SỔ LƯU NIỆM 6A ĐÃ ĐƯỢC KHÔI PHỤC!</h2>
+        <div class="scorebox"><div class="lbl">ĐIỂM CỦA EM</div><div class="val"><span id="finalScore">0</span><small style="font-size:1.4rem;color:var(--muted)"> / 60</small></div></div>
         <div><div class="msg">${msg}</div></div>
-        <div class="learned">${learned.map((l, i) => `<div style="animation-delay:${.3 + i * .15}s">✅ ${l}</div>`).join('')}</div>
+        <div class="learned">${learned.map((l, i) => `<div style="animation-delay:${.3 + i * .15}s">${l}</div>`).join('')}</div>
         <div class="actions">
-          <button class="btn big" data-act="replay">🔄 CHƠI LẠI</button>
-          <button class="btn ghost big" data-act="home">🏠 VỀ TRANG CHỦ</button>
+          <button class="btn big" data-act="replay">CHƠI LẠI</button>
+          <button class="btn ghost big" data-act="home">VỀ MÀN HÌNH ĐẦU</button>
         </div>
       </section>`;
     },

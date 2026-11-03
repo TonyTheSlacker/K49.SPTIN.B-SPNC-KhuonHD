@@ -68,7 +68,7 @@
 }
 
 html {
-  font-size: 18px; /* Cỡ chữ gốc bự cho HS lớp 6 */
+  font-size: 17px; /* Cỡ chữ gốc: nội dung bài ~18px trên máy tính, ~17px trên điện thoại */
   scroll-behavior: smooth;
 }
 
@@ -323,7 +323,7 @@ a {
 }
 
 .hero-title {
-  font-size: 2.1rem;
+  font-size: 2rem;
   font-weight: 900;
   color: var(--text-main);
   line-height: 1.25;
@@ -331,7 +331,7 @@ a {
 }
 
 .hero-desc {
-  font-size: 1.12rem;
+  font-size: 1.06rem;
   color: var(--text-body);
   margin-bottom: 1.4rem;
 }
@@ -497,7 +497,7 @@ a {
 }
 
 .topic-title {
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 900;
   color: var(--text-main);
 }
@@ -570,7 +570,7 @@ a {
 }
 
 .lesson-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 900;
   color: var(--text-main);
   margin-bottom: 0.5rem;
@@ -646,7 +646,7 @@ main {
 
 .lesson-hero p,
 .article-header p {
-  font-size: 1.15rem;
+  font-size: 1.06rem;
   color: var(--text-body);
   font-weight: 600;
 }
@@ -838,7 +838,7 @@ main {
   border-radius: var(--radius-lg);
   padding: 2rem;
   margin-bottom: 1.75rem;
-  font-size: 1.12rem; /* Chữ bự ~20px */
+  font-size: 1.06rem; /* ~18px */
   animation: popIn 0.25s ease-out;
 }
 
@@ -874,7 +874,7 @@ main {
 
 .lesson-section h2,
 .activity-card h2 {
-  font-size: 1.65rem;
+  font-size: 1.5rem;
   font-weight: 900;
   color: var(--text-main);
   line-height: 1.3;
@@ -882,7 +882,7 @@ main {
 
 .lesson-section h3,
 .activity-card h3 {
-  font-size: 1.35rem;
+  font-size: 1.22rem;
   font-weight: 800;
   color: #0284C7;
   margin: 1.25rem 0 0.6rem;
@@ -892,7 +892,7 @@ main {
 .activity-card p,
 .lesson-section li,
 .activity-card li {
-  font-size: 1.12rem;
+  font-size: 1.06rem;
   line-height: 1.75;
   color: var(--text-body);
   margin-bottom: 0.75rem;
@@ -907,7 +907,7 @@ main {
 }
 
 .lesson-section__lead {
-  font-size: 1.18rem !important;
+  font-size: 1.12rem !important;
   font-weight: 700;
   background: var(--bg-soft-blue);
   border-left: 6px solid var(--primary);
@@ -964,7 +964,7 @@ blockquote {
 }
 
 .lesson-page__intro p {
-  font-size: 1.12rem;
+  font-size: 1.06rem;
   font-weight: 600;
   color: var(--text-body);
 }
@@ -1036,7 +1036,7 @@ aside.lesson-summary p {
 }
 
 .hero > p {
-  font-size: 1.1rem;
+  font-size: 1.06rem;
   color: var(--text-body);
 }
 
@@ -1340,12 +1340,68 @@ th {
     font-size: 0.85rem;
     padding: 0.35rem 0.75rem;
   }
+
+  /* Tiêu đề nhỏ lại, khung bớt lề để mỗi dòng chứa được nhiều chữ hơn */
+  .hero-title,
+  .hero h1,
+  .lesson-hero h1,
+  .article-header h1,
+  .lesson-title-main,
+  .lesson-page__intro h1,
+  .lesson-header__title {
+    font-size: 1.6rem;
+  }
+  .lesson-section h2,
+  .activity-card h2 {
+    font-size: 1.3rem;
+  }
+  .lesson-section h3,
+  .activity-card h3 {
+    font-size: 1.12rem;
+  }
+  .topic-title {
+    font-size: 1.2rem;
+  }
+  .lesson-title {
+    font-size: 1.12rem;
+  }
+  .lesson-section__lead {
+    font-size: 1.06rem !important;
+    padding: 0.8rem 1rem;
+  }
+  .hero-banner,
+  .curriculum-container,
+  .page-shell,
+  .lesson-layout {
+    padding: 0 1rem;
+  }
+  .lesson-section,
+  .activity-card,
+  .hero-container,
+  .hero,
+  .lesson-hero,
+  .article-header,
+  .lesson-page__intro,
+  .lesson-header,
+  .topic-block {
+    padding: 1.2rem 1rem;
+  }
+  .lesson-section ul,
+  .lesson-section ol,
+  .activity-card ul,
+  .activity-card ol {
+    padding-left: 1.25rem;
+  }
+  th, td {
+    padding: 0.6rem 0.7rem;
+    font-size: 1rem;
+  }
 }
 
 /* Tương thích màn hình nhỏ / máy tính bảng */
 @media (max-width: 860px) {
   html {
-    font-size: 16.5px;
+    font-size: 16px;
   }
   .hero-container,
   .lesson-knowledge {

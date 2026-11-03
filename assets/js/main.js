@@ -26,12 +26,12 @@ const LESSONS_DATA = [
 ];
 
 const TOPICS_META = {
-  1: { title: '🌟 Chủ đề 1 (A): Máy tính và cộng đồng', desc: 'Bài 1 đến Bài 3' },
-  2: { title: '🌐 Chủ đề 2 (B): Mạng máy tính và Internet', desc: 'Bài 4 đến Bài 5' },
-  3: { title: '🔍 Chủ đề 3 (C): Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin', desc: 'Bài 6 đến Bài 8' },
-  4: { title: '🛡️ Chủ đề 4 (D): Đạo đức, pháp luật và văn hóa trong môi trường số', desc: 'Bài 9' },
-  5: { title: '🎨 Chủ đề 5 (E): Ứng dụng tin học', desc: 'Bài 10 đến Bài 14' },
-  6: { title: '🤖 Chủ đề 6 (F): Giải quyết vấn đề với sự trợ giúp của máy tính', desc: 'Bài 15 đến Bài 17' }
+  1: { title: 'Chủ đề 1 (A): Máy tính và cộng đồng', desc: 'Bài 1 đến Bài 3' },
+  2: { title: 'Chủ đề 2 (B): Mạng máy tính và Internet', desc: 'Bài 4 đến Bài 5' },
+  3: { title: 'Chủ đề 3 (C): Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin', desc: 'Bài 6 đến Bài 8' },
+  4: { title: 'Chủ đề 4 (D): Đạo đức, pháp luật và văn hóa trong môi trường số', desc: 'Bài 9' },
+  5: { title: 'Chủ đề 5 (E): Ứng dụng tin học', desc: 'Bài 10 đến Bài 14' },
+  6: { title: 'Chủ đề 6 (F): Giải quyết vấn đề với sự trợ giúp của máy tính', desc: 'Bài 15 đến Bài 17' }
 };
 
 function getCompletedLessons() {
@@ -60,7 +60,7 @@ function updateHeaderStars() {
   const badge = document.getElementById('header-star-count');
   if (badge) {
     const completed = getCompletedLessons();
-    badge.textContent = `⭐ ${completed.length}/17 bài`;
+    badge.textContent = `Đã học ${completed.length}/17 bài`;
   }
 }
 
@@ -115,15 +115,15 @@ function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
               <a href="${lesson.file}" class="lesson-item ${isDone ? 'is-completed' : ''}">
                 <div>
                   <div class="lesson-item-top">
-                    <span class="lesson-number">${lesson.icon} Bài ${lesson.id}</span>
+                    <span class="lesson-number">Bài ${lesson.id}</span>
                     <span class="strand-badge ${strandClass}">Mạch ${lesson.strand}</span>
                   </div>
                   <h3 class="lesson-title">${lesson.title.replace(/^Bài \d+:\s*/, '')}</h3>
                   <p class="lesson-summary">${lesson.summary}</p>
                 </div>
                 <div class="lesson-footer">
-                  <span>${isDone ? '⭐ Đã học xong!' : '▶ Bắt đầu học ngay'}</span>
-                  <span>➔</span>
+                  <span>${isDone ? 'Đã học xong' : 'Bắt đầu học'}</span>
+                  <span aria-hidden="true">→</span>
                 </div>
               </a>
             `;
@@ -133,7 +133,7 @@ function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
     `;
   });
 
-  container.innerHTML = html || `<p style="font-size: 1.2rem; font-weight: 800; text-align: center; padding: 2rem;">🔍 Không tìm thấy bài học nào phù hợp, em thử gõ từ khóa khác nhé!</p>`;
+  container.innerHTML = html || `<p style="font-size: 1.2rem; font-weight: 800; text-align: center; padding: 2rem;">Không tìm thấy bài học nào phù hợp, em thử gõ từ khóa khác nhé!</p>`;
   updateOverallProgress();
 }
 
@@ -143,7 +143,7 @@ function updateOverallProgress() {
   const countEl = document.getElementById('progress-count-text');
   const fillEl = document.getElementById('progress-bar-fill');
 
-  if (countEl) countEl.textContent = `⭐ ${completed.length} / ${total} bài (${Math.round((completed.length / total) * 100)}%)`;
+  if (countEl) countEl.textContent = `${completed.length}/${total} bài (${Math.round((completed.length / total) * 100)}%)`;
   if (fillEl) fillEl.style.width = `${(completed.length / total) * 100}%`;
 }
 
@@ -158,23 +158,18 @@ function upgradeKidFriendlyLayout() {
   const currentLesson = LESSONS_DATA.find(item => item.file === path);
   const completed = getCompletedLessons();
 
-  // 1. Đảm bảo mọi trang đều có Header to rõ, có biểu tượng trực quan
+  // 1. Đảm bảo mọi trang đều có cùng một thanh đầu trang
   const existingHeader = document.querySelector('.site-header');
   const headerHTML = `
     <div class="header-inner">
       <a href="index.html" class="brand-identity">
         <img src="assets/images/Logo HCMUE.svg" alt="Logo HCMUE" width="110" height="44">
-        <div class="brand-titles">
-          <span class="brand-dept">${currentLesson ? `Chủ đề ${currentLesson.topic} · ${currentLesson.title}` : 'Khoa CNTT · K49.SPTIN.B'}</span>
-          <span class="brand-name">Tin Học Lớp 6 Vui Nhộn</span>
-        </div>
+        <span class="brand-name">Hỗ trợ Tin học 6</span>
       </a>
       <nav class="main-nav" aria-label="Điều hướng chính">
-        <a href="index.html" class="nav-link ${path === 'index.html' ? 'active' : ''}">🏠 Bài học</a>
-        <a href="dictionary.html" class="nav-link ${path === 'dictionary.html' ? 'active' : ''}">📖 Từ điển</a>
-        <a href="crossword.html" class="nav-link ${path === 'crossword.html' ? 'active' : ''}">🧩 Ô chữ</a>
-        <a href="algorithm.html" class="nav-link ${path === 'algorithm.html' ? 'active' : ''}">🤖 Thuật toán</a>
-        <span class="star-counter-badge" id="header-star-count">⭐ ${completed.length}/17 bài</span>
+        <a href="dictionary.html" class="nav-link ${path === 'dictionary.html' ? 'active' : ''}">Nội dung trọng tâm</a>
+        <a href="crossword.html" class="nav-link ${path === 'crossword.html' ? 'active' : ''}">Trò chơi ô chữ</a>
+        <span class="star-counter-badge" id="header-star-count">Đã học ${completed.length}/17 bài</span>
       </nav>
     </div>
   `;
@@ -188,6 +183,16 @@ function upgradeKidFriendlyLayout() {
     document.body.prepend(headerEl);
   }
 
+  // Bỏ các phần còn sót của bố cục cũ (menu trái, dải chữ trên cùng)
+  document.querySelectorAll('.placeholder-banner, .sidebar-toggle, .left-sidebar, .academic-Ribbon').forEach(node => node.remove());
+
+  const siteHeader = document.querySelector('.site-header');
+  const syncHeaderHeight = () => {
+    if (siteHeader) document.documentElement.style.setProperty('--header-h', siteHeader.offsetHeight + 'px');
+  };
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+
   // 2. Nếu đang ở trang Bài học (Bài 1 -> Bài 17), biến các phần thành Chế độ Học Từng Bước
   if (!currentLesson) return;
 
@@ -200,42 +205,42 @@ function upgradeKidFriendlyLayout() {
   let activeStepIndex = 0;
   let showAllMode = false;
 
-  // Tạo Thanh Chặng Đường (Stepper Bar) đặt ngay dưới khung tiêu đề bài học
-  const stepperBar = document.createElement('div');
+  // Cột hành trình bài học: đặt dọc bên trái phần nội dung, dính theo khi cuộn
+  const stepperBar = document.createElement('nav');
   stepperBar.className = 'kid-stepper-bar';
+  stepperBar.setAttribute('aria-label', 'Các bước của bài học');
 
   const pillsHtml = sections.map((sec, idx) => {
     const h2 = sec.querySelector('h2');
-    const rawTitle = h2 ? h2.textContent.trim() : `Hoạt động ${idx + 1}`;
-    const shortTitle = rawTitle.length > 26 ? rawTitle.slice(0, 24) + '…' : rawTitle;
+    const rawTitle = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : `Hoạt động ${idx + 1}`;
+    const title = rawTitle.replace(/^\d+\.\s*/, '');
     return `
-      <button type="button" class="kid-step-pill ${idx === 0 ? 'is-active' : ''}" data-step-idx="${idx}">
-        <span class="kid-step-num">${idx + 1}</span>
-        <span>${shortTitle}</span>
-      </button>
+      <li>
+        <button type="button" class="kid-step-pill ${idx === 0 ? 'is-active' : ''}" data-step-idx="${idx}" title="${title.replace(/"/g, '&quot;')}">
+          <span class="kid-step-num">${idx + 1}</span>
+          <span class="kid-step-text">${title}</span>
+        </button>
+      </li>
     `;
   }).join('');
 
   stepperBar.innerHTML = `
-    <div class="kid-stepper-top">
-      <div class="kid-stepper-label">
-        <span>🗺️ Hành trình bài học (${sections.length} chặng) — Bấm vào từng chặng để khám phá:</span>
-      </div>
-      <button type="button" class="kid-mode-toggle" id="btn-toggle-view-mode">
-        📖 Xem toàn bộ bài cùng lúc
-      </button>
+    <div class="rail-head">
+      <span class="rail-kicker">Bài ${currentLesson.id} · ${sections.length} bước</span>
+      <strong class="rail-title">${currentLesson.title.replace(/^Bài \d+:\s*/, '')}</strong>
     </div>
-    <div class="kid-step-pills" id="kid-step-pills-root">
+    <ol class="kid-step-pills" id="kid-step-pills-root">
       ${pillsHtml}
+    </ol>
+    <div class="rail-actions">
+      <button type="button" class="kid-mode-toggle" id="btn-toggle-view-mode">Xem toàn bộ bài</button>
+      <a href="index.html" class="rail-back">← Danh sách bài học</a>
     </div>
   `;
 
-  const heroEl = mainEl.querySelector('.lesson-hero, .article-header');
-  if (heroEl && heroEl.nextSibling) {
-    mainEl.insertBefore(stepperBar, heroEl.nextSibling);
-  } else {
-    mainEl.prepend(stepperBar);
-  }
+  const railHost = mainEl.parentElement;
+  railHost.classList.add('has-rail');
+  railHost.insertBefore(stepperBar, mainEl);
 
   // Chèn cụm nút "Hoạt động trước / Hoạt động tiếp theo" cỡ lớn vào cuối mỗi hoạt động
   sections.forEach((sec, idx) => {
@@ -243,16 +248,16 @@ function upgradeKidFriendlyLayout() {
     controls.className = 'kid-step-controls';
 
     const prevBtnHtml = idx > 0
-      ? `<button type="button" class="btn btn-outline btn-lg" data-go-step="${idx - 1}">⬅ Quay lại Bước ${idx}</button>`
-      : `<a href="index.html" class="btn btn-outline btn-lg">🏠 Về danh sách bài học</a>`;
+      ? `<button type="button" class="btn btn-outline btn-lg" data-go-step="${idx - 1}">← Quay lại bước ${idx}</button>`
+      : `<a href="index.html" class="btn btn-outline btn-lg">← Danh sách bài học</a>`;
 
     const isLast = idx === sections.length - 1;
     const isLessonDone = getCompletedLessons().includes(currentLesson.id);
 
     const nextBtnHtml = !isLast
-      ? `<button type="button" class="btn btn-primary btn-lg" data-go-step="${idx + 1}">Tiếp theo: Bước ${idx + 2} ➔</button>`
+      ? `<button type="button" class="btn btn-primary btn-lg" data-go-step="${idx + 1}">Tiếp theo: bước ${idx + 2} →</button>`
       : `<button type="button" class="btn btn-success btn-lg" id="btn-finish-lesson-kid">
-           ${isLessonDone ? '🌟 Em đã hoàn thành bài học này!' : '🎉 Hoàn thành bài học & Nhận Sao!'}
+           ${isLessonDone ? 'Em đã hoàn thành bài học này' : 'Hoàn thành bài học'}
          </button>`;
 
     controls.innerHTML = `${prevBtnHtml}${nextBtnHtml}`;
@@ -284,7 +289,10 @@ function upgradeKidFriendlyLayout() {
     setTimeout(triggerAllIframeResize, 80);
 
     if (shouldScroll) {
-      stepperBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const target = showAllMode ? mainEl : sections[activeStepIndex];
+      const headerH = siteHeader ? siteHeader.offsetHeight : 0;
+      const top = target.getBoundingClientRect().top + window.scrollY - headerH - 16;
+      if (Math.abs(window.scrollY - top) > 4) window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     }
   }
 
@@ -292,7 +300,7 @@ function upgradeKidFriendlyLayout() {
   pillButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       showAllMode = false;
-      if (toggleModeBtn) toggleModeBtn.textContent = '📖 Xem toàn bộ bài cùng lúc';
+      if (toggleModeBtn) toggleModeBtn.textContent = 'Xem toàn bộ bài';
       const targetIdx = Number(btn.getAttribute('data-step-idx'));
       updateStepView(targetIdx, true);
     });
@@ -303,7 +311,7 @@ function upgradeKidFriendlyLayout() {
     const stepBtn = e.target.closest('[data-go-step]');
     if (stepBtn) {
       showAllMode = false;
-      if (toggleModeBtn) toggleModeBtn.textContent = '📖 Xem toàn bộ bài cùng lúc';
+      if (toggleModeBtn) toggleModeBtn.textContent = 'Xem toàn bộ bài';
       const nextIdx = Number(stepBtn.getAttribute('data-go-step'));
       updateStepView(nextIdx, true);
     }
@@ -311,7 +319,7 @@ function upgradeKidFriendlyLayout() {
     const finishBtn = e.target.closest('#btn-finish-lesson-kid');
     if (finishBtn) {
       toggleLessonComplete(currentLesson.id, true);
-      finishBtn.textContent = '🌟 Tuyệt vời! Em đã hoàn thành bài học!';
+      finishBtn.textContent = 'Tuyệt vời! Em đã hoàn thành bài học';
       launchConfetti();
     }
   });
@@ -320,9 +328,7 @@ function upgradeKidFriendlyLayout() {
   if (toggleModeBtn) {
     toggleModeBtn.addEventListener('click', () => {
       showAllMode = !showAllMode;
-      toggleModeBtn.textContent = showAllMode
-        ? '🎯 Chuyển về chế độ Học từng bước'
-        : '📖 Xem toàn bộ bài cùng lúc';
+      toggleModeBtn.textContent = showAllMode ? 'Học từng bước' : 'Xem toàn bộ bài';
       updateStepView(activeStepIndex, false);
     });
   }

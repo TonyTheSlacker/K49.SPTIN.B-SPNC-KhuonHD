@@ -1,281 +1,165 @@
-const nodeIds = ['node-start', 'node-input', 'node-decision', 'node-mix', 'node-freeze', 'node-end', 'node-wrong-end'];
-const lineIds = [
-  'line-start-input',
-  'line-input-decision',
-  'line-decision-yes',
-  'line-mix-freeze',
-  'line-freeze-end',
-  'line-decision-no'
-];
+/**
+ * Mô phỏng thuật toán làm kem bằng sơ đồ khối (algorithm.html)
+ * Chạy tự động hoặc từng bước; khối đang chạy sáng màu cam, khối đã đi qua màu xanh lá.
+ */
+(function () {
+  const flow = document.getElementById('flow');
+  const runButton = document.getElementById('runButton');
+  const stepButton = document.getElementById('stepButton');
+  const resetButton = document.getElementById('resetButton');
+  const statusBox = document.getElementById('statusBox');
+  const stepCounter = document.getElementById('stepCounter');
+  const outText = document.getElementById('outText');
+  const inputs = Array.from(document.querySelectorAll('input[name="ingredient"]'));
+  if (!flow || !runButton || !stepButton || !resetButton || !statusBox || inputs.length === 0) return;
 
-const ingredientInputs = document.querySelectorAll('input[name="ingredient"]');
-const runButton = document.getElementById('runButton');
-const resetButton = document.getElementById('resetButton');
-const statusBox = document.getElementById('statusBox');
-const flowWrap = document.getElementById('flowWrap');
-const yesLabel = document.querySelector('.yes-label');
-const noLabel = document.querySelector('.no-label');
+  const STEP_DELAY = 900;
+  const LABELS = { vanilla: 'vani', strawberry: 'dâu', chocolate: 'sô cô la' };
+  const node = id => document.getElementById('n-' + id);
+  const edge = id => document.getElementById('e-' + id);
+  const word = id => document.querySelector(`#wordSteps [data-word="${id}"]`);
 
-const nodes = Object.fromEntries(nodeIds.map((id) => [id, document.getElementById(id)]));
-const lines = Object.fromEntries(lineIds.map((id) => [id, document.getElementById(id)]));
+  let steps = [];
+  let index = -1;
+  let timer = null;
 
-if (runButton && resetButton && statusBox && flowWrap && ingredientInputs.length > 0) {
-  const STEP_DELAY = 550;
-  let timers = [];
-  let isRunning = false;
+  const selected = () => (inputs.find(input => input.checked) || inputs[0]).value;
 
-  function setRunState(running) {
-    isRunning = running;
-    runButton.disabled = running;
-    runButton.textContent = running ? 'Đang chạy…' : 'Chạy thuật toán';
-    runButton.setAttribute('aria-busy', String(running));
-    ingredientInputs.forEach((input) => {
-      input.disabled = running;
-    });
-  }
-
-  function toViewBoxPoint(point, wrapRect) {
-    return {
-      x: ((point.x - wrapRect.left) / wrapRect.width) * 1000,
-      y: ((point.y - wrapRect.top) / wrapRect.height) * 1000
-    };
-  }
-
-  function getNodeRect(nodeId) {
-    return nodes[nodeId]?.getBoundingClientRect();
-  }
-
-  function setLinePath(lineId, path) {
-    lines[lineId]?.setAttribute('d', path);
-  }
-
-  function syncFlowLines() {
-    const wrapRect = flowWrap.getBoundingClientRect();
-    if (!wrapRect.width || !wrapRect.height) return;
-    const clamp = (value, min, max) => Math.min(Math.max(value, min), Math.max(min, max));
-
-    const verticalPath = (fromId, toId) => {
-      const fromRect = getNodeRect(fromId);
-      const toRect = getNodeRect(toId);
-      if (!fromRect || !toRect) return null;
-
-      const from = toViewBoxPoint({
-        x: fromRect.left + fromRect.width / 2,
-        y: fromRect.bottom
-      }, wrapRect);
-      const to = toViewBoxPoint({
-        x: toRect.left + toRect.width / 2,
-        y: toRect.top
-      }, wrapRect);
-
-      return `M${from.x} ${from.y} L${to.x} ${to.y}`;
-    };
-
-    setLinePath('line-start-input', verticalPath('node-start', 'node-input'));
-    setLinePath('line-input-decision', verticalPath('node-input', 'node-decision'));
-    setLinePath('line-decision-yes', verticalPath('node-decision', 'node-mix'));
-    setLinePath('line-mix-freeze', verticalPath('node-mix', 'node-freeze'));
-    setLinePath('line-freeze-end', verticalPath('node-freeze', 'node-end'));
-
-    const decisionRect = getNodeRect('node-decision');
-    const mixRect = getNodeRect('node-mix');
-    const wrongEndRect = getNodeRect('node-wrong-end');
-    if (decisionRect && mixRect && wrongEndRect) {
-      const from = toViewBoxPoint({
-        x: decisionRect.right,
-        y: decisionRect.top + decisionRect.height / 2
-      }, wrapRect);
-      const to = toViewBoxPoint({
-        x: wrongEndRect.left,
-        y: wrongEndRect.top + wrongEndRect.height / 2
-      }, wrapRect);
-      const laneGap = wrapRect.width < 520 ? 64 : 100;
-      const laneX = Math.min(982, Math.max(from.x + laneGap, to.x - 36));
-      const verticalDirection = to.y >= from.y ? 1 : -1;
-      const incomingDirection = laneX >= from.x ? 1 : -1;
-      const outgoingDirection = to.x >= laneX ? 1 : -1;
-      const corner = Math.min(24, Math.abs(to.y - from.y) / 2, Math.abs(laneX - from.x) / 2);
-      const incomingCornerX = laneX - incomingDirection * corner;
-      const outgoingCornerX = laneX + outgoingDirection * corner;
-
-      setLinePath(
-        'line-decision-no',
-        `M${from.x} ${from.y} L${incomingCornerX} ${from.y} Q${laneX} ${from.y} ${laneX} ${from.y + verticalDirection * corner} L${laneX} ${to.y - verticalDirection * corner} Q${laneX} ${to.y} ${outgoingCornerX} ${to.y} L${to.x} ${to.y}`
+  // Lần lượt các khối mà thuật toán đi qua với nguyên liệu đã chọn
+  function buildSteps(ingredient) {
+    const has = ingredient !== 'none';
+    const label = LABELS[ingredient];
+    const list = [
+      { node: 'start', text: 'Bắt đầu thuật toán.' },
+      { node: 'input', edge: 'start-input', text: has ? `Nhập nguyên liệu: ${label}.` : 'Nhập nguyên liệu: không có gì.' },
+      { node: 'decision', edge: 'input-decision', branch: has ? 'yes' : 'no',
+        text: has ? 'Có nguyên liệu không? Có, nên đi theo nhánh Đúng.' : 'Có nguyên liệu không? Không, nên đi theo nhánh Sai.' }
+    ];
+    if (has) {
+      list.push(
+        { node: 'mix', edge: 'decision-mix', text: `Trộn sữa, đường và ${label}.` },
+        { node: 'freeze', edge: 'mix-freeze', text: 'Làm lạnh hỗn hợp cho kem đông lại.' },
+        { node: 'out', edge: 'freeze-out', text: `Xuất kết quả: một cốc kem ${label}.` },
+        { node: 'end', edge: 'out-end', text: 'Kết thúc. Thuật toán đã chạy xong theo nhánh Đúng.', tone: 'ok' }
       );
+    } else {
+      list.push(
+        { node: 'none', edge: 'decision-none', alert: true, text: 'Xuất thông báo: “Chưa có nguyên liệu”, không làm được kem.' },
+        { node: 'end', edge: 'none-end', text: 'Kết thúc. Thuật toán dừng sau nhánh Sai.', tone: 'alert' }
+      );
+    }
+    return list;
+  }
 
-      if (yesLabel) {
-        const yesMiddle = (decisionRect.bottom + mixRect.top) / 2 - wrapRect.top;
-        const yesLineX = (decisionRect.left + decisionRect.width / 2) - wrapRect.left;
-        yesLabel.style.left = `${clamp(yesLineX + 52, 52, wrapRect.width - 52)}px`;
-        yesLabel.style.top = `${yesMiddle}px`;
-      }
+  function clearView() {
+    flow.querySelectorAll('.fnode').forEach(el => el.classList.remove('is-active', 'is-done', 'is-alert'));
+    flow.querySelectorAll('.edge').forEach(el => el.classList.remove('is-active', 'is-done'));
+    flow.querySelectorAll('.branch-label').forEach(el => el.classList.remove('is-on'));
+    document.querySelectorAll('#wordSteps li').forEach(el => el.classList.remove('is-active', 'is-done'));
+  }
 
-      if (noLabel) {
-        const fromLocalX = decisionRect.right - wrapRect.left;
-        const laneLocalX = (laneX / 1000) * wrapRect.width;
-        const fromLocalY = decisionRect.top + decisionRect.height / 2 - wrapRect.top;
-        noLabel.style.left = `${clamp((fromLocalX + laneLocalX) / 2, 56, wrapRect.width - 56)}px`;
-        noLabel.style.top = `${fromLocalY - 22}px`;
-      }
+  function setStatus(html, tone) {
+    statusBox.innerHTML = html;
+    statusBox.classList.toggle('is-ok', tone === 'ok');
+    statusBox.classList.toggle('is-alert', tone === 'alert');
+  }
+
+  function show(i) {
+    const prev = steps[i - 1];
+    const step = steps[i];
+    if (prev) {
+      node(prev.node).classList.remove('is-active');
+      node(prev.node).classList.add('is-done');
+      const w = word(prev.node);
+      if (w) { w.classList.remove('is-active'); w.classList.add('is-done'); }
+      if (prev.edge) edge(prev.edge).classList.replace('is-active', 'is-done');
+    }
+    if (step.edge) edge(step.edge).classList.add('is-active');
+    node(step.node).classList.add(step.alert ? 'is-alert' : 'is-active');
+    const w = word(step.node);
+    if (w) w.classList.add('is-active');
+    if (step.branch) document.getElementById(step.branch === 'yes' ? 'lbl-yes' : 'lbl-no').classList.add('is-on');
+    setStatus(step.text, step.tone || (step.alert ? 'alert' : ''));
+    stepCounter.textContent = `Bước ${i + 1}/${steps.length}`;
+
+    const last = i === steps.length - 1;
+    if (last) {
+      // Khối cuối: giữ màu "đã xong" cho cả đường vừa đi
+      if (step.edge) edge(step.edge).classList.replace('is-active', 'is-done');
+      node(step.node).classList.replace('is-active', 'is-done');
+      if (w) w.classList.replace('is-active', 'is-done');
+      finish();
     }
   }
 
-  function getSelectedIngredient() {
-    return document.querySelector('input[name="ingredient"]:checked')?.value ?? 'vanilla';
+  function lock(running) {
+    inputs.forEach(input => { input.disabled = running; });
+    runButton.disabled = running;
   }
 
-  function clearTimers() {
-    timers.forEach((timer) => window.clearTimeout(timer));
-    timers = [];
+  function start() {
+    stop();
+    clearView();
+    steps = buildSteps(selected());
+    index = -1;
+    const ingredient = selected();
+    outText.textContent = ingredient === 'none' ? 'Xuất: cốc kem' : `Xuất: cốc kem ${LABELS[ingredient]}`;
   }
 
-  function resetHighlights() {
-    Object.values(nodes).forEach((node) => node?.classList.remove('node--active', 'node--done', 'node--wrong'));
-    Object.values(lines).forEach((line) => {
-      line?.classList.remove('flow-line--active');
-      line?.setAttribute('marker-end', 'url(#arrowHead)');
-    });
-    syncFlowLines();
+  function next() {
+    index += 1;
+    show(index);
   }
 
-  function setActive(nodeId) {
-    Object.values(nodes).forEach((node) => node?.classList.remove('node--active'));
-    nodes[nodeId]?.classList.add('node--active');
-    syncFlowLines();
+  function stop() {
+    if (timer) window.clearInterval(timer);
+    timer = null;
   }
 
-  function setDone(nodeId) {
-    const node = nodes[nodeId];
-    node?.classList.remove('node--active', 'node--wrong');
-    node?.classList.add('node--done');
+  function finish() {
+    stop();
+    lock(false);
+    stepButton.disabled = false;
+    stepButton.textContent = 'Chạy từng bước';
+    runButton.textContent = 'Chạy lại';
   }
 
-  function setWrong(nodeId) {
-    const node = nodes[nodeId];
-    node?.classList.remove('node--active', 'node--done');
-    node?.classList.add('node--wrong');
-    syncFlowLines();
-  }
+  runButton.addEventListener('click', () => {
+    start();
+    lock(true);
+    stepButton.disabled = true;
+    next();
+    timer = window.setInterval(() => {
+      if (index < steps.length - 1) next(); else stop();
+    }, STEP_DELAY);
+  });
 
-  function activateLine(lineId) {
-    const line = lines[lineId];
-    line?.classList.add('flow-line--active');
-    line?.setAttribute('marker-end', 'url(#arrowHeadActive)');
-  }
-
-  function setStatus(message) {
-    statusBox.textContent = message;
-  }
-
-  function runSequence(steps) {
-    clearTimers();
-    resetHighlights();
-    setRunState(true);
-
-    steps.forEach((step, index) => {
-      const timer = window.setTimeout(() => {
-        if (step.type === 'node') {
-          if (step.state === 'active') {
-            setActive(step.id);
-          } else if (step.state === 'done') {
-            setDone(step.id);
-          } else if (step.state === 'wrong') {
-            setWrong(step.id);
-          }
-        }
-
-        if (step.type === 'line') {
-          activateLine(step.id);
-        }
-
-        if (step.message) {
-          setStatus(step.message);
-        }
-
-        if (index === steps.length - 1) {
-          setRunState(false);
-          timers = [];
-        }
-      }, index * STEP_DELAY);
-
-      timers.push(timer);
-    });
-  }
-
-  function buildSuccessfulPath(ingredientLabel) {
-    return [
-      { type: 'node', id: 'node-start', state: 'active', message: `Đang bắt đầu thuật toán với nguyên liệu ${ingredientLabel}.` },
-      { type: 'line', id: 'line-start-input' },
-      { type: 'node', id: 'node-start', state: 'done' },
-      { type: 'node', id: 'node-input', state: 'active', message: 'Bước 1: Chọn nguyên liệu cho món kem.' },
-      { type: 'line', id: 'line-input-decision' },
-      { type: 'node', id: 'node-input', state: 'done' },
-      { type: 'node', id: 'node-decision', state: 'active', message: 'Bước 2: Kiểm tra xem có nguyên liệu hay không.' },
-      { type: 'line', id: 'line-decision-yes' },
-      { type: 'node', id: 'node-decision', state: 'done' },
-      { type: 'node', id: 'node-mix', state: 'active', message: 'Nhánh Đúng: Trộn sữa, đường và nguyên liệu đã chọn.' },
-      { type: 'line', id: 'line-mix-freeze' },
-      { type: 'node', id: 'node-mix', state: 'done' },
-      { type: 'node', id: 'node-freeze', state: 'active', message: 'Làm lạnh hỗn hợp để kem đông lại.' },
-      { type: 'line', id: 'line-freeze-end' },
-      { type: 'node', id: 'node-freeze', state: 'done' },
-      { type: 'node', id: 'node-end', state: 'active', message: 'Hoàn thành: món kem đã sẵn sàng!' },
-      { type: 'node', id: 'node-end', state: 'done', message: 'Thuật toán hoàn tất. Em đã đi đúng luồng sơ đồ khối.' }
-    ];
-  }
-
-  function buildWrongPath() {
-    return [
-      { type: 'node', id: 'node-start', state: 'active', message: 'Đang bắt đầu thuật toán.' },
-      { type: 'line', id: 'line-start-input' },
-      { type: 'node', id: 'node-start', state: 'done' },
-      { type: 'node', id: 'node-input', state: 'active', message: 'Bước 1: Chọn nguyên liệu.' },
-      { type: 'line', id: 'line-input-decision' },
-      { type: 'node', id: 'node-input', state: 'done' },
-      { type: 'node', id: 'node-decision', state: 'active', message: 'Không có nguyên liệu nên đi vào nhánh Sai.' },
-      { type: 'line', id: 'line-decision-no' },
-      { type: 'node', id: 'node-decision', state: 'done' },
-      { type: 'node', id: 'node-wrong-end', state: 'wrong', message: 'Luồng đã đi vào nhánh Sai và kết thúc.' }
-    ];
-  }
-
-  function runAlgorithm() {
-    if (isRunning) return;
-
-    const ingredient = getSelectedIngredient();
-    if (ingredient === 'none') {
-      runSequence(buildWrongPath());
-      return;
+  stepButton.addEventListener('click', () => {
+    // Bấm lần đầu (hoặc sau khi đã chạy xong) thì bắt đầu lại từ khối đầu tiên
+    if (index < 0 || index >= steps.length - 1) {
+      start();
+      runButton.textContent = 'Chạy tự động';
+      inputs.forEach(input => { input.disabled = true; });
     }
+    next();
+    if (index < steps.length - 1) stepButton.textContent = 'Bước tiếp theo';
+  });
 
-    const ingredientLabelMap = {
-      vanilla: 'Vani',
-      strawberry: 'Dâu',
-      chocolate: 'Sô cô la'
-    };
-
-    runSequence(buildSuccessfulPath(ingredientLabelMap[ingredient] ?? 'Vani'));
+  function reset() {
+    stop();
+    clearView();
+    steps = [];
+    index = -1;
+    lock(false);
+    stepButton.disabled = false;
+    stepButton.textContent = 'Chạy từng bước';
+    runButton.textContent = 'Chạy tự động';
+    stepCounter.textContent = 'Chưa chạy';
+    outText.textContent = 'Xuất: cốc kem';
+    setStatus('Chọn nguyên liệu rồi bấm <strong>Chạy tự động</strong> hoặc <strong>Chạy từng bước</strong>.');
   }
 
-  function resetAlgorithm() {
-    clearTimers();
-    setRunState(false);
-    resetHighlights();
-    setStatus('Chọn nguyên liệu rồi bấm “Chạy thuật toán”.');
-    ingredientInputs.forEach((input) => {
-      input.checked = input.value === 'vanilla';
-    });
-  }
-
-  runButton.addEventListener('click', runAlgorithm);
-  resetButton.addEventListener('click', resetAlgorithm);
-
-  if ('ResizeObserver' in window) {
-    const flowObserver = new ResizeObserver(syncFlowLines);
-    flowObserver.observe(flowWrap);
-  } else {
-    window.addEventListener('resize', syncFlowLines);
-  }
-
-  resetAlgorithm();
-}
+  resetButton.addEventListener('click', reset);
+  inputs.forEach(input => input.addEventListener('change', reset));
+  reset();
+})();

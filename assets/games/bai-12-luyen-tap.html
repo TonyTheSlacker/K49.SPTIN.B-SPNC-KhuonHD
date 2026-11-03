@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thám tử bảng và Thẻ nhân vật</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#fff8eb; --bg2:#fef3d9;
+  --ink:#1f2a44; --muted:#5d6b85; --line:#f1dfb0;
+  --primary:#d88900; --primary2:#f3a900;
+  --ok:#1fa97a; --okbg:#eafaf4; --bad:#e25555;
+  --tbl:#2b6cd4; --tbl-soft:#eef4ff;
+  --shadow:0 14px 28px rgba(60,49,22,.12);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{font-size:clamp(15px, .4vw + 12.5px, 18px)}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,214,102,.35) 0, transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(124,228,200,.28) 0, transparent 35%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+button{font-family:inherit; cursor:pointer}
+[hidden]{display:none !important}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+:focus-visible{outline:3px solid var(--tbl); outline-offset:2px}
+
+/* ---------- Thanh trên cùng ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:.7rem; flex-wrap:wrap;
+  padding:.5rem 1rem;
+  background:rgba(255,255,255,.85); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.05rem; margin-right:auto; white-space:nowrap}
+.tabs{display:flex; gap:.25rem; background:#f3f0e6; padding:.25rem; border-radius:14px}
+.tab{border:none; background:transparent; border-radius:10px; padding:.45rem .95rem; font-weight:800; font-size:.95rem; color:var(--muted)}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:#fff; color:var(--ink); box-shadow:0 2px 6px rgba(31,42,68,.12)}
+
+#app{max-width:1100px; margin:0 auto; padding:1rem 1rem 2rem}
+#app.enter{animation:enter .4s ease}
+@keyframes enter{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+
+.btn{
+  border:none; border-radius:999px; color:#fff; font-weight:800;
+  font-size:1rem; letter-spacing:.02em; padding:.75em 1.6em;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:0 5px 0 #a86400, 0 10px 20px rgba(216,137,0,.3);
+  transition:transform .12s, box-shadow .12s, filter .2s;
+}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(4px); box-shadow:0 1px 0 #a86400, 0 4px 10px rgba(216,137,0,.3)}
+.btn.ghost{background:#fff; color:var(--primary); box-shadow:0 4px 0 #f1dfb0; border:2px solid #f1dfb0}
+.btn.small{font-size:.92rem; padding:.45em 1.1em}
+
+.ch-head{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin-bottom:.9rem}
+.ch-tag{background:var(--ink); color:#fff; font-weight:800; border-radius:12px; padding:.3rem .75rem; font-size:.9rem}
+.ch-head h2{font-family:'Baloo 2',cursive; margin:0; font-size:1.55rem; font-weight:800}
+
+.task{margin:0; background:#fff; border-radius:20px; padding:.85rem 1.1rem; box-shadow:var(--shadow); border-left:6px solid var(--tbl); font-size:1.05rem; font-weight:700; line-height:1.55}
+.card{background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:1rem 1.1rem}
+.card h3{font-family:'Baloo 2',cursive; font-size:1.2rem; margin:0 0 .6rem; font-weight:800}
+.msg{margin:.8rem 0 0; border-radius:14px; padding:.65rem .9rem; font-weight:700; line-height:1.5}
+.msg.hint{background:#fffbea; color:#8a5a00; border:2px solid #f6dd8b}
+.msg.good{background:var(--okbg); color:#15805b; border:2px solid #b7ebd6}
+
+/* ---------- Phần 1: Thám tử bảng ---------- */
+.p1{display:grid; grid-template-columns:minmax(0,17rem) minmax(0,1fr); gap:1.1rem; align-items:start}
+.brief{display:flex; flex-direction:column; gap:.85rem}
+.clue{background:#fffdf5; border:2px dashed #e7cf95; border-radius:18px; padding:.8rem 1rem}
+.clue h3{font-family:'Baloo 2',cursive; margin:0 0 .3rem; font-size:1.1rem; color:#a8741a}
+.clue p{margin:0; font-size:1.05rem; line-height:1.75}
+.how{margin:0; color:var(--muted); font-size:.95rem; line-height:1.5}
+
+table.dt{width:100%; border-collapse:separate; border-spacing:0; border:2px solid #bcd3f7; border-radius:14px; overflow:hidden; background:#fff}
+.dt th{background:var(--tbl); color:#fff; font-weight:800; font-size:1.02rem; padding:.55rem .7rem; text-align:center}
+.dt th + th{border-left:1px solid rgba(255,255,255,.35)}
+.dt td{padding:.4rem; border-top:1px solid #dbe6fa; text-align:center; width:50%}
+.dt td + td{border-left:1px solid #dbe6fa}
+.slot{
+  width:100%; min-height:2.9rem; padding:.35rem .5rem;
+  border:2px dashed #c6d3ee; border-radius:12px; background:#f8fbff;
+  color:var(--ink); font-weight:800; font-size:1.05rem;
+  transition:border-color .15s, background .15s;
+}
+.slot:empty::before{content:"Đặt thẻ vào đây"; color:#9aa6bf; font-weight:700; font-size:.85rem}
+.board.picking .slot:not(.ok){border-color:#8db3ef; background:#eef4ff}
+.slot:not(.ok):hover, .slot.over{border-color:var(--primary2); background:#fff8e6}
+.slot.ok{border:2px solid var(--ok); background:var(--okbg); color:#15805b; cursor:default}
+.slot.bad{border-color:var(--bad); background:#fff1f1; animation:shake .45s}
+
+.pool-head{display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin:1rem 0 .5rem}
+.pool-head b{font-family:'Baloo 2',cursive; font-size:1.1rem}
+.pool{display:flex; flex-wrap:wrap; gap:.6rem; min-height:3.6rem; padding:.8rem; border-radius:18px; background:#fffaf0; border:2px dashed var(--line)}
+.pool:empty{display:none}
+.pcard{
+  border:3px solid #e5e7f5; background:#fff; border-radius:14px; padding:.55rem 1.05rem;
+  font-weight:800; font-size:1.05rem; color:var(--ink); box-shadow:0 4px 0 #e5e7f5;
+  touch-action:none; user-select:none; -webkit-user-select:none;
+  transition:transform .12s, border-color .15s, box-shadow .15s, opacity .15s;
+}
+.pcard:hover{transform:translateY(-2px); border-color:var(--primary2)}
+.pcard.sel{border-color:var(--tbl); background:var(--tbl-soft); box-shadow:0 4px 0 #8db3ef; transform:translateY(-3px)}
+.pcard.src{opacity:.35}
+.drag-ghost{position:fixed; z-index:950; pointer-events:none; margin:0; rotate:-3deg; box-shadow:0 14px 26px rgba(31,42,68,.25)}
+.drag-ghost.back{transition:left .25s ease, top .25s ease, opacity .25s ease}
+
+.quiz{margin-top:1.1rem; animation:fadeUp .4s both}
+.quiz h3{font-size:1.3rem}
+.who{display:flex; gap:.7rem; flex-wrap:wrap}
+.who button{
+  min-width:6.5rem; border:3px solid #e5e7f5; background:#fff; color:var(--ink); border-radius:14px;
+  padding:.6rem 1.2rem; font-weight:800; font-size:1.1rem; box-shadow:0 4px 0 #e5e7f5;
+  transition:transform .12s, border-color .15s;
+}
+.who button:hover:not(:disabled){border-color:var(--primary2); transform:translateY(-2px)}
+.who button.no{border-color:var(--bad); background:#fff1f1; color:#b42323; animation:shake .45s}
+.who button.yes{border-color:var(--ok); background:var(--okbg); color:#15805b}
+.who button:disabled{cursor:default}
+.done-row{display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap; margin-top:1rem; padding-top:1rem; border-top:2px dashed #eee3c4}
+.done-row b{color:var(--ok); font-size:1.05rem}
+
+/* ---------- Phần 2: Thẻ nhân vật ---------- */
+.p2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:1.1rem; align-items:start; margin-top:1rem}
+table.st{width:100%; border-collapse:collapse; font-size:1.02rem; background:#fff}
+.st th, .st td{border:2px solid #9fb2d6; padding:.6rem .8rem; text-align:left}
+.st th{font-weight:800; background:#f3f6fc; width:44%}
+.note{margin:.65rem 0 0; color:var(--muted); font-size:.95rem; font-style:italic; line-height:1.5}
+.steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.5rem; counter-reset:step}
+.steps li{
+  display:flex; align-items:center; gap:.7rem; padding:.55rem .7rem; border-radius:14px;
+  background:#fafbfe; border:2px solid #eceff6; counter-increment:step; transition:background .2s, border-color .2s;
+}
+.steps li::before{content:counter(step); flex:none; width:1.8rem; height:1.8rem; border-radius:50%; display:grid; place-items:center; background:#eef0f6; color:var(--muted); font-weight:900}
+.steps li.done{border-color:#b7ebd6; background:var(--okbg)}
+.steps li.done::before{background:var(--ok); color:#fff}
+.steps .txt{flex:1; min-width:0; line-height:1.45}
+.steps .fname{font-weight:800; color:var(--tbl); white-space:nowrap}
+.steps label{flex:none; display:flex; align-items:center; gap:.4rem; font-weight:800; font-size:.92rem; color:var(--muted); cursor:pointer; white-space:nowrap; padding:.2rem .1rem}
+.steps input{width:1.25rem; height:1.25rem; margin:0; accent-color:var(--ok); cursor:pointer}
+.steps li.done label{color:#15805b}
+.steps-head{display:flex; align-items:baseline; justify-content:space-between; gap:.5rem}
+.col-lbl{display:none; font-weight:800; font-size:.85rem; color:var(--muted)}
+
+@keyframes fadeUp{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+@keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}}
+
+/* ---------- Màn hình hẹp ---------- */
+@media (max-width: 760px){
+  .p1, .p2{grid-template-columns:1fr}
+}
+/* Điện thoại: thu gọn lề để cả phần nằm vừa khung bài học */
+@media (max-width: 520px){
+  .brand{display:none}
+  .topbar{justify-content:center; padding:.4rem .75rem}
+  #app{padding:.8rem .75rem 1.25rem}
+  .ch-head{margin-bottom:.7rem}
+  .ch-tag{display:none}
+  .ch-head h2{font-size:1.3rem}
+  .task{font-size:1rem; padding:.7rem .9rem}
+  .brief{gap:.65rem}
+  .p1, .p2{gap:.85rem}
+  .clue{padding:.65rem .85rem}
+  .card{padding:.85rem}
+  .dt td{padding:.3rem}
+  .slot{min-height:2.6rem}
+  .pool-head{margin-top:.8rem}
+  .pool{padding:.65rem; gap:.5rem}
+  .quiz{margin-top:.85rem}
+  .who button{flex:1; min-width:0}
+  .st th, .st td{padding:.45rem .6rem}
+  .steps{gap:.4rem}
+  .steps li{gap:.5rem; padding:.45rem .55rem}
+  .steps li::before{width:1.5rem; height:1.5rem; font-size:.85rem}
+  .steps .fname{white-space:normal; overflow-wrap:anywhere}
+  /* Chữ "Đã làm" chuyển lên làm tiêu đề cột để mỗi bước có nhiều chỗ cho chữ hơn */
+  .col-lbl{display:block; padding-right:.2rem}
+  .steps label{padding:.35rem .5rem}
+  .steps .dl{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">Bài 12 · Luyện tập &amp; Vận dụng</div>
+  <nav class="tabs" role="tablist" aria-label="Chọn phần">
+    <button type="button" class="tab" role="tab" id="tab1" aria-selected="true" aria-controls="app">1. Luyện tập</button>
+    <button type="button" class="tab" role="tab" id="tab2" aria-selected="false" aria-controls="app">2. Vận dụng</button>
+  </nav>
+</header>
+
+<main id="app"></main>
+
+<script>
+/* =========================================================
+   Tin học 6 – Bài 12: Trình bày thông tin ở dạng bảng
+   Phần 1 (Luyện tập): Thám tử bảng – xếp lời khai vào bảng để tìm người lấy bóng
+   Phần 2 (Vận dụng): Thẻ nhân vật – tự tạo bảng 2 cột, 4 hàng trong phần mềm soạn thảo
+   ========================================================= */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const app = $('#app');
+
+/* ---------- Khi được nhúng vào trang bài học ----------
+   Trang bài học tự đặt chiều cao khung theo nội dung và tắt thanh cuộn bên trong khung.
+   Vì vậy trò chơi báo trang đo lại khi nội dung đổi, và cuộn trang cho thấy phần vừa hiện ra.
+   Mở trực tiếp thì mọi thứ chạy như cũ. */
+const embed = (() => {
+  let frame = null;
+  try { frame = window.frameElement; } catch (e) {}
+  const fitted = () => { try { return !!frame && frame.getAttribute('scrolling') === 'no'; } catch (e) { return false; } };
+  // Chiều cao phần bị thanh đầu trang (dính ở mép trên) che mất
+  function headerOffset(pw) {
+    const hdr = pw.document.querySelector('.site-header');
+    const pos = hdr ? pw.getComputedStyle(hdr).position : '';
+    return pos === 'sticky' || pos === 'fixed' ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
+  }
+  function refit() {
+    try { if (frame && typeof frame.__updateHeightFn === 'function') frame.__updateHeightFn(); } catch (e) {}
+    try { if (window.parent !== window) window.parent.postMessage({ type: 'RESIZE_GAME_IFRAME', height: document.documentElement.scrollHeight }, '*'); } catch (e) {}
+  }
+  // Sang màn hình mới mà đầu khung đã cuộn khuất thì kéo trang lên cho thấy đầu khung
+  function revealTop() {
+    if (!fitted()) return;
+    try {
+      const pw = window.parent, gap = frame.getBoundingClientRect().top - headerOffset(pw);
+      if (gap < 0) pw.scrollBy({ top: gap - 12, behavior: 'smooth' });
+    } catch (e) {}
+  }
+  // Phần vừa hiện ra nằm dưới mép màn hình thì cuộn xuống cho thấy
+  function reveal(el) {
+    if (!el) return;
+    setTimeout(() => {
+      refit();
+      if (!fitted()) { el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); return; }
+      try {
+        const pw = window.parent, top = frame.getBoundingClientRect().top;
+        const r = el.getBoundingClientRect(), below = top + r.bottom - (pw.innerHeight - 16);
+        if (below > 0) pw.scrollBy({ top: Math.min(below, top + r.top - headerOffset(pw) - 12), behavior: 'smooth' });
+      } catch (e) {}
+    }, 80);
+  }
+  if ('ResizeObserver' in window) {
+    let t;
+    new ResizeObserver(() => { clearTimeout(t); t = setTimeout(refit, 60); }).observe(document.body);
+  }
+  return { refit, revealTop, reveal };
+})();
+
+function show(html) {
+  app.innerHTML = html;
+  app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter');
+  window.scrollTo(0, 0);
+  embed.revealTop();
+}
+function shuffle(a) {
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+  return b;
+}
+function retrigger(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+
+/* =========================================================
+   PHẦN 1 – LUYỆN TẬP: THÁM TỬ BẢNG
+   ========================================================= */
+const PEOPLE = [
+  { name: 'Lan',  color: 'Áo đỏ' },
+  { name: 'Minh', color: 'Áo xanh' },
+  { name: 'Hoa',  color: 'Áo vàng' }
+];
+const CARDS = [
+  ...PEOPLE.map((p, i) => ({ id: 'n' + i, kind: 'name',  text: p.name })),
+  ...PEOPLE.map((p, i) => ({ id: 'c' + i, kind: 'color', text: p.color }))
+];
+const CARD = Object.fromEntries(CARDS.map(c => [c.id, c]));
+const COLOR_OF = Object.fromEntries(PEOPLE.map(p => [p.name, p.color]));
+const ROWS = 3;
+const THIEF = 'Minh';
+
+let p1 = null;
+function freshP1() {
+  let order;
+  do { order = shuffle(CARDS.map(c => c.id)); } while (order.join() === CARDS.map(c => c.id).join());
+  return { order, grid: Array.from({ length: ROWS }, () => ({ name: null, color: null })), picked: null, solved: false };
+}
+const placedIds = () => p1.grid.flatMap(r => [r.name, r.color]).filter(Boolean);
+const tableFull = () => placedIds().length === CARDS.length;
+
+function renderP1() {
+  show(`<div class="ch-head"><span class="ch-tag">Phần 1 · Luyện tập</span><h2>Thám tử bảng</h2></div>
+    <div class="p1">
+      <div class="brief">
+        <p class="task">Quả bóng của lớp bị mất. Hãy xếp lời khai của 3 bạn vào bảng để tìm ra ai đã lấy.</p>
+        <div class="clue"><h3>Lời khai</h3><p>Lan mặc áo đỏ. Minh mặc áo xanh. Hoa mặc áo vàng.</p></div>
+        <p class="how">Kéo thẻ vào ô trong bảng. Hoặc bấm chọn một thẻ, rồi bấm vào ô.</p>
+      </div>
+      <div class="card board" id="board">
+        <table class="dt">
+          <caption class="sr-only">Bảng lời khai: tên và màu áo của từng bạn</caption>
+          <thead><tr><th scope="col">Tên</th><th scope="col">Màu áo</th></tr></thead>
+          <tbody>${Array.from({ length: ROWS }, (_, r) => `<tr>
+            <td><button type="button" class="slot" data-row="${r}" data-col="name" aria-label="Hàng ${r + 1}, cột Tên"></button></td>
+            <td><button type="button" class="slot" data-row="${r}" data-col="color" aria-label="Hàng ${r + 1}, cột Màu áo"></button></td>
+          </tr>`).join('')}</tbody>
+        </table>
+        <div class="pool-head"><b id="poolLabel">Các thẻ</b><button type="button" class="btn ghost small" id="resetBtn">Làm lại</button></div>
+        <div class="pool" id="pool"></div>
+        <p class="msg" id="msg" role="status" aria-live="polite" hidden></p>
+      </div>
+    </div>
+    <section class="card quiz" id="quiz" hidden>
+      <h3>Người lấy bóng mặc áo xanh. Đó là ai?</h3>
+      <div class="who">${PEOPLE.map(p => `<button type="button" data-who="${p.name}">${p.name}</button>`).join('')}</div>
+      <p class="msg" id="quizMsg" role="status" aria-live="polite" hidden></p>
+      <div class="done-row" id="doneRow" hidden>
+        <b>Em đã hoàn thành phần Luyện tập</b>
+        <button type="button" class="btn" id="toP2">Sang phần Vận dụng</button>
+      </div>
+    </section>`);
+
+  $$('.slot').forEach(s => s.addEventListener('click', () => onSlotClick(s)));
+  $('#resetBtn').addEventListener('click', () => { p1 = freshP1(); renderP1(); });
+  $$('[data-who]').forEach(b => b.addEventListener('click', () => answer(b)));
+  $('#toP2').addEventListener('click', () => go(2));
+  paintP1();
+  if (tableFull()) openQuiz(false);
+}
+
+function paintP1() {
+  $$('.slot').forEach(s => {
+    const id = p1.grid[+s.dataset.row][s.dataset.col];
+    s.textContent = id ? CARD[id].text : '';
+    s.classList.toggle('ok', !!id);
+    s.classList.remove('over', 'bad');
+    s.setAttribute('aria-label', `Hàng ${+s.dataset.row + 1}, cột ${s.dataset.col === 'name' ? 'Tên' : 'Màu áo'}${id ? ': ' + CARD[id].text : ', còn trống'}`);
+  });
+  const placed = placedIds();
+  const pool = $('#pool');
+  pool.innerHTML = p1.order.filter(id => !placed.includes(id))
+    .map(id => `<button type="button" class="pcard${p1.picked === id ? ' sel' : ''}" data-id="${id}" aria-pressed="${p1.picked === id}">${CARD[id].text}</button>`).join('');
+  $$('.pcard', pool).forEach(bindCard);
+  $('#poolLabel').textContent = tableFull() ? 'Em đã xếp hết các thẻ.' : 'Các thẻ';
+  $('#board').classList.toggle('picking', !!p1.picked);
+}
+
+function pick(id) {
+  p1.picked = id;
+  $$('.pcard').forEach(c => { const on = c.dataset.id === id; c.classList.toggle('sel', on); c.setAttribute('aria-pressed', on); });
+  $('#board').classList.toggle('picking', !!id);
+}
+
+function setMsg(el, type, text) {
+  if (!text) { el.hidden = true; el.textContent = ''; return; }
+  el.className = 'msg ' + type;
+  el.textContent = text;
+  el.hidden = false;
+}
+
+function onSlotClick(slot) {
+  if (slot.classList.contains('ok')) return;
+  if (!p1.picked) { setMsg($('#msg'), 'hint', 'Em bấm chọn một thẻ trước, rồi bấm vào ô này nhé.'); return; }
+  place(p1.picked, slot);
+}
+
+// Đặt thẻ vào ô: đúng thì giữ lại trong bảng, sai thì thẻ ở lại chỗ cũ kèm gợi ý
+function place(id, slot) {
+  const card = CARD[id], row = p1.grid[+slot.dataset.row], col = slot.dataset.col;
+  let hint = '';
+  if (row[col]) hint = 'Ô này đã có thẻ rồi. Em chọn ô khác nhé.';
+  else if (card.kind === 'color' && col === 'name') hint = 'Thẻ này là màu áo, hãy đặt vào cột Màu áo.';
+  else if (card.kind === 'name' && col === 'color') hint = 'Thẻ này là tên một bạn, hãy đặt vào cột Tên.';
+  else if (card.kind === 'color' && !row.name) hint = 'Hàng này chưa có tên. Em đặt tên một bạn vào ô Tên trước nhé.';
+  else if (card.kind === 'color' && COLOR_OF[CARD[row.name].text] !== card.text) hint = 'Đọc lại lời khai: ai mặc áo này?';
+
+  if (hint) {
+    pick(null);
+    retrigger(slot, 'bad');
+    setTimeout(() => slot.classList.remove('bad'), 600);
+    setMsg($('#msg'), 'hint', hint);
+    return false;
+  }
+  row[col] = id;
+  p1.picked = null;
+  setMsg($('#msg'), '', '');
+  paintP1();
+  if (tableFull()) openQuiz(true);
+  return true;
+}
+
+/* ---------- Kéo thả bằng Pointer Events (chuột và cảm ứng) ----------
+   Nhấn rồi kéo quá vài điểm ảnh thì thành kéo thả; nhấn rồi thả ngay thì là bấm chọn thẻ. */
+let skipClick = false;
+function bindCard(el) {
+  el.addEventListener('click', () => {
+    if (skipClick) return;
+    pick(p1.picked === el.dataset.id ? null : el.dataset.id);
+  });
+  el.addEventListener('pointerdown', e => {
+    if (e.button > 0) return;
+    const sx = e.clientX, sy = e.clientY;
+    let ghost = null, over = null, dx = 0, dy = 0;
+    const move = ev => {
+      if (!ghost) {
+        if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 6) return;
+        const r = el.getBoundingClientRect();
+        dx = sx - r.left; dy = sy - r.top;
+        ghost = el.cloneNode(true);
+        ghost.classList.remove('sel');
+        ghost.classList.add('drag-ghost');
+        ghost.removeAttribute('aria-pressed');
+        ghost.setAttribute('aria-hidden', 'true');
+        ghost.style.width = r.width + 'px';
+        document.body.appendChild(ghost);
+        el.classList.add('src');
+        pick(null);
+      }
+      ev.preventDefault();
+      ghost.style.left = (ev.clientX - dx) + 'px';
+      ghost.style.top = (ev.clientY - dy) + 'px';
+      const t = document.elementFromPoint(ev.clientX, ev.clientY);
+      const s = t && t.closest('.slot');
+      if (s !== over) {
+        if (over) over.classList.remove('over');
+        over = s;
+        if (over && !over.classList.contains('ok')) over.classList.add('over');
+      }
+    };
+    const up = () => {
+      removeEventListener('pointermove', move);
+      removeEventListener('pointerup', up);
+      removeEventListener('pointercancel', up);
+      if (!ghost) return;
+      skipClick = true;
+      setTimeout(() => { skipClick = false; }, 0);
+      if (over) over.classList.remove('over');
+      const ok = over ? place(el.dataset.id, over) : false;
+      if (ok) { ghost.remove(); return; }
+      // Sai hoặc thả ra ngoài: thẻ bay về chỗ cũ
+      el.classList.remove('src');
+      const r = el.getBoundingClientRect();
+      ghost.classList.add('back');
+      ghost.style.left = r.left + 'px';
+      ghost.style.top = r.top + 'px';
+      ghost.style.opacity = '0';
+      setTimeout(() => ghost.remove(), 260);
+    };
+    addEventListener('pointermove', move, { passive: false });
+    addEventListener('pointerup', up);
+    addEventListener('pointercancel', up);
+  });
+}
+
+function openQuiz(scroll) {
+  const quiz = $('#quiz');
+  quiz.hidden = false;
+  if (p1.solved) {
+    $$('[data-who]').forEach(b => { b.disabled = true; b.classList.toggle('yes', b.dataset.who === THIEF); });
+    setMsg($('#quizMsg'), 'good', 'Chính xác! Nhờ bảng, em tìm ra ngay. Hóa ra Minh mượn bóng để tập cho trận đấu chiều nay.');
+    $('#doneRow').hidden = false;
+  }
+  if (scroll) embed.reveal(quiz);
+}
+
+function answer(btn) {
+  if (p1.solved) return;
+  if (btn.dataset.who === THIEF) {
+    p1.solved = true;
+    openQuiz(false);
+    embed.reveal($('#doneRow'));
+    return;
+  }
+  retrigger(btn, 'no');
+  setTimeout(() => btn.classList.remove('no'), 700);
+  setMsg($('#quizMsg'), 'hint', 'Chưa đúng. Nhìn vào cột Màu áo, tìm ô ghi Áo xanh nhé.');
+}
+
+/* =========================================================
+   PHẦN 2 – VẬN DỤNG: THẺ NHÂN VẬT CỦA EM
+   ========================================================= */
+const SAMPLE = [
+  ['Tên', 'Robot Tia Chớp'],
+  ['Sức mạnh', '7'],
+  ['Tốc độ', '9'],
+  ['Tuyệt chiêu', 'Chạy nhanh như điện']
+];
+const STEPS = [
+  'Mở phần mềm soạn thảo văn bản.',
+  'Chọn <b>Insert</b>, chọn <b>Table</b>, tạo bảng <b>2 cột 4 hàng</b>.',
+  'Gõ cột trái giống bảng mẫu.',
+  'Điền thông tin nhân vật của em vào cột phải.',
+  'Lưu tệp với tên: <span class="fname">the-nhan-vat-ten-em</span>.'
+];
+const STORE_KEY = 'bai12_the_nhan_vat';
+function loadTicks() {
+  try {
+    const v = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+    return STEPS.map((_, i) => !!(Array.isArray(v) && v[i]));
+  } catch (e) { return STEPS.map(() => false); }
+}
+function saveTicks(t) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(t)); } catch (e) {}
+}
+
+function renderP2() {
+  const ticks = loadTicks();
+  show(`<div class="ch-head"><span class="ch-tag">Phần 2 · Vận dụng</span><h2>Thẻ nhân vật của em</h2></div>
+    <p class="task">Em hãy dùng phần mềm soạn thảo văn bản tạo một bảng 2 cột, 4 hàng để giới thiệu nhân vật em yêu thích (có thể tự nghĩ ra).</p>
+    <div class="p2">
+      <section class="card" aria-labelledby="sampleTitle">
+        <h3 id="sampleTitle">Bảng mẫu</h3>
+        <table class="st">
+          <caption class="sr-only">Bảng mẫu thẻ nhân vật Robot Tia Chớp</caption>
+          <tbody>${SAMPLE.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join('')}</tbody>
+        </table>
+        <p class="note">Cột trái giữ nguyên, em chỉ cần điền cột phải.</p>
+      </section>
+      <section class="card" aria-labelledby="stepsTitle">
+        <div class="steps-head"><h3 id="stepsTitle">Các bước làm</h3><span class="col-lbl" aria-hidden="true">Đã làm</span></div>
+        <ol class="steps" role="list">${STEPS.map((s, i) => `<li class="${ticks[i] ? 'done' : ''}">
+          <span class="txt">${s}</span>
+          <label><input type="checkbox" data-step="${i}"${ticks[i] ? ' checked' : ''}><span class="dl">Đã làm</span></label>
+        </li>`).join('')}</ol>
+        <p class="msg good" id="finish" role="status" aria-live="polite" hidden>Em đã hoàn thành thẻ nhân vật. Hãy mang thẻ so với bạn xem nhân vật của ai mạnh hơn!</p>
+      </section>
+    </div>`);
+
+  const sync = scroll => {
+    const now = $$('[data-step]').map(c => c.checked);
+    $$('.steps li').forEach((li, i) => li.classList.toggle('done', now[i]));
+    const all = now.every(Boolean), fin = $('#finish'), was = !fin.hidden;
+    fin.hidden = !all;
+    if (all && !was && scroll) embed.reveal(fin);
+    return now;
+  };
+  $$('[data-step]').forEach(c => c.addEventListener('change', () => saveTicks(sync(true))));
+  sync(false);
+}
+
+/* ---------- Chuyển phần ---------- */
+function go(n) {
+  $('#tab1').setAttribute('aria-selected', n === 1);
+  $('#tab2').setAttribute('aria-selected', n === 2);
+  if (n === 1) renderP1(); else renderP2();
+}
+$('#tab1').addEventListener('click', () => go(1));
+$('#tab2').addEventListener('click', () => go(2));
+
+p1 = freshP1();
+go(1);
+</script>
+</body>
+</html>

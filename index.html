@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- CSS cho Popup Hướng dẫn (Màu Pastel ấm & Cỡ chữ lớn) -->
+  <!-- CSS cho Popup Hướng dẫn (Ít icon, chữ lớn, màu Pastel đồng bộ) -->
   <style>
     :root {
       --guide-navy: #18314F;
@@ -44,17 +44,17 @@
       pointer-events: none;
     }
 
-    /* Khung Popup chính */
+    /* Khung Popup chính (Rộng rãi hơn để chứa chữ lớn) */
     .guide-modal-box {
       background: var(--guide-cream-bg);
       border: 3px solid var(--guide-border);
       border-radius: 32px;
-      max-width: 860px;
+      max-width: 940px;
       width: 100%;
-      max-height: 92vh;
+      max-height: 94vh;
       overflow-y: auto;
       box-shadow: 0 24px 60px rgba(24, 49, 79, 0.25);
-      padding: 30px 34px;
+      padding: 34px 38px;
       position: relative;
       color: var(--guide-navy);
       animation: guidePopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -76,47 +76,38 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
-      gap: 12px;
+      margin-bottom: 22px;
+      gap: 16px;
     }
 
     .guide-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .guide-brand-badge {
-      background: #E0F2FE;
-      color: var(--guide-navy);
-      font-weight: 900;
-      font-size: 1.3rem;
-      padding: 8px 14px;
-      border-radius: 14px;
-      border: 2px solid #BAE6FD;
+    .guide-brand-logo {
+      height: 50px;
+      width: auto;
+      object-fit: contain;
+      display: block;
     }
 
     .guide-brand-text {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--guide-navy);
-    }
-
-    .guide-brand-sub {
-      display: block;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #5A7184;
+      letter-spacing: -0.01em;
     }
 
     .guide-skip-top {
       background: #FFFFFF;
       color: var(--guide-navy);
       border: 2px solid var(--guide-border);
-      padding: 10px 20px;
+      padding: 12px 24px;
       border-radius: 999px;
       font-family: inherit;
-      font-size: 1.05rem;
+      font-size: 1.18rem;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -128,13 +119,13 @@
       transform: translateY(-1px);
     }
 
-    /* Banner tiêu đề màu kem giống ảnh thiết kế */
+    /* Banner tiêu đề màu kem */
     .guide-header-banner {
       background: var(--guide-banner-cream);
       border-radius: 26px;
-      padding: 24px 28px;
+      padding: 26px 30px;
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       border: 2px solid #F6E6C2;
     }
 
@@ -142,24 +133,24 @@
       display: inline-block;
       background: #FFFFFF;
       color: var(--guide-navy);
-      font-size: 1.05rem;
+      font-size: 1.2rem;
       font-weight: 800;
-      padding: 6px 18px;
+      padding: 8px 22px;
       border-radius: 999px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       box-shadow: 0 2px 8px rgba(24, 49, 79, 0.06);
     }
 
     .guide-main-title {
-      font-size: 2.15rem;
+      font-size: 2.5rem;
       font-weight: 900;
       color: var(--guide-navy);
-      margin: 0 0 8px 0;
-      line-height: 1.25;
+      margin: 0 0 10px 0;
+      line-height: 1.2;
     }
 
     .guide-subtitle {
-      font-size: 1.2rem;
+      font-size: 1.35rem;
       color: var(--guide-text);
       margin: 0;
       font-weight: 600;
@@ -175,59 +166,60 @@
     }
 
     .guide-step-heading {
-      font-size: 1.45rem;
+      font-size: 1.65rem;
       font-weight: 900;
       color: var(--guide-navy);
-      margin: 0 0 12px 0;
+      margin: 0 0 14px 0;
     }
 
     .guide-lead-text {
-      font-size: 1.2rem;
+      font-size: 1.32rem;
       line-height: 1.65;
       color: var(--guide-text);
-      margin: 0 0 20px 0;
+      margin: 0 0 22px 0;
       font-weight: 600;
     }
 
     /* Lưới thẻ màu Pastel */
     .guide-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+      gap: 18px;
     }
 
     .guide-pastel-card {
       border-radius: 24px;
-      padding: 20px 22px;
+      padding: 24px 24px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       border: 2px solid rgba(255, 255, 255, 0.85);
       box-shadow: 0 8px 20px rgba(24, 49, 79, 0.05);
     }
 
     .guide-card-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
       color: #FFFFFF;
       font-weight: 900;
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
 
     .guide-card-title {
-      font-size: 1.28rem;
+      font-size: 1.42rem;
       font-weight: 800;
       color: var(--guide-navy);
       margin: 0;
+      line-height: 1.35;
     }
 
     .guide-card-desc {
-      font-size: 1.12rem;
-      line-height: 1.55;
+      font-size: 1.22rem;
+      line-height: 1.6;
       color: var(--guide-text);
       margin: 0;
       font-weight: 500;
@@ -239,8 +231,8 @@
       background: #FFFFFF;
       color: var(--guide-navy);
       font-weight: 800;
-      font-size: 1rem;
-      padding: 8px 18px;
+      font-size: 1.12rem;
+      padding: 10px 20px;
       border-radius: 999px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
@@ -266,8 +258,8 @@
 
     /* Thanh chân Popup */
     .guide-footer {
-      margin-top: 26px;
-      padding-top: 20px;
+      margin-top: 28px;
+      padding-top: 22px;
       border-top: 2px solid #F3EAD8;
       display: flex;
       flex-wrap: wrap;
@@ -283,8 +275,8 @@
     }
 
     .guide-dot {
-      width: 14px;
-      height: 14px;
+      width: 15px;
+      height: 15px;
       border-radius: 999px;
       background: #E2D5BE;
       border: none;
@@ -294,21 +286,21 @@
     }
 
     .guide-dot.active {
-      width: 38px;
+      width: 42px;
       background: var(--guide-navy);
     }
 
     .guide-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .guide-btn {
       font-family: inherit;
-      font-size: 1.15rem;
+      font-size: 1.24rem;
       font-weight: 800;
-      padding: 13px 26px;
+      padding: 14px 30px;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -339,13 +331,16 @@
 
     @media (max-width: 640px) {
       .guide-modal-box {
-        padding: 20px 18px;
+        padding: 22px 18px;
+      }
+      .guide-brand-text {
+        font-size: 1.2rem;
       }
       .guide-main-title {
-        font-size: 1.65rem;
+        font-size: 1.85rem;
       }
       .guide-lead-text {
-        font-size: 1.08rem;
+        font-size: 1.15rem;
       }
       .guide-footer {
         flex-direction: column;
@@ -375,7 +370,7 @@
         <a href="crossword.html" class="nav-link">🧩 Ô chữ</a>
         <a href="algorithm.html" class="nav-link">🤖 Thuật toán</a>
         <button type="button" class="nav-link" onclick="openGuideModal()" style="background: #FBE28A; border: 1px solid #F0C954; border-radius: 999px; cursor: pointer; font-weight: 800; color: #18314F;">
-          ❓ Hướng dẫn
+          Hướng dẫn
         </button>
         <span class="star-counter-badge" id="header-star-count">⭐ 0/17 bài</span>
       </nav>
@@ -385,7 +380,7 @@
   <section class="hero-banner">
     <div class="hero-container">
       <div>
-        <span class="course-kicker">🎒 Chào mừng các bạn học sinh Lớp 6!</span>
+        <span class="course-kicker">🎒 Chào mừng các em học sinh Lớp 6!</span>
         <h1 class="hero-title">Khám phá Thế giới Máy tính & Internet thật dễ hiểu!</h1>
         <p class="hero-desc">
           Gồm 6 chủ đề và 17 bài học được chia thành từng bước nhỏ, có trò chơi ghép nối, giải ô chữ và mô phỏng trực quan giúp em vừa chơi vừa nắm chắc kiến thức Tin học 6.
@@ -445,18 +440,15 @@
     </div>
   </footer>
 
-  <!-- ================= POPUP HƯỚNG DẪN SỬ DỤNG (LUÔN HIỆN ĐẦU TIÊN KHI LOAD WEB) ================= -->
+  <!-- ================= POPUP HƯỚNG DẪN SỬ DỤNG ================= -->
   <div id="guidePopupOverlay" class="guide-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="guideMainTitle">
     <div class="guide-modal-box">
 
-      <!-- Thanh Header của Popup -->
+      <!-- Thanh Header của Popup: Logo trường ĐH SP TP.HCM & bỏ dòng Khoa/Lớp -->
       <div class="guide-top-bar">
         <div class="guide-brand">
-          <span class="guide-brand-badge">💻 HCMUE</span>
-          <div>
-            <span class="guide-brand-text">Hỗ trợ tin học — Tin học 6</span>
-            <span class="guide-brand-sub">Khoa Công nghệ Thông tin · K49.SPTIN.B</span>
-          </div>
+          <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM" class="guide-brand-logo">
+          <span class="guide-brand-text">Hỗ trợ tin học — Tin học 6</span>
         </div>
 
         <button type="button" class="guide-skip-top" onclick="goToMainWeb()">
@@ -466,33 +458,33 @@
 
       <!-- Banner tiêu đề lớn -->
       <div class="guide-header-banner">
-        <span class="guide-kicker">🎒 Chào mừng các bạn học sinh Lớp 6!</span>
+        <span class="guide-kicker">Chào mừng các em học sinh Lớp 6!</span>
         <h2 class="guide-main-title" id="guideMainTitle">Hỗ trợ tin học</h2>
         <p class="guide-subtitle">Khám phá Thế giới Máy tính & Internet thật dễ hiểu qua 3 bước dưới đây!</p>
       </div>
 
       <!-- BƯỚC 1: 6 Chủ đề & 17 Bài học -->
       <div class="guide-step-pane active" data-step="1">
-        <h3 class="guide-step-heading">1️⃣ Bước 1: Chọn chủ đề và bài học trên trang chủ</h3>
+        <h3 class="guide-step-heading">Bước 1: Chọn chủ đề và bài học trên trang chủ</h3>
         <p class="guide-lead-text">
           Web gồm <strong>6 chủ đề chính</strong> và <strong>17 bài học</strong> được chia thành từng bước nhỏ theo 3 nhóm kiến thức. Em chỉ cần chạm vào từng thẻ để bắt đầu học:
         </p>
         <div class="guide-cards-grid">
           <div class="guide-pastel-card pastel-blue">
             <span class="guide-card-badge badge-blue">1</span>
-            <h4 class="guide-card-title">💡 Máy tính & Thuật toán (CS)</h4>
+            <h4 class="guide-card-title">Máy tính & Thuật toán (CS)</h4>
             <p class="guide-card-desc">Làm quen với máy tính, nhận biết các bộ phận cơ bản và rèn luyện tư duy thuật toán.</p>
             <span class="guide-card-pill">Khám phá</span>
           </div>
           <div class="guide-pastel-card pastel-green">
             <span class="guide-card-badge badge-green">2</span>
-            <h4 class="guide-card-title">💻 Internet & Phần mềm (ICT)</h4>
+            <h4 class="guide-card-title">Internet & Phần mềm (ICT)</h4>
             <p class="guide-card-desc">Quản lý hệ điều hành, thư mục, tìm kiếm thông tin và soạn thảo văn bản gọn gàng.</p>
             <span class="guide-card-pill">Khám phá</span>
           </div>
           <div class="guide-pastel-card pastel-pink">
             <span class="guide-card-badge badge-pink">3</span>
-            <h4 class="guide-card-title">🛡️ An toàn trên mạng (DL)</h4>
+            <h4 class="guide-card-title">An toàn trên mạng (DL)</h4>
             <p class="guide-card-desc">Học cách truy cập thông tin đúng, bảo vệ tài khoản và dùng Internet có trách nhiệm.</p>
             <span class="guide-card-pill">Khám phá</span>
           </div>
@@ -501,25 +493,25 @@
 
       <!-- BƯỚC 2: Từ điển, Ô chữ & Thuật toán -->
       <div class="guide-step-pane" data-step="2">
-        <h3 class="guide-step-heading">2️⃣ Bước 2: Vừa học vừa chơi trên thanh menu</h3>
+        <h3 class="guide-step-heading">Bước 2: Vừa học vừa chơi trên thanh menu</h3>
         <p class="guide-lead-text">
           Ở thanh công cụ phía trên cùng, em có thể mở nhanh các tính năng bổ trợ thú vị bất cứ lúc nào:
         </p>
         <div class="guide-cards-grid">
           <div class="guide-pastel-card pastel-yellow">
-            <span class="guide-card-badge badge-yellow">📖</span>
+            <span class="guide-card-badge badge-yellow">1</span>
             <h4 class="guide-card-title">Từ điển</h4>
             <p class="guide-card-desc">Tra cứu nhanh các từ khóa và thuật ngữ Tin học 6 với lời giải thích ngắn gọn, dễ nhớ.</p>
             <span class="guide-card-pill">Tra cứu ngay</span>
           </div>
           <div class="guide-pastel-card pastel-purple">
-            <span class="guide-card-badge badge-purple">🧩</span>
+            <span class="guide-card-badge badge-purple">2</span>
             <h4 class="guide-card-title">Ô chữ</h4>
             <p class="guide-card-desc">Tham gia trò chơi ghép nối và giải đố ô chữ để ôn tập lại kiến thức đã học.</p>
             <span class="guide-card-pill">Chơi ô chữ</span>
           </div>
           <div class="guide-pastel-card pastel-peach">
-            <span class="guide-card-badge badge-peach">🤖</span>
+            <span class="guide-card-badge badge-peach">3</span>
             <h4 class="guide-card-title">Thuật toán</h4>
             <p class="guide-card-desc">Thử chạy mô phỏng trực quan để hiểu cách máy tính suy nghĩ và xử lý từng bước.</p>
             <span class="guide-card-pill">Mở mô phỏng</span>
@@ -529,19 +521,19 @@
 
       <!-- BƯỚC 3: Hoàn thành bài học & tích sao -->
       <div class="guide-step-pane" data-step="3">
-        <h3 class="guide-step-heading">3️⃣ Bước 3: Tích lũy Ngôi sao vào Bảng Vàng</h3>
+        <h3 class="guide-step-heading">Bước 3: Tích lũy Ngôi sao vào Bảng Vàng</h3>
         <p class="guide-lead-text">
           Mỗi khi học xong 1 bài, em nhớ bấm nút <strong>"Hoàn thành bài học"</strong> ở bước cuối để tích lũy ngôi sao nhé!
         </p>
         <div class="guide-cards-grid">
           <div class="guide-pastel-card pastel-green">
-            <span class="guide-card-badge badge-green">⭐</span>
+            <span class="guide-card-badge badge-green">1</span>
             <h4 class="guide-card-title">Tích lũy 17/17 Ngôi sao</h4>
             <p class="guide-card-desc">Theo dõi tiến độ học tập của em tăng dần trên Bảng Vàng mỗi ngày.</p>
-            <span class="guide-card-pill">⭐ 17 bài học</span>
+            <span class="guide-card-pill">17 bài học</span>
           </div>
           <div class="guide-pastel-card pastel-blue">
-            <span class="guide-card-badge badge-blue">🔎</span>
+            <span class="guide-card-badge badge-blue">2</span>
             <h4 class="guide-card-title">Tìm bài học cực nhanh</h4>
             <p class="guide-card-desc">Sử dụng bộ lọc chủ đề hoặc ô tìm kiếm để mở ngay bài học em cần ôn tập.</p>
             <span class="guide-card-pill">Danh mục bài học</span>
@@ -598,7 +590,7 @@
       prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-block';
 
       if (currentStep === totalSteps) {
-        nextBtn.textContent = '🚀 Vào trang web ngay!';
+        nextBtn.textContent = 'Vào trang web ngay →';
       } else {
         nextBtn.textContent = 'Tiếp theo →';
       }
@@ -625,11 +617,7 @@
     }
 
     function goToMainWeb() {
-      // 1. Đóng Popup
       overlay.classList.add('is-hidden');
-
-      // 2. Nếu đang mở thử file trên máy tính thì nhảy thẳng tới link web chính của nhóm
-      // Nếu đã ở trên vercel.app rồi thì giữ nguyên tại trang chủ để học sinh dùng luôn
       if (!window.location.hostname.includes('vercel.app')) {
         window.location.href = MAIN_WEB_URL;
       }

@@ -113,6 +113,8 @@ table.dt{width:100%; border-collapse:separate; border-spacing:0; border:2px soli
 .pcard:hover{transform:translateY(-2px); border-color:var(--primary2)}
 .pcard.sel{border-color:var(--tbl); background:var(--tbl-soft); box-shadow:0 4px 0 #8db3ef; transform:translateY(-3px)}
 .pcard.src{opacity:.35}
+.board.locked .pcard, .board.locked .slot{pointer-events:none}
+.board.locked .pcard{opacity:.55}
 .drag-ghost{position:fixed; z-index:950; pointer-events:none; margin:0; rotate:-3deg; box-shadow:0 14px 26px rgba(31,42,68,.25)}
 .drag-ghost.back{transition:left .25s ease, top .25s ease, opacity .25s ease}
 
@@ -291,12 +293,14 @@ const CARD = Object.fromEntries(CARDS.map(c => [c.id, c]));
 const COLOR_OF = Object.fromEntries(PEOPLE.map(p => [p.name, p.color]));
 const ROWS = 3;
 const THIEF = 'Minh';
+// Sai quá số lần này thì phải xếp lại bảng từ đầu, để em đọc kĩ lời khai trước khi đặt thẻ
+const MAX_WRONG = 3;
 
 let p1 = null;
 function freshP1() {
   let order;
   do { order = shuffle(CARDS.map(c => c.id)); } while (order.join() === CARDS.map(c => c.id).join());
-  return { order, grid: Array.from({ length: ROWS }, () => ({ name: null, color: null })), picked: null, solved: false };
+  return { order, grid: Array.from({ length: ROWS }, () => ({ name: null, color: null })), picked: null, solved: false, wrong: 0, locked: false };
 }
 const placedIds = () => p1.grid.flatMap(r => [r.name, r.color]).filter(Boolean);
 const tableFull = () => placedIds().length === CARDS.length;
@@ -307,7 +311,7 @@ function renderP1() {
       <div class="brief">
         <p class="task">Quả bóng của lớp bị mất. Hãy xếp lời khai của 3 bạn vào bảng để tìm ra ai đã lấy.</p>
         <div class="clue"><h3>Lời khai</h3><p>Lan mặc áo đỏ. Minh mặc áo xanh. Hoa mặc áo vàng.</p></div>
-        <p class="how">Kéo thẻ vào ô trong bảng. Hoặc bấm chọn một thẻ, rồi bấm vào ô.</p>
+        <p class="how">Kéo thẻ vào ô trong bảng. Hoặc bấm chọn một thẻ, rồi bấm vào ô. Đặt sai ${MAX_WRONG} lần sẽ phải xếp lại từ đầu.</p>
       </div>
       <div class="card board" id="board">
         <table class="dt">
@@ -372,26 +376,33 @@ function setMsg(el, type, text) {
 }
 
 function onSlotClick(slot) {
-  if (slot.classList.contains('ok')) return;
+  if (p1.locked) return;
+  if (slot.classList.contains('ok')) {
+    if (p1.picked) setMsg($('#msg'), 'hint', 'Ô này đã có thẻ rồi. Em chọn ô khác nhé.');
+    return;
+  }
   if (!p1.picked) { setMsg($('#msg'), 'hint', 'Em bấm chọn một thẻ trước, rồi bấm vào ô này nhé.'); return; }
   place(p1.picked, slot);
 }
 
-// Đặt thẻ vào ô: đúng thì giữ lại trong bảng, sai thì thẻ ở lại chỗ cũ kèm gợi ý
+// Đặt thẻ vào ô: đúng thì giữ lại trong bảng, sai thì thẻ ở lại chỗ cũ kèm gợi ý.
+// Chỉ tính là "sai" khi đặt nhầm cột hoặc nhầm hàng; thả vào ô đã có thẻ hay đặt màu áo trước tên thì chỉ nhắc.
 function place(id, slot) {
+  if (p1.locked) return false;
   const card = CARD[id], row = p1.grid[+slot.dataset.row], col = slot.dataset.col;
-  let hint = '';
-  if (row[col]) hint = 'Ô này đã có thẻ rồi. Em chọn ô khác nhé.';
+  let hint = '', counts = true;
+  if (row[col]) { hint = 'Ô này đã có thẻ rồi. Em chọn ô khác nhé.'; counts = false; }
   else if (card.kind === 'color' && col === 'name') hint = 'Thẻ này là màu áo, hãy đặt vào cột Màu áo.';
   else if (card.kind === 'name' && col === 'color') hint = 'Thẻ này là tên một bạn, hãy đặt vào cột Tên.';
-  else if (card.kind === 'color' && !row.name) hint = 'Hàng này chưa có tên. Em đặt tên một bạn vào ô Tên trước nhé.';
+  else if (card.kind === 'color' && !row.name) { hint = 'Hàng này chưa có tên. Em đặt tên một bạn vào ô Tên trước nhé.'; counts = false; }
   else if (card.kind === 'color' && COLOR_OF[CARD[row.name].text] !== card.text) hint = 'Đọc lại lời khai: ai mặc áo này?';
 
   if (hint) {
     pick(null);
     retrigger(slot, 'bad');
     setTimeout(() => slot.classList.remove('bad'), 600);
-    setMsg($('#msg'), 'hint', hint);
+    if (counts && ++p1.wrong >= MAX_WRONG) { restartP1(); return false; }
+    setMsg($('#msg'), 'hint', counts ? `${hint} Em còn được sai ${MAX_WRONG - p1.wrong} lần.` : hint);
     return false;
   }
   row[col] = id;
@@ -402,16 +413,29 @@ function place(id, slot) {
   return true;
 }
 
+// Sai đủ MAX_WRONG lần: khóa bảng một lúc rồi xếp lại từ đầu với thẻ được xáo trộn
+function restartP1() {
+  p1.locked = true;
+  $('#board').classList.add('locked');
+  setMsg($('#msg'), 'hint', `Em đã đặt sai ${MAX_WRONG} lần. Hãy đọc kĩ lời khai rồi xếp lại từ đầu nhé.`);
+  setTimeout(() => {
+    p1 = freshP1();
+    if (!$('#board')) return; // em đã chuyển sang Phần 2: bảng mới sẽ hiện khi quay lại
+    renderP1();
+    setMsg($('#msg'), 'hint', 'Bảng đã được làm mới. Em đọc lại lời khai rồi xếp nhé.');
+  }, 2600);
+}
+
 /* ---------- Kéo thả bằng Pointer Events (chuột và cảm ứng) ----------
    Nhấn rồi kéo quá vài điểm ảnh thì thành kéo thả; nhấn rồi thả ngay thì là bấm chọn thẻ. */
 let skipClick = false;
 function bindCard(el) {
   el.addEventListener('click', () => {
-    if (skipClick) return;
+    if (skipClick || p1.locked) return;
     pick(p1.picked === el.dataset.id ? null : el.dataset.id);
   });
   el.addEventListener('pointerdown', e => {
-    if (e.button > 0) return;
+    if (e.button > 0 || p1.locked) return;
     const sx = e.clientX, sy = e.clientY;
     let ghost = null, over = null, dx = 0, dy = 0;
     const move = ev => {

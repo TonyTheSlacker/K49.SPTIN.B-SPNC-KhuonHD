@@ -3,20 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hỗ trợ Tin học 6 — Kết nối tri thức với cuộc sống</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261103">
+  <title>Hỗ trợ Tin học 6</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=20261105b">
+  <link rel="icon" type="image/png" href="assets/images/Logo Tu Tin.png">
 </head>
 <body>
 
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand-identity">
-        <img src="assets/images/Logo HCMUE.svg" alt="Logo Trường Đại học Sư phạm TP.HCM" width="110" height="44">
+        <img src="assets/images/Logo Tu Tin.png" alt="Logo Tứ Tin" width="110" height="44">
         <span class="brand-name">Hỗ trợ Tin học 6</span>
       </a>
-      <nav class="main-nav" aria-label="Điều hướng chính">
+      <button type="button" class="nav-toggle-btn" id="navToggleBtn" aria-label="Mở menu điều hướng" aria-expanded="false">
+        <span class="nav-toggle-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="Điều hướng chính">
         <a href="dictionary.html" class="nav-link">Nội dung trọng tâm</a>
         <a href="crossword.html" class="nav-link">Trò chơi ô chữ</a>
+        <!-- <a href="algorithm.html" class="nav-link">Mô phỏng thuật toán</a> -->
         <span class="star-counter-badge" id="header-star-count">Đã học 0/17 bài</span>
       </nav>
     </div>
@@ -25,46 +34,42 @@
   <section class="hero-banner">
     <div class="hero-container">
       <div>
-        <span class="course-kicker">Chào mừng các bạn học sinh lớp 6</span>
-        <h1 class="hero-title">Khám phá Thế giới Máy tính & Internet thật dễ hiểu!</h1>
-        <p class="hero-desc">
-          Gồm 6 chủ đề và 17 bài học được chia thành từng bước nhỏ, có trò chơi ghép nối, giải ô chữ và mô phỏng trực quan giúp em vừa chơi vừa nắm chắc kiến thức Tin học 6.
-        </p>
+        <h1 class="hero-title">Học Tin học 6 thật vui và dễ hiểu!</h1>
+        <!-- <p class="hero-desc">
+          Khám phá trọn vẹn <strong style="color: #0052cd;">6 chủ đề</strong> qua <strong style="color: #0052cd;">17 bài học</strong> tương tác: giải ô chữ, ghép nối kiến thức và mô phỏng trực quan giúp học sinh tiếp thu bài học dễ dàng.
+        </p> -->
+        
         <div class="hero-actions">
           <a href="#curriculum-root" class="btn btn-primary btn-lg">Chọn bài học</a>
+          <a href="dictionary.html" class="btn btn-outline btn-lg">Nội dung trọng tâm</a>
           <a href="crossword.html" class="btn btn-outline btn-lg">Trò chơi ô chữ</a>
-          <a href="algorithm.html" class="btn btn-outline btn-lg">Mô phỏng thuật toán</a>
+          <!-- <a href="algorithm.html" class="btn btn-outline btn-lg">Mô phỏng thuật toán</a> -->
         </div>
       </div>
 
       <aside class="progress-summary-card" aria-label="Tiến độ học tập">
         <div class="progress-header">
-          <span class="progress-label">Tiến độ của em</span>
+          <span class="progress-label">Tiến độ học tập</span>
           <span class="progress-count" id="progress-count-text">0/17 bài (0%)</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill" id="progress-bar-fill"></div>
         </div>
-        <p style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-body);">
-          Mỗi khi học xong 1 bài, em nhớ bấm nút <strong>"Hoàn thành bài học"</strong> ở bước cuối để tích lũy ngôi sao nhé!
+        <p style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-body);">
+          Mỗi khi học xong 1 bài, em nhớ bấm nút <br><strong style="color: #1200da;">"Hoàn thành bài học"</strong> ở bước cuối <br> để tích lũy ngôi sao nhé!
         </p>
-        <div class="strand-legend">
-          <span class="strand-badge strand-cs">CS: Máy tính & Thuật toán</span>
-          <span class="strand-badge strand-ict">ICT: Internet & Phần mềm</span>
-          <span class="strand-badge strand-dl">DL: An toàn trên mạng</span>
-        </div>
       </aside>
     </div>
   </section>
 
   <main class="curriculum-container">
     <div class="toolbar-filter">
-      <div class="filter-group" role="group" aria-label="Lọc theo nhóm bài học">
+      <!-- <div class="filter-group" role="group" aria-label="Lọc theo nhóm bài học">
         <button type="button" class="btn btn-primary" data-strand-filter="ALL">Tất cả 17 bài</button>
         <button type="button" class="btn btn-outline" data-strand-filter="CS">Máy tính & Thuật toán (CS)</button>
         <button type="button" class="btn btn-outline" data-strand-filter="ICT">Internet & Phần mềm (ICT)</button>
         <button type="button" class="btn btn-outline" data-strand-filter="DL">An toàn mạng (DL)</button>
-      </div>
+      </div> -->
       <div class="search-box">
         <input type="search" id="lesson-search-input" placeholder="Gõ tên bài học em muốn tìm...">
       </div>
@@ -73,18 +78,18 @@
     <div id="curriculum-root"></div>
   </main>
 
-  <footer class="site-footer">
+    <footer class="site-footer">
     <div class="footer-inner">
       <div>
-        <strong>Sản phẩm Nghiên cứu — Học phần Hồ sơ Tốt nghiệp (K49.SPTIN.B)</strong><br>
-        Khoa Công nghệ Thông tin · Trường Đại học Sư phạm Thành phố Hồ Chí Minh (HCMUE)
+        <strong>Sản phẩm Nghiên cứu - Nhóm Tứ Tin - Lớp K49.SPTIN.B</strong><br>
+        <span>Đề tài: Thiết kế công cụ hỗ trợ học sinh lớp 6 gặp khó khăn trong việc tiếp thu kiến thức môn Tin học.</span>
       </div>
       <div>
-        Bộ sách Kết nối tri thức với cuộc sống — Môn Tin học Lớp 6
+        <strong>HCMUE</strong>
       </div>
     </div>
   </footer>
 
-  <script src="assets/js/main.js?v=20261103"></script>
+  <script src="assets/js/main.js?v=20261105b"></script>
 </body>
 </html>

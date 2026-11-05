@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261103">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261105b">
   <style>
     .crossword-hero {
       margin-top: 16px;
@@ -425,38 +425,82 @@
       .game-layout {
         grid-template-columns: 1fr;
       }
-
       .info-card {
         position: static;
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 640px) {
+      .crossword-hero {
+        margin-top: 8px;
+      }
       .board-card {
-        padding: 12px;
+        padding: 12px 10px;
+        border-radius: 20px;
       }
-
-      .word-row__cells {
-        gap: 4px;
-      }
-
-      .cell {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
-      }
-
-      .cell input {
-        font-size: 1rem; /* từ 16px trở lên để iPhone không tự phóng to khi gõ */
-      }
-
       .info-card {
-        padding: 18px;
+        padding: 14px 12px;
+        border-radius: 20px;
+      }
+      /* Chủ đề ô chữ dạng list 1 cột thu nhỏ, thấy toàn bộ */
+      .topic-picker {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .topic-pill {
+        padding: 10px 12px;
+        border-radius: 14px;
+      }
+      .topic-pill strong {
+        font-size: 1.02rem;
+      }
+      .topic-pill span {
+        font-size: 0.85rem;
+      }
+      /* Ô chữ co giãn thu nhỏ theo màn hình, hiển thị trọn vẹn từ mà không bị che */
+      .word-row {
+        gap: 6px;
+        padding-bottom: 12px;
+      }
+      .word-row__clue {
+        gap: 2px 8px;
+      }
+      .word-row__clue p {
+        font-size: 0.92rem;
+      }
+      .word-row__cells {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        width: 100%;
+        overflow: visible;
+      }
+      .cell {
+        width: clamp(24px, 6.2vw, 34px);
+        height: clamp(24px, 6.2vw, 34px);
+        border-radius: 6px;
+      }
+      .cell--gap {
+        width: 8px;
+      }
+      .cell input {
+        font-size: clamp(14px, 4vw, 17px);
+      }
+      .cell__number {
+        font-size: 9px;
+        top: 1px;
+        left: 2px;
+      }
+      .action-button {
+        padding: 11px 14px;
+        font-size: 0.95rem;
+        border-radius: 12px;
       }
     }
-  </style>
+</style>
 </head>
 <body>
+  <header class="site-header"></header>
   <div class="page-shell">
 
     <div class="home-layout">
@@ -511,8 +555,19 @@
       </div>
     </div>
 
-  <script src="assets/js/main.js?v=20261103"></script>
+  <script src="assets/js/main.js?v=20261105b"></script>
   <script src="assets/js/glossary-data.js?v=20260804"></script>
   <script src="assets/js/crossword.js?v=20260804"></script>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Sản phẩm Nghiên cứu - Nhóm Tứ Tin - Lớp K49.SPTIN.B</strong><br>
+        <span>Đề tài: Thiết kế công cụ hỗ trợ học sinh lớp 6 gặp khó khăn trong việc tiếp thu kiến thức môn Tin học.</span>
+      </div>
+      <div>
+        <strong>HCMUE</strong>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

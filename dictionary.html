@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261103">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261105b">
   <style>
     .dictionary-hero {
       margin-top: 16px;
@@ -259,10 +259,34 @@
       .dictionary-grid {
         grid-template-columns: 1fr;
       }
+      /* Nút lọc bài học dạng flex-wrap thu nhỏ, thấy ngay tất cả bài học */
+      .filter-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        overflow: visible;
+        margin-top: 12px;
+      }
+      .filter-pill {
+        padding: 6px 11px;
+        font-size: 0.8rem;
+        min-height: 32px;
+      }
+      .term-card {
+        padding: 16px 14px;
+        border-radius: 18px;
+      }
+      .term-card h3 {
+        font-size: 1.25rem;
+      }
+      .term-card p {
+        font-size: 0.92rem;
+      }
     }
-  </style>
+</style>
 </head>
 <body>
+  <header class="site-header"></header>
   <div class="page-shell">
 
     <div class="home-layout">
@@ -302,8 +326,19 @@
     </div>
   </div>
 
-  <script src="assets/js/main.js?v=20261103"></script>
+  <script src="assets/js/main.js?v=20261105b"></script>
   <script src="assets/js/glossary-data.js?v=20260804"></script>
   <script src="assets/js/dictionary.js?v=20260804"></script>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Sản phẩm Nghiên cứu - Nhóm Tứ Tin - Lớp K49.SPTIN.B</strong><br>
+        <span>Đề tài: Thiết kế công cụ hỗ trợ học sinh lớp 6 gặp khó khăn trong việc tiếp thu kiến thức môn Tin học.</span>
+      </div>
+      <div>
+        <strong>HCMUE</strong>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

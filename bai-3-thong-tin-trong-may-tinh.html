@@ -1,38 +1,459 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Bài 3 Tin học lớp 6: Thông tin trong máy tính - trang bài học chuẩn với khởi động, kiến thức, luyện tập và điều hướng.">
-  <title>Bài 3. Thông tin trong máy tính</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261103">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 3: Thông tin trong máy tính | Học liệu số Tin học 6 - HCMUE</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=20261105b" />
 </head>
 <body>
-  <div class="page-shell">
-    <main class="lesson-page">
-      <section class="lesson-page__intro" aria-labelledby="lesson-3-title">
-        <div class="lesson-page__eyebrow">Bài 3 · Tin học 6</div>
-        <h1 id="lesson-3-title">Thông tin trong máy tính</h1>
-        <p>Bài học giúp học sinh hiểu cách máy tính biểu diễn thông tin bằng dữ liệu số, chữ, hình ảnh và âm thanh.</p>
+  <div class="academic-Ribbon">
+    <div class="academic-Ribbon__inner">
+      <span>Chủ đề 1 (Chủ đề A): Máy tính và cộng đồng · Mạch Khoa học máy tính (CS)</span>
+      <span>Sách giáo khoa Tin học 6 – Kết nối tri thức với cuộc sống (Trang 13 – 16)</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="index.html" class="brand">
+        <img src="assets/images/Logo HCMUE.svg" alt="Logo HCMUE" class="brand__logo" />
+        <div class="brand__text">
+          <span class="brand__title">Học Liệu Số Tin Học 6</span>
+          <span class="brand__subtitle">Chủ đề 1 · Bài 3: Thông tin trong máy tính</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="index.html" class="main-nav__link">Mục lục bài học</a>
+        <a href="dictionary.html" class="main-nav__link">Từ điển thuật ngữ</a>
+        <a href="crossword.html" class="main-nav__link">Ô chữ ôn tập</a>
+        <a href="algorithm.html" class="main-nav__link">Mô phỏng thuật toán</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container lesson-layout">
+    <!-- Cột mục lục tiến trình sư phạm bên trái -->
+    <aside class="lesson-sidebar" aria-label="Tiến trình bài học">
+      <div class="lesson-sidebar__title">Tiến trình bài học</div>
+      <ul class="pedagogical-steps">
+        <li>
+          <a href="#yeu-cau-can-dat" class="pedagogical-steps__link is-active">
+            <span class="step-index">0</span> Yêu cầu cần đạt
+          </a>
+        </li>
+        <li>
+          <a href="#khoi-dong" class="pedagogical-steps__link">
+            <span class="step-index">1</span> Hoạt động Khởi động
+          </a>
+        </li>
+        <li>
+          <a href="#kham-pha-1" class="pedagogical-steps__link">
+            <span class="step-index">2</span> 1. Biểu diễn thông tin trong máy tính
+          </a>
+        </li>
+        <li>
+          <a href="#kham-pha-2" class="pedagogical-steps__link">
+            <span class="step-index">3</span> 2. Các đơn vị đo dung lượng thông tin
+          </a>
+        </li>
+        <li>
+          <a href="#luyen-tap" class="pedagogical-steps__link">
+            <span class="step-index">4</span> Hoạt động Luyện tập
+          </a>
+        </li>
+        <li>
+          <a href="#van-dung" class="pedagogical-steps__link">
+            <span class="step-index">5</span> Hoạt động Vận dụng
+          </a>
+        </li>
+      </ul>
+
+      <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-light);">
+        <button
+          type="button"
+          id="mark-lesson-complete"
+          data-lesson-id="3"
+          class="btn btn--primary"
+          style="width: 100%; justify-content: center;"
+        >
+          Đánh dấu đã hoàn thành bài học
+        </button>
+      </div>
+    </aside>
+
+    <!-- Nội dung bài học chính -->
+    <main class="lesson-main">
+      <header id="yeu-cau-can-dat" class="lesson-header">
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <span class="topic-code">Bài 03</span>
+          <span class="strand-badge strand-badge--cs">Mạch CS · Khoa học máy tính</span>
+        </div>
+        <h1 class="lesson-header__title">Thông tin trong máy tính</h1>
+
+        <div class="objectives-box">
+          <div class="objectives-box__title">Sau bài học này em sẽ</div>
+          <ul>
+            <li>Giải thích được <strong>thông tin trong máy tính</strong> được biểu diễn thành <strong>dãy bit (các kí hiệu 0 và 1)</strong>.</li>
+            <li>Nhận biết được <strong>bit</strong> là đơn vị nhỏ nhất để lưu trữ và đo lượng thông tin.</li>
+            <li>Nêu được tên và thứ tự các <strong>đơn vị đo dung lượng thông tin cơ bản</strong>: Byte (B), Kilobyte (KB), Megabyte (MB), Gigabyte (GB), Terabyte (TB).</li>
+            <li>Ước lượng được khả năng lưu trữ của các thiết bị nhớ thông dụng (thẻ nhớ, USB, ổ đĩa cứng).</li>
+          </ul>
+        </div>
+      </header>
+
+      <!-- 1. HOẠT ĐỘNG KHỞI ĐỘNG -->
+      <section id="khoi-dong" class="lesson-section">
+        <div class="lesson-section__header">
+          <span class="section-pill">Hoạt động 1</span>
+          <h2 class="lesson-section__title">Khởi động: Ngôn ngữ của máy tính và thế giới bit</h2>
+        </div>
+
+        <p>
+          Hằng ngày, con người trò chuyện bằng lời nói, viết chữ, ngắm nhìn tranh ảnh và lắng nghe âm nhạc.
+          Tuy nhiên, bên trong máy tính chỉ có các linh kiện điện tử hoạt động nhờ dòng điện: chỉ có hai trạng thái là
+          <strong>có điện (BẬT)</strong> hoặc <strong>không có điện (TẮT)</strong>.
+          Để máy tính hiểu và xử lí được, mọi thông tin của con người đều phải chuyển đổi thành tín hiệu chỉ gồm hai số:
+          <strong>0 và 1</strong> (được gọi là <em>dãy bit</em>).
+        </p>
+
+        <div class="sgk-activity-box">
+          <span class="sgk-activity-box__label">Tình huống khám phá (SGK trang 13)</span>
+          <p>
+            Quan sát công tắc bóng đèn: Công tắc chỉ có 2 trạng thái: <strong>BẬT</strong> (đèn sáng) và <strong>TẮT</strong> (đèn tắt).
+            Nếu quy ước: <strong>BẬT là 1</strong>, <strong>TẮT là 0</strong>, thì bằng cách kết hợp nhiều công tắc bật/tắt liên tiếp,
+            ta có thể tạo thành một dãy số nhị phân độc đáo đại diện cho từng ký tự hay con số.
+          </p>
+        </div>
+
+        <!-- Trực quan tương tác mô phỏng 8 bóng đèn tạo thành 1 Byte -->
+        <div class="interactive-embed" style="background: #ffffff; border: 2px solid #e2e8f0; border-radius: var(--radius-md); padding: 1.25rem; margin-top: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+          <div style="font-weight: 800; color: #0284c7; font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>💡 Mô phỏng tương tác: Thử nghiệm 8 bóng đèn tạo thành 1 Byte dữ liệu</span>
+          </div>
+          <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 1rem;">
+            Em hãy bấm vào từng bóng đèn dưới đây để chuyển đổi giữa <strong>Bật (1)</strong> và <strong>Tắt (0)</strong>, sau đó quan sát dãy bit và ký tự tương ứng được máy tính nhận diện:
+          </p>
+          <div id="bit-demo-switches" style="display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
+            <!-- JS tự động dựng 8 bóng đèn -->
+          </div>
+          <div style="background: #f8fafc; border: 2px dashed #38bdf8; border-radius: 10px; padding: 0.85rem 1.25rem; text-align: center;">
+            <div style="font-size: 0.88rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Dãy Bit tạo thành (8 bit = 1 Byte):</div>
+            <div id="bit-demo-output" style="font-family: Consolas, monospace; font-size: 2rem; font-weight: 900; letter-spacing: 5px; color: #0284c7; margin: 0.35rem 0;">01000001</div>
+            <div id="bit-demo-char" style="font-size: 1.05rem; font-weight: 700; color: #16a34a;">Ký tự tương ứng trong bảng mã ASCII: "A"</div>
+          </div>
+        </div>
       </section>
-      <section class="lesson-section" aria-labelledby="warmup-title">
-        <div class="lesson-section__header"><span class="lesson-section__icon" aria-hidden="true">💾</span><div><h2 id="warmup-title">1. Khởi động</h2><p class="lesson-section__lead">Quan sát một số ví dụ dữ liệu đang được máy tính lưu trữ và hiển thị.</p></div></div>
-        <div class="lesson-frame lesson-frame--wide"><iframe title="Khởi động - Thông tin trong máy tính" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>💾 Khởi động Bài 3</strong><div>Nhúng trò chơi hoặc hình ảnh minh họa dữ liệu trong máy tính.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe></div>
+
+      <!-- 2. HÌNH THÀNH KIẾN THỨC: MỤC 1 -->
+      <section id="kham-pha-1" class="lesson-section">
+        <div class="lesson-section__header">
+          <span class="section-pill">Khám phá 1</span>
+          <h2 class="lesson-section__title">1. Biểu diễn thông tin trong máy tính</h2>
+        </div>
+
+        <div class="sgk-activity-box">
+          <span class="sgk-activity-box__label">Khái niệm Bit (SGK trang 13)</span>
+          <p>
+            <strong>Bit</strong> (viết tắt của <em>binary digit</em> – chữ số nhị phân) là đơn vị nhỏ nhất để lưu trữ và đo lượng thông tin trong máy tính.
+          </p>
+          <p style="margin-top: 0.5rem;">
+            Mỗi bit chỉ nhận một trong hai giá trị là <strong>0</strong> hoặc <strong>1</strong> (thường được thể hiện bằng hai trạng thái vật lí như tắt/bật dòng điện, không nhiễm từ/nhiễm từ trên bề mặt đĩa từ).
+          </p>
+        </div>
+
+        <p style="margin-top: 1rem;">
+          Tất cả các dạng dữ liệu khác nhau mà con người đưa vào máy tính đều được chuyển đổi thành dãy bit:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.25rem 0;">
+          <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 1.1rem;">
+            <div style="font-weight: 800; color: #166534; font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>📝 Biểu diễn văn bản</span>
+            </div>
+            <p style="font-size: 0.92rem; color: #334155; margin: 0; line-height: 1.6;">
+              Mỗi kí tự (chữ hoa, chữ thường, chữ số, dấu câu, khoảng trắng) được gán một dãy bit duy nhất. Ví dụ chữ <strong>A</strong> là <code>01000001</code>, chữ <strong>B</strong> là <code>01000010</code>.
+            </p>
+          </div>
+
+          <div style="background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 12px; padding: 1.1rem;">
+            <div style="font-weight: 800; color: #1e40af; font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🔢 Biểu diễn số</span>
+            </div>
+            <p style="font-size: 0.92rem; color: #334155; margin: 0; line-height: 1.6;">
+              Các số trong hệ đếm thập phân quen thuộc (0, 1, 2, 3...) được chuyển đổi sang hệ nhị phân (chỉ dùng số 0 và 1). Ví dụ số 5 là <code>101</code>, số 6 là <code>110</code>.
+            </p>
+          </div>
+
+          <div style="background: #fdf4ff; border: 1.5px solid #f0abfc; border-radius: 12px; padding: 1.1rem;">
+            <div style="font-weight: 800; color: #86198f; font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🖼️ Biểu diễn hình ảnh</span>
+            </div>
+            <p style="font-size: 0.92rem; color: #334155; margin: 0; line-height: 1.6;">
+              Mỗi bức ảnh kỹ thuật số được chia thành một mạng lưới hàng triệu ô vuông nhỏ gọi là điểm ảnh (pixel). Màu sắc của mỗi điểm ảnh được mã hóa thành một dãy bit.
+            </p>
+          </div>
+
+          <div style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 12px; padding: 1.1rem;">
+            <div style="font-weight: 800; color: #92400e; font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🎵 Biểu diễn âm thanh</span>
+            </div>
+            <p style="font-size: 0.92rem; color: #334155; margin: 0; line-height: 1.6;">
+              Sóng âm thanh từ giọng nói, tiếng đàn được máy tính ghi lại, đo tần số và cường độ theo từng khoảnh khắc siêu nhỏ, sau đó quy đổi thành các dãy bit tương ứng.
+            </p>
+          </div>
+        </div>
+
+        <div class="sgk-core-box">
+          <span class="sgk-core-box__label">Kiến thức cốt lõi cần ghi nhớ</span>
+          <ul>
+            <li><strong>Bit</strong> là đơn vị nhỏ nhất để lưu trữ và đo lượng thông tin trong máy tính. Mỗi bit chỉ nhận một trong hai kí hiệu là <strong>0</strong> hoặc <strong>1</strong>.</li>
+            <li>Trong máy tính, mọi thông tin (văn bản, số, hình ảnh, âm thanh) đều được biểu diễn thành <strong>dãy bit</strong>.</li>
+          </ul>
+        </div>
       </section>
-      <section class="lesson-section" aria-labelledby="knowledge-title">
-        <div class="lesson-section__header"><span class="lesson-section__icon" aria-hidden="true">🖥️</span><div><h2 id="knowledge-title">2. Khám phá kiến thức</h2><p class="lesson-section__lead">Tóm tắt cách dữ liệu được mã hóa và lưu trong máy tính một cách ngắn gọn.</p></div></div>
-        <div class="lesson-knowledge"><div class="lesson-frame lesson-frame--wide"><iframe title="Video bài giảng - Thông tin trong máy tính" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>📺 Video bài giảng Bài 3</strong><div>Nhúng video ngắn giải thích dữ liệu được biểu diễn trong máy tính như thế nào.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe></div><aside class="lesson-summary" aria-label="Tóm tắt kiến thức bài 3"><h3>Tóm tắt bài học</h3><p>Máy tính chỉ hiểu <strong>dữ liệu</strong>; vì vậy thông tin phải được mã hóa thành dạng phù hợp để lưu trữ và xử lí.</p><ul><li>Chữ, số, hình ảnh và âm thanh đều có thể là dữ liệu.</li><li>Dữ liệu được lưu trong bộ nhớ máy tính.</li><li>Cùng một thông tin có thể biểu diễn bằng nhiều cách.</li><li>Hiểu cách biểu diễn dữ liệu giúp dùng máy tính hiệu quả hơn.</li></ul><a class="lesson-download" href="#" role="button" aria-label="Tải phiếu học tập Bài 3">Tải phiếu học tập</a></aside></div>
+
+      <!-- 3. HÌNH THÀNH KIẾN THỨC: MỤC 2 -->
+      <section id="kham-pha-2" class="lesson-section">
+        <div class="lesson-section__header">
+          <span class="section-pill">Khám phá 2</span>
+          <h2 class="lesson-section__title">2. Các đơn vị đo dung lượng thông tin</h2>
+        </div>
+
+        <p>
+          Một bit quá nhỏ bé so với khối lượng thông tin cần lưu trữ hằng ngày. Vì vậy, người ta ghép các bit lại thành đơn vị cơ bản là
+          <strong>Byte</strong> (kí hiệu là <strong>B</strong>):
+        </p>
+        <p style="margin: 0.5rem 0 1rem;">
+          <span style="display: inline-block; background: #e0f2fe; color: #0369a1; font-weight: 800; font-size: 1.1rem; padding: 0.45rem 1.1rem; border-radius: 8px; border: 1.5px solid #7dd3fc;">
+            1 Byte (B) = 8 bit
+          </span>
+        </p>
+
+        <p>
+          Để đo dung lượng thông tin lớn hơn (như dung lượng bài hát, tệp video, bộ nhớ USB hay ổ đĩa cứng), người ta sử dụng các đơn vị bội số của Byte:
+        </p>
+
+        <!-- Bảng chuẩn SGK Tin học 6 Kết nối tri thức trang 14 -->
+        <div style="overflow-x: auto; margin: 1rem 0 1.5rem;">
+          <table style="width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-light); font-size: 0.95rem;">
+            <thead>
+              <tr style="background: #f1f5f9; color: var(--text-primary); text-align: left;">
+                <th style="padding: 0.85rem 1rem; border-bottom: 2px solid #cbd5e1;">Tên đơn vị</th>
+                <th style="padding: 0.85rem 1rem; border-bottom: 2px solid #cbd5e1;">Kí hiệu</th>
+                <th style="padding: 0.85rem 1rem; border-bottom: 2px solid #cbd5e1;">Độ lớn chính xác</th>
+                <th style="padding: 0.85rem 1rem; border-bottom: 2px solid #cbd5e1;">Xấp xỉ (dễ nhớ)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 0.7rem 1rem; font-weight: 700;">Byte</td>
+                <td style="padding: 0.7rem 1rem;"><strong style="color: #0284c7;">B</strong></td>
+                <td style="padding: 0.7rem 1rem;">8 bit</td>
+                <td style="padding: 0.7rem 1rem; color: var(--text-secondary);">Khoảng 1 ký tự chữ cái</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                <td style="padding: 0.7rem 1rem; font-weight: 700;">Kilobyte</td>
+                <td style="padding: 0.7rem 1rem;"><strong style="color: #0284c7;">KB</strong></td>
+                <td style="padding: 0.7rem 1rem;">1 024 B</td>
+                <td style="padding: 0.7rem 1rem; color: var(--text-secondary);">Xấp xỉ một nghìn Byte</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 0.7rem 1rem; font-weight: 700;">Megabyte</td>
+                <td style="padding: 0.7rem 1rem;"><strong style="color: #0284c7;">MB</strong></td>
+                <td style="padding: 0.7rem 1rem;">1 024 KB</td>
+                <td style="padding: 0.7rem 1rem; color: var(--text-secondary);">Xấp xỉ một triệu Byte</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                <td style="padding: 0.7rem 1rem; font-weight: 700;">Gigabyte</td>
+                <td style="padding: 0.7rem 1rem;"><strong style="color: #0284c7;">GB</strong></td>
+                <td style="padding: 0.7rem 1rem;">1 024 MB</td>
+                <td style="padding: 0.7rem 1rem; color: var(--text-secondary);">Xấp xỉ một tỉ Byte</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.7rem 1rem; font-weight: 700;">Terabyte</td>
+                <td style="padding: 0.7rem 1rem;"><strong style="color: #0284c7;">TB</strong></td>
+                <td style="padding: 0.7rem 1rem;">1 024 GB</td>
+                <td style="padding: 0.7rem 1rem; color: var(--text-secondary);">Xấp xỉ một nghìn tỉ Byte</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sgk-activity-box">
+          <span class="sgk-activity-box__label">💡 Ví dụ thực tế về dung lượng trong đời sống</span>
+          <ul style="margin: 0; padding-left: 1.25rem; color: var(--text-primary); line-height: 1.7;">
+            <li><strong>1 Byte:</strong> Chứa được 1 ký tự chữ cái (ví dụ chữ "A", "B", hoặc dấu cách).</li>
+            <li><strong>Một cuốn sách giáo khoa Tin học 6:</strong> Dung lượng khoảng <strong>1 MB</strong> đến <strong>2 MB</strong>.</li>
+            <li><strong>Một bài hát MP3 chất lượng cao:</strong> Dung lượng khoảng <strong>4 MB</strong> đến <strong>5 MB</strong>.</li>
+            <li><strong>Một bức ảnh chụp bằng camera điện thoại:</strong> Dung lượng khoảng <strong>3 MB</strong> đến <strong>5 MB</strong>.</li>
+            <li><strong>Một thẻ nhớ điện thoại 32 GB:</strong> Có thể lưu trữ hơn <strong>8 000</strong> bài hát hoặc <strong>10 000</strong> bức ảnh!</li>
+            <li><strong>Một ổ đĩa cứng 1 TB:</strong> Có thể lưu trữ toàn bộ sách trong một thư viện lớn cùng hàng trăm bộ phim độ nét cao.</li>
+          </ul>
+        </div>
+
+        <div class="sgk-core-box">
+          <span class="sgk-core-box__label">Kiến thức cốt lõi cần ghi nhớ</span>
+          <ul>
+            <li>Đơn vị cơ bản đo dung lượng thông tin là <strong>Byte</strong> (kí hiệu là <strong>B</strong>). 1 Byte = 8 bit.</li>
+            <li>Các đơn vị đo dung lượng thông tin theo thứ tự tăng dần: <strong>B &rarr; KB &rarr; MB &rarr; GB &rarr; TB</strong>. Đơn vị đứng sau gấp 1 024 lần đơn vị đứng liền trước nó.</li>
+            <li><strong>Dung lượng thông tin</strong> phản ánh khả năng lưu trữ dữ liệu của các thiết bị nhớ (thẻ nhớ, USB, đĩa cứng...).</li>
+          </ul>
+        </div>
       </section>
-      <section class="lesson-section" aria-labelledby="practice-title">
-        <div class="lesson-section__header"><span class="lesson-section__icon" aria-hidden="true">🧪</span><div><h2 id="practice-title">3. Luyện tập &amp; Vận dụng</h2><p class="lesson-section__lead">Nhận biết đâu là dữ liệu đầu vào và dữ liệu đã được lưu trong máy tính.</p></div></div>
-        <div class="lesson-frame lesson-frame--wide"><iframe title="Luyện tập - Thông tin trong máy tính" srcdoc="<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>html,body{margin:0;min-height:100%;}body{display:grid;place-items:center;background:#0b1220;color:#e5eefc;font-family:Nunito,sans-serif;text-align:center;padding:24px;}div{max-width:420px;line-height:1.6;}strong{display:block;font-size:1.15rem;margin-bottom:8px;}small{display:block;opacity:.8;margin-top:8px;}</style></head><body><div><strong>🧪 Luyện tập Bài 3</strong><div>Nhúng bài tập tương tác để phân biệt dữ liệu và thông tin trong máy tính.</div><small>Placeholder tối cho chế độ dark mode.</small></div></body></html>" loading="lazy" referrerpolicy="no-referrer" allowfullscreen></iframe></div>
+
+      <!-- 4. LUYỆN TẬP -->
+      <section id="luyen-tap" class="lesson-section">
+        <div class="lesson-section__header">
+          <span class="section-pill">Hoạt động 3</span>
+          <h2 class="lesson-section__title">Luyện tập củng cố (SGK trang 15)</h2>
+        </div>
+
+        <div class="sgk-activity-box">
+          <span class="sgk-activity-box__label">Câu 1 (SGK trang 15): Khái niệm dãy bit</span>
+          <p><strong>Dãy bit là gì?</strong></p>
+          <div style="background: #f8fafc; border-left: 3px solid #0284c7; padding: 0.65rem 0.9rem; margin-top: 0.5rem; border-radius: 4px;">
+            <strong>Trả lời:</strong> Dãy bit là dãy các chữ số chỉ gồm hai ký hiệu <strong>0</strong> và <strong>1</strong> (dãy nhị phân) dùng để biểu diễn mọi thông tin trong máy tính.
+          </div>
+        </div>
+
+        <div class="sgk-activity-box" style="margin-top: 1rem;">
+          <span class="sgk-activity-box__label">Câu 2 (SGK trang 15): Sắp xếp các đơn vị đo dung lượng</span>
+          <p>Em hãy sắp xếp các đơn vị đo dung lượng thông tin sau đây theo thứ tự từ bé đến lớn: <strong>MB, B, TB, KB, GB</strong>.</p>
+          <div style="background: #f0fdf4; border-left: 3px solid #16a34a; padding: 0.65rem 0.9rem; margin-top: 0.5rem; border-radius: 4px;">
+            <strong>Thứ tự đúng:</strong> <span style="font-weight: 800; color: #15803d;">B &rarr; KB &rarr; MB &rarr; GB &rarr; TB</span>
+          </div>
+        </div>
+
+        <div class="sgk-activity-box" style="margin-top: 1rem;">
+          <span class="sgk-activity-box__label">Câu 3 (SGK trang 15): Bài toán tính toán dung lượng thực tế</span>
+          <p>
+            Một chiếc thẻ nhớ điện thoại có dung lượng <strong>16 GB</strong>. Biết rằng mỗi bức ảnh chụp bằng điện thoại có dung lượng trung bình khoảng <strong>4 MB</strong>.
+            Hỏi thẻ nhớ đó có thể lưu trữ được tối đa khoảng bao nhiêu bức ảnh?
+          </p>
+          <div style="background: #fdf2f8; border-left: 3px solid #db2777; padding: 0.65rem 0.9rem; margin-top: 0.5rem; border-radius: 4px;">
+            <strong>Hướng dẫn giải chi tiết:</strong>
+            <ul style="margin: 0.25rem 0 0; padding-left: 1.25rem; line-height: 1.6;">
+              <li>Đổi đơn vị Gigabyte sang Megabyte: 16 GB = 16 &times; 1 024 MB = <strong>16 384 MB</strong> (tính xấp xỉ: 16 &times; 1 000 = 16 000 MB).</li>
+              <li>Số lượng ảnh tối đa thẻ nhớ lưu được: 16 384 : 4 = <strong>4 096 bức ảnh</strong> (xấp xỉ khoảng 4 000 bức ảnh)!</li>
+            </ul>
+          </div>
+        </div>
       </section>
-      <nav class="lesson-footer-nav" aria-label="Điều hướng bài học"><a class="lesson-footer-nav__link lesson-footer-nav__link--prev" href="bai-2-xu-li-thong-tin.html" aria-label="Bài trước">← Bài trước</a><a class="lesson-footer-nav__link lesson-footer-nav__link--next" href="bai-4-mang-may-tinh.html" aria-label="Bài tiếp theo">Bài tiếp theo →</a></nav>
+
+      <!-- 5. VẬN DỤNG -->
+      <section id="van-dung" class="lesson-section">
+        <div class="lesson-section__header">
+          <span class="section-pill">Hoạt động 4</span>
+          <h2 class="lesson-section__title">Vận dụng thực tiễn (SGK trang 16)</h2>
+        </div>
+
+        <div class="sgk-activity-box" style="background-color: var(--sgk-practice-bg); border-color: #bbf7d0; border-left-color: var(--sgk-practice-border);">
+          <span class="sgk-activity-box__label" style="color: var(--sgk-practice-border);">Nhiệm vụ 1: Khám phá dung lượng thiết bị nhớ xung quanh em</span>
+          <p>
+            Em hãy thực hiện quan sát trên máy tính ở phòng máy trường học hoặc thiết bị ở gia đình:
+          </p>
+          <ul style="padding-left: 1.25rem; margin-top: 0.5rem; color: var(--text-secondary); line-height: 1.6;">
+            <li>Mở <strong>This PC</strong> trên máy tính: Đọc xem ổ đĩa C và ổ đĩa D có tổng dung lượng bao nhiêu GB và dung lượng còn trống là bao nhiêu GB.</li>
+            <li>Kiểm tra phần <strong>Cài đặt &rarr; Dung lượng / Bộ nhớ</strong> trên điện thoại thông minh để biết điện thoại có tổng dung lượng là bao nhiêu (ví dụ 64 GB, 128 GB hay 256 GB).</li>
+          </ul>
+        </div>
+
+        <div class="sgk-activity-box" style="background-color: var(--sgk-practice-bg); border-color: #bbf7d0; border-left-color: var(--sgk-practice-border); margin-top: 1rem;">
+          <span class="sgk-activity-box__label" style="color: var(--sgk-practice-border);">Nhiệm vụ 2: Tình huống tính dung lượng sao chép dữ liệu</span>
+          <p>
+            Bạn Lan có một chiếc USB dung lượng <strong>4 GB</strong>. Bạn muốn lưu vào USB các tệp sau để chuẩn bị thuyết trình:
+          </p>
+          <ul style="padding-left: 1.25rem; margin-top: 0.4rem; color: var(--text-secondary); line-height: 1.6;">
+            <li>5 cuốn sách tham khảo PDF (mỗi cuốn khoảng 40 MB).</li>
+            <li>20 bài hát học tiếng Anh MP3 (mỗi bài khoảng 5 MB).</li>
+            <li>1 tệp video bài giảng (dung lượng khoảng 1,5 GB).</li>
+          </ul>
+          <p style="margin-top: 0.6rem;">
+            <strong>Câu hỏi:</strong> Chiếc USB 4 GB của bạn Lan có đủ chỗ để lưu toàn bộ số tệp trên hay không? Vì sao?
+          </p>
+          <p style="margin-top: 0.35rem; font-size: 0.9rem; color: var(--text-secondary);">
+            <em>Hướng dẫn:</em> Tổng dung lượng sách: 5 &times; 40 MB = 200 MB; bài hát: 20 &times; 5 MB = 100 MB. Tổng sách và bài hát là 300 MB (&approx; 0,3 GB). Cộng thêm 1,5 GB video thì tổng cộng cần khoảng 1,8 GB. Vì 1,8 GB &le; 4 GB nên chiếc USB hoàn toàn đủ chỗ chứa!
+          </p>
+        </div>
+      </section>
+
+      <!-- Điều hướng chuyển bài -->
+      <nav class="lesson-pagination" aria-label="Chuyển bài học">
+        <a href="bai-2-xu-li-thong-tin.html" class="btn">← Bài 2: Xử lí thông tin</a>
+        <a href="bai-4-mang-may-tinh.html" class="btn btn--primary">Bài 4: Mạng máy tính →</a>
+      </nav>
     </main>
   </div>
-  <script src="assets/js/main.js?v=20261103"></script>
+
+  <script src="assets/js/main.js?v=20261105b"></script>
+  <script>
+    // Tương tác minh họa 8 bóng đèn tạo dãy bit và ký tự
+    document.addEventListener('DOMContentLoaded', () => {
+      const bitContainer = document.getElementById('bit-demo-switches');
+      const bitOutput = document.getElementById('bit-demo-output');
+      const bitChar = document.getElementById('bit-demo-char');
+      if (!bitContainer || !bitOutput || !bitChar) return;
+
+      // Khởi tạo mã cho chữ cái 'A' (01000001 = 65)
+      let bits = [0, 1, 0, 0, 0, 0, 0, 1];
+
+      function renderBits() {
+        bitContainer.innerHTML = '';
+        bits.forEach((val, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.setAttribute('aria-label', `Công tắc bit thứ ${idx + 1}`);
+          btn.style.cssText = `
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 8px 12px; border-radius: 8px; cursor: pointer; border: 2px solid ${val ? '#f59e0b' : '#cbd5e1'};
+            background: ${val ? '#fef3c7' : '#f8fafc'}; transition: all 0.2s; min-width: 52px; user-select: none;
+          `;
+          btn.innerHTML = `
+            <span style="font-size: 1.5rem; line-height: 1;">${val ? '💡' : '⚫'}</span>
+            <span style="font-weight: 800; font-size: 1.15rem; color: ${val ? '#b45309' : '#64748b'}; margin-top: 4px;">${val}</span>
+          `;
+          btn.onclick = () => {
+            bits[idx] = bits[idx] ? 0 : 1;
+            renderBits();
+          };
+          bitContainer.appendChild(btn);
+        });
+
+        const bitStr = bits.join('');
+        bitOutput.textContent = bitStr;
+        const charCode = parseInt(bitStr, 2);
+
+        if (charCode >= 65 && charCode <= 90) {
+          bitChar.textContent = `Ký tự tương ứng trong bảng mã ASCII: "${String.fromCharCode(charCode)}" (Chữ in hoa)`;
+          bitChar.style.color = '#16a34a';
+        } else if (charCode >= 97 && charCode <= 122) {
+          bitChar.textContent = `Ký tự tương ứng trong bảng mã ASCII: "${String.fromCharCode(charCode)}" (Chữ in thường)`;
+          bitChar.style.color = '#16a34a';
+        } else if (charCode >= 48 && charCode <= 57) {
+          bitChar.textContent = `Chữ số tương ứng trong bảng mã: "${String.fromCharCode(charCode)}"`;
+          bitChar.style.color = '#0284c7';
+        } else {
+          bitChar.textContent = `Giá trị số thập phân tương ứng: ${charCode}`;
+          bitChar.style.color = '#64748b';
+        }
+      }
+
+      renderBits();
+    });
+  </script>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Sản phẩm Nghiên cứu - Nhóm Tứ Tin - Lớp K49.SPTIN.B</strong><br>
+        <span>Đề tài: Thiết kế công cụ hỗ trợ học sinh lớp 6 gặp khó khăn trong việc tiếp thu kiến thức môn Tin học.</span>
+      </div>
+      <div>
+        <strong>HCMUE</strong>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

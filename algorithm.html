@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Mô phỏng thuật toán làm kem bằng sơ đồ khối: chạy tự động hoặc từng bước, quan sát nhánh Đúng/Sai.">
   <title>Mô phỏng thuật toán — Hỗ trợ Tin học 6</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261103">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261105b">
   <style>
     .algo-layout {
       display: grid;
@@ -294,10 +294,68 @@
       .algo-layout { grid-template-columns: 1fr; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .edge.is-active { animation: none; }
+    @media (max-width: 640px) {
+      .algo-card {
+        padding: 0.9rem 0.75rem;
+      }
+      .card-head h2 {
+        font-size: 1.15rem;
+      }
+      .step-counter {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.55rem;
+      }
+      /* Lựa chọn nguyên liệu dạng list dọc thu nhỏ, chữ không bị che */
+      .choices {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .choice span {
+        font-size: 0.88rem;
+        padding: 0.45rem 0.65rem;
+        text-align: left;
+      }
+      /* Cụm nút điều khiển dạng list dọc thu nhỏ */
+      .run-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+      .run-row .btn {
+        width: 100%;
+        flex: 1 1 100%;
+        font-size: 0.92rem;
+        padding: 0.6rem 0.8rem;
+      }
+      .btn-reset {
+        text-align: center;
+        width: 100%;
+        padding: 0.45rem;
+        font-size: 0.88rem;
+      }
+      .status {
+        font-size: 0.88rem;
+        padding: 0.65rem 0.8rem;
+        min-height: auto;
+      }
+      .words h3 {
+        font-size: 0.95rem;
+      }
+      .words li {
+        font-size: 0.86rem;
+        padding: 0.2rem 0.4rem;
+        line-height: 1.4;
+      }
+      .shape-legend {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+      }
+      .shape-legend li {
+        font-size: 0.88rem;
+      }
     }
-  </style>
+</style>
 </head>
 <body>
   <header class="site-header"></header>
@@ -444,7 +502,18 @@
     </section>
   </div>
 
-  <script src="assets/js/main.js?v=20261103"></script>
+  <script src="assets/js/main.js?v=20261105b"></script>
   <script src="assets/js/algorithm.js?v=20261103"></script>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Sản phẩm Nghiên cứu - Nhóm Tứ Tin - Lớp K49.SPTIN.B</strong><br>
+        <span>Đề tài: Thiết kế công cụ hỗ trợ học sinh lớp 6 gặp khó khăn trong việc tiếp thu kiến thức môn Tin học.</span>
+      </div>
+      <div>
+        <strong>HCMUE</strong>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

@@ -4,35 +4,38 @@
  */
 
 const STORAGE_KEY = 'hcmue_tinhoc6_completed_lessons';
-
-const LESSONS_DATA = [
-  { id: 1, topic: 1, strand: 'CS', icon: '💡', title: 'Bài 1: Thông tin và dữ liệu', file: 'bai-1-thong-tin-va-du-lieu.html', summary: 'Phân biệt thông tin, dữ liệu, vật mang tin và vai trò của thông tin.' },
-  { id: 2, topic: 1, strand: 'CS', icon: '🧠', title: 'Bài 2: Xử lí thông tin', file: 'bai-2-xu-li-thong-tin.html', summary: 'Bốn hoạt động cơ bản của quá trình xử lí thông tin ở người và máy tính.' },
-  { id: 3, topic: 1, strand: 'CS', icon: '🔢', title: 'Bài 3: Thông tin trong máy tính', file: 'bai-3-thong-tin-trong-may-tinh.html', summary: 'Biểu diễn thông tin bằng dãy bit (0 và 1) và các đơn vị đo dung lượng.' },
-  { id: 4, topic: 2, strand: 'ICT', icon: '🖧', title: 'Bài 4: Mạng máy tính', file: 'bai-4-mang-may-tinh.html', summary: 'Khái niệm, lợi ích và các thành phần cơ bản của mạng máy tính.' },
-  { id: 5, topic: 2, strand: 'ICT', icon: '🌐', title: 'Bài 5: Internet', file: 'bai-5-internet.html', summary: 'Đặc điểm của mạng máy tính toàn cầu Internet và các dịch vụ phổ biến.' },
-  { id: 6, topic: 3, strand: 'ICT', icon: '🧭', title: 'Bài 6: Mạng thông tin toàn cầu', file: 'bai-6-mang-thong-tin-toan-cau.html', summary: 'Siêu văn bản, trang web, website, địa chỉ truy cập và trình duyệt web.' },
-  { id: 7, topic: 3, strand: 'ICT', icon: '🔍', title: 'Bài 7: Tìm kiếm thông tin trên Internet', file: 'bai-7-tim-kiem-thong-tin-tren-internet.html', summary: 'Sử dụng máy tìm kiếm và cách chọn từ khóa thông minh, hiệu quả.' },
-  { id: 8, topic: 3, strand: 'ICT', icon: '✉️', title: 'Bài 8: Thư điện tử', file: 'bai-8-thu-dien-tu.html', summary: 'Cấu trúc địa chỉ email, ưu điểm của thư điện tử và thao tác gửi/nhận.' },
-  { id: 9, topic: 4, strand: 'DL', icon: '🛡️', title: 'Bài 9: An toàn thông tin trên Internet', file: 'bai-9-an-toan-thong-tin-tren-internet.html', summary: 'Nhận diện nguy cơ trên mạng và các quy tắc bảo vệ thông tin cá nhân.' },
-  { id: 10, topic: 5, strand: 'ICT', icon: '🗺️', title: 'Bài 10: Sơ đồ tư duy', file: 'bai-10-so-do-tu-duy.html', summary: 'Cách sắp xếp ý tưởng trực quan và tạo sơ đồ tư duy bằng phần mềm.' },
-  { id: 11, topic: 5, strand: 'ICT', icon: '🎨', title: 'Bài 11: Định dạng văn bản', file: 'bai-11-dinh-dang-van-ban.html', summary: 'Trang trí phông chữ, màu chữ, căn lề đoạn văn và thiết lập trang in.' },
-  { id: 12, topic: 5, strand: 'ICT', icon: '📊', title: 'Bài 12: Trình bày thông tin ở dạng bảng', file: 'bai-12-trinh-bay-thong-tin-o-dang-bang.html', summary: 'Tạo bảng, thêm/xóa hàng cột và sắp xếp dữ liệu gọn gàng trong bảng.' },
-  { id: 13, topic: 5, strand: 'ICT', icon: '⚡', title: 'Bài 13: Thực hành: Tìm kiếm và thay thế', file: 'bai-13-tim-kiem-va-thay-the.html', summary: 'Dùng công cụ Find và Replace để sửa nhanh văn bản chỉ trong vài giây.' },
-  { id: 14, topic: 5, strand: 'ICT', icon: '📒', title: 'Bài 14: Thực hành tổng hợp: Hoàn thiện sổ lưu niệm', file: 'bai-14-thuc-hanh-tong-hop-hoan-thien-so-luu-niem.html', summary: 'Kết hợp sơ đồ tư duy, định dạng văn bản, hình ảnh và bảng biểu.' },
-  { id: 15, topic: 6, strand: 'CS', icon: '🧩', title: 'Bài 15: Thuật toán', file: 'bai-15-thuat-toan.html', summary: 'Làm quen với thuật toán, xác định Đầu vào (Input), Đầu ra (Output) và sơ đồ khối.' },
-  { id: 16, topic: 6, strand: 'CS', icon: '🚦', title: 'Bài 16: Các cấu trúc điều khiển', file: 'bai-16-cac-cau-truc-dieu-khien.html', summary: 'Khám phá 3 cấu trúc điều khiển: Tuần tự, Rẽ nhánh và Lặp.' },
-  { id: 17, topic: 6, strand: 'CS', icon: '🚀', title: 'Bài 17: Chương trình máy tính', file: 'bai-17-chuong-trinh-may-tinh.html', summary: 'Từ thuật toán đến chương trình máy tính và điều khiển nhân vật.' }
-];
+const openTopicIds = new Set();
 
 const TOPICS_META = {
-  1: { title: 'Chủ đề 1 (A): Máy tính và cộng đồng', desc: 'Bài 1 đến Bài 3' },
-  2: { title: 'Chủ đề 2 (B): Mạng máy tính và Internet', desc: 'Bài 4 đến Bài 5' },
-  3: { title: 'Chủ đề 3 (C): Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin', desc: 'Bài 6 đến Bài 8' },
-  4: { title: 'Chủ đề 4 (D): Đạo đức, pháp luật và văn hóa trong môi trường số', desc: 'Bài 9' },
-  5: { title: 'Chủ đề 5 (E): Ứng dụng tin học', desc: 'Bài 10 đến Bài 14' },
-  6: { title: 'Chủ đề 6 (F): Giải quyết vấn đề với sự trợ giúp của máy tính', desc: 'Bài 15 đến Bài 17' }
+  1: { title: 'Chủ đề 1 : Máy tính và cộng đồng'},
+  2: { title: 'Chủ đề 2 : Mạng máy tính và Internet'},
+  3: { title: 'Chủ đề 3 : Tổ chức lưu trữ, tìm kiếm và trao đổi thông tin'},
+  4: { title: 'Chủ đề 4 : Đạo đức, pháp luật và văn hóa trong môi trường số'},
+  5: { title: 'Chủ đề 5 : Ứng dụng tin học'},
+  6: { title: 'Chủ đề 6 : Giải quyết vấn đề với sự trợ giúp của máy tính'}
 };
+
+const LESSONS_DATA = [
+  { id: 1, topic: 1, strand: 'CS', title: 'Bài 1: Thông tin và dữ liệu', file: 'bai-1-thong-tin-va-du-lieu.html', summary: 'Phân biệt thông tin, dữ liệu, vật mang tin và vai trò của thông tin.' },
+  { id: 2, topic: 1, strand: 'CS', title: 'Bài 2: Xử lí thông tin', file: 'bai-2-xu-li-thong-tin.html', summary: 'Bốn hoạt động cơ bản của quá trình xử lí thông tin ở người và máy tính.' },
+  { id: 3, topic: 1, strand: 'CS', title: 'Bài 3: Thông tin trong máy tính', file: 'bai-3-thong-tin-trong-may-tinh.html', summary: 'Biểu diễn thông tin bằng dãy bit (0 và 1) và các đơn vị đo dung lượng.' },
+  { id: 4, topic: 2, strand: 'ICT', title: 'Bài 4: Mạng máy tính', file: 'bai-4-mang-may-tinh.html', summary: 'Khái niệm, lợi ích và các thành phần cơ bản của mạng máy tính.' },
+  { id: 5, topic: 2, strand: 'ICT', title: 'Bài 5: Internet', file: 'bai-5-internet.html', summary: 'Đặc điểm của mạng máy tính toàn cầu Internet và các dịch vụ phổ biến.' },
+  { id: 6, topic: 3, strand: 'ICT', title: 'Bài 6: Mạng thông tin toàn cầu', file: 'bai-6-mang-thong-tin-toan-cau.html', summary: 'Siêu văn bản, trang web, website, địa chỉ truy cập và trình duyệt web.' },
+  { id: 7, topic: 3, strand: 'ICT', title: 'Bài 7: Tìm kiếm thông tin trên Internet', file: 'bai-7-tim-kiem-thong-tin-tren-internet.html', summary: 'Sử dụng máy tìm kiếm và cách chọn từ khóa thông minh, hiệu quả.' },
+  { id: 8, topic: 3, strand: 'ICT', title: 'Bài 8: Thư điện tử', file: 'bai-8-thu-dien-tu.html', summary: 'Cấu trúc địa chỉ email, ưu điểm của thư điện tử và thao tác gửi/nhận.' },
+  { id: 9, topic: 4, strand: 'DL',  title: 'Bài 9: An toàn thông tin trên Internet', file: 'bai-9-an-toan-thong-tin-tren-internet.html', summary: 'Nhận diện nguy cơ trên mạng và các quy tắc bảo vệ thông tin cá nhân.' },
+  { id: 10, topic: 5, strand: 'ICT', title: 'Bài 10: Sơ đồ tư duy', file: 'bai-10-so-do-tu-duy.html', summary: 'Cách sắp xếp ý tưởng trực quan và tạo sơ đồ tư duy bằng phần mềm.' },
+  { id: 11, topic: 5, strand: 'ICT', title: 'Bài 11: Định dạng văn bản', file: 'bai-11-dinh-dang-van-ban.html', summary: 'Trang trí phông chữ, màu chữ, căn lề đoạn văn và thiết lập trang in.' },
+  { id: 12, topic: 5, strand: 'ICT', title: 'Bài 12: Trình bày thông tin ở dạng bảng', file: 'bai-12-trinh-bay-thong-tin-o-dang-bang.html', summary: 'Tạo bảng, thêm/xóa hàng cột và sắp xếp dữ liệu gọn gàng trong bảng.' },
+  { id: 13, topic: 5, strand: 'ICT', title: 'Bài 13: Thực hành: Tìm kiếm và thay thế', file: 'bai-13-tim-kiem-va-thay-the.html', summary: 'Dùng công cụ Find và Replace để sửa nhanh văn bản chỉ trong vài giây.' },
+  { id: 14, topic: 5, strand: 'ICT', title: 'Bài 14: Thực hành tổng hợp: Hoàn thiện sổ lưu niệm', file: 'bai-14-thuc-hanh-tong-hop-hoan-thien-so-luu-niem.html', summary: 'Kết hợp sơ đồ tư duy, định dạng văn bản, hình ảnh và bảng biểu.' },
+  { id: 15, topic: 6, strand: 'CS', title: 'Bài 15: Thuật toán', file: 'bai-15-thuat-toan.html', summary: 'Làm quen với thuật toán, xác định Đầu vào (Input), Đầu ra (Output) và sơ đồ khối.' },
+  { id: 16, topic: 6, strand: 'CS', title: 'Bài 16: Các cấu trúc điều khiển', file: 'bai-16-cac-cau-truc-dieu-khien.html', summary: 'Khám phá 3 cấu trúc điều khiển: Tuần tự, Rẽ nhánh và Lặp.' },
+  { id: 17, topic: 6, strand: 'CS', title: 'Bài 17: Chương trình máy tính', file: 'bai-17-chuong-trinh-may-tinh.html', summary: 'Từ thuật toán đến chương trình máy tính và điều khiển nhân vật.' }
+];
+
+
 
 function getCompletedLessons() {
   try {
@@ -84,6 +87,7 @@ function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
 
   const completed = getCompletedLessons();
   const normalizedQuery = searchQuery.trim().toLowerCase();
+  const isSearching = normalizedQuery.length > 0;
 
   let html = '';
 
@@ -101,12 +105,22 @@ function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
     if (lessons.length === 0) return;
 
     const meta = TOPICS_META[topicNum];
+    // Khi đang tìm kiếm: tự động mở bung ra, không bị ẩn. Khi bình thường: chỉ mở khi học sinh đã ấn mũi tên
+    const isOpen = isSearching || openTopicIds.has(topicNum);
+
     html += `
-      <section class="topic-block">
-        <div class="topic-header">
-          <h2 class="topic-title">${meta.title}</h2>
-          <span class="topic-meta">${meta.desc}</span>
-        </div>
+      <section class="topic-block ${isOpen ? 'is-open' : ''}" data-topic-id="${topicNum}">
+        <button type="button" class="topic-header" aria-expanded="${isOpen ? 'true' : 'false'}">
+          <div class="topic-header-info">
+            <h2 class="topic-title">${meta.title}</h2>
+            <span class="topic-count-badge">${lessons.length} bài học</span>
+          </div>
+          <span class="topic-toggle-arrow" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
         <div class="lesson-list">
           ${lessons.map(lesson => {
             const isDone = completed.includes(lesson.id);
@@ -116,7 +130,6 @@ function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
                 <div>
                   <div class="lesson-item-top">
                     <span class="lesson-number">Bài ${lesson.id}</span>
-                    <span class="strand-badge ${strandClass}">Mạch ${lesson.strand}</span>
                   </div>
                   <h3 class="lesson-title">${lesson.title.replace(/^Bài \d+:\s*/, '')}</h3>
                   <p class="lesson-summary">${lesson.summary}</p>
@@ -134,6 +147,25 @@ function renderCurriculum(filterStrand = 'ALL', searchQuery = '') {
   });
 
   container.innerHTML = html || `<p style="font-size: 1.2rem; font-weight: 800; text-align: center; padding: 2rem;">Không tìm thấy bài học nào phù hợp, em thử gõ từ khóa khác nhé!</p>`;
+
+  // Gán sự kiện click cho các nút tiêu đề chủ đề để mở/đóng danh sách bài học
+  container.querySelectorAll('.topic-header').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.topic-block');
+      if (!block) return;
+      const topicId = Number(block.getAttribute('data-topic-id'));
+      const currentlyOpen = block.classList.contains('is-open');
+      const nextOpen = !currentlyOpen;
+      block.classList.toggle('is-open', nextOpen);
+      btn.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+      if (nextOpen) {
+        openTopicIds.add(topicId);
+      } else {
+        openTopicIds.delete(topicId);
+      }
+    });
+  });
+
   updateOverallProgress();
 }
 
@@ -163,10 +195,17 @@ function upgradeKidFriendlyLayout() {
   const headerHTML = `
     <div class="header-inner">
       <a href="index.html" class="brand-identity">
-        <img src="assets/images/Logo HCMUE.svg" alt="Logo HCMUE" width="110" height="44">
+        <img src="assets/images/Logo Tu Tin.png" alt="Logo Tứ Tin" width="110" height="44">
         <span class="brand-name">Hỗ trợ Tin học 6</span>
       </a>
-      <nav class="main-nav" aria-label="Điều hướng chính">
+      <button type="button" class="nav-toggle-btn" id="navToggleBtn" aria-label="Mở menu điều hướng" aria-expanded="false">
+        <span class="nav-toggle-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="Điều hướng chính">
         <a href="dictionary.html" class="nav-link ${path === 'dictionary.html' ? 'active' : ''}">Nội dung trọng tâm</a>
         <a href="crossword.html" class="nav-link ${path === 'crossword.html' ? 'active' : ''}">Trò chơi ô chữ</a>
         <span class="star-counter-badge" id="header-star-count">Đã học ${completed.length}/17 bài</span>
@@ -183,6 +222,59 @@ function upgradeKidFriendlyLayout() {
     document.body.prepend(headerEl);
   }
 
+  // 1b. Đảm bảo mọi trang đều có cùng một chân trang (footer) chuẩn
+  const footerHTML = `
+    <div class="footer-inner">
+      <div>
+        <strong>Sản phẩm Nghiên cứu - Nhóm Tứ Tin - Lớp K49.SPTIN.B</strong><br>
+        <span>Đề tài: Thiết kế công cụ hỗ trợ học sinh lớp 6 gặp khó khăn trong việc tiếp thu kiến thức môn Tin học.</span>
+      </div>
+      <div>
+        <strong>HCMUE</strong>
+      </div>
+    </div>
+  `;
+
+  let existingFooter = document.querySelector('.site-footer');
+  if (existingFooter) {
+    existingFooter.innerHTML = footerHTML;
+  } else {
+    existingFooter = document.createElement('footer');
+    existingFooter.className = 'site-footer';
+    existingFooter.innerHTML = footerHTML;
+    document.body.appendChild(existingFooter);
+  }
+
+  // Khởi tạo sự kiện mở/đóng menu 3 gạch ngang trên Mobile
+  const navToggleBtn = document.getElementById('navToggleBtn');
+  const mainNav = document.getElementById('mainNav');
+  const activeHeader = document.querySelector('.site-header');
+
+  if (navToggleBtn && mainNav) {
+    navToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mainNav.classList.toggle('is-open');
+      navToggleBtn.classList.toggle('is-active', isOpen);
+      navToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    mainNav.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('is-open');
+        navToggleBtn.classList.remove('is-active');
+        navToggleBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (activeHeader && !activeHeader.contains(e.target)) {
+        mainNav.classList.remove('is-open');
+        navToggleBtn.classList.remove('is-active');
+        navToggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
   // Bỏ các phần còn sót của bố cục cũ (menu trái, dải chữ trên cùng)
   document.querySelectorAll('.placeholder-banner, .sidebar-toggle, .left-sidebar, .academic-Ribbon').forEach(node => node.remove());
 
@@ -192,6 +284,7 @@ function upgradeKidFriendlyLayout() {
   };
   syncHeaderHeight();
   window.addEventListener('resize', syncHeaderHeight);
+  initSmartHeader();
 
   // 2. Nếu đang ở trang Bài học (Bài 1 -> Bài 17), biến các phần thành Chế độ Học Từng Bước
   if (!currentLesson) return;
@@ -438,8 +531,95 @@ function setupIframeAutoResize() {
   });
 }
 
+/**
+ * Tự động ẩn thanh Header khi lướt xuống và trượt xuống hiện lại khi lướt lên
+ */
+function initSmartHeader() {
+  const header = document.querySelector('.site-header');
+  if (!header || header.__smartHeaderInitialized) return;
+  header.__smartHeaderInitialized = true;
+
+  let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+  let ticking = false;
+  const threshold = 4;        // Ngưỡng di chuyển tối thiểu để nhận diện nhanh
+  const topThreshold = 15;     // Khi cách đỉnh trang <= 15px thì luôn hiện trạng thái tự nhiên
+
+  function updateHeader() {
+    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    // 1. Khi đang ở đỉnh trang (hoặc cuộn ngược lên quá đỉnh): Luôn hiện trạng thái tự nhiên
+    if (currentScrollY <= topThreshold) {
+      header.classList.remove('header--hidden');
+      header.classList.remove('header--pinned');
+      lastScrollY = Math.max(0, currentScrollY);
+      ticking = false;
+      return;
+    }
+
+    // 2. Nếu menu di động (3 gạch ngang) đang mở thì giữ nguyên header không ẩn
+    const mainNav = document.getElementById('mainNav');
+    if (mainNav && mainNav.classList.contains('is-open')) {
+      header.classList.remove('header--hidden');
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    const diff = currentScrollY - lastScrollY;
+
+    // 3. Chỉ phản hồi khi khoảng cách cuộn vượt ngưỡng threshold
+    if (Math.abs(diff) >= threshold) {
+      if (diff > 0 && currentScrollY > 60) {
+        // Đang cuộn xuống và đã qua khỏi độ cao của header -> Ẩn header để mở rộng tầm nhìn
+        header.classList.add('header--hidden');
+        header.classList.remove('header--pinned');
+      } else if (diff < 0) {
+        // Đang cuộn lên -> Trượt header xuống ngay lập tức kèm bóng đổ
+        header.classList.remove('header--hidden');
+        header.classList.add('header--pinned');
+      }
+      lastScrollY = currentScrollY;
+    }
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateHeader);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Lắng nghe thêm sự kiện con lăn chuột (wheel) để kích hoạt ngay trong 1 lần đẩy chuột đầu tiên
+  window.addEventListener('wheel', (e) => {
+    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScrollY <= topThreshold) {
+      header.classList.remove('header--hidden');
+      header.classList.remove('header--pinned');
+      return;
+    }
+
+    const mainNav = document.getElementById('mainNav');
+    if (mainNav && mainNav.classList.contains('is-open')) return;
+
+    if (e.deltaY < -2) {
+      // Đẩy con lăn chuột lên -> Hiện header trượt xuống ngay
+      header.classList.remove('header--hidden');
+      header.classList.add('header--pinned');
+      lastScrollY = currentScrollY;
+    } else if (e.deltaY > 2 && currentScrollY > 60) {
+      // Đẩy con lăn chuột xuống -> Ẩn header
+      header.classList.add('header--hidden');
+      header.classList.remove('header--pinned');
+      lastScrollY = currentScrollY;
+    }
+  }, { passive: true });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   upgradeKidFriendlyLayout();
+  initSmartHeader();
   renderCurriculum();
 
   const filterButtons = document.querySelectorAll('[data-strand-filter]');

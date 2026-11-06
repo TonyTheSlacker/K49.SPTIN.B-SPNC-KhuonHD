@@ -29,7 +29,6 @@ K49.SPTIN.B-SPNC-KhuonHD/
 ├── dictionary.html                           # Từ điển tra cứu thuật ngữ Tin học 6 theo chủ đề
 ├── crossword.html                            # Trò chơi ô chữ ôn tập thuật ngữ theo từng bài học
 ├── algorithm.html                            # Công cụ mô phỏng từng bước Sơ đồ khối & Cấu trúc điều khiển
-├── lesson-template.html                      # Khung bài học chuẩn Công văn 5512 (4 hoạt động sư phạm)
 ├── bai-1-thong-tin-va-du-lieu.html           # Hệ thống 17 trang bài học chi tiết (Bài 1 -> Bài 17)
 ├── ...
 ├── bai-17-chuong-trinh-may-tinh.html

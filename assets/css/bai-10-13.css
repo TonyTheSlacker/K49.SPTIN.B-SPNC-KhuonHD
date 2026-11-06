@@ -1,0 +1,174 @@
+/* ==========================================================================
+   BÀI 10–13: giữ giao diện riêng của các trang bài học này
+   Chỉ 4 trang Bài 10–13 tải file này, sau style.css, nên các bài khác không bị ảnh hưởng.
+   Thanh đầu trang và chân trang vẫn dùng chung với toàn trang.
+   ========================================================================== */
+
+.btn-lg {
+  padding: 0.95rem 1.85rem;
+}
+
+/* Máy tính bảng, điện thoại: thanh bước thành dải ngang vuốt được */
+@media (max-width: 1100px) {
+  .kid-step-pills {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.3rem;
+  }
+  .kid-step-pills::before {
+    display: none;
+  }
+  .kid-step-pills li {
+    flex: 0 0 auto;
+    max-width: 240px;
+  }
+  .kid-step-text {
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* Điện thoại: chữ nội dung ~17px, tiêu đề và nút vừa tay */
+@media (max-width: 640px) {
+  html {
+    font-size: 16px;
+  }
+
+  /* Cỡ gốc lớn hơn các bài khác, nên quy đổi để thanh đầu trang vẫn giống toàn trang */
+  .brand-name {
+    font-size: 0.95rem;
+  }
+  .nav-link,
+  .star-counter-badge {
+    font-size: 0.82rem;
+  }
+
+  .lesson-page__intro h1 {
+    font-size: 1.6rem;
+    line-height: 1.25;
+    margin: 0.25rem 0 0.5rem;
+  }
+  .lesson-section h2 {
+    font-size: 1.3rem;
+  }
+  .lesson-section h3 {
+    font-size: 1.12rem;
+  }
+  .lesson-section__lead {
+    font-size: 1.06rem !important;
+    padding: 0.8rem 1rem;
+  }
+
+  .page-shell,
+  .lesson-layout {
+    padding: 0 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+  .lesson-section,
+  .lesson-page__intro {
+    padding: 1.2rem 1rem;
+  }
+  .lesson-section ul,
+  .lesson-section ol {
+    padding-left: 1.25rem;
+  }
+
+  /* Thanh bước */
+  .kid-stepper-bar {
+    padding: 1.1rem 0.9rem;
+    border-radius: var(--radius-lg);
+    border-width: 3px;
+    margin-bottom: 1.5rem;
+    gap: 0.9rem;
+  }
+  .rail-head {
+    padding-bottom: 0.75rem;
+  }
+  .rail-kicker {
+    font-size: 0.78rem;
+  }
+  .rail-title {
+    font-size: 1.08rem;
+  }
+  .kid-step-pills {
+    flex-direction: row;
+    gap: 0.3rem;
+  }
+  .kid-step-pill {
+    padding: 0.5rem 0.65rem;
+    font-size: 0.96rem;
+    gap: 0.7rem;
+    border-radius: var(--radius-sm);
+  }
+  .kid-step-num {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  .rail-actions {
+    padding-top: 0.8rem;
+  }
+  .kid-mode-toggle {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.9rem;
+  }
+  .rail-back {
+    font-size: 0.9rem;
+    padding: 0;
+  }
+
+  /* Khung trò chơi */
+  .lesson-frame iframe,
+  iframe {
+    min-height: 480px;
+    border-radius: 0;
+  }
+
+  /* Nút chuyển bước, chuyển bài */
+  .kid-step-controls {
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+  }
+  .kid-step-controls .btn {
+    font-size: 1.18rem;
+    padding: 0.95rem 1.85rem;
+    border-radius: var(--radius-md);
+  }
+  .lesson-footer-nav {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border-width: 3px;
+  }
+  .lesson-footer-nav__link {
+    width: auto;
+    font-size: 1.05rem;
+    padding: 0.75rem 1.35rem;
+    border-radius: var(--radius-md);
+  }
+
+  /* Bảng */
+  table {
+    margin: 1.25rem 0;
+    border-radius: var(--radius-md);
+  }
+  th, td {
+    padding: 0.6rem 0.7rem;
+    font-size: 1rem;
+    line-height: inherit;
+  }
+}
+
+/* Điện thoại nhỏ: thanh đầu trang giống toàn trang */
+@media (max-width: 480px) {
+  .brand-name {
+    font-size: 1.27rem;
+  }
+  .nav-link,
+  .star-counter-badge {
+    font-size: 1.09rem;
+  }
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>So sánh văn bản</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+html, body{margin:0; min-height:100%}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{
+  font-family:'Nunito', 'Segoe UI', Verdana, Arial, sans-serif;
+  background:linear-gradient(180deg,#fff8eb 0%,#fef3d9 100%);
+  color:#1f2a44; padding:20px;
+}
+.wrap{max-width:960px; margin:0 auto}
+
+.hero{text-align:center; margin-bottom:18px}
+.hero-badge{display:inline-block; background:#f3a900; color:#fff; font-weight:800; font-size:13px; padding:4px 14px; border-radius:999px; margin-bottom:8px; letter-spacing:.5px}
+.hero h1{margin:4px 0; font-size:26px; color:#1f2a44}
+.hero p{margin:0; color:#5d6b85; font-size:16px}
+
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:22px}
+.panel{background:#fff; border-radius:18px; border:2px solid rgba(148,163,184,.35); box-shadow:0 12px 30px rgba(58,45,16,.10); overflow:hidden; display:flex; flex-direction:column}
+.panel--nice{border-color:rgba(34,197,94,.35)}
+.panel-tag{font-weight:800; font-size:15px; padding:10px 14px; color:#fff}
+.panel-tag--raw{background:#94a3b8}
+.panel-tag--nice{background:#22c55e}
+/* Cố ý để chữ nhỏ, không giãn dòng: đây là ví dụ văn bản chưa định dạng */
+.raw-text{padding:16px; font-family:'Times New Roman',Times,serif; font-size:12px; text-align:left; line-height:normal; color:#111; background:#fbfbfb; flex:1}
+.nice-text{padding:18px 20px; flex:1}
+.nice-text h2{margin:0 0 10px; font-size:20px; font-weight:800; color:#d88900}
+.nice-text p{margin:0 0 12px; line-height:1.8; font-size:16px; text-align:justify; color:#1f2a44}
+.nice-text p:last-child{margin-bottom:0}
+.nice-text strong{color:#2563eb}
+.panel-meta{font-size:13px; color:#7b8798; padding:8px 14px 12px; border-top:1px dashed rgba(0,0,0,.08)}
+
+.quiz, .done{background:#fff; border-radius:22px; box-shadow:0 16px 40px rgba(58,45,16,.12); border:2px solid rgba(255,181,71,.3)}
+.quiz{padding:20px 22px}
+.quiz-progress{display:inline-block; background:#fef3d9; color:#d88900; font-weight:800; font-size:14px; padding:4px 12px; border-radius:999px; margin-bottom:10px}
+.quiz-question{margin:0 0 14px; font-size:20px; color:#1f2a44}
+.quiz-options{display:flex; flex-direction:column; gap:10px; margin-bottom:14px}
+.option-btn{display:flex; align-items:center; gap:10px; text-align:left; width:100%; border:2px solid rgba(37,99,235,.2); background:#f8faff; border-radius:14px; padding:12px 16px; font-size:16px; font-family:inherit; color:#1f2a44; cursor:pointer; transition:all .15s ease}
+.option-btn:hover{border-color:#2563eb; background:#eef4ff; transform:translateY(-1px)}
+.option-key{display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:#2563eb; color:#fff; font-weight:800; font-size:14px; flex-shrink:0}
+.option-text{font-weight:600}
+.option-btn.is-correct{border-color:#22c55e; background:#eafff1}
+.option-btn.is-correct .option-key{background:#22c55e}
+.option-btn.is-wrong{border-color:#ef4444; background:#fff1f1; animation:shake .4s ease}
+.option-btn.is-wrong .option-key{background:#ef4444}
+.option-btn.is-disabled{pointer-events:none; opacity:.7}
+@keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}}
+.quiz-feedback{padding:12px 16px; border-radius:14px; font-weight:700; font-size:16px; margin-bottom:14px}
+.quiz-feedback.success{background:#eafff1; color:#15803d; border:2px solid rgba(34,197,94,.3)}
+.quiz-feedback.error{background:#fff1f1; color:#b91c1c; border:2px solid rgba(239,68,68,.3)}
+.btn-continue{display:inline-flex; align-items:center; gap:6px; background:#f3a900; color:#fff; font-family:inherit; font-weight:800; font-size:16px; border:none; border-radius:999px; padding:12px 26px; cursor:pointer; box-shadow:0 10px 24px rgba(243,169,0,.35); transition:transform .15s ease}
+.btn-continue:hover{transform:translateY(-2px)}
+.done{text-align:center; padding:30px 22px}
+.done-emoji{font-size:44px; margin-bottom:8px}
+.done h2{margin:0 0 6px; color:#d88900}
+.done p{margin:0 0 16px; color:#5d6b85; font-size:16px}
+
+/* Điện thoại: thu gọn lề để cả hoạt động nằm vừa khung bài học */
+@media (max-width: 640px){
+  body{padding:12px}
+  .hero{margin-bottom:12px}
+  .hero h1{font-size:22px}
+  .hero p{font-size:15px}
+  .compare{grid-template-columns:1fr; gap:12px; margin-bottom:14px}
+  .panel-tag{padding:8px 12px}
+  .raw-text{padding:12px}
+  .nice-text{padding:12px 14px}
+  .nice-text h2{font-size:18px; margin-bottom:6px}
+  .nice-text p{font-size:15px; line-height:1.6; margin-bottom:8px; text-align:left}
+  .panel-meta{padding:6px 12px 8px}
+  .quiz{padding:14px}
+  .quiz-question{font-size:18px; margin-bottom:10px}
+  .quiz-options{gap:8px; margin-bottom:10px}
+  .option-btn{padding:9px 12px}
+  .quiz-feedback{padding:9px 12px; font-size:15px; margin-bottom:10px}
+  .btn-continue{padding:10px 22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-badge">Trò chơi nhỏ</div>
+    <h1>So sánh văn bản</h1>
+    <p>Quan sát hai đoạn văn bản dưới đây rồi trả lời câu hỏi nhé.</p>
+  </div>
+
+  <div class="compare">
+    <div class="panel panel--raw">
+      <div class="panel-tag panel-tag--raw">❌ Chưa định dạng</div>
+      <div class="raw-text">Nhà em có một chú mèo tên là Mun. Mun có bộ lông màu đen tuyền và đôi mắt xanh biếc rất đẹp. Mỗi sáng Mun thường nằm sưởi nắng ở bậc cửa rồi chạy ra vườn bắt bướm. Buổi tối Mun hay cuộn tròn bên chân em khi em ngồi học bài. Em rất yêu quý Mun vì Mun rất ngoan và thông minh, biết nghe lời cả nhà.</div>
+      <div class="panel-meta">Times New Roman, cỡ 12px • Căn lề trái • Không giãn dòng • Không có tiêu đề</div>
+    </div>
+    <div class="panel panel--nice">
+      <div class="panel-tag panel-tag--nice">✅ Đã định dạng</div>
+      <div class="nice-text">
+        <h2>Chú mèo của em</h2>
+        <p>Nhà em có một chú mèo tên là <strong>Mun</strong>. Mun có bộ lông màu đen tuyền và đôi mắt xanh biếc rất đẹp.</p>
+        <p>Mỗi sáng, Mun thường nằm sưởi nắng ở bậc cửa rồi chạy ra vườn bắt bướm. Buổi tối, Mun hay cuộn tròn bên chân em khi em ngồi học bài.</p>
+        <p>Em rất yêu quý Mun vì bạn ấy rất ngoan và thông minh, biết nghe lời cả nhà.</p>
+      </div>
+      <div class="panel-meta">Có tiêu đề in đậm • Căn lề hợp lý • Giãn dòng 1.8 • Trình bày rõ ràng</div>
+    </div>
+  </div>
+
+  <div class="quiz" id="quizSection">
+    <div class="quiz-progress" id="progress">Câu 1/2</div>
+    <h3 class="quiz-question" id="questionText"></h3>
+    <div class="quiz-options" id="optionsWrap"></div>
+    <div class="quiz-feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+    <button class="btn-continue" id="continueBtn" type="button" hidden>Tiếp tục →</button>
+  </div>
+
+  <div class="done" id="doneSection" hidden>
+    <div class="done-emoji">🎉</div>
+    <h2>Hoàn thành!</h2>
+    <p>Em đã hiểu vì sao cần định dạng văn bản đẹp và dễ đọc rồi đó.</p>
+    <button class="btn-continue" id="restartBtn" type="button">Chơi lại</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   SO SÁNH VĂN BẢN – Tin học 6, Bài 11: Khởi động
+   ========================================================= */
+const QUESTIONS = [
+  { question: 'Văn bản nào dễ đọc hơn?',
+    options: [
+      { key: 'A', text: 'Văn bản chưa định dạng', correct: false },
+      { key: 'B', text: 'Văn bản đã định dạng', correct: true }
+    ],
+    correctMsg: 'Chính xác! Văn bản đã định dạng dễ đọc hơn.',
+    wrongMsg: 'Chưa đúng, hãy thử lại.' },
+  { question: 'Vì sao cần định dạng văn bản?',
+    options: [
+      { key: 'A', text: 'Giúp văn bản đẹp hơn', correct: false },
+      { key: 'B', text: 'Giúp văn bản dễ đọc', correct: true },
+      { key: 'C', text: 'Không cần thiết', correct: false }
+    ],
+    correctMsg: 'Chính xác! Định dạng giúp văn bản rõ ràng và dễ đọc hơn.',
+    wrongMsg: 'Chưa đúng, hãy thử lại.' }
+];
+
+const $ = id => document.getElementById(id);
+const optionsEl = $('optionsWrap'), feedbackEl = $('feedback'), continueBtn = $('continueBtn');
+let current = 0, solved = false;
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  solved = false;
+  $('progress').textContent = `Câu ${current + 1}/${QUESTIONS.length}`;
+  $('questionText').textContent = q.question;
+  feedbackEl.hidden = true;
+  feedbackEl.className = 'quiz-feedback';
+  continueBtn.hidden = true;
+  optionsEl.innerHTML = '';
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-key">${opt.key}</span><span class="option-text">${opt.text}</span>`;
+    btn.addEventListener('click', () => handleAnswer(opt, btn));
+    optionsEl.appendChild(btn);
+  });
+}
+
+function handleAnswer(opt, btn) {
+  if (solved) return;
+  const q = QUESTIONS[current];
+  if (opt.correct) {
+    solved = true;
+    btn.classList.add('is-correct');
+    [...optionsEl.children].forEach(b => b.classList.add('is-disabled'));
+    feedbackEl.textContent = q.correctMsg;
+    feedbackEl.className = 'quiz-feedback success';
+    continueBtn.textContent = current === QUESTIONS.length - 1 ? 'Hoàn thành' : 'Tiếp tục →';
+    continueBtn.hidden = false;
+  } else {
+    btn.classList.add('is-wrong');
+    setTimeout(() => btn.classList.remove('is-wrong'), 400);
+    feedbackEl.textContent = q.wrongMsg;
+    feedbackEl.className = 'quiz-feedback error';
+  }
+  feedbackEl.hidden = false;
+}
+
+continueBtn.addEventListener('click', () => {
+  current++;
+  if (current < QUESTIONS.length) { renderQuestion(); return; }
+  $('quizSection').hidden = true;
+  $('doneSection').hidden = false;
+});
+$('restartBtn').addEventListener('click', () => {
+  current = 0;
+  $('doneSection').hidden = true;
+  $('quizSection').hidden = false;
+  renderQuestion();
+});
+
+// Khi được nhúng vào trang bài học: báo trang đo lại chiều cao khung khi nội dung đổi
+if ('ResizeObserver' in window) {
+  let t;
+  new ResizeObserver(() => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      try { const f = window.frameElement; if (f && typeof f.__updateHeightFn === 'function') f.__updateHeightFn(); } catch (e) {}
+    }, 60);
+  }).observe(document.body);
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

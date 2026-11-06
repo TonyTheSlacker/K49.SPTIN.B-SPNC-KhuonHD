@@ -504,7 +504,9 @@ function setupIframeAutoResize() {
         }
 
         if (contentHeight > 50) {
-          const targetHeight = Math.min(Math.max(Math.ceil(contentHeight) + 32, 460), 1200);
+          // Trò chơi có màn hình dài trên điện thoại khai báo giới hạn riêng bằng data-max-height
+          const maxHeight = parseInt(iframe.dataset.maxHeight, 10) || 1200;
+          const targetHeight = Math.min(Math.max(Math.ceil(contentHeight) + 32, 460), maxHeight);
           const currentHeight = parseInt(iframe.style.height || '0', 10);
           if (Math.abs(targetHeight - currentHeight) > 6) {
             iframe.style.height = targetHeight + 'px';

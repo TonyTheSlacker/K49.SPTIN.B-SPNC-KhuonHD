@@ -23,10 +23,7 @@ html{font-size:clamp(15px, .4vw + 12.5px, 18px)}
 body{
   margin:0; min-height:100vh; color:var(--ink);
   font-family:'Nunito', "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  background:
-    radial-gradient(circle at 10% 10%, rgba(255,214,102,.35) 0, transparent 35%),
-    radial-gradient(circle at 90% 80%, rgba(124,228,200,.28) 0, transparent 35%),
-    linear-gradient(135deg,var(--bg1),var(--bg2));
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
   background-attachment:fixed;
   overflow-x:hidden;
 }
@@ -83,39 +80,19 @@ button{font-family:inherit; cursor:pointer}
 .actions{display:flex; justify-content:center; gap:.8rem; margin-top:1.1rem; flex-wrap:wrap}
 
 /* ---------- Home ---------- */
-.home{display:grid; grid-template-columns:1.15fr 1fr; gap:1.5rem; align-items:center; min-height:min(calc(100vh - 7rem), 32rem)}
-.badge{display:inline-block; background:#fff; border:2px solid var(--line); color:var(--muted); font-weight:700; border-radius:999px; padding:.3rem .9rem; font-size:.88rem}
+.home{max-width:44rem; margin:0 auto; padding:.5rem 0 1rem; text-align:center}
 .home h1{font-family:'Baloo 2',cursive; font-size:2.4rem; line-height:1.1; margin:.6rem 0 .8rem; font-weight:800}
-.home h1 span{background:linear-gradient(90deg,var(--primary),var(--rose)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.home h1 span{color:var(--primary)}
 .bubble{
   background:#fff; border-radius:20px; padding:.75rem 1.05rem; margin:.6rem 0;
-  box-shadow:var(--shadow); font-size:1.02rem; line-height:1.5; max-width:34rem; animation:fadeUp .6s both;
+  box-shadow:var(--shadow); font-size:1.05rem; line-height:1.5; text-align:left; margin-left:auto; margin-right:auto; animation:fadeUp .6s both;
 }
 .bubble.b1{border-left:6px solid var(--word)}
 .bubble.b2{border-left:6px solid var(--rose); animation-delay:.25s}
-.home-btns{display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin:1.3rem 0 1rem}
-.quest{display:flex; gap:.6rem; flex-wrap:wrap}
+.home-btns{display:flex; gap:1rem; flex-wrap:wrap; align-items:center; justify-content:center; margin:1.3rem 0 1rem}
+.quest{display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center}
 .quest span{background:rgba(255,255,255,.7); border-radius:12px; padding:.35rem .7rem; font-size:.88rem; font-weight:700; color:var(--muted); border:2px solid transparent}
 .quest span.done{border-color:var(--ok); color:var(--ok); background:#eafaf4}
-.home-art{position:relative; height:17rem}
-.art-notice{
-  position:absolute; left:6%; top:2%; width:10rem; aspect-ratio:210/297; rotate:-6deg;
-  background:#fff; border-radius:6px; box-shadow:var(--shadow);
-  padding:1rem .9rem; display:flex; flex-direction:column; gap:.45rem;
-}
-.art-notice b{text-align:center; font-family:'Times New Roman',serif; font-size:.85rem; letter-spacing:.06em; margin-bottom:.25rem}
-.art-notice i{display:block; height:.35rem; border-radius:99px; background:#d9deea}
-.art-notice i.r{width:45%; margin-left:auto; margin-top:auto}
-.art-card{
-  position:absolute; right:3%; bottom:4%; width:12.5rem; aspect-ratio:297/210; rotate:7deg;
-  border-radius:10px; background:linear-gradient(160deg,#fffdf7,#ffe6ee);
-  box-shadow:inset 0 0 0 .35rem #ffd0dc, var(--shadow);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:2.6rem; line-height:1.1;
-}
-.art-card span{font-family:'Baloo 2',cursive; font-weight:800; font-size:1.2rem; color:var(--rose)}
-.floaty{animation:floaty 4s ease-in-out infinite}
-.floaty.late{animation-delay:-2s}
-@keyframes floaty{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
 @keyframes fadeUp{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
 
 /* ---------- Work screens ---------- */
@@ -133,6 +110,7 @@ button{font-family:inherit; cursor:pointer}
 .steps-list li.done{color:var(--ok)}
 .steps-list li.done .n{background:var(--ok); color:#fff}
 .steps-list p{margin:.3rem 0 0; font-size:.9rem}
+.story-dau{background:#fff; box-shadow:var(--shadow); margin:0 0 1rem; font-size:1rem}
 .done-box{background:#effbf6; border:2px solid #b7ebd6; border-radius:16px; padding:.8rem; text-align:center; animation:pop .5s}
 .done-box b{font-size:1.08rem; color:var(--ok)}
 .done-box p{margin:.4rem 0 .9rem; font-size:.9rem; line-height:1.45}
@@ -160,7 +138,7 @@ button{font-family:inherit; cursor:pointer}
 .tb svg{width:1.35rem; height:1.35rem; color:#2f3b57}
 .tb.hint{animation:hintGlow 1.1s infinite}
 @keyframes hintGlow{0%,100%{box-shadow:0 0 0 0 rgba(243,169,0,0)} 50%{box-shadow:0 0 0 4px rgba(243,169,0,.6)}}
-.canvas{background:#e7e9f0; padding:1rem; display:flex; justify-content:center; align-items:flex-start; min-height:18rem}
+.canvas{background:#e7e9f0; padding:1rem; display:flex; justify-content:center; align-items:flex-start; min-height:18rem; container-type:inline-size}
 
 .page{
   background:#fff; box-shadow:0 8px 20px rgba(31,42,68,.18);
@@ -196,6 +174,15 @@ button{font-family:inherit; cursor:pointer}
   border:2px solid #f3c0cd; background:#fff; color:var(--rose); font-size:.75rem; font-weight:800;
 }
 
+/* Khung soạn thảo hẹp: thu chữ và lề trang lại để trang giữ đúng dáng đứng hay ngang */
+@container (max-width: 420px){
+  .page{font-size:clamp(7.5px,4.1cqw,11.5px); line-height:1.4; padding:1em 1.1em; gap:.55em}
+  .page.landscape{width:100%}
+  .page.card{font-size:clamp(7.5px,4.2cqw,11.8px); padding:1em 1.1em; gap:.4em}
+  .card .head{font-size:1em}
+  .pic-img{font-size:2.4em}
+}
+
 /* Bản thu nhỏ (bảng tin, máy in, so sánh) */
 .page.mini{font-size:.5rem; pointer-events:none}
 .page.mini.portrait{width:9rem}
@@ -211,7 +198,6 @@ button{font-family:inherit; cursor:pointer}
 }
 .board-h{background:#fff; border-radius:999px; padding:.2rem .9rem; font-weight:800; font-size:.9rem; color:#8a5a2b}
 .pin-wrap{position:relative; rotate:-2deg}
-.pin{position:absolute; top:-.9rem; left:50%; transform:translateX(-50%); font-size:1.4rem; z-index:2}
 
 /* Bảng kiểm & gợi ý */
 .checklist{background:#f8faff; border:2px dashed #cfd8ee; border-radius:16px; padding:.65rem .75rem; display:flex; flex-direction:column; gap:.25rem}
@@ -277,8 +263,7 @@ button{font-family:inherit; cursor:pointer}
 
 /* ---------- Win ---------- */
 .win{text-align:center; max-width:52rem; margin:0 auto}
-.trophy{font-size:5rem; animation:floaty 3s ease-in-out infinite; display:inline-block}
-.win h1{font-family:'Baloo 2',cursive; font-size:2.3rem; margin:.2rem 0; font-weight:800; background:linear-gradient(90deg,#f0a500,var(--rose),var(--word)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.win h1{font-family:'Baloo 2',cursive; font-size:2.3rem; margin:.4rem 0; font-weight:800; color:var(--primary)}
 .win h2{font-family:'Baloo 2',cursive; font-size:1.35rem; margin:.3rem 0 .9rem}
 .scorebox{display:inline-block; background:#fff; border-radius:24px; box-shadow:var(--shadow); padding:.9rem 2.2rem; margin:.4rem 0 1rem}
 .scorebox .lbl{color:var(--muted)}
@@ -291,7 +276,7 @@ button{font-family:inherit; cursor:pointer}
 #toast{
   position:fixed; left:50%; bottom:1.4rem; transform:translate(-50%,calc(100% + 3rem)); visibility:hidden;
   z-index:900; background:#fff; border-radius:18px; box-shadow:0 14px 34px rgba(40,50,110,.25);
-  padding:.8rem 1.3rem; font-size:1rem; font-weight:700; max-width:min(92vw,36rem); text-align:center; line-height:1.45;
+  padding:.8rem 1.3rem; font-size:1rem; font-weight:700; width:max-content; max-width:min(92vw,36rem); text-align:center; line-height:1.45;
   border:3px solid var(--primary); transition:transform .35s cubic-bezier(.2,1.4,.4,1), visibility .35s; pointer-events:none;
 }
 #toast.show{transform:translate(-50%,0); visibility:visible}
@@ -308,14 +293,9 @@ button{font-family:inherit; cursor:pointer}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 760px){
-  .home{grid-template-columns:1fr; text-align:center; min-height:0}
-  .bubble{margin-left:auto; margin-right:auto}
-  .home-btns, .quest{justify-content:center}
-  .home-art{order:-1; height:12rem; width:100%; max-width:22rem; margin:0 auto}
-  .art-notice{width:7.5rem; padding:.7rem .6rem}
-  .art-card{width:9.5rem; font-size:2rem}
   .work{grid-template-columns:1fr}
   .steps-list li:not(.now){display:none}
+  .p2 .guide{order:2}
   .cmp{grid-template-columns:1fr}
   .learned{grid-template-columns:1fr}
 }
@@ -640,7 +620,6 @@ function renderHome() {
   keyHandler = null;
   show(`<div class="home">
     <div>
-      <span class="badge">Bài 11 · Luyện tập &amp; Vận dụng</span>
       <h1>Thông báo &amp; <span>Thiệp 20/11</span></h1>
       <div class="bubble b1">Lớp trưởng soạn thông báo họp lớp chuẩn bị chào mừng <b>Ngày Nhà giáo Việt Nam 20/11</b> nhưng chưa trình bày. Em sửa giúp bạn nhé!</div>
       <div class="bubble b2">Sau đó, em tự làm một tấm thiệp tặng thầy cô đúng như thông báo yêu cầu.</div>
@@ -649,13 +628,9 @@ function renderHome() {
         <button class="btn ghost" id="jumpBtn" type="button">Làm Phần 2</button>
       </div>
       <div class="quest">
-        <span class="${state.part1Done ? 'done' : ''}">${state.part1Done ? '✓' : '①'} Luyện tập: Trình bày thông báo</span>
-        <span class="${state.part2Done ? 'done' : ''}">${state.part2Done ? '✓' : '②'} Vận dụng: Làm thiệp 20/11</span>
+        <span class="${state.part1Done ? 'done' : ''}">Phần 1 · Luyện tập: Trình bày thông báo${state.part1Done ? ' ✓' : ''}</span>
+        <span class="${state.part2Done ? 'done' : ''}">Phần 2 · Vận dụng: Làm thiệp 20/11${state.part2Done ? ' ✓' : ''}</span>
       </div>
-    </div>
-    <div class="home-art" aria-hidden="true">
-      <div class="art-notice floaty"><b>THÔNG BÁO</b><i></i><i></i><i></i><i style="width:70%"></i><i class="r"></i><i class="r" style="margin-top:0"></i></div>
-      <div class="art-card floaty late">💐<span>20/11</span></div>
     </div>
   </div>`);
   $('#startBtn').addEventListener('click', () => { sfx.click(); renderPart1(); });
@@ -834,16 +809,20 @@ function p1Finish() {
   state.part1Done = true;
   updateHUD();
   const notice = miniCopy($('#page'));
-  $('#canvas').innerHTML = `<div class="board"><div class="board-h">BẢNG TIN LỚP 6A</div><div class="pin-wrap"><span class="pin">📌</span></div></div>`;
+  $('#canvas').innerHTML = `<div class="board"><div class="board-h">BẢNG TIN LỚP 6A</div><div class="pin-wrap"></div></div>`;
   $('#canvas .pin-wrap').appendChild(notice);
   $$('.ribbon .tb').forEach(b => { b.disabled = true; b.style.opacity = '.5'; });
   const box = document.createElement('div');
   box.className = 'done-box';
-  box.innerHTML = `<b>Hoàn thành Phần 1!</b><p>Thông báo đã được in và dán lên bảng tin. Giờ em làm tấm thiệp như thông báo yêu cầu nhé!</p>
+  box.innerHTML = state.part2Done
+    ? `<b>Hoàn thành Phần 1!</b><p>Thông báo đã được in và dán lên bảng tin. Em đã làm xong cả hai phần rồi!</p>
+    <button class="btn green" id="toWin" type="button">Xem kết quả ➜</button>`
+    : `<b>Hoàn thành Phần 1!</b><p>Thông báo đã được in và dán lên bảng tin. Giờ em làm tấm thiệp như thông báo yêu cầu nhé!</p>
     <button class="btn green" id="toP2" type="button">Sang Phần 2 ➜</button>`;
   $('#guide').appendChild(box);
-  $('#toP2').addEventListener('click', () => { sfx.click(); renderPart2(); });
-  sfx.win(); confetti(1800);
+  if (state.part2Done) $('#toWin').addEventListener('click', () => { sfx.click(); renderWin(); });
+  else $('#toP2').addEventListener('click', () => { sfx.click(); renderPart2(); });
+  sfx.win();
 }
 
 /* =========================================================
@@ -869,9 +848,9 @@ function renderPart2() {
   p2 = { orient: 'portrait', sel: null, pic: null, saved: false, fileName: '', ticks: {} };
   updateHUD();
   show(`<div class="ch-head"><span class="ch-tag">Phần 2 · Vận dụng</span><h2>Làm tấm thiệp tặng thầy cô</h2></div>
-    <div class="work">
+    <p class="story story-dau">Thông báo nhắc <b>mỗi bạn làm một tấm thiệp</b> tặng thầy cô. Lần này em <b>tự làm</b> nhé! Làm đủ 5 việc trong <b>bảng kiểm</b>, xong việc nào em tự đánh dấu việc đó.</p>
+    <div class="work p2">
       <aside class="guide">
-        <p class="story">Thông báo nhắc <b>mỗi bạn làm một tấm thiệp</b> tặng thầy cô. Lần này em <b>tự làm</b> nhé! Xong việc nào, em tự đánh dấu vào bảng kiểm.</p>
         <div class="checklist"><h3>Bảng kiểm của em</h3>
           ${CHECKS.map(c => `<label class="chk"><input type="checkbox" data-chk="${c.id}"><span>${c.label}</span></label>`).join('')}
         </div>
@@ -1060,7 +1039,6 @@ function renderWin() {
     'Thông báo: trang đứng – Thiệp: trang ngang', 'Chèn hình minh họa cho sinh động', 'Lưu tệp, In để có bản giấy'
   ];
   show(`<div class="win">
-    <div class="trophy">🏆</div>
     <h1>Hoàn thành Luyện tập &amp; Vận dụng!</h1>
     <div class="scorebox"><div class="lbl">Điểm của em</div><div class="val">${score}/100</div></div>
     <div><span class="msg">${msg}</span></div>

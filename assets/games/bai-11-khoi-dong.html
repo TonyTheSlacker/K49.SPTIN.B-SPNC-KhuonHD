@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>So sánh văn bản</title>
+<title>Biến hình đoạn văn</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -18,192 +18,222 @@ body{
 }
 .wrap{max-width:960px; margin:0 auto}
 
-.hero{text-align:center; margin-bottom:18px}
-.hero-badge{display:inline-block; background:#f3a900; color:#fff; font-weight:800; font-size:13px; padding:4px 14px; border-radius:999px; margin-bottom:8px; letter-spacing:.5px}
-.hero h1{margin:4px 0; font-size:26px; color:#1f2a44}
-.hero p{margin:0; color:#5d6b85; font-size:16px}
+.hero{text-align:center; margin-bottom:16px}
+.hero h1{margin:0 0 4px; font-size:28px; font-weight:900}
+.hero p{margin:0; color:#5d6b85; font-size:18px; font-weight:600}
 
-.compare{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:22px}
-.panel{background:#fff; border-radius:18px; border:2px solid rgba(148,163,184,.35); box-shadow:0 12px 30px rgba(58,45,16,.10); overflow:hidden; display:flex; flex-direction:column}
-.panel--nice{border-color:rgba(34,197,94,.35)}
-.panel-tag{font-weight:800; font-size:15px; padding:10px 14px; color:#fff}
-.panel-tag--raw{background:#94a3b8}
-.panel-tag--nice{background:#22c55e}
-/* Cố ý để chữ nhỏ, không giãn dòng: đây là ví dụ văn bản chưa định dạng */
-.raw-text{padding:16px; font-family:'Times New Roman',Times,serif; font-size:12px; text-align:left; line-height:normal; color:#111; background:#fbfbfb; flex:1}
-.nice-text{padding:18px 20px; flex:1}
-.nice-text h2{margin:0 0 10px; font-size:20px; font-weight:800; color:#d88900}
-.nice-text p{margin:0 0 12px; line-height:1.8; font-size:16px; text-align:justify; color:#1f2a44}
-.nice-text p:last-child{margin-bottom:0}
-.nice-text strong{color:#2563eb}
-.panel-meta{font-size:13px; color:#7b8798; padding:8px 14px 12px; border-top:1px dashed rgba(0,0,0,.08)}
+.san{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:16px; align-items:start}
 
-.quiz, .done{background:#fff; border-radius:22px; box-shadow:0 16px 40px rgba(58,45,16,.12); border:2px solid rgba(255,181,71,.3)}
-.quiz{padding:20px 22px}
-.quiz-progress{display:inline-block; background:#fef3d9; color:#d88900; font-weight:800; font-size:14px; padding:4px 12px; border-radius:999px; margin-bottom:10px}
-.quiz-question{margin:0 0 14px; font-size:20px; color:#1f2a44}
-.quiz-options{display:flex; flex-direction:column; gap:10px; margin-bottom:14px}
-.option-btn{display:flex; align-items:center; gap:10px; text-align:left; width:100%; border:2px solid rgba(37,99,235,.2); background:#f8faff; border-radius:14px; padding:12px 16px; font-size:16px; font-family:inherit; color:#1f2a44; cursor:pointer; transition:all .15s ease}
-.option-btn:hover{border-color:#2563eb; background:#eef4ff; transform:translateY(-1px)}
-.option-key{display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:#2563eb; color:#fff; font-weight:800; font-size:14px; flex-shrink:0}
-.option-text{font-weight:600}
-.option-btn.is-correct{border-color:#22c55e; background:#eafff1}
-.option-btn.is-correct .option-key{background:#22c55e}
-.option-btn.is-wrong{border-color:#ef4444; background:#fff1f1; animation:shake .4s ease}
-.option-btn.is-wrong .option-key{background:#ef4444}
-.option-btn.is-disabled{pointer-events:none; opacity:.7}
-@keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}}
-.quiz-feedback{padding:12px 16px; border-radius:14px; font-weight:700; font-size:16px; margin-bottom:14px}
-.quiz-feedback.success{background:#eafff1; color:#15803d; border:2px solid rgba(34,197,94,.3)}
-.quiz-feedback.error{background:#fff1f1; color:#b91c1c; border:2px solid rgba(239,68,68,.3)}
-.btn-continue{display:inline-flex; align-items:center; gap:6px; background:#f3a900; color:#fff; font-family:inherit; font-weight:800; font-size:16px; border:none; border-radius:999px; padding:12px 26px; cursor:pointer; box-shadow:0 10px 24px rgba(243,169,0,.35); transition:transform .15s ease}
-.btn-continue:hover{transform:translateY(-2px)}
-.done{text-align:center; padding:30px 22px}
-.done-emoji{font-size:44px; margin-bottom:8px}
-.done h2{margin:0 0 6px; color:#d88900}
-.done p{margin:0 0 16px; color:#5d6b85; font-size:16px}
+/* Tờ giấy có đoạn văn */
+.giay{
+  background:#fff; border:2px solid rgba(148,163,184,.35); border-radius:14px; box-shadow:0 12px 30px rgba(58,45,16,.10);
+  padding:22px 26px; font-family:'Times New Roman',Times,serif; font-size:20px; line-height:1.5; color:#111;
+}
+.co-tieu-de .tieu-de{display:block; margin-bottom:.45em; text-align:center; font-weight:700; font-size:1.5em; line-height:1.25; color:#d88900}
+.co-dam .tu{font-weight:700}
+.co-doan .doan{display:block; margin-bottom:.55em; text-indent:1.4em}
+.co-doan .doan:last-child{margin-bottom:0}
+/* Phần vừa đổi sáng lên một chút để em thấy ngay */
+.loe{animation:loe 1.2s ease-out}
+@keyframes loe{from{background:#ffe98a} to{background:transparent}}
 
-/* Điện thoại: thu gọn lề để cả hoạt động nằm vừa khung bài học */
+/* Cột bên phải */
+.the{background:#fff; border-radius:18px; box-shadow:0 16px 40px rgba(58,45,16,.12); border:2px solid rgba(255,181,71,.3); padding:18px}
+.ds-nut{display:flex; flex-direction:column; gap:12px}
+.nut-bien{
+  display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:13px 14px; background:#fff; color:#1f2a44; cursor:pointer;
+  border:2px solid #f3a900; border-bottom-width:5px; border-radius:16px; font-family:inherit; font-weight:800; font-size:18px; line-height:1.25;
+  transition:transform .08s, background .15s, border-bottom-width .08s;
+}
+.nut-bien:hover:not(:disabled){background:#fff8eb}
+.nut-bien:active:not(:disabled){transform:translateY(3px); border-bottom-width:2px}
+.nut-bien .so{flex:none; display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:#f3a900; color:#fff; font-weight:900}
+.nut-bien:disabled{background:#eafff1; border-color:#22c55e; color:#15803d; cursor:default}
+.nut-bien:disabled .so{background:#22c55e}
+
+.hoi{margin:0 0 12px; font-size:20px; font-weight:800; line-height:1.3}
+.ds-dap-an{display:flex; flex-direction:column; gap:10px}
+.dap-an{
+  display:flex; align-items:center; width:100%; text-align:left; padding:12px 14px; cursor:pointer; color:#1f2a44; background:#f8faff;
+  border:2px solid rgba(37,99,235,.25); border-radius:14px; font-family:inherit; font-weight:700; font-size:17px; line-height:1.3; transition:background .15s;
+}
+.dap-an:hover:not(:disabled){background:#eef4ff; border-color:#2563eb}
+.dap-an.sai{background:#fff1f1; border-color:#ef4444; animation:rung .4s ease}
+.dap-an.mo{opacity:.45; cursor:not-allowed}
+.dap-an.dung{background:#eafff1; border-color:#22c55e; color:#15803d; cursor:default}
+@keyframes rung{0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}}
+.tin{margin-top:12px; padding:10px 14px; border-radius:14px; font-weight:700; font-size:16px; line-height:1.35}
+.tin.sai{background:#fff1f1; color:#b91c1c}
+.tin.dung{background:#eafff1; color:#15803d}
+.chot{margin:12px 0 0; font-weight:800; font-size:17px; line-height:1.35}
+.nut-lai{margin-top:12px; padding:9px 20px; background:#fff; color:#d88900; cursor:pointer; border:2px solid #f3a900; border-radius:999px; font-family:inherit; font-weight:800; font-size:16px}
+.nut-lai:hover{background:#fff8eb}
+:focus-visible{outline:3px solid #2563eb; outline-offset:2px}
+
+/* Điện thoại: đoạn văn ở trên, nút ở dưới */
 @media (max-width: 640px){
   body{padding:12px}
-  .hero{margin-bottom:12px}
-  .hero h1{font-size:22px}
-  .hero p{font-size:15px}
-  .compare{grid-template-columns:1fr; gap:12px; margin-bottom:14px}
-  .panel-tag{padding:8px 12px}
-  .raw-text{padding:12px}
-  .nice-text{padding:12px 14px}
-  .nice-text h2{font-size:18px; margin-bottom:6px}
-  .nice-text p{font-size:15px; line-height:1.6; margin-bottom:8px; text-align:left}
-  .panel-meta{padding:6px 12px 8px}
-  .quiz{padding:14px}
-  .quiz-question{font-size:18px; margin-bottom:10px}
-  .quiz-options{gap:8px; margin-bottom:10px}
-  .option-btn{padding:9px 12px}
-  .quiz-feedback{padding:9px 12px; font-size:15px; margin-bottom:10px}
-  .btn-continue{padding:10px 22px}
+  .hero{margin-bottom:10px}
+  .hero h1{font-size:23px}
+  .hero p{font-size:16px}
+  .san{grid-template-columns:minmax(0,1fr); gap:12px}
+  .giay{padding:14px 16px; font-size:18px}
+  .the{padding:12px}
+  .ds-nut{gap:8px}
+  .nut-bien{padding:10px 12px; font-size:17px}
+  .hoi{font-size:18px}
+  .dap-an{padding:10px 12px; font-size:16px}
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.01ms !important; transition-duration:.01ms !important}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="hero-badge">Trò chơi nhỏ</div>
-    <h1>So sánh văn bản</h1>
-    <p>Quan sát hai đoạn văn bản dưới đây rồi trả lời câu hỏi nhé.</p>
+    <h1>Biến hình đoạn văn</h1>
+    <p>Bấm từng nút và xem đoạn văn thay đổi nhé.</p>
   </div>
 
-  <div class="compare">
-    <div class="panel panel--raw">
-      <div class="panel-tag panel-tag--raw">❌ Chưa định dạng</div>
-      <div class="raw-text">Nhà em có một chú mèo tên là Mun. Mun có bộ lông màu đen tuyền và đôi mắt xanh biếc rất đẹp. Mỗi sáng Mun thường nằm sưởi nắng ở bậc cửa rồi chạy ra vườn bắt bướm. Buổi tối Mun hay cuộn tròn bên chân em khi em ngồi học bài. Em rất yêu quý Mun vì Mun rất ngoan và thông minh, biết nghe lời cả nhà.</div>
-      <div class="panel-meta">Times New Roman, cỡ 12px • Căn lề trái • Không giãn dòng • Không có tiêu đề</div>
-    </div>
-    <div class="panel panel--nice">
-      <div class="panel-tag panel-tag--nice">✅ Đã định dạng</div>
-      <div class="nice-text">
-        <h2>Chú mèo của em</h2>
-        <p>Nhà em có một chú mèo tên là <strong>Mun</strong>. Mun có bộ lông màu đen tuyền và đôi mắt xanh biếc rất đẹp.</p>
-        <p>Mỗi sáng, Mun thường nằm sưởi nắng ở bậc cửa rồi chạy ra vườn bắt bướm. Buổi tối, Mun hay cuộn tròn bên chân em khi em ngồi học bài.</p>
-        <p>Em rất yêu quý Mun vì bạn ấy rất ngoan và thông minh, biết nghe lời cả nhà.</p>
+  <div class="san">
+    <div class="giay" id="giay"></div>
+    <div class="the">
+      <div class="ds-nut" id="dsNut"></div>
+      <div id="cauHoi" hidden>
+        <p class="hoi" id="hoi"></p>
+        <div class="ds-dap-an" id="dsDapAn"></div>
+        <div class="tin" id="tin" role="status" aria-live="polite" hidden></div>
+        <p class="chot" id="chot" hidden></p>
+        <button type="button" class="nut-lai" id="nutLai" hidden>↺ Làm lại</button>
       </div>
-      <div class="panel-meta">Có tiêu đề in đậm • Căn lề hợp lý • Giãn dòng 1.8 • Trình bày rõ ràng</div>
     </div>
-  </div>
-
-  <div class="quiz" id="quizSection">
-    <div class="quiz-progress" id="progress">Câu 1/2</div>
-    <h3 class="quiz-question" id="questionText"></h3>
-    <div class="quiz-options" id="optionsWrap"></div>
-    <div class="quiz-feedback" id="feedback" role="status" aria-live="polite" hidden></div>
-    <button class="btn-continue" id="continueBtn" type="button" hidden>Tiếp tục →</button>
-  </div>
-
-  <div class="done" id="doneSection" hidden>
-    <div class="done-emoji">🎉</div>
-    <h2>Hoàn thành!</h2>
-    <p>Em đã hiểu vì sao cần định dạng văn bản đẹp và dễ đọc rồi đó.</p>
-    <button class="btn-continue" id="restartBtn" type="button">Chơi lại</button>
   </div>
 </div>
 
 <script>
 /* =========================================================
-   SO SÁNH VĂN BẢN – Tin học 6, Bài 11: Khởi động
+   BIẾN HÌNH ĐOẠN VĂN – Tin học 6, Bài 11: Khởi động
+   CẤU HÌNH: giáo viên sửa đoạn văn, tên nút, câu hỏi ở đây
    ========================================================= */
-const QUESTIONS = [
-  { question: 'Văn bản nào dễ đọc hơn?',
-    options: [
-      { key: 'A', text: 'Văn bản chưa định dạng', correct: false },
-      { key: 'B', text: 'Văn bản đã định dạng', correct: true }
-    ],
-    correctMsg: 'Chính xác! Văn bản đã định dạng dễ đọc hơn.',
-    wrongMsg: 'Chưa đúng, hãy thử lại.' },
-  { question: 'Vì sao cần định dạng văn bản?',
-    options: [
-      { key: 'A', text: 'Giúp văn bản đẹp hơn', correct: false },
-      { key: 'B', text: 'Giúp văn bản dễ đọc', correct: true },
-      { key: 'C', text: 'Không cần thiết', correct: false }
-    ],
-    correctMsg: 'Chính xác! Định dạng giúp văn bản rõ ràng và dễ đọc hơn.',
-    wrongMsg: 'Chưa đúng, hãy thử lại.' }
-];
+const CAU_HINH = {
+  tieuDe: 'Giờ ra chơi của lớp em',
+  // Mỗi dòng là một đoạn sau khi bấm nút tách đoạn
+  doan: [
+    'Mỗi giờ ra chơi, sân trường lại rộn ràng tiếng cười.',
+    'Nhóm em thường rủ nhau đá cầu ở góc sân. Một số bạn ngồi dưới gốc bàng đọc truyện.',
+    'Khi trống vào lớp vang lên, ai cũng chạy nhanh về chỗ ngồi.'
+  ],
+  tuDam: 'đá cầu',     // từ được tô đậm, phải có trong đoạn văn
+  nut: [
+    { lop: 'co-tieu-de', ten: 'Làm nổi tiêu đề', sang: '.tieu-de' },
+    { lop: 'co-dam', ten: 'Tô đậm từ “đá cầu”', sang: '.tu' },
+    { lop: 'co-doan', ten: 'Tách đoạn cho thoáng', sang: '.doan' }
+  ],
+  choTruocCauHoiMs: 900, // bấm xong nút cuối, chờ để em kịp nhìn đoạn văn rồi mới hỏi
+  hoi: 'Vì sao cần định dạng văn bản?',
+  dapAn: [
+    { t: 'Để văn bản rõ ràng, đẹp và dễ đọc', dung: true },
+    { t: 'Để văn bản dài hơn', sai: 'Chưa đúng. Đoạn văn không có thêm chữ nào, em nhìn lại nhé.' },
+    { t: 'Để đổi nội dung văn bản', sai: 'Chưa đúng. Nội dung vẫn y nguyên, chỉ cách trình bày thay đổi thôi.' }
+  ],
+  dung: 'Đúng rồi! Nội dung vẫn vậy, nhưng văn bản rõ ràng và dễ đọc hơn.',
+  chot: 'Em vừa định dạng xong đoạn văn đầu tiên! Sang phần Khám phá để học cách làm nhé.'
+};
 
 const $ = id => document.getElementById(id);
-const optionsEl = $('optionsWrap'), feedbackEl = $('feedback'), continueBtn = $('continueBtn');
-let current = 0, solved = false;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function xao(a) {
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+  return b;
+}
+let daBam = 0, henHoi = null;
 
-function renderQuestion() {
-  const q = QUESTIONS[current];
-  solved = false;
-  $('progress').textContent = `Câu ${current + 1}/${QUESTIONS.length}`;
-  $('questionText').textContent = q.question;
-  feedbackEl.hidden = true;
-  feedbackEl.className = 'quiz-feedback';
-  continueBtn.hidden = true;
-  optionsEl.innerHTML = '';
-  q.options.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'option-btn';
-    btn.innerHTML = `<span class="option-key">${opt.key}</span><span class="option-text">${opt.text}</span>`;
-    btn.addEventListener('click', () => handleAnswer(opt, btn));
-    optionsEl.appendChild(btn);
+function veDoanVan() {
+  const tieuDe = `<span class="tieu-de">${esc(CAU_HINH.tieuDe)}</span> `;
+  const doan = CAU_HINH.doan.map(d => `<span class="doan">${esc(d).split(esc(CAU_HINH.tuDam)).join(`<span class="tu">${esc(CAU_HINH.tuDam)}</span>`)}</span>`);
+  $('giay').innerHTML = tieuDe + doan.join(' ');
+}
+// Giữ sẵn chiều cao của đoạn văn lúc đã đẹp để nút bên dưới và khung bài học không bị nhảy
+function giuChieuCao() {
+  const g = $('giay'), lop = CAU_HINH.nut.map(n => n.lop), cu = lop.filter(l => g.classList.contains(l));
+  g.style.minHeight = '';
+  g.classList.add(...lop);
+  g.style.minHeight = g.offsetHeight + 'px';
+  lop.forEach(l => { if (!cu.includes(l)) g.classList.remove(l); });
+}
+function veNut() {
+  $('dsNut').innerHTML = CAU_HINH.nut.map((n, i) => `<button type="button" class="nut-bien" data-i="${i}"><span class="so">${i + 1}</span><span>${esc(n.ten)}</span></button>`).join('');
+}
+function bamNut(b, e) {
+  const n = CAU_HINH.nut[+b.dataset.i], g = $('giay');
+  g.classList.add(n.lop);
+  g.querySelectorAll(n.sang).forEach(x => { x.classList.remove('loe'); void x.offsetWidth; x.classList.add('loe'); });
+  b.disabled = true;
+  b.querySelector('.so').textContent = '✓';
+  daBam++;
+  if (daBam === CAU_HINH.nut.length) henHoi = setTimeout(() => moCauHoi(e.detail === 0), CAU_HINH.choTruocCauHoiMs);
+}
+function moCauHoi(banPhim) {
+  $('dsNut').hidden = true;
+  $('cauHoi').hidden = false;
+  $('hoi').textContent = CAU_HINH.hoi;
+  $('dsDapAn').innerHTML = xao(CAU_HINH.dapAn).map(d => `<button type="button" class="dap-an">${esc(d.t)}</button>`).join('');
+  const nut = [...$('dsDapAn').children];
+  nut.forEach(b => {
+    const d = CAU_HINH.dapAn.find(x => x.t === b.textContent);
+    b.addEventListener('click', () => chon(b, d));
   });
+  if (banPhim) nut[0].focus();
 }
-
-function handleAnswer(opt, btn) {
-  if (solved) return;
-  const q = QUESTIONS[current];
-  if (opt.correct) {
-    solved = true;
-    btn.classList.add('is-correct');
-    [...optionsEl.children].forEach(b => b.classList.add('is-disabled'));
-    feedbackEl.textContent = q.correctMsg;
-    feedbackEl.className = 'quiz-feedback success';
-    continueBtn.textContent = current === QUESTIONS.length - 1 ? 'Hoàn thành' : 'Tiếp tục →';
-    continueBtn.hidden = false;
-  } else {
-    btn.classList.add('is-wrong');
-    setTimeout(() => btn.classList.remove('is-wrong'), 400);
-    feedbackEl.textContent = q.wrongMsg;
-    feedbackEl.className = 'quiz-feedback error';
+function hienTin(lop, chu) {
+  const t = $('tin');
+  t.className = 'tin ' + lop;
+  t.textContent = chu;
+  t.hidden = false;
+}
+function chon(b, d) {
+  if (!d.dung) {
+    b.classList.add('sai');
+    b.disabled = true;
+    setTimeout(() => { b.classList.remove('sai'); b.classList.add('mo'); }, 420);
+    hienTin('sai', d.sai);
+    return;
   }
-  feedbackEl.hidden = false;
+  // Đúng: chỉ giữ lại đáp án đúng cho gọn
+  [...$('dsDapAn').children].forEach(x => { if (x !== b) x.hidden = true; });
+  b.classList.add('dung');
+  b.disabled = true;
+  hienTin('dung', CAU_HINH.dung);
+  $('chot').textContent = CAU_HINH.chot;
+  $('chot').hidden = false;
+  $('nutLai').hidden = false;
+}
+function lamLai() {
+  clearTimeout(henHoi);
+  daBam = 0;
+  $('giay').className = 'giay';
+  $('cauHoi').hidden = true;
+  $('tin').hidden = true;
+  $('chot').hidden = true;
+  $('nutLai').hidden = true;
+  $('dsNut').hidden = false;
+  veNut();
 }
 
-continueBtn.addEventListener('click', () => {
-  current++;
-  if (current < QUESTIONS.length) { renderQuestion(); return; }
-  $('quizSection').hidden = true;
-  $('doneSection').hidden = false;
+$('dsNut').addEventListener('click', e => {
+  const b = e.target.closest('.nut-bien');
+  if (b && !b.disabled) bamNut(b, e);
 });
-$('restartBtn').addEventListener('click', () => {
-  current = 0;
-  $('doneSection').hidden = true;
-  $('quizSection').hidden = false;
-  renderQuestion();
-});
+$('nutLai').addEventListener('click', lamLai);
+
+veDoanVan();
+veNut();
+giuChieuCao();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(giuChieuCao);
+let rongCu = innerWidth;
+window.addEventListener('resize', () => { if (innerWidth !== rongCu) { rongCu = innerWidth; giuChieuCao(); } });
 
 // Khi được nhúng vào trang bài học: báo trang đo lại chiều cao khung khi nội dung đổi
 if ('ResizeObserver' in window) {
@@ -215,8 +245,6 @@ if ('ResizeObserver' in window) {
     }, 60);
   }).observe(document.body);
 }
-
-renderQuestion();
 </script>
 </body>
 </html>
